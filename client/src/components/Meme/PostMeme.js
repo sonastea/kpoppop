@@ -67,7 +67,9 @@ const PostMeme = () => {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
-                <label className="title required-input">title</label>
+                <label className="title-input-label required-input">
+                  title
+                </label>
               </div>
 
               <div
@@ -154,4 +156,3 @@ const PostMeme = () => {
 };
 
 export default PostMeme;
-
