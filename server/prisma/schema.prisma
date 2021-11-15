@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int	  @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  username      String    @unique
+  password      String
+  email         String    @unique
+  displayname   String?
+  role          Role	  @default(USER)
+  memes		Meme[]
+}
+
+model Meme {
+  id		Int	  @id @default(autoincrement())
+  title		String
+  url		String?
+  path		String?
+  resource	MemeResource
+  author	User	  @relation(fields: authorId, references: [id])
+  authorId      Int       // FK stored in this model
+  active	Boolean	  @default(true)
+}
+
+enum Role {
+  USER
+  MODERATOR
+  ADMIN
+}
+
+enum MemeResource {
+  URL
+  PATH
+}
