@@ -18,10 +18,10 @@ const Signup = () => {
   } = useForm<FormData>();
 
   const submitHandler: SubmitHandler<FormData> = async (data) => {
-
     await fetch('http://localhost:5000/user/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify({
         username: data.username,
         password: data.password,
@@ -45,7 +45,7 @@ const Signup = () => {
     <>
       <Container>
         <Form id="signupForm" onSubmit={handleSubmit(submitHandler)}>
-          <h3 className="mt3 mb-4">Join kpopop!</h3>
+          <h3 className="mt-3 mb-3">Join kpopop!</h3>
           <Form.Group
             className="w-25 form-floating mb-3"
             controlId="formUsername"
@@ -91,11 +91,11 @@ const Signup = () => {
                   },
                 })}
               />
-              <p className="text-danger">
-                {errors.password && errors.password.message}
-              </p>
             </FloatingLabel>
           </Form.Group>
+          <p className="text-danger">
+            {errors.password && errors.password.message}
+          </p>
 
           <Form.Group
             className="w-25 form-floating mb-3"
@@ -111,11 +111,11 @@ const Signup = () => {
                     value === watch('password') || 'Passwords do not match',
                 })}
               />
-              <p className="text-danger">
-                {errors.password2 && errors.password2.message}
-              </p>
             </FloatingLabel>
           </Form.Group>
+          <p className="text-danger">
+            {errors.password2 && errors.password2.message}
+          </p>
 
           <Button type="submit" className="w-25 btn btn-primary btn-block">
             Sign Up
