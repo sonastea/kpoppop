@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  font-family: "Montserrat", sans-serif!important;
 }
 
 .required-input:after {
@@ -85,6 +86,10 @@ div.comments:hover {
 
 .list-buttons {
   font-size: 1.75vmin;
+}
+
+#navbar {
+  background-color: #F45990;
 }
 
 #signupForm {
