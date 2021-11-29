@@ -3,6 +3,7 @@ services:
     container_name: kpopop_pgsql
     image: "postgres:13.4"
     restart: unless-stopped
+    user: postgres
     env_file:
       - database.env
     expose:
