@@ -12,13 +12,10 @@ const Login = () => {
   const loginHandler: SubmitHandler<LoginFormData> = async (data) => {
     await fetch('http://localhost:5000/user/login', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
       body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
+    }).then(res => res.json()).then(data => window.location.href = data.path);
   };
 
   return (

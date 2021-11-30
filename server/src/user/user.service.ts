@@ -5,13 +5,14 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async createUser(data: Prisma.UserCreateInput): Promise<User | object> {
-    data.password = await bcrypt.hash(data.password, 10);
+    data.password = bcrypt.hashSync(data.password, 10);
     try {
       const user = await this.prisma.user.create({ data });
       delete user.password;
+      delete user.refreshtoken;
       return user;
     } catch (err) {
       if (err.code === 'P2002') {
@@ -22,6 +23,35 @@ export class UserService {
           },
         };
       }
+    }
+  }
+
+  async findOne(data: Prisma.UserWhereUniqueInput): Promise<User | undefined> {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        username: data.username,
+      },
+    });
+    return user;
+  }
+
+  async setRefreshToken(refreshToken: string, username: string): Promise<void> {
+    const hash = bcrypt.hashSync(refreshToken, 10);
+    await this.prisma.user.update({
+      where: { username: username },
+      data: { refreshtoken: hash },
+    });
+  }
+
+  async getUserIfRefreshTokenMatch(refreshToken: string, username: string): Promise<any> {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        username: username,
+      },
+    });
+    const match = bcrypt.compareSync(refreshToken, user.refreshtoken);
+    if (match) {
+      return user;
     }
   }
 }
