@@ -3,13 +3,11 @@ import { Response } from 'express';
 
 @Catch(HttpException)
 export class UnauthorizedFilter implements ExceptionFilter {
-  catch(exception: HttpException, host: ArgumentsHost) {
+  catch(_exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-    const status = exception.getStatus();
 
-    response.status(status).json({
-      statusCode: status,
+    response.status(200).json({
       message: "Unauthorized refresh token",
       path: '/login',
     });

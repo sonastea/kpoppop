@@ -4,6 +4,7 @@ import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 
 interface User {
+  sub: number,
   username: string
 }
 
@@ -23,8 +24,8 @@ export class AuthService {
     const user = await this.userService.findOne({ username });
     const hash = bcrypt.hashSync(password, 10);
     if (user && bcrypt.compare(user.password.toString(), hash)) {
-      const { password, ...result } = user;
-      return result;
+      const { password, refreshtoken, ...data } = user;
+      return data;
     }
     return null;
   }
@@ -33,8 +34,8 @@ export class AuthService {
     return this.jwtService.sign(user);
   }
 
-  async getRefreshToken(user: User): Promise<string> {
-    const refreshToken = this.jwtService.sign(user, {
+  async getRefreshToken(user: string): Promise<string> {
+    const refreshToken = this.jwtService.sign({user}, {
       secret: process.env.JWT_REFRESH_KEY,
       expiresIn: '7d',
     });
@@ -42,8 +43,8 @@ export class AuthService {
   }
 
   async getTokens(user: any): Promise<tokens> {
-    const payload = { username: user.username };
-    const refreshToken = await this.getRefreshToken(payload);
+    const payload = { sub: user.id, username: user.username };
+    const refreshToken = await this.getRefreshToken(user.username);
     await this.userService.setRefreshToken(refreshToken, user.username);
 
     return {
