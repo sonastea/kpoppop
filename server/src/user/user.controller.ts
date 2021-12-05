@@ -36,8 +36,8 @@ export class UserController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async loginUser(@Req() req: Request, @Res() res: Response): Promise<any> {
-    const token = await this.authService.getTokens(req.body);
-    await this.userService.setRefreshToken(token.refreshToken, req.body.username);
+    const token = await this.authService.getTokens(req.user);
+    await this.userService.setRefreshToken(token.refreshToken, req.user['username']);
     res.cookie('accessToken', token.accessToken, {
       httpOnly: true,
       secure: true,
