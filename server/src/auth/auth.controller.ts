@@ -23,18 +23,18 @@ export class AuthController {
       sub: req.user['id'],
       username: req.user['username']
     });
-    res.cookie('accessToken', newAccessToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-    });
     res.cookie('refreshToken', newRefreshToken, {
       httpOnly: true,
       secure: true,
       sameSite: 'none',
     });
+    res.cookie('accessToken', newAccessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+    });
     await this.userService.setRefreshToken(newRefreshToken, req.user['username']);
-    return req.user;
+    res.json(req.user);
   }
 
   @UseGuards(JwtAuthGuard)

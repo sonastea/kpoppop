@@ -58,4 +58,14 @@ export class UserController {
   async getProfile(@Req() req: Request): Promise<any> {
     return req.user;
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('logout')
+  async logout(@Req() req: Request): Promise<any> {
+    await this.userService.removeRefreshToken(req.user['username']);
+    req.res.clearCookie('accessToken');
+    req.res.clearCookie('refreshToken');
+    return { path: '/' };
+  }
+
 }

@@ -34,8 +34,8 @@ export class AuthService {
     return this.jwtService.sign(user);
   }
 
-  async getRefreshToken(user: string): Promise<string> {
-    const refreshToken = this.jwtService.sign({user}, {
+  async getRefreshToken(username: string): Promise<string> {
+    const refreshToken = this.jwtService.sign({username}, {
       secret: process.env.JWT_REFRESH_KEY,
       expiresIn: '7d',
     });
