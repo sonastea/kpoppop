@@ -1,29 +1,20 @@
-import { Nav, Navbar } from 'react-bootstrap';
+import { Container, Navbar } from 'react-bootstrap';
 import MobileNav from './MobileNav';
+import NavBarLoggedIn from './NavBarLoggedIn';
+import NavBarLoggedOut from './NavBarLoggedOut';
 
-const NavBar = () => {
+const NavBar = (props: any) => {
   return (
-    <Navbar
-      id="navbar"
-      variant="light"
-      expand="md"
-      collapseOnSelect
-      sticky="top"
-    >
-      <Navbar.Brand href="/">KPOPOP</Navbar.Brand>
-      <Nav className="ml-auto d-none d-md-block">
-        <Nav.Link href="/memes">Memes</Nav.Link>
-      </Nav>
-      <Nav className="d-none d-md-block">
-        <Nav.Link href="/user/profile">Profile</Nav.Link>
-      </Nav>
-      <Nav className="ms-auto d-none d-md-block">
-        <Nav.Link href="/register">Sign Up</Nav.Link>
-      </Nav>
-      <Nav className="d-none d-md-block">
-        <Nav.Link href="/login">Login</Nav.Link>
-      </Nav>
-      <MobileNav />
+    <Navbar id="navbar" variant="light" expand="md" collapseOnSelect sticky="top">
+      <Container>
+        <Navbar.Brand href="/">KPOPOP</Navbar.Brand>
+        {props.username != null ? (
+          <NavBarLoggedIn username={props.username} />
+        ) : (
+          <NavBarLoggedOut />
+        )}
+        <MobileNav />
+      </Container>
     </Navbar>
   );
 };
