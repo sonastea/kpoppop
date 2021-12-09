@@ -8,11 +8,8 @@ const NavBar = (props: any) => {
     <Navbar id="navbar" variant="light" expand="md" collapseOnSelect sticky="top">
       <Container>
         <Navbar.Brand href="/">KPOPOP</Navbar.Brand>
-        {props.username != null ? (
-          <NavBarLoggedIn username={props.username} />
-        ) : (
-          <NavBarLoggedOut />
-        )}
+        {props.username && <NavBarLoggedIn username={props.username} />}
+        <NavBarLoggedOut username={props.username} />
         <MobileNav />
       </Container>
     </Navbar>
