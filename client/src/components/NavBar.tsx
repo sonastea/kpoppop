@@ -10,7 +10,7 @@ const NavBar = (props: any) => {
         <Navbar.Brand href="/">KPOPOP</Navbar.Brand>
         {props.username && <NavBarLoggedIn username={props.username} />}
         <NavBarLoggedOut username={props.username} />
-        <MobileNav />
+        <MobileNav username={props.username} />
       </Container>
     </Navbar>
   );
