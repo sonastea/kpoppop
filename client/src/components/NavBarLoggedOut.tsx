@@ -1,7 +1,7 @@
 import { Nav } from 'react-bootstrap';
 
 const NavBarLoggedOut = (props: any) => {
-  if (props.username !== null) {
+  if (props.username) {
     return null;
   } else {
     return (

@@ -8,7 +8,9 @@ const NavBar = (props: any) => {
     <Navbar id="navbar" expand="md" collapseOnSelect sticky="top">
       <Container>
         <Navbar.Brand href="/">KPOPOP</Navbar.Brand>
-        <Nav.Link className="me-auto d-none d-md-block" href="memes">Memes</Nav.Link>
+        <Nav.Link className="me-auto d-none d-md-block" href="memes">
+          Memes
+        </Nav.Link>
         {props.username && <NavBarLoggedIn username={props.username} />}
         <NavBarLoggedOut username={props.username} />
         <MobileNav username={props.username} />
