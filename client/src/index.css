@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: "Montserrat", sans-serif!important;
+  font-family: 'Montserrat', sans-serif !important;
 }
 
 .required-input:after {
@@ -9,13 +9,17 @@ body {
   font-weight: bold;
 }
 
+a.nav-link {
+  color: #fcc89b;
+}
+
 .title {
   font-weight: bold;
   font-size: 2.75vmin;
 }
 
 .content-header {
-  background-color: rgb(205, 205, 205, .75);
+  background-color: rgb(205, 205, 205, 0.75);
 }
 
 .content-title {
@@ -88,8 +92,12 @@ div.comments:hover {
   font-size: 1.75vmin;
 }
 
+.navbar-brand {
+  color: #fcc89b !important;
+}
+
 #navbar {
-  background-color: #F45990;
+  background-color: #f45990;
 }
 
 #signupForm {
@@ -107,7 +115,7 @@ div.comments:hover {
 }
 
 #profile-dropdown {
-  color: white;
+  color: #fcc89b;
 }
 
 #title-input-label {
