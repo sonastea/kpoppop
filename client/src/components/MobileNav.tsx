@@ -16,6 +16,7 @@ const MobileNav = (props: any) => {
         </Offcanvas.Header>
         <Offcanvas.Body>
           <Nav className="justify-content-end flex-grow-1 pe-3">
+            <Nav.Link href="/memes">Memes</Nav.Link>
             {props.username && (
               <>
                 <Nav.Link href="/user/profile">{props.username}</Nav.Link>
@@ -24,7 +25,6 @@ const MobileNav = (props: any) => {
             )}
             {!props.username && (
               <>
-                <Nav.Link href="/memes">Memes</Nav.Link>
                 <Nav.Link href="/signup">Signup</Nav.Link>
                 <Nav.Link href="/login">Login</Nav.Link>
               </>
