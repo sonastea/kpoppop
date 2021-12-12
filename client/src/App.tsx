@@ -22,9 +22,12 @@ const App = () => {
         .then((res) => res.json())
         .then((data) => {
           if (data._id === null) {
-            ValidateToken();
+            ValidateToken()
+              .then((res) => res.json())
+              .then((data) => setUser(data));
+          } else {
+            setUser(data);
           }
-          setUser(data);
         });
     };
     checkUser();
@@ -38,6 +41,7 @@ const App = () => {
 
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/memes" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Signup />} />
         <Route path="/user/profile" element={<Profile />} />

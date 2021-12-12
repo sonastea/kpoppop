@@ -1,6 +1,6 @@
-const ValidateToken = () => {
+const ValidateToken = async (): Promise<any> => {
   try {
-    fetch('http://localhost:5000/auth/refresh-token', {
+    return fetch('http://localhost:5000/auth/refresh-token', {
       method: 'GET',
       credentials: 'include',
     });
