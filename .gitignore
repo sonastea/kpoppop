@@ -53,6 +53,9 @@ testem.log
 .DS_Store
 Thumbs.db
 
+# Firebase credentials
+**/firebaseCredentials.json
+
 # personal
 .vim/
 backup/

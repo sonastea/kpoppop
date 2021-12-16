@@ -5,7 +5,11 @@ import { UserService } from './user/user.service';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthController } from './auth/auth.controller';
-import * as Joi  from 'joi';
+import * as Joi from 'joi';
+import { MemeController } from './meme/meme.controller';
+import { MemeService } from './meme/meme.service';
+import { MulterModule } from '@nestjs/platform-express';
+import { memoryStorage } from 'multer';
 
 @Module({
   imports: [
@@ -18,8 +22,14 @@ import * as Joi  from 'joi';
       }),
     }),
     AuthModule,
+    MulterModule.registerAsync({
+      useFactory: () => ({
+        storage: memoryStorage(),
+        dest: './files',
+      }),
+    }),
   ],
-  controllers: [AuthController, UserController],
-  providers: [ PrismaService, UserService],
+  controllers: [AuthController, MemeController, UserController],
+  providers: [PrismaService, MemeService, UserService],
 })
 export class AppModule {}

@@ -15,7 +15,6 @@ a.nav-link {
 
 .title {
   font-weight: bold;
-  font-size: 2.75vmin;
 }
 
 .content-header {
@@ -41,6 +40,11 @@ a.nav-link {
 
 .author-buttons {
   text-decoration: none;
+}
+
+.btn-pink {
+  color: black !important;
+  background-color: #f18f9c !important;
 }
 
 div.comments {
