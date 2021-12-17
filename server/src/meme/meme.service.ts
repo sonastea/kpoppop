@@ -7,8 +7,13 @@ export class MemeService {
   constructor(private prisma: PrismaService) {}
 
   async createMeme(data: Prisma.MemeCreateInput): Promise<Meme> {
+  async createMeme(
+    data: Prisma.MemeCreateInput,
+    select?: Prisma.MemeSelect
+  ): Promise<Prisma.MemeArgs> {
     return this.prisma.meme.create({
       data,
+      select,
     });
   }
 }

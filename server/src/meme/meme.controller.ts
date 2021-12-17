@@ -54,6 +54,17 @@ export class MemeController {
       data.url = url;
     }
 
-    return this.memeService.createMeme(data);
+    return this.memeService.createMeme(data, {
+      id: true,
+      title: true,
+      url: true,
+      path: false,
+      resource: false,
+      author: {
+        select: { username: true },
+      },
+      authorId: true,
+      active: true,
+    });
   }
 }
