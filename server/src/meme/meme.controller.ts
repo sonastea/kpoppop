@@ -41,13 +41,11 @@ export class MemeController {
         },
       });
     let data: any = { ...body, authorId: req.user['_id'] };
+    data.resource = MemeResource.URL;
     if (body.url.length > 0) {
-      data.resource = MemeResource.URL;
       delete data.file;
     }
     if (file) {
-      data.resource = MemeResource.PATH;
-      delete data.url;
       const path =
         'https://firebasestorage.googleapis.com/v0/b/kpopop-6c8e3.appspot.com/o/' +
         uuid +
