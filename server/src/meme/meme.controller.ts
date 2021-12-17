@@ -46,12 +46,12 @@ export class MemeController {
       delete data.file;
     }
     if (file) {
-      const path =
+      const url =
         'https://firebasestorage.googleapis.com/v0/b/kpopop-6c8e3.appspot.com/o/' +
         uuid +
         '?alt=media&token=' +
         uuid;
-      data.path = path;
+      data.url = url;
     }
 
     return this.memeService.createMeme(data);
