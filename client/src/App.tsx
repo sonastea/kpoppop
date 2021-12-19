@@ -9,7 +9,8 @@ import Profile from './components/user/Profile';
 import { useContext, useEffect, useState } from 'react';
 import AuthContext from './contexts/AuthContext';
 import ValidateToken from './components/auth/ValidateToken';
-import Memes from './components/Memes';
+import Memes from './components/meme/Memes';
+import Post from './components/meme/Post';
 
 const App = () => {
   const [user, setUser] = useState(useContext(AuthContext));
@@ -43,6 +44,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/memes" element={<Memes />} />
+        <Route path="/meme/:memeid/:title" element={<Post />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Signup />} />
         <Route path="/user/profile" element={<Profile />} />

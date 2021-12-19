@@ -1,6 +1,8 @@
 import {
   Body,
   Controller,
+  Get,
+  Param,
   Post,
   Req,
   UploadedFile,
@@ -11,7 +13,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Request } from 'express';
 import { MemeService } from './meme.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { MemeResource } from '@prisma/client';
+import { Meme, MemeResource, Prisma } from '@prisma/client';
 import * as firebase from 'firebase-admin';
 import { randomUUID } from 'crypto';
 
@@ -55,16 +57,77 @@ export class MemeController {
     }
 
     return this.memeService.createMeme(data, {
+      author: {
+        select: { username: true },
+      },
+      active: true,
+      authorId: true,
       id: true,
       title: true,
       url: true,
       path: false,
       resource: false,
-      author: {
-        select: { username: true },
-      },
-      authorId: true,
-      active: true,
     });
+  }
+
+  @Post('posts')
+  async getMemes(@Body() body: { cursor: number }): Promise<any> {
+    if (body.cursor === 0) {
+      return await this.memeService.posts({
+        take: 7,
+        orderBy: {
+          id: 'desc',
+        },
+        select: {
+          author: {
+            select: { username: true },
+          },
+          active: true,
+          authorId: true,
+          id: true,
+          title: true,
+          url: true,
+          path: false,
+          resource: false,
+        },
+      });
+    } else {
+      return await this.memeService.posts({
+        cursor: {
+          id: body.cursor,
+        },
+        skip: 1,
+        take: 7,
+        orderBy: {
+          id: 'desc',
+        },
+        select: {
+          author: {
+            select: { username: true },
+          },
+          active: true,
+          authorId: true,
+          id: true,
+          title: true,
+          url: true,
+          path: false,
+          resource: false,
+        },
+      });
+    }
+  }
+
+  @Get(':id')
+  getMeme(@Param('id') id: string): Promise<Meme | null> {
+    return this.memeService.post(
+      {
+        id: parseInt(id),
+      },
+      {
+        author: {
+          select: { username: true },
+        },
+      }
+    );
   }
 }
