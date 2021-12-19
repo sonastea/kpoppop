@@ -30,6 +30,7 @@ export class UserController {
       secure: true,
       sameSite: 'none',
     });
+    user['path'] = "/";
     return user;
   }
 
