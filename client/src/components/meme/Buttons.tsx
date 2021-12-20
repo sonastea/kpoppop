@@ -1,4 +1,5 @@
 import { Col, Row } from 'react-bootstrap';
+import Like from './Like';
 
 const Buttons = (props: any) => {
   const {
@@ -27,6 +28,7 @@ const Buttons = (props: any) => {
             Comments
           </a>
         </Col>
+        <Like memeId={id}/>
       </Row>
     </>
   );

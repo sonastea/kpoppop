@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Col, Row, Image } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { fetchMeme } from './MemeAPI';
+import PostButtons from './PostButtons';
 
 const Content = () => {
   const { memeid } = useParams();
@@ -37,6 +38,7 @@ const Content = () => {
             </Row>
           </Row>
         </Col>
+        <PostButtons memeId={parseInt(memeid!, 10)} />
       </Row>
     </>
   );

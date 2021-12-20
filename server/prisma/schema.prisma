@@ -19,6 +19,7 @@ model User {
   displayname   String?
   role          Role	  @default(USER)
   memes		Meme[]
+  likedMemes    Meme[]    @relation("UserLikesPost")
   refreshtoken  String?
 }
 
@@ -31,6 +32,7 @@ model Meme {
   author	User	  @relation(fields: authorId, references: [id])
   authorId      Int       // FK stored in this model
   active	Boolean	  @default(true)
+  likedBy       User[]    @relation("UserLikesPost", references: [id])
 }
 
 enum Role {

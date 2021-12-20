@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
+  Put,
   Req,
   UploadedFile,
   UseGuards,
@@ -13,7 +15,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Request } from 'express';
 import { MemeService } from './meme.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Meme, MemeResource, Prisma } from '@prisma/client';
+import { Meme, MemeResource } from '@prisma/client';
 import * as firebase from 'firebase-admin';
 import { randomUUID } from 'crypto';
 
@@ -129,5 +131,35 @@ export class MemeController {
         },
       }
     );
+  }
+
+  @Get('likes/:id')
+  getTotalLikes(@Param('id') id: string): Promise<any> {
+    return this.memeService.totalLikes({ where: { id: parseInt(id) } });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('liked/:id')
+  getUserLike(@Param('id') id: string, @Req() req: Request): Promise<any> {
+    return this.memeService.likedMeme({
+      where: {
+        id: parseInt(id),
+      },
+      user: {
+        id: req.user['_id'],
+      },
+    });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put('like/:id')
+  likeMeme(@Param('id') id: string, @Req() req: Request): Promise<any> {
+    return this.memeService.likeMeme({ where: { id: parseInt(id) }, user: { id: req.user['_id'] } });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('like/:id')
+  unlikeMeme(@Param('id') id: string, @Req() req: Request): Promise<any> {
+    return this.memeService.unlikeMeme({ where: { id: parseInt(id) }, user: { id: req.user['_id'] } });
   }
 }
