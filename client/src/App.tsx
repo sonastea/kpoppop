@@ -33,6 +33,7 @@ const App = () => {
         });
     };
     checkUser();
+    setInterval(checkUser, 15 * 60 * 1000);
   }, []);
 
   return (
