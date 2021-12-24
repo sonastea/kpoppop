@@ -31,25 +31,28 @@ export class MemeController {
     @Body() body: { title: string; url?: string; files?: FileList },
     @Req() req: Request
   ): Promise<any> {
-    const uuid = randomUUID();
-    firebase
-      .storage()
-      .bucket()
-      .file(uuid)
-      .save(file.buffer, {
-        metadata: {
-          metadata: {
-            firebaseStorageDownloadTokens: uuid,
-            contentType: file.mimetype,
-          },
-        },
-      });
     let data: any = { ...body, authorId: req.user['_id'] };
     data.resource = MemeResource.URL;
+
     if (body.url.length > 0) {
+      data.url = body.url;
       delete data.file;
     }
+
     if (file) {
+      const uuid = randomUUID();
+      firebase
+        .storage()
+        .bucket()
+        .file(uuid)
+        .save(file.buffer, {
+          metadata: {
+            metadata: {
+              firebaseStorageDownloadTokens: uuid,
+              contentType: file.mimetype,
+            },
+          },
+        });
       const url =
         'https://firebasestorage.googleapis.com/v0/b/kpopop-6c8e3.appspot.com/o/' +
         uuid +
@@ -154,12 +157,18 @@ export class MemeController {
   @UseGuards(JwtAuthGuard)
   @Put('like/:id')
   likeMeme(@Param('id') id: string, @Req() req: Request): Promise<any> {
-    return this.memeService.likeMeme({ where: { id: parseInt(id) }, user: { id: req.user['_id'] } });
+    return this.memeService.likeMeme({
+      where: { id: parseInt(id) },
+      user: { id: req.user['_id'] },
+    });
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete('like/:id')
   unlikeMeme(@Param('id') id: string, @Req() req: Request): Promise<any> {
-    return this.memeService.unlikeMeme({ where: { id: parseInt(id) }, user: { id: req.user['_id'] } });
+    return this.memeService.unlikeMeme({
+      where: { id: parseInt(id) },
+      user: { id: req.user['_id'] },
+    });
   }
 }
