@@ -44,8 +44,8 @@ const Like = (props: LikeProps) => {
   }, [likedState, memeId]);
 
   return (
-    <Row className="gx-0 justify-content-center" xs="auto" md="auto" lg="auto">
-      <Col className="like-meme" onClick={handleLiked} xs={1} md={1} lg={1}>
+    <Row className="interactive-bar gx-0 justify-content-center" xs="auto" md="auto" lg="auto">
+      <Col className="like-meme" onClick={handleLiked}>
         <span>
           {likedState ? (
             <FontAwesomeIcon className="liked" icon={fasHeart} />

@@ -7,7 +7,7 @@ body {
   font-family: 'Montserrat', sans-serif !important;
 }
 
-@media screen and (min:width: 1236px) {
+@media screen and (min: width: 1236px) {
   .container {
     width: 1190px;
   }
@@ -36,7 +36,8 @@ a.nav-link:hover {
 }
 
 .content-title {
-  font-size: calc(1rem + 1.0vw);
+  color: #834655;
+  font-size: calc(1rem + 1vw);
   font-weight: normal;
 }
 
@@ -49,8 +50,9 @@ a.nav-link:hover {
   color: #714f57db !important;
 }
 
-.author-bar {
+.author-bar * {
   color: #714f57db !important;
+  text-decoration: none;
   font-size: calc(1rem + 0.25vw);
 }
 
@@ -60,6 +62,10 @@ a.nav-link:hover {
 
 .interactive-buttons:hover {
   color: red;
+}
+
+.interactive-bar {
+  font-size: calc(0.8rem + 1vh);
 }
 
 .btn-pink {

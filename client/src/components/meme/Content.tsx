@@ -24,18 +24,18 @@ const Content = () => {
     <FontAwesomeIcon id="scroll-load-div" icon={faSpinner} spin />
   ) : (
     <>
-      <Row className="d-flex flex-wrap align-items-center content-header">
-        <Col xs={6} md={6}>
-          <Image src={meme.url} alt="no image" fluid />
+      <Row className="content-header">
+        <Col xs={6} md={4} lg={4}>
+          <Image className="mt-2 rounded-2" src={meme.url} alt="no image" fluid />
         </Col>
-        <Col>
-          <Row>
-            <Row className="content-title">{meme.title}</Row>
-            <Row className="author-bar mt-1">
-              <a className="author author-buttons" href={`/profile${meme.username}`}>
-                {meme.author.username}
-              </a>
-            </Row>
+        <Col className="d-flex flex-column">
+          <Row className="content-title">
+            <Col>{meme.title}</Col>
+          </Row>
+          <Row className="mt-auto author-bar">
+            <Col>
+              <a href={`/profile${meme.username}`}>{meme.author.username}</a>
+            </Col>
           </Row>
         </Col>
         <PostButtons memeId={parseInt(memeid!, 10)} />

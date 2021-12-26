@@ -60,7 +60,7 @@ const Memes = () => {
         {posts &&
           posts.map((meme: any) => (
             <Row className="meme rounded-2 mt-3 mb-3" id={meme.id} key={meme.id}>
-              <Col xs={6} md={3} lg={3}>
+              <Col xs={6} md={3} lg={4}>
                 <a href={`/meme/${meme.id}/${meme.title}`}>
                   <Image className="mt-2 meme-thumbnail rounded-2" src={meme.url} fluid />
                 </a>
