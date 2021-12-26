@@ -59,7 +59,7 @@ const PostMeme = () => {
       <Container>
         <Collapse in={open}>
           <Form id="post-meme-form" onSubmit={handleSubmit(memeHandler)}>
-            <h3 className="mt-3 mb-4">Post meme to kpopop</h3>
+            <h3 className="mt-3 mb-4">Post meme to kpoppop</h3>
 
             <Form.Group id="title-input-form" className="w-75 mb-3" controlId="title-input-box">
               <Form.Label className="title required-input">title</Form.Label>

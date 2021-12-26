@@ -12,7 +12,7 @@ const MobileNav = (props: any) => {
       <Navbar.Toggle id="hamburgerToggle" aria-controls="mobileNav" />
       <Navbar.Offcanvas id="mobileNav" aria-labelledby="mobileNav" placement="start">
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title id="mobileNav">KPOPOP</Offcanvas.Title>
+          <Offcanvas.Title id="mobileNav">KPOPPOP</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           <Nav className="justify-content-end flex-grow-1 pe-3">

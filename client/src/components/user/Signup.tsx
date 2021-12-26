@@ -46,7 +46,7 @@ const Signup = () => {
     <>
       <Container>
         <Form id="signupForm" onSubmit={handleSubmit(submitHandler)}>
-          <h3 className="mt-3 mb-3">Join kpopop!</h3>
+          <h3 className="mt-3 mb-3">Join kpoppop!</h3>
           <Form.Group className="w-25 form-floating mb-3" controlId="formUsername">
             <FloatingLabel label="Username" className="mb-3">
               <Form.Control required type="text" placeholder="username" {...register('username')} />

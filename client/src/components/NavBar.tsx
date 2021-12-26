@@ -7,7 +7,7 @@ const NavBar = (props: any) => {
   return (
     <Navbar id="navbar" expand="md" collapseOnSelect sticky="top">
       <Container fluid>
-        <Navbar.Brand href="/">KPOPOP</Navbar.Brand>
+        <Navbar.Brand href="/">KPOPPOP</Navbar.Brand>
         <Nav.Link className="ml-auto d-none d-md-block" href="/memes">
           Memes
         </Nav.Link>

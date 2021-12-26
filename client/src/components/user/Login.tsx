@@ -21,7 +21,7 @@ const Login = () => {
   return (
     <Container className="d-grid justify-content-center">
       <Form id="loginForm" onSubmit={handleSubmit(loginHandler)}>
-        <h3 className="mt-3 mb-3">Log in to kpopop</h3>
+        <h3 className="mt-3 mb-3">Log in to kpoppop</h3>
 
         <Form.Group className="mb-3" controlId="formUsername">
           <Form.Label>Username</Form.Label>
