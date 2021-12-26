@@ -17,7 +17,8 @@ import { memoryStorage } from 'multer';
       validationSchema: Joi.object({
         NODE_ENV: Joi.string()
           .valid('development', 'production', 'test', 'provision')
-          .default('development'),
+          .default('development')
+          .required(),
         PORT: Joi.number().default(5000),
       }),
     }),
