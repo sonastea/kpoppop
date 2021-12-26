@@ -1,5 +1,4 @@
 import { Col, Row } from 'react-bootstrap';
-import Like from './Like';
 
 const Buttons = (props: any) => {
   const {
@@ -10,25 +9,26 @@ const Buttons = (props: any) => {
 
   return (
     <>
-      <Row className="title position-absolute start-0 top-0">
-        <Col id={id}>
+      <Row className="content-title">
+        <Col>
           <a className="meme-buttons" href={`/meme/${id}/${title}`}>
             {props.title}
           </a>
         </Col>
-        <Row className="author-bar">
-          <a className="author author-buttons" href={`/profile/${username}`}>
+      </Row>
+      <Row className="author-bar mt-1">
+        <Col>
+          <a className="author-bar meme-buttons" href={`/profile/${username}`}>
             {username}
           </a>
-        </Row>
+        </Col>
       </Row>
-      <Row className="position-absolute bottom-0 start-0">
-        <Col className="comments align-self-end">
-          <a className="meme-buttons" href={`/meme/${id}/${title}`}>
+      <Row className="mt-auto">
+        <Col>
+          <a className="comments meme-buttons" href={`/meme/${id}/${title}`}>
             Comments
           </a>
         </Col>
-        <Like memeId={id}/>
       </Row>
     </>
   );

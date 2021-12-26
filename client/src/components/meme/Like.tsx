@@ -1,4 +1,4 @@
-import { Col } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -44,16 +44,18 @@ const Like = (props: LikeProps) => {
   }, [likedState, memeId]);
 
   return (
-    <>
-      <Col onClick={handleLiked} className="delete-meme align-self-end" xs="auto" md="auto">
-        {likedState ? (
-          <FontAwesomeIcon className="liked" icon={fasHeart} />
-        ) : (
-          <FontAwesomeIcon icon={faHeart} />
-        )}
-        {totalLikes ? ` ${totalLikes}` : ` 0`}
+    <Row className="gx-0 justify-content-center" xs="auto" md="auto" lg="auto">
+      <Col className="like-meme" onClick={handleLiked} xs={1} md={1} lg={1}>
+        <span>
+          {likedState ? (
+            <FontAwesomeIcon className="liked" icon={fasHeart} />
+          ) : (
+            <FontAwesomeIcon icon={faHeart} />
+          )}
+          <span className="ms-1 interactive-buttons">{totalLikes ? `${totalLikes}` : `0`}</span>
+        </span>
       </Col>
-    </>
+    </Row>
   );
 };
 

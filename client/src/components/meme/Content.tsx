@@ -25,12 +25,12 @@ const Content = () => {
   ) : (
     <>
       <Row className="d-flex flex-wrap align-items-center content-header">
-        <Col xs="auto" md="auto">
-          <Image style={{ width: 240, height: 'auto' }} src={meme.url} alt="no image" />
+        <Col xs={6} md={6}>
+          <Image src={meme.url} alt="no image" fluid />
         </Col>
         <Col>
           <Row>
-            <div className="content-title">{meme.title}</div>
+            <Row className="content-title">{meme.title}</Row>
             <Row className="author-bar mt-1">
               <a className="author author-buttons" href={`/profile${meme.username}`}>
                 {meme.author.username}

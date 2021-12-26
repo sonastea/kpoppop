@@ -6,6 +6,7 @@ import { Col, Container, Row, Image } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { fetchMemes } from './MemeAPI';
+import Like from './Like';
 
 let cursor: number = 0;
 
@@ -55,18 +56,19 @@ const Memes = () => {
   return (
     <>
       <UploadMeme />
-      <Container fluid>
+      <Container >
         {posts &&
           posts.map((meme: any) => (
-            <Row style={{ marginBottom: 16 }} id={meme.id} key={meme.id}>
-              <Col xs="auto" md="auto" lg="auto">
+            <Row className="meme rounded-2 mt-3 mb-3" id={meme.id} key={meme.id}>
+              <Col xs={6} md={3} lg={3}>
                 <a href={`/meme/${meme.id}/${meme.title}`}>
-                  <Image className="meme-thumbnail" src={meme.url} />
+                  <Image className="mt-2 meme-thumbnail rounded-2" src={meme.url} fluid />
                 </a>
               </Col>
-              <Col className="position-relative">
+              <Col className="d-flex flex-column">
                 <Buttons {...meme} />
               </Col>
+              <Like memeId={meme.id} />
             </Row>
           ))}
         <div onScroll={handleScroll.current} id="scroll-load-div" className="page-number m-5">
