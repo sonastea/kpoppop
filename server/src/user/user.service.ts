@@ -60,6 +60,8 @@ export class UserService {
       const match = bcrypt.compareSync(refreshToken, user.refreshtoken);
       if (match) {
         return user;
+      } else {
+        return null;
       }
     } catch (err) { console.log(err); }
   }

@@ -27,6 +27,10 @@ const PostMeme = () => {
       method: 'POST',
       credentials: 'include',
       body: formData,
+    }).then(response => {
+      if (response.status >= 401 && response.status < 600) {
+        window.alert('You must be logged in to submit a meme.')
+      };
     });
   };
 

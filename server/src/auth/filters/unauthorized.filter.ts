@@ -8,8 +8,7 @@ export class UnauthorizedFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
 
     response.status(200).json({
-      message: "Unauthorized refresh token",
-      path: '/login',
+      message: "Unauthorized token",
     });
   }
 }
