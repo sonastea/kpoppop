@@ -31,9 +31,11 @@ const Like = (props: LikeProps) => {
   useEffect(() => {
     const fetchLikes = async (memeId: number) => {
       const likes = await fetchMemeTotalLikes(memeId);
-      const liked = await fetchMemeUserLike(memeId);
       setTotalLikes(likes);
-      setLiked(liked);
+
+      await fetchMemeUserLike(memeId).then(response => {
+        if (response.statusCode !== 401) { setLiked(response); }
+      });
     };
 
     try {
