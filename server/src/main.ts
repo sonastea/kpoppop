@@ -18,7 +18,7 @@ async function bootstrap() {
   const serviceAccount = require('../firebaseCredentials.json');
   firebase.initializeApp({
     credential: firebase.credential.cert(serviceAccount),
-    storageBucket: 'gs://kpopop-6c8e3.appspot.com/',
+    storageBucket: 'gs://images.kpoppop.com/',
   });
 
   app.use(cookieParser());

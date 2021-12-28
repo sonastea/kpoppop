@@ -11,13 +11,16 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import path = require('path');
 import { Request } from 'express';
-import { MemeService } from './meme.service';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { Meme, MemeResource } from '@prisma/client';
-import * as firebase from 'firebase-admin';
 import { randomUUID } from 'crypto';
+import * as firebase from 'firebase-admin';
+import { MemeService } from './meme.service';
+import { Meme, MemeResource } from '@prisma/client';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+
+const baseUrl = 'https://images.kpoppop.com/';
 
 @Controller('meme')
 export class MemeController {
@@ -41,23 +44,20 @@ export class MemeController {
 
     if (file) {
       const uuid = randomUUID();
+      const fileName = uuid + path.extname(file.originalname);
+      const url = baseUrl + fileName;
+
       firebase
         .storage()
         .bucket()
-        .file(uuid)
+        .file(fileName)
         .save(file.buffer, {
           metadata: {
             metadata: {
-              firebaseStorageDownloadTokens: uuid,
               contentType: file.mimetype,
             },
           },
         });
-      const url =
-        'https://firebasestorage.googleapis.com/v0/b/kpopop-6c8e3.appspot.com/o/' +
-        uuid +
-        '?alt=media&token=' +
-        uuid;
       data.url = url;
     }
 
