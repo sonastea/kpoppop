@@ -1,10 +1,11 @@
-import { faAngleDoubleDown, faAngleDoubleUp } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDoubleDown, faAngleDoubleUp, faSpinner, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { Button, Col, Collapse, Container, Form, Row } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { submitMeme } from './MemeAPI';
 
-type MemeFormData = {
+export type MemeFormData = {
   title: string;
   url?: string | undefined;
   file?: FileList | undefined;
@@ -12,6 +13,8 @@ type MemeFormData = {
 
 const PostMeme = () => {
   const [open, setOpen] = useState(false);
+  const [isUploading, setUploading] = useState(false);
+  const [uploadFinished, setUploadFinished] = useState(false);
   const {
     register,
     handleSubmit,
@@ -23,14 +26,17 @@ const PostMeme = () => {
     formData.append('title', data.title);
     formData.append('url', data.url!);
     formData.append('file', data.file![0]);
-    await fetch('http://localhost:5000/meme/submit', {
-      method: 'POST',
-      credentials: 'include',
-      body: formData,
-    }).then(response => {
+
+    setUploading(true);
+    setUploadFinished(false);
+    await submitMeme(formData).then((response) => {
       if (response.status >= 401 && response.status < 600) {
-        window.alert('You must be logged in to submit a meme.')
-      };
+        window.alert('You must be logged in to submit a meme.');
+      }
+      setTimeout(() => {
+        setUploading(false);
+        setUploadFinished(true);
+      }, 1000);
     });
   };
 
@@ -98,6 +104,8 @@ const PostMeme = () => {
               <Button className="btn btn-pink btn-sm" type="submit">
                 Post
               </Button>
+              {isUploading && <FontAwesomeIcon className="ms-3" icon={faSpinner} spin/>}
+              {uploadFinished && <FontAwesomeIcon className="ms-3" icon={faCheck} />}
             </Form.Group>
           </Form>
         </Collapse>
