@@ -71,7 +71,7 @@ const Memes = () => {
               <Like memeId={meme.id} />
             </Row>
           ))}
-        <div onScroll={handleScroll.current} id="scroll-load-div" className="page-number m-5">
+        <div onScroll={handleScroll.current} id="scroll-load-div" className="page-number p-5">
           {loading && <FontAwesomeIcon icon={faSpinner} spin />}
         </div>
       </Container>
