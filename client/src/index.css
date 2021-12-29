@@ -16,12 +16,8 @@ body {
   font-weight: bold;
 }
 
-a.nav-link {
-  color: #32281f;
-}
-
-a.nav-link:hover {
-  color: #fcc89b;
+a.nav-link, a.nav-link:hover {
+  color: #471a2a;
 }
 
 .title {
@@ -33,24 +29,24 @@ a.nav-link:hover {
 }
 
 .content-title {
-  color: #834655;
+  color: #471a2a;
   font-size: calc(1rem + 1vw);
   font-weight: normal;
 }
 
 .meme-buttons {
-  color: #834655 !important;
+  color: #471a2a !important;
   text-decoration: none;
-}
-
-.comments {
-  color: #714f57db !important;
 }
 
 .author-bar * {
-  color: #714f57db !important;
+  color: #585858 !important;
   text-decoration: none;
   font-size: calc(1rem + 0.25vw);
+}
+
+.comments {
+  color: #585858 !important;
 }
 
 .interactive-buttons {
@@ -65,9 +61,19 @@ a.nav-link:hover {
   font-size: calc(0.8rem + 1vh);
 }
 
+.btn:focus {
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
 .btn-pink {
-  color: black !important;
   background-color: #eda6b7 !important;
+  border: none;
+  color: #471a2a !important;
+}
+
+.dropdown-item:active {
+  background-color: #eda6b7;
 }
 
 .page-number {
@@ -128,7 +134,7 @@ a.nav-link:hover {
 }
 
 #profile-dropdown {
-  color: #fcc89b;
+  color: #471a2a;
 }
 
 #title-input-label {
