@@ -1,9 +1,6 @@
-#root {
-  background-color: #efefef;
-}
-
 body {
   margin: 0;
+  background-color: #efefef !important;
   font-family: 'Montserrat', sans-serif !important;
 }
 
