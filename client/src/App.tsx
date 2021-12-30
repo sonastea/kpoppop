@@ -6,13 +6,11 @@ import Login from './components/user/Login';
 import Signup from './components/user/Signup';
 import NavBar from './components/NavBar';
 import Profile from './components/user/Profile';
-import ValidateToken from './components/auth/ValidateToken';
 import Memes from './components/meme/Memes';
 import Post from './components/meme/Post';
-import useAuth, { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider } from './contexts/AuthContext';
 
 const App = () => {
-  const { user } = useAuth();
 
   return (
     <AuthProvider>
