@@ -12,9 +12,9 @@ export type MemeFormData = {
 };
 
 const PostMeme = () => {
-  const [open, setOpen] = useState(false);
-  const [isUploading, setUploading] = useState(false);
-  const [uploadFinished, setUploadFinished] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [isUploading, setUploading] = useState<boolean>(false);
+  const [uploadFinished, setUploadFinished] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
