@@ -1,7 +1,10 @@
 import { Nav } from 'react-bootstrap';
+import useAuth from '../contexts/AuthContext';
 
-const NavBarLoggedOut = (props: any) => {
-  if (props.username) {
+const NavBarLoggedOut = () => {
+  const { user } = useAuth();
+
+  if (user?.username) {
     return null;
   } else {
     return (

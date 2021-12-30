@@ -4,12 +4,14 @@ import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { fetchMemeTotalLikes, fetchMemeUserLike, likeMeme, unlikeMeme } from './MemeAPI';
 import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons';
+import useAuth from '../../contexts/AuthContext';
 
 export type LikeProps = {
   memeId: number;
 };
 
 const Like = (props: LikeProps) => {
+  const { user } = useAuth();
   const { memeId } = props;
   const [likedState, setLiked] = useState<boolean>();
   const [totalLikes, setLikes] = useState<number>();
@@ -33,9 +35,13 @@ const Like = (props: LikeProps) => {
       const likes = await fetchMemeTotalLikes(memeId);
       setTotalLikes(likes);
 
-      await fetchMemeUserLike(memeId).then(response => {
-        if (response.statusCode !== 401) { setLiked(response); }
-      });
+      if (user !== undefined) {
+        await fetchMemeUserLike(memeId).then((response) => {
+          if (response.statusCode !== 401) {
+            setLiked(response);
+          }
+        });
+      }
     };
 
     try {

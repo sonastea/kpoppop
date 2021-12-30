@@ -56,7 +56,7 @@ const Memes = () => {
   return (
     <>
       <UploadMeme />
-      <Container >
+      <Container>
         {posts &&
           posts.map((meme: any) => (
             <Row className="meme rounded-2 mt-3 mb-3" id={meme.id} key={meme.id}>
