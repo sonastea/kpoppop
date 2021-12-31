@@ -10,7 +10,8 @@ export class CheckUserFilter implements ExceptionFilter {
     response.status(200).json({
       _id: null,
       username: null,
-      role: null
+      role: null,
+      isLoggedIn: false
     });
   }
 }

@@ -25,7 +25,7 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwtRefresh')
       payload.username
     );
     if (user) {
-      return { _id: user.id, username: user.username, role: user.role };
+      return { _id: user.id, username: user.username, role: user.role, isLoggedIn: true };
     } else {
       req.res.clearCookie('accessToken');
       req.res.clearCookie('refreshToken');
