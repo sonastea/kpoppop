@@ -49,7 +49,7 @@ const Like = (props: LikeProps) => {
     } catch (error: any) {
       console.log(error.message);
     }
-  }, [likedState, memeId]);
+  }, [user, likedState, memeId]);
 
   return (
     <Row className="interactive-bar gx-0 justify-content-center" xs="auto" md="auto" lg="auto">

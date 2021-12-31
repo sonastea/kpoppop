@@ -1,5 +1,6 @@
 import { Button, Container, Form } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { API_URL } from '../../Global.d';
 
 type LoginFormData = {
   username: string;
@@ -10,12 +11,16 @@ const Login = () => {
   const { register, handleSubmit } = useForm<LoginFormData>();
 
   const loginHandler: SubmitHandler<LoginFormData> = async (data) => {
-    await fetch('http://localhost:5000/user/login', {
+    await fetch(API_URL + 'user/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
       body: JSON.stringify(data),
-    }).then(res => res.json()).then(data => window.location.href = data.path);
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setTimeout(() => (window.location.href = data.path), 500);
+      });
   };
 
   return (
@@ -34,12 +39,7 @@ const Login = () => {
         </Form.Group>
 
         <Form.Group className="text-center">
-          <Button
-            className="btn-block text-center mb-3"
-            variant="primary"
-            size="lg"
-            type="submit"
-          >
+          <Button className="btn-block text-center mb-3" variant="primary" size="lg" type="submit">
             Log In
           </Button>
         </Form.Group>

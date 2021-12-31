@@ -1,5 +1,7 @@
+import { API_URL } from '../../Global.d';
+
 const Logout = async (): Promise<void> => {
-  await fetch('http://localhost:5000/user/logout', {
+  await fetch(API_URL + 'user/logout', {
     method: 'POST',
     credentials: 'include',
   })

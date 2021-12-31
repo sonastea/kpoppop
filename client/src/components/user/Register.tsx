@@ -1,5 +1,6 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button, Container, FloatingLabel, Form } from 'react-bootstrap';
+import { API_URL } from '../../Global.d';
 
 type FormData = {
   username: string;
@@ -18,7 +19,7 @@ const Register = () => {
   } = useForm<FormData>();
 
   const submitHandler: SubmitHandler<FormData> = async (data) => {
-    await fetch('http://localhost:5000/user/register', {
+    await fetch(API_URL + 'user/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
