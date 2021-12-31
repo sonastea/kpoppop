@@ -53,10 +53,6 @@ a.nav-link, a.nav-link:hover {
   color: #714f57db;
 }
 
-.interactive-buttons:hover {
-  color: red;
-}
-
 .interactive-bar {
   font-size: calc(0.8rem + 1vh);
 }

@@ -21,12 +21,16 @@ const Like = (props: LikeProps) => {
   };
 
   const handleLiked = async () => {
-    if (!likedState) {
-      await likeMeme(memeId);
-      setLiked(true);
-    } else if (likedState) {
-      await unlikeMeme(memeId);
-      setLiked(false);
+    if (user?.isLoggedIn) {
+      if (!likedState) {
+        await likeMeme(memeId);
+        setLiked(true);
+      } else if (likedState) {
+        await unlikeMeme(memeId);
+        setLiked(false);
+      }
+    } else {
+      window.alert('You must be logged in to like this meme.');
     }
   };
 
