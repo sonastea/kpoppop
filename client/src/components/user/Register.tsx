@@ -8,7 +8,7 @@ type FormData = {
   password2: string;
 };
 
-const Signup = () => {
+const Register = () => {
   const {
     formState: { errors },
     register,
@@ -44,10 +44,10 @@ const Signup = () => {
 
   return (
     <>
-      <Container>
+      <Container fluid>
         <Form id="signupForm" onSubmit={handleSubmit(submitHandler)}>
           <h3 className="mt-3 mb-3">Join kpoppop!</h3>
-          <Form.Group className="w-25 form-floating mb-3" controlId="formUsername">
+          <Form.Group className="w-50 form-floating mb-3" controlId="formUsername">
             <FloatingLabel label="Username" className="mb-3">
               <Form.Control required type="text" placeholder="username" {...register('username')} />
             </FloatingLabel>
@@ -55,7 +55,7 @@ const Signup = () => {
 
           <p className="text-danger">{errors.username && errors.username.message}</p>
 
-          <Form.Group className="w-25 form-floating mb-3" controlId="formEmail">
+          <Form.Group className="w-50 form-floating mb-3" controlId="formEmail">
             <FloatingLabel label="Email address" className="mb-3">
               <Form.Control
                 required
@@ -66,7 +66,7 @@ const Signup = () => {
             </FloatingLabel>
           </Form.Group>
 
-          <Form.Group className="w-25 form-floating mb-3" controlId="formPassword">
+          <Form.Group className="w-50 form-floating mb-3" controlId="formPassword">
             <FloatingLabel label="Password" className="mb-3">
               <Form.Control
                 required
@@ -83,7 +83,7 @@ const Signup = () => {
           </Form.Group>
           <p className="text-danger">{errors.password && errors.password.message}</p>
 
-          <Form.Group className="w-25 form-floating mb-3" controlId="formPassword2">
+          <Form.Group className="w-50 form-floating mb-3" controlId="formPassword2">
             <FloatingLabel label="Confirm Password" className="mb-3">
               <Form.Control
                 required
@@ -97,7 +97,7 @@ const Signup = () => {
           </Form.Group>
           <p className="text-danger">{errors.password2 && errors.password2.message}</p>
 
-          <Button type="submit" className="w-25 btn btn-primary btn-block">
+          <Button type="submit" className="btn btn-primary btn-block">
             Sign Up
           </Button>
         </Form>
@@ -106,4 +106,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Register;

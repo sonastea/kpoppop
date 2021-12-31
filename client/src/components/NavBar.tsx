@@ -8,6 +8,7 @@ const NavBar = () => {
   const { user } = useAuth();
 
   return (
+    <>
     <Navbar id="navbar" expand="md" collapseOnSelect sticky="top">
       <Container fluid>
         <Navbar.Brand href="/">KPOPPOP</Navbar.Brand>
@@ -19,6 +20,7 @@ const NavBar = () => {
         <MobileNav />
       </Container>
     </Navbar>
+    </>
   );
 };
 

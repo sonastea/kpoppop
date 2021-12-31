@@ -28,7 +28,7 @@ const MobileNav = () => {
             )}
             {!user?.username && (
               <>
-                <Nav.Link href="/signup">Signup</Nav.Link>
+                <Nav.Link href="/register">Signup</Nav.Link>
                 <Nav.Link href="/login">Login</Nav.Link>
               </>
             )}
