@@ -16,7 +16,7 @@
 **/node_modules/*
 
 # env files
-*.env
+*.env*
 
 # profiling files
 chrome-profiler-events*.json
