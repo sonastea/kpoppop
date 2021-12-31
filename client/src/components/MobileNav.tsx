@@ -13,7 +13,7 @@ const MobileNav = () => {
   return (
     <Nav>
       <Navbar.Toggle id="hamburgerToggle" aria-controls="mobileNav" />
-      <Navbar.Offcanvas id="mobileNav" aria-labelledby="mobileNav" placement="start">
+      <Navbar.Offcanvas scroll={true} id="mobileNav" aria-labelledby="mobileNav" placement="start">
         <Offcanvas.Header closeButton>
           <Offcanvas.Title id="mobileNav">KPOPPOP</Offcanvas.Title>
         </Offcanvas.Header>

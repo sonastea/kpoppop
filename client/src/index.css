@@ -119,6 +119,10 @@ a.nav-link, a.nav-link:hover {
   background-color: #f45990;
 }
 
+#mobileNav {
+  width: 50%;
+}
+
 #signupForm {
   text-align: -webkit-center;
 }
