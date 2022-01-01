@@ -10,7 +10,7 @@ const Logout = async (): Promise<void> => {
       if (data.path) {
         setTimeout(() => {
           window.location.href = data.path;
-        }, 200);
+        }, 500);
       } else {
         window.location.reload();
       }

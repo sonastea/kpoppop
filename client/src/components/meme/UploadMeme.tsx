@@ -1,4 +1,9 @@
-import { faAngleDoubleDown, faAngleDoubleUp, faSpinner, faCheck } from '@fortawesome/free-solid-svg-icons';
+import {
+  faAngleDoubleDown,
+  faAngleDoubleUp,
+  faSpinner,
+  faCheck,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { Button, Col, Collapse, Container, Form, Row } from 'react-bootstrap';
@@ -29,15 +34,22 @@ const PostMeme = () => {
 
     setUploading(true);
     setUploadFinished(false);
-    await submitMeme(formData).then((response) => {
-      if (response.status >= 401 && response.status < 600) {
-        window.alert('You must be logged in to submit a meme.');
-      }
-      setTimeout(() => {
-        setUploading(false);
-        setUploadFinished(true);
-      }, 1000);
-    });
+    await submitMeme(formData)
+      .then((response) => {
+        if (response.status >= 401 && response.status < 600) {
+          window.alert('You must be logged in to submit a meme.');
+        }
+      })
+      .catch(() => {
+        window.alert('Failed to upload meme.');
+      })
+      .finally(() => {
+        setTimeout(() => {
+          setUploading(false);
+          setUploadFinished(true);
+          window.location.reload();
+        }, 1000);
+      });
   };
 
   const handleChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -104,7 +116,7 @@ const PostMeme = () => {
               <Button className="btn btn-pink btn-sm" type="submit">
                 Post
               </Button>
-              {isUploading && <FontAwesomeIcon className="ms-3" icon={faSpinner} spin/>}
+              {isUploading && <FontAwesomeIcon className="ms-3" icon={faSpinner} spin />}
               {uploadFinished && <FontAwesomeIcon className="ms-3" icon={faCheck} />}
             </Form.Group>
           </Form>
