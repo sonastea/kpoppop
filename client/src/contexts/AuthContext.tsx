@@ -21,19 +21,22 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
   const [loadingInitial, setLoadingInitial] = useState<boolean>(true);
 
   useEffect(() => {
-    getCurrentUser()
-      .then((user) => {
-        if (user._id === null) {
-          ValidateToken()
-            .then((user) => {
+    const checkUser = () => {
+      getCurrentUser()
+        .then((user) => {
+          if (user._id === null) {
+            ValidateToken().then((user) => {
               if (user._id) setUser(user);
             });
-        } else {
-          setUser(user);
-        }
-      })
-      .catch((_error) => {})
-      .finally(() => setLoadingInitial(false));
+          } else {
+            setUser(user);
+          }
+        })
+        .catch((_error) => {})
+        .finally(() => setLoadingInitial(false));
+    };
+    checkUser();
+    setInterval(checkUser, 14 * 60 * 1000);
   }, []);
 
   const memoedValues = useMemo(() => ({ user }), [user]);
