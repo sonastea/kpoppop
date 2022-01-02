@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   database:
     container_name: kpoppop_pgsql
@@ -12,6 +14,36 @@ services:
       - "5432:5432"
     volumes:
       - ./pgdata:/var/lib/postgresql/data
+
+  backend:
+    container_name: server
+    image: kpoppop_backend
+    env_file: ./server/.env
+    build:
+      context: ./server
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - database
+
+  frontend:
+    container_name: client
+    image: kpoppop_frontend
+    env_file: ./client/.env
+    build:
+      context: ./client
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - backend
 
 volumes:
   pgdata:
