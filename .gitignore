@@ -64,3 +64,6 @@ pgdata/
 
 old/
 .gitignore.bak
+
+# helpful sricipts
+**/deploy.sh
