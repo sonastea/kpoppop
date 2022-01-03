@@ -21,11 +21,11 @@ const App = () => {
 
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/memes" element={<Memes />} />
-          <Route path="/meme/:memeid/:title" element={<Post />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/user/profile" element={<Profile />} />
+            <Route path="memes" element={<Memes />} />
+            <Route path="meme/:memeid/:title" element={<Post />} />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="user/profile" element={<Profile />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
