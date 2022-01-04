@@ -20,7 +20,13 @@ import { Meme, MemeResource } from '@prisma/client';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
-const baseUrl = 'https://images.kpoppop.com/';
+let baseUrl: string = null;
+
+if (process.env.NODE_ENV === 'production') {
+  baseUrl = 'https://images.kpoppop.com/';
+} else {
+  baseUrl = 'https://test.kpoppop.com/';
+}
 
 @Controller('meme')
 export class MemeController {

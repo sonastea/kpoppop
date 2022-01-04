@@ -19,6 +19,10 @@ import { memoryStorage } from 'multer';
           .valid('development', 'production', 'test', 'provision')
           .default('development')
           .required(),
+        STORAGE_BUCKET: Joi.string()
+          .valid('gs://images.kpoppop.com/', 'gs://test.kpoppop.com/')
+          .default('gs://images.kpoppop.com/')
+          .required(),
         PORT: Joi.number().default(5000),
       }),
     }),
