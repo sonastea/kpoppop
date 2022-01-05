@@ -26,14 +26,14 @@ Reference for creating [ssl certificate](https://stackoverflow.com/questions/101
 
 ```c
 # client/.env
-       ⭕ REACT_APP_API_URL // Endpoint that serves images
+        ⭕ REACT_APP_API_URL // Endpoint that serves images
 
 # server/.env
-        🔴 DATABASE_URL         // How we reach the database from server's side
+        🔴 DATABASE_URL         // Connection string to reach the database from the server's side.
         🔴 JWT_SECRET_KEY       // Random x bytes in hex to sign and
         🔴 JWT_REFRESH_KEY      // decode json web token
-        🔴 STORAGE_BUCKET       // Endpoint that images are saved with firebase storage
-        🔴 NODE_ENV             // defaults to 'production', takes 'test' or 'development'
+        🔴 STORAGE_BUCKET       // Endpoint that images are saved with firebase storage.
+        🔴 NODE_ENV             // Defaults to 'production', takes 'test' or 'development'
 
 # server/firebaseCredentials.json
         // Credentials that authorize user to access the firebase storage buckets.
@@ -44,10 +44,8 @@ Reference for creating [ssl certificate](https://stackoverflow.com/questions/101
         🔴 private-key.pem          📄
         🔴 public-certificate.pem   📄
 
-
 # database.env
         🔴 POSTGRES_USER                // User to login postgresql db
         🔴 POSTGRES_PASSWORD            // Password to login postgresql db
         🔴 POSTGRES_DB                  // Database name that stores the schemas.
-
 ```
