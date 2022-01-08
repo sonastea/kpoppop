@@ -1,11 +1,11 @@
-FROM node:16.13.1-alpine as builder
+FROM node:16-alpine as builder
 
 RUN mkdir /app
 
 WORKDIR /app
 
 COPY package*.json ./
-COPY prisma ./prisma/
+COPY prisma ./prisma
 
 RUN npm install
 
@@ -13,14 +13,25 @@ COPY . .
 
 RUN npm run build
 
-FROM node:16.13.1-alpine
+#
 
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/dist ./dist
+FROM node:16-alpine
+
+COPY .env ./.env
+COPY package*.json ./
+COPY prisma ./prisma
+COPY secrets ./secrets
+COPY firebaseCredentials.json ./
+
 COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/firebaseCredentials.json ./
+COPY --from=builder /app/dist ./dist
+
+RUN npm install @nestjs/core
+RUN npm install prisma
+
+RUN npx prisma generate
+RUN npx prisma migrate deploy
 
 EXPOSE 5000
 
-CMD ["npm", "run", "start:migrate:prod"]
+CMD ["npm", "run", "start:prod"]

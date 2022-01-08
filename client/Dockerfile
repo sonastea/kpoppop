@@ -1,19 +1,14 @@
-FROM node:16.13.1-alpine
-
-RUN mkdir /app
+FROM node:16-alpine as builder
 
 WORKDIR /app
 
 COPY package*.json ./
+COPY .env ./
 
-RUN npm install --silent
+RUN npm install
 
 COPY . .
 
-RUN npm run build
-
-RUN npm install -g serve
-
 EXPOSE 3000
 
-CMD serve -s build -l 3000
+RUN npm run start
