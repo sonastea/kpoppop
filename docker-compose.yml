@@ -43,5 +43,5 @@ services:
 
 volumes:
   postgres: {}
-    server: {}
+  server: {}
 

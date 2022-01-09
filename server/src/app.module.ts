@@ -16,9 +16,8 @@ import { memoryStorage } from 'multer';
     ConfigModule.forRoot({
       validationSchema: Joi.object({
         NODE_ENV: Joi.string()
-          .valid('development', 'production', 'test', 'provision')
-          .default('development')
-          .required(),
+          .valid('development', 'production', 'test')
+          .default('production'),
         STORAGE_BUCKET: Joi.string()
           .valid('gs://images.kpoppop.com/', 'gs://test.kpoppop.com/')
           .default('gs://images.kpoppop.com/')

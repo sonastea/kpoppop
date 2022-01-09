@@ -1,4 +1,4 @@
-FROM node:16-alpine as builder
+FROM node:17-alpine as builder
 
 RUN mkdir /app
 
@@ -15,7 +15,7 @@ RUN npm run build
 
 #
 
-FROM node:16-alpine
+FROM node:17-alpine
 
 COPY .env ./.env
 COPY package*.json ./
