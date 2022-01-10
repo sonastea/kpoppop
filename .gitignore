@@ -20,7 +20,7 @@
 *.env*
 **/secrets/*
 
-docker-compose.override.yml
+docker-compose*.override.yml*
 
 # profiling files
 chrome-profiler-events*.json
