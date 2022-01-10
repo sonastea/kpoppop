@@ -19,7 +19,7 @@ const Register = () => {
   } = useForm<FormData>();
 
   const submitHandler: SubmitHandler<FormData> = async (data) => {
-    await fetch(API_URL + 'user/register', {
+    await fetch(`${API_URL}/user/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',

@@ -5,7 +5,7 @@ const Profile = () => {
   const doSomething = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
 
-    await fetch(API_URL + 'user/profile', {
+    await fetch(`${API_URL}/user/profile`, {
       method: 'GET',
       credentials: 'include',
     })

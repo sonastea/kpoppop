@@ -18,7 +18,7 @@ async function bootstrap() {
   const serviceAccount = require('../firebaseCredentials.json');
   firebase.initializeApp({
     credential: firebase.credential.cert(serviceAccount),
-    storageBucket: process.env.STORAGE_BUCKET,
+    storageBucket: `gs://${process.env.STORAGE_BUCKET}/`,
   });
 
   const httpsOptions = {
