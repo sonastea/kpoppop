@@ -6,9 +6,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
-import { Button, Col, Collapse, Container, Form, Row } from 'react-bootstrap';
+import { Button, Col, Collapse, Container, Form, Image, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { submitMeme } from './MemeAPI';
+//import * as nsfwjs from 'nsfwjs';
 
 export type MemeFormData = {
   title: string;
@@ -17,20 +18,24 @@ export type MemeFormData = {
 };
 
 const PostMeme = () => {
+  //const fr = new FileReader();
   const [open, setOpen] = useState<boolean>(false);
   const [isUploading, setUploading] = useState<boolean>(false);
   const [uploadFinished, setUploadFinished] = useState<boolean>(false);
-  const {
-    register,
-    handleSubmit,
-    //formState: { errors },
-  } = useForm<MemeFormData>();
+  const [files, setFiles] = useState<FileList | Array<File> | null>();
+  const { register, handleSubmit } = useForm<MemeFormData>();
+
+  //const watchImg = watch('file');
 
   const memeHandler: SubmitHandler<MemeFormData> = async (data) => {
     const formData = new FormData();
     formData.append('title', data.title);
     formData.append('url', data.url!);
     formData.append('file', data.file![0]);
+    //const img = fileReader.readAsDataURL(data.file![0]);
+    //const model = await nsfwjs.load("../../../public/model.json");
+    //const predictions = await model.classify(img)
+    //console.log('Predictions: ', predictions);
 
     setUploading(true);
     setUploadFinished(false);
@@ -50,6 +55,10 @@ const PostMeme = () => {
           window.location.reload();
         }, 1000);
       });
+  };
+
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFiles(e.currentTarget.files);
   };
 
   const handleChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -104,7 +113,22 @@ const PostMeme = () => {
                 accept="image/*"
                 {...register('file')}
                 onChange={handleChangeEvent}
+                onInput={handleImageSelect}
               />
+            </Form.Group>
+
+            <Form.Group
+              id="file-image-preview"
+              controlId="file-image-preview"
+            >
+              {files &&
+                Array.from(files).map((file) => {
+                  return (
+                    <Row key={file.name}>
+                      <Image className="w-75 mb-3 rounded-3" src={URL.createObjectURL(file)} alt={file.name} />
+                    </Row>
+                  );
+                })}
             </Form.Group>
 
             <div id="items-required" className="w-75 mb-3">
