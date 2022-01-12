@@ -124,9 +124,7 @@ const PostMeme = () => {
               {files &&
                 Array.from(files).map((file) => {
                   return (
-                    <Row key={file.name}>
-                      <Image className="w-75 mb-3 rounded-3" src={URL.createObjectURL(file)} alt={file.name} />
-                    </Row>
+                    <Image key={file.name} className="w-75 mb-3 rounded-3" src={URL.createObjectURL(file)} alt={file.name} />
                   );
                 })}
             </Form.Group>
