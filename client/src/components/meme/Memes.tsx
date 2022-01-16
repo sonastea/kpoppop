@@ -73,6 +73,8 @@ const Memes = () => {
                   <Like memeId={meme.id} />
                 </Row>
               );
+            } else {
+              return null;
             }
           })}
         <div onScroll={handleScroll.current} id="scroll-load-div" className="page-number p-5">
