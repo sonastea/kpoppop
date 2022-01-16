@@ -111,6 +111,10 @@ a.nav-link, a.nav-link:hover {
   color: #35271a;
 }
 
+.file-image-item {
+  height: 30vh;
+}
+
 #navbar {
   background-color: #f45990;
 }

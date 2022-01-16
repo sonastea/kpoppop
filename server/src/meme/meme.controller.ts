@@ -37,7 +37,7 @@ export class MemeController {
   @UseInterceptors(FileInterceptor('file'))
   async createMeme(
     @UploadedFile() file: Express.Multer.File,
-    @Body() body: { title: string; url?: string; files?: FileList },
+    @Body() body: { title: string; url?: string; files?: FileList; flagged: Boolean },
     @Req() req: Request
   ): Promise<any> {
     let data: any = { ...body, authorId: req.user['_id'] };
@@ -46,6 +46,14 @@ export class MemeController {
     if (body.url.length > 0) {
       data.url = body.url;
       delete data.file;
+    }
+
+    // Parse flagged into a boolean
+    if (data.flagged === 'true') {
+      data.flagged = true;
+      data.active = false;
+    } else {
+      data.flagged = false;
     }
 
     if (file) {
@@ -72,6 +80,7 @@ export class MemeController {
         select: { username: true },
       },
       active: true,
+      flagged: false,
       authorId: true,
       id: true,
       title: true,
@@ -94,12 +103,17 @@ export class MemeController {
             select: { username: true },
           },
           active: true,
+          flagged: true,
           authorId: true,
           id: true,
           title: true,
           url: true,
           path: false,
           resource: false,
+        },
+        where: {
+          active: { equals: true },
+          flagged: { equals: false },
         },
       });
     } else {
@@ -124,6 +138,10 @@ export class MemeController {
           path: false,
           resource: false,
         },
+        where: {
+          active: { equals: true },
+          flagged: { equals: false },
+        },
       });
     }
   }
@@ -133,6 +151,7 @@ export class MemeController {
     return this.memeService.post(
       {
         id: parseInt(id),
+        active: true,
       },
       {
         author: {

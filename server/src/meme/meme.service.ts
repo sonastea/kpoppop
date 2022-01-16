@@ -7,10 +7,10 @@ export class MemeService {
   constructor(private prisma: PrismaService) {}
 
   async post(
-    where: Prisma.MemeWhereUniqueInput,
+    where: Prisma.MemeWhereInput,
     include?: Prisma.MemeInclude
   ): Promise<Meme | null> {
-    return this.prisma.meme.findUnique({
+    return this.prisma.meme.findFirst({
       where,
       include,
     });

@@ -28,6 +28,7 @@ model Meme {
   resource MemeResource
   authorId Int
   active   Boolean      @default(true)
+  flagged  Boolean      @default(false)
   author   User         @relation(fields: [authorId], references: [id])
   likedBy  User[]       @relation("UserLikesPost")
 }

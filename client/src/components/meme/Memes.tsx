@@ -58,19 +58,23 @@ const Memes = () => {
       <UploadMeme />
       <Container>
         {posts &&
-          posts.map((meme: any) => (
-            <Row className="meme rounded-2 mt-3 mb-3" id={meme.id} key={meme.id}>
-              <Col xs={6} md={3} lg={4}>
-                <a href={`/meme/${meme.id}/${meme.title}`}>
-                  <Image className="mt-2 meme-thumbnail rounded-2" src={meme.url} fluid />
-                </a>
-              </Col>
-              <Col className="d-flex flex-column">
-                <Buttons {...meme} />
-              </Col>
-              <Like memeId={meme.id} />
-            </Row>
-          ))}
+          posts.map((meme: any) => {
+            if (meme.active) {
+              return (
+                <Row className="meme rounded-2 mt-3 mb-3" id={meme.id} key={meme.id}>
+                  <Col xs={6} md={3} lg={4}>
+                    <a href={`/meme/${meme.id}/${meme.title}`}>
+                      <Image className="mt-2 meme-thumbnail rounded-2" src={meme.url} fluid />
+                    </a>
+                  </Col>
+                  <Col className="d-flex flex-column">
+                    <Buttons {...meme} />
+                  </Col>
+                  <Like memeId={meme.id} />
+                </Row>
+              );
+            }
+          })}
         <div onScroll={handleScroll.current} id="scroll-load-div" className="page-number p-5">
           {loading && <FontAwesomeIcon icon={faSpinner} spin />}
         </div>
