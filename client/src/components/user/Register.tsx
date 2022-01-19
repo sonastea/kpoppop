@@ -1,46 +1,85 @@
-import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button, Container, FloatingLabel, Form } from 'react-bootstrap';
-import { API_URL } from '../../Global.d';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { API_URL, SITE_KEY } from '../../Global.d';
+import ReCAPTCHA from 'react-google-recaptcha';
+import { useState } from 'react';
 
 type FormData = {
   username: string;
   email: string;
   password: string;
   password2: string;
+  recaptcha: string | null;
 };
 
+declare const grecaptcha: ReCAPTCHA;
+
 const Register = () => {
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [verified, setVerified] = useState<boolean>(false);
+
   const {
     formState: { errors },
     register,
     handleSubmit,
     setError,
     watch,
+    setValue,
+    control,
+    clearErrors
   } = useForm<FormData>();
 
+  const onVerify = (recaptcha: string | null) => {
+    if (recaptcha === null) {
+      setVerified(false);
+    } else {
+      clearErrors('recaptcha');
+      setValue('recaptcha', recaptcha);
+      setVerified(true);
+    }
+  };
+
   const submitHandler: SubmitHandler<FormData> = async (data) => {
-    await fetch(`${API_URL}/user/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({
-        username: data.username,
-        password: data.password,
-        email: data.email,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.path) {
-          window.location.href = data.path;
-        }
-        if (data.errors) {
-          setError('username', {
-            type: 'manual',
-            message: data.errors.UserOrEmail,
-          });
-        }
-      });
+    setIsSubmitting(true);
+    if (!data.recaptcha) {
+      onVerify(data.recaptcha);
+      grecaptcha.reset();
+    } else {
+      await fetch(`${API_URL}/user/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          username: data.username,
+          password: data.password,
+          email: data.email,
+          recaptcha: data.recaptcha,
+        }),
+      })
+        .then((response) => {
+          if (response.status === parseInt('422')) {
+            setError('recaptcha' , {
+              type: 'manual',
+              message: 'Verify the recaptcha again.'
+            })
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (data.path) {
+            window.location.href = data.path;
+          }
+          if (data.errors) {
+            setError('username', {
+              type: 'manual',
+              message: data.errors.UserOrEmail,
+            });
+          }
+        });
+    }
+    setVerified(false);
+    setIsSubmitting(false);
+    grecaptcha.reset();
   };
 
   return (
@@ -54,7 +93,7 @@ const Register = () => {
             </FloatingLabel>
           </Form.Group>
 
-          <p className="text-danger">{errors.username && errors.username.message}</p>
+          <p className="text-danger">{errors.username?.message}</p>
 
           <Form.Group className="w-50 form-floating mb-3" controlId="formEmail">
             <FloatingLabel label="Email address" className="mb-3">
@@ -82,7 +121,7 @@ const Register = () => {
               />
             </FloatingLabel>
           </Form.Group>
-          <p className="text-danger">{errors.password && errors.password.message}</p>
+          <p className="text-danger">{errors.password?.message}</p>
 
           <Form.Group className="w-50 form-floating mb-3" controlId="formPassword2">
             <FloatingLabel label="Confirm Password" className="mb-3">
@@ -96,9 +135,23 @@ const Register = () => {
               />
             </FloatingLabel>
           </Form.Group>
-          <p className="text-danger">{errors.password2 && errors.password2.message}</p>
+          <p className="text-danger">{errors.password2?.message}</p>
 
-          <Button type="submit" className="btn btn-primary btn-block">
+          <Form.Group className="mb-3">
+            <Controller
+              control={control}
+              name="recaptcha"
+              render={() => <ReCAPTCHA sitekey={SITE_KEY} onChange={onVerify} />}
+              rules={{ required: true }}
+            />
+          </Form.Group>
+          <p className="text-danger">{errors.recaptcha?.message}</p>
+
+          <Button
+            type="submit"
+            className="btn btn-primary btn-block"
+            disabled={isSubmitting || !verified}
+          >
             Sign Up
           </Button>
         </Form>

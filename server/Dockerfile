@@ -1,4 +1,4 @@
-FROM node:17-alpine as builder
+FROM node:16-alpine as builder
 
 RUN mkdir /app
 
@@ -15,16 +15,14 @@ RUN npm run build
 
 #
 
-FROM node:17-alpine
+FROM node:16-alpine
 
-COPY .env ./.env
-COPY package*.json ./
-COPY prisma ./prisma
-COPY secrets ./secrets
-COPY firebaseCredentials.json ./
-
+COPY --from=builder /app/.env ./.env
+COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/secrets ./secrets
+COPY --from=builder /app/firebaseCredentials.json ./
 
 RUN npm install @nestjs/core
 RUN npm install prisma

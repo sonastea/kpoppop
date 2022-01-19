@@ -10,14 +10,15 @@ import { MemeController } from './meme/meme.controller';
 import { MemeService } from './meme/meme.service';
 import { MulterModule } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
+    AuthModule,
+    HttpModule,
     ConfigModule.forRoot({
       validationSchema: Joi.object({
-        NODE_ENV: Joi.string()
-          .valid('development', 'production', 'test')
-          .default('production'),
+        NODE_ENV: Joi.string().valid('development', 'production', 'test').default('production'),
         STORAGE_BUCKET: Joi.string()
           .valid('images.kpoppop.com', 'test.kpoppop.com')
           .default('images.kpoppop.com')
@@ -25,7 +26,6 @@ import { memoryStorage } from 'multer';
         PORT: Joi.number().default(5000),
       }),
     }),
-    AuthModule,
     MulterModule.registerAsync({
       useFactory: () => ({
         storage: memoryStorage(),
