@@ -20,20 +20,21 @@
 ├── `database.env`
 ```
 
-<br>
-
+\
 Reference for creating [ssl certificate](https://stackoverflow.com/questions/10175812/how-to-generate-a-self-signed-ssl-certificate-using-openssl).
 
 ```c
 # client/.env
         ⭕ REACT_APP_API_URL // Endpoint that serves images
+        🔴 SITE_KEY          // ReCAPTCHA key to invoke reCATPCHA service
 
 # server/.env
-        🔴 DATABASE_URL         // Connection string to reach the database from the server's side.
+        🔴 DATABASE_URL         // Connection string to reach database.
         🔴 JWT_SECRET_KEY       // Random x bytes in hex to sign and
         🔴 JWT_REFRESH_KEY      // decode json web token
         🔴 STORAGE_BUCKET       // Endpoint that images are saved with firebase storage.
         🔴 NODE_ENV             // Defaults to 'production', takes 'test' or 'development'
+        🔴 RECAPTCHA_SECRET     // Verifies invoked recaptcha response from clients
 
 # server/firebaseCredentials.json
         // Credentials that authorize user to access the firebase storage buckets.
