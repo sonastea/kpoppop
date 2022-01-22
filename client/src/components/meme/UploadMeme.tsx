@@ -74,8 +74,10 @@ const PostMeme = () => {
       case 'url-input-box':
         if (e.target.value !== '') {
           fileInput.style.display = 'none';
+          setPostable(true);
         } else {
           fileInput.style.display = 'block';
+          setPostable(false);
         }
         break;
 
@@ -84,9 +86,12 @@ const PostMeme = () => {
           urlInput.style.display = 'none';
         } else {
           urlInput.style.display = 'block';
+          setPostable(false);
         }
         break;
       default:
+        setPostable(false);
+        break;
     }
   };
 
