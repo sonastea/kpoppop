@@ -95,23 +95,6 @@ const PostMeme = () => {
     }
   };
 
-  const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFiles(e.target.files); // UploadMeme Image Preview
-    }
-
-    if (e.target.files && e.target.files.length >= 1) {
-      setDetecting(true);
-      let image = new window.Image();
-      const objectUrl = URL.createObjectURL(e.target.files[0]);
-      fetch(objectUrl).then((blob) => (image.src = blob.url));
-      const model = await nsfwjs.load();
-      const predictions = await model.classify(image);
-      setPostable(isSFW(predictions));
-      setDetecting(false);
-    }
-  };
-
   const isSFW = (predictions: Array<any>) => {
     switch (predictions[0].className) {
       case 'Porn':
@@ -137,6 +120,23 @@ const PostMeme = () => {
     }
   };
 
+  const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFiles(e.target.files); // UploadMeme Image Preview
+    }
+
+    if (e.target.files && e.target.files.length >= 1) {
+      setDetecting(true);
+      let image = new window.Image();
+      const objectUrl = URL.createObjectURL(e.target.files[0]);
+      fetch(objectUrl).then((blob) => (image.src = blob.url));
+      const model = await nsfwjs.load();
+      const predictions = await model.classify(image);
+      setPostable(isSFW(predictions));
+      setDetecting(false);
+    }
+  };
+
   return (
     <>
       <Container>
@@ -149,7 +149,7 @@ const PostMeme = () => {
               <Form.Control
                 required
                 as="textarea"
-                className="title required-input"
+                className="required-input"
                 {...register('title')}
               />
             </Form.Group>
@@ -211,11 +211,11 @@ const PostMeme = () => {
               aria-controls="post-meme-form"
               aria-expanded={open}
             >
-              {open ? 'Hide Form' : 'Show Form'}
+              {open ? 'Hide Form ' : 'Show Form '}
               {open ? (
-                <FontAwesomeIcon style={{ marginLeft: '10' }} icon={faAngleDoubleUp} />
+                <FontAwesomeIcon icon={faAngleDoubleUp} />
               ) : (
-                <FontAwesomeIcon style={{ marginLeft: '10' }} icon={faAngleDoubleDown} />
+                <FontAwesomeIcon icon={faAngleDoubleDown} />
               )}
             </Button>
           </Col>

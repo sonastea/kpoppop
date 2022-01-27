@@ -12,7 +12,7 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwtRefresh')
       ignoreExpiration: false,
       jwtFromRequest: ExtractJwt.fromExtractors([
         (req: Request) => {
-          return req?.cookies['refreshToken'];
+          return req?.cookies?.refresh_token;
         },
       ]),
       passReqToCallback: true,
@@ -20,16 +20,11 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwtRefresh')
   }
 
   async validate(req: Request, payload: any): Promise<object | HttpException> {
-    const user = await this.userService.getUserIfRefreshTokenMatch(
-      req.cookies.refreshToken,
-      payload.username
-    );
+    const user = await this.userService.getUserIfRefreshTokenMatch(req.cookies.refresh_token, payload.username);
     if (user) {
-      return { _id: user.id, username: user.username, role: user.role, isLoggedIn: true };
+      return { sub: user.id, username: user.username, role: user.role, isLoggedIn: true };
     } else {
-      req.res.clearCookie('accessToken');
-      req.res.clearCookie('refreshToken');
-      return { path: '/login' };
+      return { sub: null, username: null, role: null, isLoggedIn: false };
     }
   }
 }

@@ -4,7 +4,7 @@ import { getCurrentUser } from '../components/auth/AuthAPI';
 import ValidateToken from '../components/auth/ValidateToken';
 
 export type User = {
-  _id?: number;
+  sub?: number;
   username?: string;
   role?: string;
   isLoggedIn: boolean;
@@ -21,12 +21,12 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
   const [loadingInitial, setLoadingInitial] = useState<boolean>(true);
 
   useEffect(() => {
-    const checkUser = () => {
-      getCurrentUser()
+    const checkUser = async () => {
+      await getCurrentUser()
         .then((user) => {
-          if (user._id === null) {
+          if (!user.isLoggedIn) {
             ValidateToken().then((user) => {
-              if (user._id) setUser(user);
+              setUser(user);
             });
           } else {
             setUser(user);
@@ -36,14 +36,11 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
         .finally(() => setLoadingInitial(false));
     };
     checkUser();
-    setInterval(checkUser, 14 * 60 * 1000);
   }, []);
 
   const memoedValues = useMemo(() => ({ user }), [user]);
 
-  return (
-    <AuthContext.Provider value={memoedValues}>{!loadingInitial && children}</AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={memoedValues}>{!loadingInitial && children}</AuthContext.Provider>;
 }
 
 export default function useAuth() {

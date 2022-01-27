@@ -7,8 +7,8 @@ export class CheckUserFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
 
-    response.status(200).json({
-      _id: null,
+    return response.status(200).json({
+      sub: null,
       username: null,
       role: null,
       isLoggedIn: false

@@ -8,7 +8,12 @@ type LoginFormData = {
 };
 
 const Login = () => {
-  const { register, handleSubmit } = useForm<LoginFormData>();
+  const {
+    formState: { errors },
+    register,
+    handleSubmit,
+    setError,
+  } = useForm<LoginFormData>();
 
   const loginHandler: SubmitHandler<LoginFormData> = async (data) => {
     await fetch(`${API_URL}/user/login`, {
@@ -16,11 +21,17 @@ const Login = () => {
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
       body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setTimeout(() => (window.location.href = data.path), 500);
-      });
+    }).then((res) => {
+      if (res.status === 401) {
+        setError('password', {
+          type: 'manual',
+          message: 'Incorrect username or password.',
+        });
+      }
+      if (res.status === 201) {
+        setTimeout(() => (window.location.href = '/'), 1000);
+      }
+    });
   };
 
   return (
@@ -37,6 +48,8 @@ const Login = () => {
           <Form.Label>Password</Form.Label>
           <Form.Control required type="password" {...register('password')} />
         </Form.Group>
+
+        <p className="text-danger">{errors.password?.message}</p>
 
         <Form.Group className="text-center">
           <Button className="btn-block text-center mb-3" variant="primary" size="lg" type="submit">

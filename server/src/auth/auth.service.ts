@@ -3,16 +3,6 @@ import { Injectable } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 
-interface User {
-  sub: number,
-  username: string
-}
-
-interface tokens {
-  accessToken: string,
-  refreshToken: string
-}
-
 @Injectable()
 export class AuthService {
   constructor(
@@ -30,27 +20,28 @@ export class AuthService {
     return null;
   }
 
-  async getAccessToken(user: User): Promise<string> {
+  async login(user: any) {
+    const payload = { sub: user.id, username: user.username, role: user.role, isLoggedIn: true };
+    const access_token = this.jwtService.sign(payload);
+    const refresh_token = await this.getRefreshToken(payload);
+
+    await this.userService.setRefreshToken(refresh_token, user['username']);
+
+    return {
+      access_token: access_token,
+      refresh_token: refresh_token
+    };
+  }
+
+  async getAccessToken(user: any): Promise<string> {
     return this.jwtService.sign(user);
   }
 
-  async getRefreshToken(username: string): Promise<string> {
-    const refreshToken = this.jwtService.sign({username}, {
+  async getRefreshToken(user: any): Promise<string> {
+    const refreshToken = this.jwtService.sign(user, {
       secret: process.env.JWT_REFRESH_KEY,
       expiresIn: '7d',
     });
     return refreshToken;
   }
-
-  async getTokens(user: any): Promise<tokens> {
-    const payload = { sub: user.id, username: user.username };
-    const refreshToken = await this.getRefreshToken(user.username);
-    await this.userService.setRefreshToken(refreshToken, user.username);
-
-    return {
-      accessToken: await this.getAccessToken(payload),
-      refreshToken: refreshToken,
-    };
-  }
-
 }

@@ -40,7 +40,7 @@ export class MemeController {
     @Body() body: { title: string; url?: string; files?: FileList; flagged: Boolean },
     @Req() req: Request
   ): Promise<any> {
-    let data: any = { ...body, authorId: req.user['_id'] };
+    let data: any = { ...body, authorId: req.user['sub'] };
     data.resource = MemeResource.URL;
 
     if (body.url.length > 0) {
@@ -174,7 +174,7 @@ export class MemeController {
         id: parseInt(id),
       },
       user: {
-        id: req.user['_id'],
+        id: req.user['sub'],
       },
     });
   }
@@ -184,7 +184,7 @@ export class MemeController {
   likeMeme(@Param('id') id: string, @Req() req: Request): Promise<any> {
     return this.memeService.likeMeme({
       where: { id: parseInt(id) },
-      user: { id: req.user['_id'] },
+      user: { id: req.user['sub'] },
     });
   }
 
@@ -193,7 +193,7 @@ export class MemeController {
   unlikeMeme(@Param('id') id: string, @Req() req: Request): Promise<any> {
     return this.memeService.unlikeMeme({
       where: { id: parseInt(id) },
-      user: { id: req.user['_id'] },
+      user: { id: req.user['sub'] },
     });
   }
 }

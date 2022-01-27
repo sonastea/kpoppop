@@ -36,11 +36,17 @@ export class UserService {
   }
 
   async setRefreshToken(refreshToken: string, username: string): Promise<void> {
-    const hash = bcrypt.hashSync(refreshToken, 10);
-    await this.prisma.user.update({
-      where: { username: username },
-      data: { refreshtoken: hash },
-    });
+    if (username !== undefined || null) {
+      try {
+        const hash = bcrypt.hashSync(refreshToken, 10);
+        await this.prisma.user.update({
+          where: { username: username },
+          data: { refreshtoken: hash },
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    }
   }
 
   async removeRefreshToken(username: string): Promise<void> {
@@ -63,6 +69,8 @@ export class UserService {
       } else {
         return null;
       }
-    } catch (err) { console.log(err); }
+    } catch (err) {
+      console.log(err);
+    }
   }
 }

@@ -3,62 +3,57 @@ import { UserService } from './user.service';
 import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { LocalAuthGuard } from 'src/auth/guards/local-auth.guard';
-import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RecaptchaGuard } from 'src/auth/guards/recaptcha.guard';
+import { AuthService } from 'src/auth/auth.service';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 @Controller('user')
 export class UserController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly userService: UserService
-  ) {}
+  constructor(private readonly userService: UserService, private readonly authService: AuthService) {}
 
   @UseGuards(RecaptchaGuard)
   @Post('register')
   async signupUser(
-    @Body() data: { username: string; password: string; email: string; recaptcha: string },
-    @Res({ passthrough: true }) res: Response
+    @Res() res: Response,
+    @Body() data: { username: string; password: string; email: string; recaptcha: string }
   ): Promise<User | object> {
     const { recaptcha, ...newData } = data;
     const user = await this.userService.createUser(newData);
+    const tokens = await this.authService.login(user);
+    res.cookie('access_token', tokens.access_token, {
+      httpOnly: true,
+      secure: true,
+    });
+    res.cookie('refresh_token', tokens.refresh_token, {
+      httpOnly: true,
+      secure: true,
+    });
     // Check if user is valid
     console.log(user);
     if (user['errors']) {
-      return user;
+      return null;
     } else {
-      const token = await this.authService.getTokens(user);
-      res.cookie('accessToken', token.accessToken, {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'none',
-      });
-      res.cookie('refreshToken', token.refreshToken, {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'none',
-      });
       user['path'] = '/';
-      return user;
+      return res.status(201).json(user);
     }
   }
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async loginUser(@Req() req: Request, @Res() res: Response): Promise<any> {
-    const token = await this.authService.getTokens(req.user);
-    await this.userService.setRefreshToken(token.refreshToken, req.user['username']);
-    res.cookie('accessToken', token.accessToken, {
+    const tokens = await this.authService.login(req.user);
+    res.cookie('access_token', tokens.access_token, {
       httpOnly: true,
       secure: true,
-      sameSite: 'none',
     });
-    res.cookie('refreshToken', token.refreshToken, {
+    res.cookie('refresh_token', tokens.refresh_token, {
       httpOnly: true,
       secure: true,
-      sameSite: 'none',
     });
-    res.json({ message: 'Successful login', path: '/' });
+    return res.status(201).json({ message: 'Successful login', path: '/' });
   }
 
   @UseGuards(JwtAuthGuard)
@@ -71,10 +66,10 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Post('logout')
-  async logout(@Req() req: Request): Promise<any> {
+  async logout(@Req() req: Request, @Res() res: Response): Promise<any> {
     await this.userService.removeRefreshToken(req.user['username']);
-    req.res.clearCookie('accessToken');
-    req.res.clearCookie('refreshToken');
-    return { path: '/' };
+    res.clearCookie('access_token');
+    res.clearCookie('refresh_token');
+    return res.json({ sub: null, username: null, role: null, isLoggedIn: false });
   }
 }

@@ -26,7 +26,7 @@ const Register = () => {
     watch,
     setValue,
     control,
-    clearErrors
+    clearErrors,
   } = useForm<FormData>();
 
   const onVerify = (recaptcha: string | null) => {
@@ -48,7 +48,6 @@ const Register = () => {
       await fetch(`${API_URL}/user/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({
           username: data.username,
           password: data.password,
@@ -58,10 +57,10 @@ const Register = () => {
       })
         .then((response) => {
           if (response.status === parseInt('422')) {
-            setError('recaptcha' , {
+            setError('recaptcha', {
               type: 'manual',
-              message: 'Verify the recaptcha again.'
-            })
+              message: 'Verify the recaptcha again.',
+            });
           }
           return response.json();
         })
@@ -97,12 +96,7 @@ const Register = () => {
 
           <Form.Group className="w-50 form-floating mb-3" controlId="formEmail">
             <FloatingLabel label="Email address" className="mb-3">
-              <Form.Control
-                required
-                type="email"
-                placeholder="Email address"
-                {...register('email')}
-              />
+              <Form.Control required type="email" placeholder="Email address" {...register('email')} />
             </FloatingLabel>
           </Form.Group>
 
@@ -147,11 +141,7 @@ const Register = () => {
           </Form.Group>
           <p className="text-danger">{errors.recaptcha?.message}</p>
 
-          <Button
-            type="submit"
-            className="btn btn-primary btn-block"
-            disabled={isSubmitting || !verified}
-          >
+          <Button type="submit" className="btn btn-primary btn-block" disabled={isSubmitting || !verified}>
             Sign Up
           </Button>
         </Form>

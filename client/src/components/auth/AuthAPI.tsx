@@ -1,9 +1,12 @@
 import { User } from '../../contexts/AuthContext';
-import { API_URL } from '../../Global.d';
+import { ACCESS_TOKEN, API_URL } from '../../Global.d';
 
 export const getCurrentUser = async (): Promise<User> => {
-  return await fetch(`${API_URL}/auth/check-user`, {
+  const response = await fetch(`${API_URL}/auth/check-user`, {
     method: 'GET',
-    credentials: 'include',
-  }).then((response) => response.json());
+    headers: {
+      Authorization: 'Bearer ' + ACCESS_TOKEN,
+    },
+  });
+  return await response.json();
 };
