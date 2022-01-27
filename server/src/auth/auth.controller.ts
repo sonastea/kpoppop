@@ -19,12 +19,12 @@ export class AuthController {
     res.cookie('access_token', newAccessToken, {
       httpOnly: false,
       secure: true,
-      path: '/',
+      domain: '.kpoppop.com'
     });
     res.cookie('refresh_token', newRefreshToken, {
       httpOnly: true,
       secure: true,
-      path: '/',
+      domain: '.kpoppop.com'
     });
     return res.json(req.user);
   }
