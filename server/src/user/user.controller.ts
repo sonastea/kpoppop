@@ -24,7 +24,7 @@ export class UserController {
     const user = await this.userService.createUser(newData);
     const tokens = await this.authService.login(user);
     res.cookie('access_token', tokens.access_token, {
-      httpOnly: true,
+      httpOnly: false,
       secure: true,
     });
     res.cookie('refresh_token', tokens.refresh_token, {
@@ -46,7 +46,7 @@ export class UserController {
   async loginUser(@Req() req: Request, @Res() res: Response): Promise<any> {
     const tokens = await this.authService.login(req.user);
     res.cookie('access_token', tokens.access_token, {
-      httpOnly: true,
+      httpOnly: false,
       secure: true,
     });
     res.cookie('refresh_token', tokens.refresh_token, {
