@@ -19,10 +19,12 @@ export class AuthController {
     res.cookie('access_token', newAccessToken, {
       httpOnly: false,
       secure: true,
+      path: '/',
     });
     res.cookie('refresh_token', newRefreshToken, {
       httpOnly: true,
       secure: true,
+      path: '/',
     });
     return res.json(req.user);
   }

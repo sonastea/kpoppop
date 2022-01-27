@@ -26,10 +26,12 @@ export class UserController {
     res.cookie('access_token', tokens.access_token, {
       httpOnly: false,
       secure: true,
+      path: '/',
     });
     res.cookie('refresh_token', tokens.refresh_token, {
       httpOnly: true,
       secure: true,
+      path: '/',
     });
     // Check if user is valid
     console.log(user);
@@ -48,10 +50,12 @@ export class UserController {
     res.cookie('access_token', tokens.access_token, {
       httpOnly: false,
       secure: true,
+      path: '/',
     });
     res.cookie('refresh_token', tokens.refresh_token, {
       httpOnly: true,
       secure: true,
+      path: '/',
     });
     return res.status(201).json({ message: 'Successful login', path: '/' });
   }
