@@ -12,7 +12,7 @@ const NavBarLoggedIn = () => {
 
   return (
     <NavDropdown align="end" id="profile-dropdown" className="ms-auto d-none d-md-block" title={user?.username}>
-      <NavDropdown.Item href="/user/profile">Profile</NavDropdown.Item>
+      <NavDropdown.Item href={`/user/profile/${user?.username}`}>Profile</NavDropdown.Item>
       <NavDropdown.Item onClick={logoutHandler}>logout</NavDropdown.Item>
     </NavDropdown>
   );

@@ -59,7 +59,7 @@ const PostMeme = () => {
         .catch((err) => {
           console.log(err);
           setUploading(false);
-          window.alert('Failed to upload meme.');
+          alert('Failed to upload meme.');
         });
     } else {
       window.alert('Please select a different image.');
@@ -102,7 +102,6 @@ const PostMeme = () => {
   };
 
   const isSFW = (predictions: Array<any>) => {
-    alert(JSON.stringify(predictions));
     switch (predictions[0].className) {
       case 'Porn':
       case 'Hentai':

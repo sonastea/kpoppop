@@ -1,19 +1,11 @@
-import { Button } from 'react-bootstrap';
-import { API_URL } from '../../Global.d';
+import { useParams } from 'react-router-dom';
 
 const Profile = () => {
-  const doSomething = async (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault();
+  const { username } = useParams();
 
-    await fetch(`${API_URL}/user/profile`, {
-      method: 'GET',
-      credentials: 'include',
-    })
-      .then((res) => res.json())
-      .then((data) => console.log(data));
-  };
-
-  return <Button onClick={doSomething}>Refresh Token</Button>;
+  return (
+    <div>{ username }</div>
+  )
 };
 
 export default Profile;

@@ -29,7 +29,7 @@ async function bootstrap() {
   if (process.env.NODE_ENV === 'production') {
     const app = await NestFactory.create(AppModule, {
       cors: {
-        origin: true,
+        origin: ['https://kpoppop.com', /\.kpoppop\.com$/],
         credentials: true,
       },
       httpsOptions,

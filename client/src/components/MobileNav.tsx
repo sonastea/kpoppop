@@ -22,7 +22,7 @@ const MobileNav = () => {
             <Nav.Link href="/memes">Memes</Nav.Link>
             {user?.username && (
               <>
-                <Nav.Link href="/user/profile">{user?.username}</Nav.Link>
+                <Nav.Link href={`/user/profile/${user.username}`}>{user.username}</Nav.Link>
                 <Nav.Link onClick={logoutHandler}>logout</Nav.Link>
               </>
             )}

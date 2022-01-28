@@ -25,7 +25,7 @@ const App = () => {
             <Route path="meme/:memeid/:title" element={<Post />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
-            <Route path="user/profile" element={<Profile />} />
+            <Route path="user/profile/:username" element={<Profile />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
