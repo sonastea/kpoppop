@@ -39,21 +39,27 @@ const PostMeme = () => {
     if (postable) {
       setUploading(true);
       setUploadFinished(false);
-      await submitMeme(formData)
+      submitMeme(formData)
         .then((response) => {
-          if (response.status >= 401 && response.status < 600) {
+          if (response.status >= 401 && response.status< 600) {
             window.alert('You must be logged in to submit a meme.');
+            setTimeout(() => {
+              setUploadFinished(false);
+              setUploading(false);
+            }, 500);
+          }
+          if (response.status === 201) {
+            setTimeout(() => {
+              setUploadFinished(true);
+              setUploading(false);
+              window.location.reload();
+            }, 500);
           }
         })
-        .catch(() => {
+        .catch((err) => {
+          console.log(err);
+          setUploading(false);
           window.alert('Failed to upload meme.');
-        })
-        .finally(() => {
-          setTimeout(() => {
-            setUploading(false);
-            setUploadFinished(true);
-            window.location.reload();
-          }, 1000);
         });
     } else {
       window.alert('Please select a different image.');
@@ -96,6 +102,7 @@ const PostMeme = () => {
   };
 
   const isSFW = (predictions: Array<any>) => {
+    alert(JSON.stringify(predictions));
     switch (predictions[0].className) {
       case 'Porn':
       case 'Hentai':

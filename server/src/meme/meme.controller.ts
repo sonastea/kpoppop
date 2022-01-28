@@ -7,12 +7,13 @@ import {
   Post,
   Put,
   Req,
+  Res,
   UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import path = require('path');
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { randomUUID } from 'crypto';
 import * as firebase from 'firebase-admin';
 import { MemeService } from './meme.service';
@@ -38,7 +39,8 @@ export class MemeController {
   async createMeme(
     @UploadedFile() file: Express.Multer.File,
     @Body() body: { title: string; url?: string; files?: FileList; flagged: Boolean },
-    @Req() req: Request
+    @Req() req: Request,
+    @Res() res: Response
   ): Promise<any> {
     let data: any = { ...body, authorId: req.user['sub'] };
     data.resource = MemeResource.URL;
@@ -75,7 +77,7 @@ export class MemeController {
       data.url = url;
     }
 
-    return this.memeService.createMeme(data, {
+    const meme = await this.memeService.createMeme(data, {
       author: {
         select: { username: true },
       },
@@ -88,6 +90,12 @@ export class MemeController {
       path: false,
       resource: false,
     });
+
+    if (meme) {
+      return res.status(201).json(meme);
+    } else {
+      return res.status(502);
+    }
   }
 
   @Post('posts')

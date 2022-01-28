@@ -8,7 +8,7 @@ export const submitMeme = async (data: FormData) => {
       'Authorization': 'Bearer ' + ACCESS_TOKEN,
     },
     body: data,
-  }).then((response) => response.json());
+  });
 };
 
 export const fetchMemes = async (cursor: number | undefined) => {
