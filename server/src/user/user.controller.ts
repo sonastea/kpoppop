@@ -76,8 +76,18 @@ export class UserController {
   @Post('logout')
   async logout(@Req() req: Request, @Res() res: Response): Promise<any> {
     await this.userService.removeRefreshToken(req.user['username']);
-    res.clearCookie('access_token');
-    res.clearCookie('refresh_token');
+    res.clearCookie('access_token', {
+      httpOnly: true,
+      secure: true,
+      domain:
+        process.env.NODE_ENV === 'production' ? '.kpoppop.com' : '.localhost',
+    });
+    res.clearCookie('refresh_token', {
+      httpOnly: true,
+      secure: true,
+      domain:
+        process.env.NODE_ENV === 'production' ? '.kpoppop.com' : '.localhost',
+    });
     return res.json({ sub: null, username: null, role: null, isLoggedIn: false });
   }
 }
