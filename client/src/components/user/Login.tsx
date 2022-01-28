@@ -1,3 +1,6 @@
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
 import { Button, Container, Form } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { API_URL } from '../../Global.d';
@@ -14,6 +17,7 @@ const Login = () => {
     handleSubmit,
     setError,
   } = useForm<LoginFormData>();
+  const [loginSuccess, setLoginSuccess] = useState<boolean>();
 
   const loginHandler: SubmitHandler<LoginFormData> = async (data) => {
     await fetch(`${API_URL}/user/login`, {
@@ -29,6 +33,11 @@ const Login = () => {
         });
       }
       if (res.status === 201) {
+        const el = document.getElementById('loginForm')?.children[4].children[0] as HTMLElement;
+        el.innerText = 'Log In Successful ';
+        setTimeout(() => {
+          setLoginSuccess(true);
+        }, 250);
         setTimeout(() => (window.location.href = '/'), 1000);
       }
     });
@@ -54,6 +63,7 @@ const Login = () => {
         <Form.Group className="text-center">
           <Button className="btn-block text-center mb-3" variant="primary" size="lg" type="submit">
             Log In
+            {loginSuccess && <FontAwesomeIcon icon={faCheck} />}
           </Button>
         </Form.Group>
       </Form>

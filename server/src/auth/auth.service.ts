@@ -12,8 +12,7 @@ export class AuthService {
 
   async validateLoginInfo(username: string, password: string): Promise<any> {
     const user = await this.userService.findOne({ username });
-    const hash = bcrypt.hashSync(password, 10);
-    if (user && bcrypt.compare(user.password.toString(), hash)) {
+    if (bcrypt.compareSync(password, user.password)) {
       const { password, refreshtoken, ...data } = user;
       return data;
     }

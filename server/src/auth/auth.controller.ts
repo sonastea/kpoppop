@@ -5,6 +5,9 @@ import { UnauthorizedFilter } from './filters/unauthorized.filter';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { CheckUserFilter } from './filters/checkuser.filter';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 @Controller('auth')
 export class AuthController {
@@ -19,12 +22,14 @@ export class AuthController {
     res.cookie('access_token', newAccessToken, {
       httpOnly: false,
       secure: true,
-      domain: '.kpoppop.com'
+      domain:
+        process.env.NODE_ENV === 'production' ? '.kpoppop.com' : '.localhost',
     });
     res.cookie('refresh_token', newRefreshToken, {
       httpOnly: true,
       secure: true,
-      domain: '.kpoppop.com'
+      domain:
+        process.env.NODE_ENV === 'production' ? '.kpoppop.com' : '.localhost',
     });
     return res.json(req.user);
   }

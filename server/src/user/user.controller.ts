@@ -26,12 +26,14 @@ export class UserController {
     res.cookie('access_token', tokens.access_token, {
       httpOnly: false,
       secure: true,
-      domain: '.kpoppop.com'
+      domain:
+        process.env.NODE_ENV === 'production' ? '.kpoppop.com' : '.localhost',
     });
     res.cookie('refresh_token', tokens.refresh_token, {
       httpOnly: true,
       secure: true,
-      domain: '.kpoppop.com'
+      domain:
+        process.env.NODE_ENV === 'production' ? '.kpoppop.com' : '.localhost',
     });
     // Check if user is valid
     console.log(user);
@@ -50,12 +52,14 @@ export class UserController {
     res.cookie('access_token', tokens.access_token, {
       httpOnly: false,
       secure: true,
-      domain: '.kpoppop.com'
+      domain:
+        process.env.NODE_ENV === 'production' ? '.kpoppop.com' : '.localhost',
     });
     res.cookie('refresh_token', tokens.refresh_token, {
       httpOnly: true,
       secure: true,
-      domain: '.kpoppop.com'
+      domain:
+        process.env.NODE_ENV === 'production' ? '.kpoppop.com' : '.localhost',
     });
     return res.status(201).json({ message: 'Successful login', path: '/' });
   }

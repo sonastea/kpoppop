@@ -57,20 +57,21 @@ export class UserService {
   }
 
   async getUserIfRefreshTokenMatch(refreshToken: string, username: string): Promise<any> {
-    try {
-      const user = await this.prisma.user.findUnique({
-        where: {
-          username: username,
-        },
-      });
-      const match = bcrypt.compareSync(refreshToken, user.refreshtoken);
-      if (match) {
-        return user;
-      } else {
-        return null;
+    if (username !== null) {
+      try {
+        const user = await this.prisma.user.findUnique({
+          where: {
+            username: username,
+          },
+        });
+        const match = bcrypt.compareSync(refreshToken, user.refreshtoken);
+        if (match) {
+          return user;
+        } else {
+          return null;
+        }
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      console.log(err);
-    }
-  }
+    } }
 }

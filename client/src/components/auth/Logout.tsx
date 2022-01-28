@@ -12,7 +12,7 @@ const Logout = async (): Promise<void> => {
     .then((response) => response.json())
     .then((user) => {
       if (!user.isLoggedIn) {
-        setTimeout(() => window.location.href = '/', 1000);
+        setTimeout(() => window.location.href = '/', 500);
       }
     });
 };

@@ -1,6 +1,8 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "version": "0.2",
+  "manifest_version": 2,
+  "short_name": "kpoppop",
+  "name": "The kpoppop website",
   "icons": [
     {
       "src": "favicon.ico",
