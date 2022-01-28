@@ -53,7 +53,7 @@ const PostMeme = () => {
               setUploadFinished(true);
               setUploading(false);
               window.location.reload();
-            }, 500);
+            }, 1000);
           }
         })
         .catch((err) => {

@@ -30,6 +30,9 @@ import { HttpModule } from '@nestjs/axios';
       useFactory: () => ({
         storage: memoryStorage(),
         dest: './files',
+        limits: {
+          fieldSize: 10,
+        },
       }),
     }),
   ],
