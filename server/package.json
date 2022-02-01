@@ -30,7 +30,7 @@
     "@nestjs/jwt": "^8.0.0",
     "@nestjs/passport": "^8.1.0",
     "@nestjs/platform-express": "^8.2.6",
-    "@prisma/client": "^3.8.1",
+    "@prisma/client": "^3.9.0",
     "@types/passport": "^1.0.7",
     "bcrypt": "^5.0.0",
     "cookie-parser": "^1.4.6",
