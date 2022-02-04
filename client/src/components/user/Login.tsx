@@ -1,4 +1,4 @@
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Container, Form } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -19,6 +19,7 @@ const Login = () => {
     setError,
   } = useForm<LoginFormData>();
   const [loginSuccess, setLoginSuccess] = useState<boolean>(false);
+  const [redirecting, setRedirecting] = useState<boolean>(false);
   const { updateUser } = useAuth();
 
   const loginHandler: SubmitHandler<LoginFormData> = async (data): Promise<any> => {
@@ -41,8 +42,8 @@ const Login = () => {
           el.innerText = 'Log In Successful ';
           setTimeout(() => {
             setLoginSuccess(true);
-            setTimeout(() => el.innerText = 'Redirecting ', 500);
-            setTimeout(() => window.location.reload(), 1000);
+            setTimeout(() => { el.innerText = 'Redirecting '; setRedirecting(true); }, 500);
+            setTimeout(() => window.location.href = '/', 1000);
           }, 100);
         }
         return response.json();
@@ -72,6 +73,7 @@ const Login = () => {
           <Button className="btn-block text-center mb-3" variant="primary" size="lg" type="submit">
             Log In
             {loginSuccess && <FontAwesomeIcon icon={faCheck} />}
+            {redirecting && <FontAwesomeIcon icon={faSpinner} spin />}
           </Button>
         </Form.Group>
       </Form>
