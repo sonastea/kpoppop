@@ -25,16 +25,15 @@ Reference for creating [ssl certificate](https://stackoverflow.com/questions/101
 
 ```c
 # client/.env
-        ⭕ REACT_APP_API_URL // Endpoint that serves images
-        🔴 SITE_KEY          // ReCAPTCHA key to invoke reCATPCHA service
+        ⭕ REACT_APP_API_URL // Endpoint that serves images.
+        🔴 SITE_KEY          // ReCAPTCHA key to invoke reCATPCHA service.
 
 # server/.env
         🔴 DATABASE_URL         // Connection string to reach database.
-        🔴 JWT_SECRET_KEY       // Random x bytes in hex to sign and
-        🔴 JWT_REFRESH_KEY      // decode json web token
+        🔴 SESSION_SECRET_KEY   // Random x bytes to sign session cookies.
         🔴 STORAGE_BUCKET       // Endpoint that images are saved with firebase storage.
-        🔴 NODE_ENV             // Defaults to 'production', takes 'test' or 'development'
-        🔴 RECAPTCHA_SECRET     // Verifies invoked recaptcha response from clients
+        🔴 NODE_ENV             // Defaults to 'production', takes 'test' or 'development'.
+        🔴 RECAPTCHA_SECRET     // Verifies invoked recaptcha response from clients.
 
 # server/firebaseCredentials.json
         // Credentials that authorize user to access the firebase storage buckets.
@@ -46,7 +45,7 @@ Reference for creating [ssl certificate](https://stackoverflow.com/questions/101
         🔴 public-certificate.pem   📄
 
 # database.env
-        🔴 POSTGRES_USER                // User to login postgresql db
-        🔴 POSTGRES_PASSWORD            // Password to login postgresql db
+        🔴 POSTGRES_USER                // User to login postgresql db.
+        🔴 POSTGRES_PASSWORD            // Password to login postgresql db.
         🔴 POSTGRES_DB                  // Database name that stores the schemas.
 ```
