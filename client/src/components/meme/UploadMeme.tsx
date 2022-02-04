@@ -41,6 +41,13 @@ const PostMeme = () => {
       setUploadFinished(false);
       submitMeme(formData)
         .then((response) => {
+          if (response.status === 400) {
+            window.alert('Upload failed.');
+            setTimeout(() => {
+              setUploadFinished(false);
+              setUploading(false);
+            }, 500);
+          }
           if (response.status >= 401 && response.status< 600) {
             window.alert('You must be logged in to submit a meme.');
             setTimeout(() => {

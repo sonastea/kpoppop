@@ -1,13 +1,12 @@
 import { Nav, Navbar, Offcanvas } from 'react-bootstrap';
 import useAuth from '../contexts/AuthContext';
-import Logout from './auth/Logout';
 
 const MobileNav = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   const logoutHandler = (e: React.MouseEvent<HTMLElement>): void => {
     e.preventDefault();
-    Logout();
+    logout();
   };
 
   return (

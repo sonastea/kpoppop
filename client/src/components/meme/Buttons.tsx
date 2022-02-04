@@ -18,7 +18,7 @@ const Buttons = (props: any) => {
       </Row>
       <Row className="author-bar mt-1">
         <Col>
-          <a className="author-bar meme-buttons" href={`/profile/${username}`}>
+        <a className="author-bar meme-buttons" href={`/user/profile/${username}`}>
             {username}
           </a>
         </Col>

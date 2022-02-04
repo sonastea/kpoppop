@@ -11,6 +11,9 @@ import { MemeService } from './meme/meme.service';
 import { MulterModule } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 import { HttpModule } from '@nestjs/axios';
+import { PassportModule } from '@nestjs/passport';
+import { LocalStrategy } from './auth/strategies/local.strategy';
+import { LocalSerializer } from './auth/serializers/local.serializer';
 
 @Module({
   imports: [
@@ -30,13 +33,11 @@ import { HttpModule } from '@nestjs/axios';
       useFactory: () => ({
         storage: memoryStorage(),
         dest: './files',
-        limits: {
-          fieldSize: 10,
-        },
       }),
     }),
+    PassportModule.register({ session: true }),
   ],
   controllers: [AuthController, MemeController, UserController],
-  providers: [PrismaService, MemeService, UserService],
+  providers: [PrismaService, MemeService, UserService, LocalStrategy, LocalSerializer],
 })
 export class AppModule {}

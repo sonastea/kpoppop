@@ -79,14 +79,14 @@ export class MemeService {
       data: {
         likedBy: {
           connect: {
-            id: user.id,
+            id: user as number,
           },
         },
       },
       include: {
         likedBy: {
           where: {
-            id: user.id,
+            id: user as number,
           },
           select: {
             id: true,
@@ -111,14 +111,14 @@ export class MemeService {
       data: {
         likedBy: {
           disconnect: {
-            id: user.id,
+            id: user as number,
           },
         },
       },
       include: {
         likedBy: {
           where: {
-            id: user.id,
+            id: user as number,
           },
           select: {
             id: true,

@@ -1,9 +1,10 @@
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
 import { Button, Container, Form } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { API_URL } from '../../Global.d';
+import { useState } from 'react';
+import useAuth from '../../contexts/AuthContext';
 
 type LoginFormData = {
   username: string;
@@ -17,30 +18,37 @@ const Login = () => {
     handleSubmit,
     setError,
   } = useForm<LoginFormData>();
-  const [loginSuccess, setLoginSuccess] = useState<boolean>();
+  const [loginSuccess, setLoginSuccess] = useState<boolean>(false);
+  const { updateUser } = useAuth();
 
-  const loginHandler: SubmitHandler<LoginFormData> = async (data) => {
+  const loginHandler: SubmitHandler<LoginFormData> = async (data): Promise<any> => {
+    setLoginSuccess(false);
     await fetch(`${API_URL}/user/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
       body: JSON.stringify(data),
-    }).then((res) => {
-      if (res.status === 401) {
-        setError('password', {
-          type: 'manual',
-          message: 'Incorrect username or password.',
-        });
-      }
-      if (res.status === 201) {
-        const el = document.getElementById('loginForm')?.children[4].children[0] as HTMLElement;
-        el.innerText = 'Log In Successful ';
-        setTimeout(() => {
-          setLoginSuccess(true);
-        }, 250);
-        setTimeout(() => (window.location.href = '/'), 1000);
-      }
-    });
+    })
+      .then((response) => {
+        if (response.status === 401) {
+          setError('password', {
+            type: 'manual',
+            message: 'Incorrect username or password.',
+          });
+        }
+        if (response.status === 201) {
+          const el = document.getElementById('loginForm')?.children[4].children[0] as HTMLElement;
+          el.innerText = 'Log In Successful ';
+          setTimeout(() => {
+            setLoginSuccess(true);
+            setTimeout(() => el.innerText = 'Redirecting ', 500);
+            setTimeout(() => window.location.reload(), 1000);
+          }, 100);
+        }
+        return response.json();
+      })
+      .then((user) => updateUser(user))
+      .catch((_error) => {})
   };
 
   return (

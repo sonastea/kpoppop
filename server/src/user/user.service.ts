@@ -11,9 +11,10 @@ export class UserService {
     data.password = bcrypt.hashSync(data.password, 10);
     try {
       const user = await this.prisma.user.create({ data });
-      delete user.password;
-      delete user.refreshtoken;
-      return user;
+      // User object received contains all fields that
+      // we must sanitize before sending back to the user.
+      const { updatedAt, email, refreshtoken, password, ...strippedUser } = user;
+      return strippedUser;
     } catch (err) {
       if (err.code === 'P2002') {
         console.log('This username or email is already taken');
@@ -26,52 +27,39 @@ export class UserService {
     }
   }
 
-  async findOne(data: Prisma.UserWhereUniqueInput): Promise<User | undefined> {
+  async findOne(data: Prisma.UserWhereUniqueInput): Promise<Prisma.UserWhereInput> {
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: {
+          id: data.id,
+        },
+        select: {
+          id: true,
+          username: true,
+          displayname: true,
+          role: true,
+        },
+      });
+      return user;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async findOneWithCredentials(data: Prisma.UserWhereUniqueInput): Promise<Prisma.UserWhereInput> {
+    console.log(data);
     const user = await this.prisma.user.findUnique({
       where: {
         username: data.username,
       },
+      select: {
+        id: true,
+        username: true,
+        password: true,
+        displayname: true,
+        role: true,
+      },
     });
     return user;
   }
-
-  async setRefreshToken(refreshToken: string, username: string): Promise<void> {
-    if (username !== undefined || null) {
-      try {
-        const hash = bcrypt.hashSync(refreshToken, 10);
-        await this.prisma.user.update({
-          where: { username: username },
-          data: { refreshtoken: hash },
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  }
-
-  async removeRefreshToken(username: string): Promise<void> {
-    await this.prisma.user.update({
-      where: { username: username },
-      data: { refreshtoken: '' },
-    });
-  }
-
-  async getUserIfRefreshTokenMatch(refreshToken: string, username: string): Promise<any> {
-    if (username !== null) {
-      try {
-        const user = await this.prisma.user.findUnique({
-          where: {
-            username: username,
-          },
-        });
-        const match = bcrypt.compareSync(refreshToken, user.refreshtoken);
-        if (match) {
-          return user;
-        } else {
-          return null;
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    } }
 }

@@ -1,43 +1,23 @@
-import { Controller, Get, Req, Res, UseFilters, UseGuards } from '@nestjs/common';
-import { JwtRefreshAuthGuard } from './guards/jwtRefresh-auth.guard';
-import { Request, Response } from 'express';
-import { UnauthorizedFilter } from './filters/unauthorized.filter';
-import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { CheckUserFilter } from './filters/checkuser.filter';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
+import { Controller, Get, HttpCode, Session, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
+import { AuthenticatedFilter } from './filters/authenticated.filter';
+import { SessionGuard } from './guards/session.guard';
+import { UserService } from 'src/user/user.service';
+import { LocalSerializer } from './serializers/local.serializer';
 
 @Controller('auth')
+@UseInterceptors(LocalSerializer)
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly userService: UserService) {}
 
-  @UseGuards(JwtRefreshAuthGuard)
-  @UseFilters(UnauthorizedFilter)
-  @Get('refresh-token')
-  async refreshToken(@Req() req: Request, @Res() res: Response): Promise<any> {
-    const newAccessToken = await this.authService.getAccessToken(req.user);
-    const newRefreshToken = await this.authService.getRefreshToken(req.user);
-    res.cookie('access_token', newAccessToken, {
-      httpOnly: false,
-      secure: true,
-      domain:
-        process.env.NODE_ENV === 'production' ? '.kpoppop.com' : '.localhost',
-    });
-    res.cookie('refresh_token', newRefreshToken, {
-      httpOnly: true,
-      secure: true,
-      domain:
-        process.env.NODE_ENV === 'production' ? '.kpoppop.com' : '.localhost',
-    });
-    return res.json(req.user);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @UseFilters(CheckUserFilter)
-  @Get('check-user')
-  async checkUser(@Req() req: Request): Promise<any> {
-    return req.user;
+  @UseGuards(SessionGuard)
+  @UseFilters(AuthenticatedFilter)
+  @HttpCode(200)
+  @Get('session')
+  async checkUser(@Session() session: Record<string, any>): Promise<object> {
+    const { id } = session.passport.user;
+    const user = await this.userService.findOne({ id });
+    if (user) {
+      return user;
+    }
   }
 }

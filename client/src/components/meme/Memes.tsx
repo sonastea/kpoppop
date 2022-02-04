@@ -14,15 +14,39 @@ const Memes = () => {
   const [posts, setPosts] = useState([] as any);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    const loadData = async () => {
+      await fetchMemes(cursor)
+        .then((memes) => {
+          if (memes.length !== 0) {
+            setPosts((prev: any) => [...prev, ...memes]);
+            cursor = memes[memes.length - 1].id;
+          }
+        })
+        .catch((_error) => {});
+    };
+
+    loadData().catch((error) => console.log(error));
+
+    const handleScrollRef: any = handleScroll.current;
+    window.addEventListener('scroll', handleScrollRef);
+    return () => {
+      window.removeEventListener('scroll', handleScrollRef);
+    };
+  }, []);
+
   const loadMorePosts = async () => {
     setLoading(false);
-    const memes = await fetchMemes(cursor);
-    if (memes.length !== 0) {
-      setPosts((prev: any) => [...prev, ...memes]);
-      cursor = memes[memes.length - 1].id;
-    } else {
-      window.removeEventListener('scroll', handleScroll.current);
-    }
+    await fetchMemes(cursor)
+      .then((memes) => {
+        if (memes.length !== 0) {
+          setPosts((prev: any) => [...prev, ...memes]);
+          cursor = memes[memes.length - 1].id;
+        } else {
+          window.removeEventListener('scroll', handleScroll.current);
+        }
+      })
+      .catch((error) => console.log(error));
   };
 
   const fetchData = debounce(loadMorePosts, 1000);
@@ -35,23 +59,6 @@ const Memes = () => {
       fetchData();
     }
   });
-
-  useEffect(() => {
-    const handleScrollRef: any = handleScroll.current;
-    const loadPosts = async () => {
-      const memes = await fetchMemes(cursor);
-      if (memes.length !== 0) {
-        setPosts((prev: any) => [...prev, ...memes]);
-        cursor = memes[memes.length - 1].id;
-      }
-    };
-    loadPosts();
-
-    window.addEventListener('scroll', handleScrollRef);
-    return () => {
-      window.removeEventListener('scroll', handleScrollRef);
-    };
-  }, []);
 
   return (
     <>

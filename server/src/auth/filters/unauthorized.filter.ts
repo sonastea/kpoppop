@@ -7,8 +7,10 @@ export class UnauthorizedFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
 
-    response.status(200).json({
-      message: "Unauthorized token",
+    response.clearCookie('refresh_token');
+
+    response.status(401).json({
+      message: 'Unauthorized token',
     });
   }
 }

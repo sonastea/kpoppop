@@ -1,17 +1,18 @@
-import { ReactNode, useContext, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { createContext } from 'react';
-import { getCurrentUser } from '../components/auth/AuthAPI';
-import ValidateToken from '../components/auth/ValidateToken';
+import { API_URL } from '../Global.d';
 
 export type User = {
-  sub?: number;
+  id?: number;
   username?: string;
   role?: string;
-  isLoggedIn: boolean;
+  displayname?: string;
 };
 
 interface IAuthContext {
   user?: User;
+  logout: () => void;
+  updateUser: (user:User) => void;
 }
 
 const AuthContext = createContext<IAuthContext>({} as IAuthContext);
@@ -21,24 +22,42 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
   const [loadingInitial, setLoadingInitial] = useState<boolean>(true);
 
   useEffect(() => {
-    const checkUser = async () => {
-      await getCurrentUser()
-        .then((user) => {
-          if (!user.isLoggedIn) {
-            ValidateToken().then((user) => {
-              setUser(user);
-            });
-          } else {
-            setUser(user);
-          }
-        })
-        .catch((_error) => {})
-        .finally(() => setLoadingInitial(false));
+    const getCurrentUser = async () => {
+      await fetch(`${API_URL}/auth/session`, {
+        method: 'GET',
+        credentials: 'include',
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.id) {
+          setUser(data);
+        }
+      })
+      .catch((_error) => {})
+      .finally(() => setLoadingInitial(false));
     };
-    checkUser();
+    getCurrentUser();
   }, []);
 
-  const memoedValues = useMemo(() => ({ user }), [user]);
+
+  const logout = useCallback(async () => {
+    await fetch(`${API_URL}/user/logout`, {
+      method: 'POST',
+      credentials: 'include',
+    })
+      .then((response) => {
+        if (response.ok) {
+          window.location.reload();
+        }
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  const updateUser = useCallback(async (user: User) => {
+    setUser(user);
+  }, []);
+
+  const memoedValues = useMemo(() => ({ user, logout, updateUser }), [user, logout, updateUser]);
 
   return <AuthContext.Provider value={memoedValues}>{!loadingInitial && children}</AuthContext.Provider>;
 }

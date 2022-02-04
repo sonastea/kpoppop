@@ -8,30 +8,40 @@ datasource db {
 }
 
 model User {
-  id           Int      @id @default(autoincrement())
-  createdAt    DateTime @default(now())
-  username     String   @unique
+  id           Int       @id @default(autoincrement())
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime? @updatedAt
+  username     String    @unique
   password     String
-  email        String   @unique
+  email        String    @unique
   displayname  String?
-  role         Role     @default(USER)
+  role         Role      @default(USER)
   refreshtoken String?
   memes        Meme[]
-  likedMemes   Meme[]   @relation("UserLikesPost")
+  likedMemes   Meme[]    @relation("UserLikesPost")
 }
 
 model Meme {
-  id          Int           @id @default(autoincrement())
-  title       String
-  url         String?
-  path        String?
-  resource    MemeResource
-  authorId    Int
-  active      Boolean       @default(true)
-  flagged     Boolean       @default(false)
-  createdAt   DateTime      @default(now())
-  author      User          @relation(fields: [authorId], references: [id])
-  likedBy     User[]        @relation("UserLikesPost")
+  id        Int          @id @default(autoincrement())
+  title     String
+  url       String?
+  path      String?
+  resource  MemeResource
+  authorId  Int
+  active    Boolean      @default(true)
+  flagged   Boolean      @default(false)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  updatedBy String?      @ignore
+  author    User         @relation(fields: [authorId], references: [id])
+  likedBy   User[]       @relation("UserLikesPost")
+}
+
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String
+  expiresAt DateTime
 }
 
 enum Role {

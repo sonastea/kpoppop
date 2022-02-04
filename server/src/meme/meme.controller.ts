@@ -6,20 +6,20 @@ import {
   Param,
   Post,
   Put,
-  Req,
   Res,
+  Session,
   UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import path = require('path');
-import { Request, Response } from 'express';
 import { randomUUID } from 'crypto';
 import * as firebase from 'firebase-admin';
+import { Response } from 'express';
 import { MemeService } from './meme.service';
 import { Meme, MemeResource } from '@prisma/client';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { SessionGuard } from 'src/auth/guards/session.guard';
 
 let baseUrl: string = null;
 
@@ -33,16 +33,16 @@ if (process.env.NODE_ENV === 'production') {
 export class MemeController {
   constructor(private readonly memeService: MemeService) {}
 
-  @UseGuards(JwtAuthGuard)
-  @Post('submit')
+  @UseGuards(SessionGuard)
   @UseInterceptors(FileInterceptor('file'))
+  @Post('submit')
   async createMeme(
     @UploadedFile() file: Express.Multer.File,
     @Body() body: { title: string; url?: string; files?: FileList; flagged: Boolean },
-    @Req() req: Request,
+    @Session() session: Record<string, any>,
     @Res() res: Response
   ): Promise<any> {
-    let data: any = { ...body, authorId: req.user['sub'] };
+    let data: any = { ...body, authorId: session.passport.user.id };
     data.resource = MemeResource.URL;
 
     if (body.url.length > 0) {
@@ -82,13 +82,10 @@ export class MemeController {
         select: { username: true },
       },
       active: true,
-      flagged: false,
       authorId: true,
       id: true,
       title: true,
       url: true,
-      path: false,
-      resource: false,
     });
 
     if (meme) {
@@ -116,8 +113,6 @@ export class MemeController {
           id: true,
           title: true,
           url: true,
-          path: false,
-          resource: false,
         },
         where: {
           active: { equals: true },
@@ -143,8 +138,6 @@ export class MemeController {
           id: true,
           title: true,
           url: true,
-          path: false,
-          resource: false,
         },
         where: {
           active: { equals: true },
@@ -174,34 +167,33 @@ export class MemeController {
     return this.memeService.totalLikes({ where: { id: parseInt(id) } });
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('liked/:id')
-  getUserLike(@Param('id') id: string, @Req() req: Request): Promise<any> {
+  getUserLike(@Param('id') id: string, @Session() session: Record<string, any>): Promise<any> {
     return this.memeService.likedMeme({
       where: {
         id: parseInt(id),
       },
       user: {
-        id: req.user['sub'],
+        id: session.passport.user.id,
       },
     });
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(SessionGuard)
   @Put('like/:id')
-  likeMeme(@Param('id') id: string, @Req() req: Request): Promise<any> {
+  likeMeme(@Param('id') id: string, @Session() session: Record<string, any>): Promise<any> {
     return this.memeService.likeMeme({
       where: { id: parseInt(id) },
-      user: { id: req.user['sub'] },
+      user: session.passport.user.id,
     });
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(SessionGuard)
   @Delete('like/:id')
-  unlikeMeme(@Param('id') id: string, @Req() req: Request): Promise<any> {
+  unlikeMeme(@Param('id') id: string, @Session() session: Record<string, any>): Promise<any> {
     return this.memeService.unlikeMeme({
       where: { id: parseInt(id) },
-      user: { id: req.user['sub'] },
+      user: session.passport.user.id,
     });
   }
 }

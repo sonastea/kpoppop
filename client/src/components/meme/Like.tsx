@@ -21,7 +21,7 @@ const Like = (props: LikeProps) => {
   };
 
   const handleLiked = async () => {
-    if (user?.isLoggedIn) {
+    if (user?.id) {
       if (!likedState) {
         await likeMeme(memeId);
         setLiked(true);
@@ -39,7 +39,7 @@ const Like = (props: LikeProps) => {
       const likes = await fetchMemeTotalLikes(memeId);
       setTotalLikes(likes);
 
-      if (user?.isLoggedIn) {
+      if (user?.id) {
         await fetchMemeUserLike(memeId).then((response) => {
           if (response.statusCode !== 401) {
             setLiked(response);
