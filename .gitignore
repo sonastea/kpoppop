@@ -10,6 +10,9 @@
 *.tsbuildinfo
 *.d.ts
 
+# nsfw.js models
+*/public/model
+
 # Only exists if Bazel was run
 /bazel-out
 
