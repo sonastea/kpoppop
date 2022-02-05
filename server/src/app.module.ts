@@ -22,6 +22,7 @@ import { LocalSerializer } from './auth/serializers/local.serializer';
     ConfigModule.forRoot({
       validationSchema: Joi.object({
         NODE_ENV: Joi.string().valid('development', 'production', 'test').default('production'),
+        SESSION_SECRET_KEY: Joi.string().required(),
         STORAGE_BUCKET: Joi.string()
           .valid('images.kpoppop.com', 'test.kpoppop.com')
           .default('images.kpoppop.com')

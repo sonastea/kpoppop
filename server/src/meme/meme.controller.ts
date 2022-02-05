@@ -81,7 +81,7 @@ export class MemeController {
       author: {
         select: { username: true },
       },
-      active: true,
+      flagged: true,
       authorId: true,
       id: true,
       title: true,
