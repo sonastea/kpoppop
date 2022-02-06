@@ -1,3 +1,4 @@
+import * as Joi from 'joi';
 import { Module } from '@nestjs/common';
 import { PrismaService } from './database/prisma.service';
 import { UserController } from './user/user.controller';
@@ -5,7 +6,6 @@ import { UserService } from './user/user.service';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthController } from './auth/auth.controller';
-import * as Joi from 'joi';
 import { MemeController } from './meme/meme.controller';
 import { MemeService } from './meme/meme.service';
 import { MulterModule } from '@nestjs/platform-express';
@@ -13,14 +13,18 @@ import { memoryStorage } from 'multer';
 import { HttpModule } from '@nestjs/axios';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './auth/strategies/local.strategy';
+import { BotModule } from './discord/bot.module';
 import { LocalSerializer } from './auth/serializers/local.serializer';
 
 @Module({
   imports: [
     AuthModule,
+    BotModule,
     HttpModule,
     ConfigModule.forRoot({
       validationSchema: Joi.object({
+        DISCORDBOT_TOKEN: Joi.string().required(),
+        DISCORDBOT_WEBHOOK: Joi.string().required(),
         NODE_ENV: Joi.string().valid('development', 'production', 'test').default('production'),
         SESSION_SECRET_KEY: Joi.string().required(),
         STORAGE_BUCKET: Joi.string()

@@ -47,7 +47,6 @@ export class UserService {
   }
 
   async findOneWithCredentials(data: Prisma.UserWhereUniqueInput): Promise<Prisma.UserWhereInput> {
-    console.log(data);
     const user = await this.prisma.user.findUnique({
       where: {
         username: data.username,

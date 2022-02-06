@@ -142,4 +142,15 @@ export class MemeService {
       select,
     });
   }
+
+  async updateMeme(params: {
+    where: Prisma.MemeWhereUniqueInput;
+    data: Prisma.MemeUpdateInput;
+  }): Promise<Meme> {
+    const { data, where } = params;
+    return this.prisma.meme.update({
+      data,
+      where,
+    });
+  }
 }
