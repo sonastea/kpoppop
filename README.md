@@ -34,6 +34,9 @@ Reference for creating [ssl certificate](https://stackoverflow.com/questions/101
         🔴 STORAGE_BUCKET       // Endpoint that images are saved with firebase storage.
         🔴 NODE_ENV             // Defaults to 'production', takes 'test' or 'development'.
         🔴 RECAPTCHA_SECRET     // Verifies invoked recaptcha response from clients.
+        🔴 DISCORDBOT_TOKEN
+        🔴 DISCORDBOT_WEBHOOK
+        🔴 DISCORD_CHANNEL_ID
 
 # server/firebaseCredentials.json
         // Credentials that authorize user to access the firebase storage buckets.
