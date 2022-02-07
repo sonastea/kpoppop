@@ -27,7 +27,6 @@ COPY --from=builder /app/firebaseCredentials.json ./
 RUN npm install @nestjs/core
 RUN npm install prisma
 
-RUN npx prisma generate
 RUN npx prisma migrate deploy
 
 EXPOSE 5000
