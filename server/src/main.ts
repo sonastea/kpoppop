@@ -36,6 +36,7 @@ async function bootstrap() {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       domain: process.env.NODE_ENV === 'production' ? '.kpoppop.com' : null,
+      samesite: process.env.NODE_ENV === 'production' ? 'lax' : 'none',
     },
     resave: false,
     saveUninitialized: false,
