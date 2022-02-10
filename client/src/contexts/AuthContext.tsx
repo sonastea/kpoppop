@@ -9,16 +9,16 @@ export type User = {
   displayname?: string;
 };
 
-interface IAuthContext {
+export interface IAuthContext {
   user?: User;
   logout: () => void;
-  updateUser: (user:User) => void;
+  updateUser: (user: User) => void;
 }
 
-const AuthContext = createContext<IAuthContext>({} as IAuthContext);
+export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
-export function AuthProvider({ children }: { children: ReactNode }): JSX.Element {
-  const [user, setUser] = useState<User>();
+export function AuthProvider({ children, initialUser }: { children: ReactNode; initialUser?: User }): JSX.Element {
+  const [user, setUser] = useState<User>(initialUser as User);
   const [loadingInitial, setLoadingInitial] = useState<boolean>(true);
 
   useEffect(() => {
@@ -27,18 +27,17 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
         method: 'GET',
         credentials: 'include',
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.id) {
-          setUser(data);
-        }
-      })
-      .catch((_error) => {})
-      .finally(() => setLoadingInitial(false));
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.id) {
+            setUser(data);
+          }
+        })
+        .catch((_error) => {})
+        .finally(() => setLoadingInitial(false));
     };
     getCurrentUser();
   }, []);
-
 
   const logout = useCallback(async () => {
     await fetch(`${API_URL}/user/logout`, {
@@ -62,6 +61,8 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
   return <AuthContext.Provider value={memoedValues}>{!loadingInitial && children}</AuthContext.Provider>;
 }
 
-export default function useAuth() {
+export function useAuth() {
   return useContext(AuthContext);
 }
+
+export default AuthContext;

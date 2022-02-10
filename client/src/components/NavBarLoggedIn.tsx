@@ -1,5 +1,5 @@
+import { useAuth } from '../contexts/AuthContext';
 import { NavDropdown } from 'react-bootstrap';
-import useAuth from '../contexts/AuthContext';
 
 const NavBarLoggedIn = () => {
   const { user, logout } = useAuth();

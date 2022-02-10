@@ -2,9 +2,9 @@ import { faCheck, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Container, Form } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useAuth } from '../../contexts/AuthContext';
 import { API_URL } from '../../Global.d';
 import { useState } from 'react';
-import useAuth from '../../contexts/AuthContext';
 
 type LoginFormData = {
   username: string;

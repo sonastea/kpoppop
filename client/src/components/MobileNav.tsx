@@ -1,5 +1,5 @@
 import { Nav, Navbar, Offcanvas } from 'react-bootstrap';
-import useAuth from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 
 const MobileNav = () => {
   const { user, logout } = useAuth();

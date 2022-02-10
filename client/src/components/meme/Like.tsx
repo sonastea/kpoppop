@@ -4,7 +4,7 @@ import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { fetchMemeTotalLikes, fetchMemeUserLike, likeMeme, unlikeMeme } from './MemeAPI';
 import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons';
-import useAuth from '../../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 
 export type LikeProps = {
   memeId: number;
