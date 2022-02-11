@@ -15,6 +15,9 @@ const initial: IAuthContext = {
   updateUser,
 };
 
-export const customRender = (ui: JSX.Element | Element | null, { IAuthContext = initial, ...renderOptions }: any) => {
-  return render(<AuthContext.Provider value={IAuthContext}>{ui}</AuthContext.Provider>, renderOptions);
+const customRender = (ui: JSX.Element | Element | null, { Context = initial, ...renderOptions }: any) => {
+  return render(<AuthContext.Provider value={Context}>{ui}</AuthContext.Provider>, renderOptions);
 };
+
+export * from '@testing-library/react';
+export { customRender as render };
