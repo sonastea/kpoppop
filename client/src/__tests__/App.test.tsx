@@ -8,40 +8,41 @@ import Home from 'components/Home';
 import '@testing-library/jest-dom';
 import Profile from 'components/user/Profile';
 
-test('Render app as anonymous user', () => {
-  const user: User = {};
+describe('Render app according to authentication status', () => {
+  test('Render app as anonymous user', () => {
+    const user: User = {};
 
-  render(
-    <MemoryRouter initialEntries={['/']}>
-      <NavBar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-      </Routes>
-    </MemoryRouter>,
-    { Context: { user } }
-  );
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </MemoryRouter>,
+      { Context: { user } }
+    );
 
-  expect(screen.getByText('Home')).toHaveTextContent('Home');
-  expect(screen.getByText('Sign Up').closest('a')).toHaveAttribute('href', '/register');
-  expect(screen.getByText('Login').closest('a')).toHaveAttribute('href', '/login');
-});
+    expect(screen.getByText('Home')).toHaveTextContent('Home');
+    expect(screen.getByText('Sign Up').closest('a')).toHaveAttribute('href', '/register');
+    expect(screen.getByText('Login').closest('a')).toHaveAttribute('href', '/login');
+  });
 
-test('Render app as authenticated user', () => {
-
-  render(
-    <MemoryRouter initialEntries={['/']}>
-      <NavBar />
-      <Routes>
-        <Route path="/" element={<Home />} />
+  test('Render app as authenticated user', () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<Home />} />
           <Route path="user/profile/:username" element={<Profile />} />
-      </Routes>
-    </MemoryRouter>,
-    {}
-  );
+        </Routes>
+      </MemoryRouter>,
+      {}
+    );
 
-  expect(screen.getByText('Home')).toHaveTextContent('Home');
-  userEvent.click(screen.getByText('mockUser'));
+    expect(screen.getByText('Home')).toHaveTextContent('Home');
+    userEvent.click(screen.getByText('mockUser'));
 
-  expect(screen.getByText('Profile').closest('a')).toHaveTextContent('Profile');
-  expect(screen.getByText('Profile').closest('a')).toHaveAttribute('href', '/user/profile/mockUser');
+    expect(screen.getByText('Profile').closest('a')).toHaveTextContent('Profile');
+    expect(screen.getByText('Profile').closest('a')).toHaveAttribute('href', '/user/profile/mockUser');
+  });
 });
