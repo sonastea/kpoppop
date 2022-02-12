@@ -1,5 +1,4 @@
 import Buttons from './Buttons';
-import UploadMeme from './UploadMeme';
 import { debounce } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import { Col, Container, Row, Image } from 'react-bootstrap';
@@ -62,7 +61,6 @@ const Memes = () => {
 
   return (
     <>
-      <UploadMeme />
       <Container>
         {posts &&
           posts.map((meme: any) => {

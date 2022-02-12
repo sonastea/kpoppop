@@ -1,16 +1,15 @@
-import {
-  faAngleDoubleDown,
-  faAngleDoubleUp,
-  faSpinner,
-  faCheck,
-  faHourglass
-} from '@fortawesome/free-solid-svg-icons';
+import { faAngleDoubleDown, faAngleDoubleUp, faSpinner, faCheck, faHourglass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { Button, Col, Collapse, Container, Form, Image, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { submitMeme } from './MemeAPI';
-import * as nsfwjs from 'nsfwjs';
+import { identifyImage } from './IdentifyImage';
+
+export type PredictionType = {
+  className: string;
+  probability: number;
+};
 
 export type MemeFormData = {
   title: string;
@@ -19,7 +18,7 @@ export type MemeFormData = {
   flagged: boolean;
 };
 
-const PostMeme = () => {
+const UploadMeme = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [isUploading, setUploading] = useState<boolean>(false);
   const [uploadFinished, setUploadFinished] = useState<boolean>(false);
@@ -48,7 +47,7 @@ const PostMeme = () => {
               setUploading(false);
             }, 500);
           }
-          if (response.status >= 401 && response.status< 600) {
+          if (response.status >= 401 && response.status < 600) {
             window.alert('You must be logged in to submit a meme.');
             setTimeout(() => {
               setUploadFinished(false);
@@ -108,21 +107,21 @@ const PostMeme = () => {
     }
   };
 
-  const isSFW = (predictions: Array<any>) => {
-    switch (predictions[0].className) {
+  const isSFW = (prediction: PredictionType) => {
+    switch (prediction.className) {
       case 'Porn':
       case 'Hentai':
-        if (predictions[0].probability > 0.8) {
+        if (prediction.probability > 0.8) {
           setFlagged(true);
           return false;
-        } else if (predictions[0].probability > 0.5) {
+        } else if (prediction.probability > 0.5) {
           setFlagged(true);
           return true;
         } else {
           return true;
         }
       case 'Sexy':
-        if (predictions[0].probability > 0.5) {
+        if (prediction.probability > 0.5) {
           setFlagged(true);
           return true;
         } else {
@@ -140,12 +139,9 @@ const PostMeme = () => {
 
     if (e.target.files && e.target.files.length >= 1) {
       setDetecting(true);
-      let image = new window.Image();
-      const objectUrl = URL.createObjectURL(e.target.files[0]);
-      fetch(objectUrl).then((blob) => (image.src = blob.url));
-      const model = await nsfwjs.load();
-      const predictions = await model.classify(image);
-      setPostable(isSFW(predictions));
+      const prediction = await identifyImage(e.target.files[0]);
+      const postable = isSFW(prediction);
+      setPostable(postable);
       setDetecting(false);
     }
   };
@@ -159,12 +155,7 @@ const PostMeme = () => {
 
             <Form.Group id="title-input-form" className="w-75 mb-3" controlId="title-input-box">
               <Form.Label className="title required-input">title</Form.Label>
-              <Form.Control
-                required
-                as="textarea"
-                className="required-input"
-                {...register('title')}
-              />
+              <Form.Control required as="textarea" className="required-input" {...register('title')} />
             </Form.Group>
 
             <Form.Group id="url-input-box" className="w-75 mb-3" controlId="url-input-box">
@@ -196,7 +187,7 @@ const PostMeme = () => {
                     />
                   );
                 })}
-                {detecting && <FontAwesomeIcon className="ms-3" icon={faHourglass} />}
+              {detecting && <FontAwesomeIcon className="ms-3" icon={faHourglass} />}
             </Form.Group>
 
             <div id="items-required" className="w-75 mb-3">
@@ -225,11 +216,7 @@ const PostMeme = () => {
               aria-expanded={open}
             >
               {open ? 'Hide Form ' : 'Show Form '}
-              {open ? (
-                <FontAwesomeIcon icon={faAngleDoubleUp} />
-              ) : (
-                <FontAwesomeIcon icon={faAngleDoubleDown} />
-              )}
+              {open ? <FontAwesomeIcon icon={faAngleDoubleUp} /> : <FontAwesomeIcon icon={faAngleDoubleDown} />}
             </Button>
           </Col>
         </Row>
@@ -238,4 +225,4 @@ const PostMeme = () => {
   );
 };
 
-export default PostMeme;
+export default UploadMeme;

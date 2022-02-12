@@ -6,7 +6,7 @@ import Login from './components/user/Login';
 import Register from './components/user/Register';
 import NavBar from './components/NavBar';
 import Profile from './components/user/Profile';
-import Memes from './components/meme/Memes';
+import MemePage from 'components/meme/MemePage';
 import Post from './components/meme/Post';
 import { AuthProvider } from './contexts/AuthContext';
 
@@ -21,7 +21,7 @@ const App = () => {
 
         <Routes>
           <Route path="/" element={<Home />} />
-            <Route path="memes" element={<Memes />} />
+            <Route path="memes" element={<MemePage />} />
             <Route path="meme/:memeid/:title" element={<Post />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
