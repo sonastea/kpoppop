@@ -57,15 +57,13 @@ const Like = (props: LikeProps) => {
 
   return (
     <Row className="interactive-bar gx-0 justify-content-center" xs="auto" md="auto" lg="auto">
-      <Col className="like-meme" onClick={handleLiked}>
-        <span>
+      <Col className="like-meme" onClick={handleLiked} role="button" aria-label="like">
           {likedState ? (
             <FontAwesomeIcon className="liked" icon={fasHeart} />
           ) : (
             <FontAwesomeIcon icon={faHeart} />
           )}
           <span className="ms-1 interactive-buttons">{totalLikes ? `${totalLikes}` : `0`}</span>
-        </span>
       </Col>
     </Row>
   );
