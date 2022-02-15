@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import { AuthContext, IAuthContext, User } from 'contexts/AuthContext';
 
-const user: User = {
+export const user: User = {
   id: 1,
   username: 'mockUser',
   displayname: undefined,

@@ -1,7 +1,7 @@
 import { Row } from 'react-bootstrap';
 import Like, { LikeProps } from './Like';
 
-const ListButtons = (props: LikeProps) => {
+const PostButtons = (props: LikeProps) => {
   return (
     <>
       <Row className="list-buttons mt-2">
@@ -11,4 +11,4 @@ const ListButtons = (props: LikeProps) => {
   );
 };
 
-export default ListButtons;
+export default PostButtons;

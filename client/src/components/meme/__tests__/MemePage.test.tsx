@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from 'utils/test-utils';
+import { render, screen } from 'utils/test-utils';
 import NavBar from 'components/NavBar';
 import '@testing-library/jest-dom';
 import * as api from '../MemeAPI';
