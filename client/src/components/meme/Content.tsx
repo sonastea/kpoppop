@@ -34,7 +34,7 @@ const Content = () => {
           </Row>
           <Row className="mt-auto author-bar">
             <Col>
-              <a href={`/profile${meme.username}`}>{meme.author.username}</a>
+              <a href={`/user/profile/${meme.author.username}`}>{meme.author.username}</a>
             </Col>
           </Row>
         </Col>

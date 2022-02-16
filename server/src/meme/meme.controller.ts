@@ -148,17 +148,21 @@ export class MemeController {
 
   @Get(':id')
   getMeme(@Param('id') id: string): Promise<Meme | null> {
-    return this.memeService.post(
-      {
+    return this.memeService.post({
+      where: {
         id: parseInt(id),
-        active: true,
+        active: { equals: true },
+        flagged: { equals: false },
       },
-      {
+      select: {
         author: {
           select: { username: true },
         },
-      }
-    );
+        id: true,
+        title: true,
+        url: true,
+      },
+    });
   }
 
   @Get('likes/:id')
