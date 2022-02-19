@@ -1,7 +1,6 @@
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
-import { Col, Row, Image } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { fetchMeme } from './MemeAPI';
 import PostButtons from './PostButtons';
@@ -24,22 +23,22 @@ const Content = () => {
     <FontAwesomeIcon id="scroll-load-div" icon={faSpinner} spin />
   ) : (
     <>
-      <Row className="content-header">
-        <Col xs={6} md={4} lg={4}>
-          <Image className="mt-2 rounded-2" src={meme.url} alt="no image" fluid />
-        </Col>
-        <Col className="d-flex flex-column">
-          <Row className="content-title">
-            <Col>{meme.title}</Col>
-          </Row>
-          <Row className="mt-auto author-bar">
-            <Col>
+      <div className="content-header">
+        <div className="max-w-sm">
+          <img className="mt-2 rounded-2" src={meme.url} alt={meme.title}/>
+        </div>
+        <div className="d-flex flex-column">
+          <div className="content-title">
+            <div>{meme.title}</div>
+          </div>
+          <div className="mt-auto author-bar">
+            <div>
               <a href={`/user/profile/${meme.author.username}`}>{meme.author.username}</a>
-            </Col>
-          </Row>
-        </Col>
+            </div>
+          </div>
+        </div>
         <PostButtons memeId={parseInt(memeid!, 10)} />
-      </Row>
+      </div>
     </>
   );
 };

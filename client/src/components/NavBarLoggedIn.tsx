@@ -1,5 +1,4 @@
 import { useAuth } from '../contexts/AuthContext';
-import { NavDropdown } from 'react-bootstrap';
 
 const NavBarLoggedIn = () => {
   const { user, logout } = useAuth();
@@ -10,10 +9,10 @@ const NavBarLoggedIn = () => {
   };
 
   return (
-    <NavDropdown align="end" id="profile-dropdown" className="ms-auto d-none d-md-block" title={user?.username}>
-      <NavDropdown.Item href={`/user/profile/${user?.username}`}>Profile</NavDropdown.Item>
-      <NavDropdown.Item onClick={logoutHandler}>logout</NavDropdown.Item>
-    </NavDropdown>
+    <div className="ms-auto d-none d-md-block" title={user?.username}>
+      <a href={`/user/profile/${user?.username}`}>Profile</a>
+      <div onClick={logoutHandler}>logout</div>
+    </div>
   );
 };
 

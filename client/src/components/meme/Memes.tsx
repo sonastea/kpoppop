@@ -1,7 +1,6 @@
 import Buttons from './Buttons';
 import { debounce } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
-import { Col, Container, Row, Image } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { fetchMemes } from './MemeAPI';
@@ -61,31 +60,33 @@ const Memes = () => {
 
   return (
     <>
-      <Container>
+      <div>
         {posts &&
           posts.map((meme: any) => {
             if (meme.active) {
               return (
-                <Row className="meme rounded-2 mt-3 mb-3" id={meme.id} key={meme.id}>
-                  <Col xs={6} md={3} lg={4}>
+                <tr className="mt-3 mb-3 meme rounded-2" id={meme.id} key={meme.id}>
+                  <td>
                     <a href={`/meme/${meme.id}/${meme.title}`}>
-                      <Image className="mt-2 meme-thumbnail rounded-2" src={meme.url} fluid />
+                      <img className="max-w-xs mt-2 max-h-xs meme-thumbnail rounded-2" src={meme.url} alt={meme.title} />
                     </a>
-                  </Col>
-                  <Col className="d-flex flex-column">
+                    </td>
+                    <td>
                     <Buttons {...meme} />
-                  </Col>
-                  <Like memeId={meme.id} />
-                </Row>
+                    </td>
+                    <td>
+                    <Like memeId={meme.id} />
+                    </td>
+                  </tr>
               );
             } else {
               return null;
             }
           })}
-        <div onScroll={handleScroll.current} id="scroll-load-div" className="page-number p-5">
+        <div onScroll={handleScroll.current} id="scroll-load-div" className="p-5 page-number">
           {loading && <FontAwesomeIcon icon={faSpinner} spin />}
         </div>
-      </Container>
+      </div>
     </>
   );
 };

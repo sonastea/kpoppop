@@ -1,7 +1,6 @@
 import { faAngleDoubleDown, faAngleDoubleUp, faSpinner, faCheck, faHourglass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
-import { Button, Col, Collapse, Container, Form, Image, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { submitMeme } from './MemeAPI';
 import { identifyImage } from './IdentifyImage';
@@ -147,81 +146,12 @@ const UploadMeme = () => {
   };
 
   return (
-    <>
-      <Container>
-        <Collapse in={open}>
-          <Form id="post-meme-form" onSubmit={handleSubmit(memeHandler)}>
-            <h3 className="mt-3 mb-4">Post meme to kpoppop</h3>
-
-            <Form.Group id="title-input-form" className="w-75 mb-3" controlId="title-input-box">
-              <Form.Label className="title required-input">title</Form.Label>
-              <Form.Control required as="textarea" className="required-input" {...register('title')} />
-            </Form.Group>
-
-            <Form.Group id="url-input-box" className="w-75 mb-3" controlId="url-input-box">
-              <Form.Label>url</Form.Label>
-              <Form.Control type="url" {...register('url')} onChange={handleChangeEvent} />
-            </Form.Group>
-
-            <Form.Group id="file-input-box" className="w-75 mb-3" controlId="file-input-box">
-              <Form.Control
-                multiple
-                type="file"
-                accept="image/gif, image/jpeg, image/png"
-                {...register('file')}
-                onChange={handleChangeEvent}
-                onInput={handleImageSelect}
-              />
-            </Form.Group>
-
-            <Form.Group id="file-image-preview" controlId="file-image-preview" className="w-75">
-              {files &&
-                Array.from(files).map((file) => {
-                  return (
-                    <Image
-                      key={file.name}
-                      className="file-image-item mx-1 mb-3 rounded-3"
-                      src={URL.createObjectURL(file)}
-                      alt={file.name}
-                      fluid
-                    />
-                  );
-                })}
-              {detecting && <FontAwesomeIcon className="ms-3" icon={faHourglass} />}
-            </Form.Group>
-
-            <div id="items-required" className="w-75 mb-3">
-              {' '}
-              is required
-            </div>
-
-            <Form.Group className="w-75 mb-4">
-              <Button className="btn btn-pink btn-sm" type="submit">
-                Post
-              </Button>
-              {isUploading && <FontAwesomeIcon className="ms-3" icon={faSpinner} spin />}
-              {uploadFinished && <FontAwesomeIcon className="ms-3" icon={faCheck} />}
-            </Form.Group>
-          </Form>
-        </Collapse>
-      </Container>
-
-      <Container>
-        <Row>
-          <Col style={{ textAlign: 'center' }}>
-            <Button
-              className="mt-3 mb-4 btn-pink btn-sm"
-              onClick={() => setOpen(!open)}
-              aria-controls="post-meme-form"
-              aria-expanded={open}
-            >
-              {open ? 'Hide Form ' : 'Show Form '}
-              {open ? <FontAwesomeIcon icon={faAngleDoubleUp} /> : <FontAwesomeIcon icon={faAngleDoubleDown} />}
-            </Button>
-          </Col>
-        </Row>
-      </Container>
-    </>
+    <form>
+      <input type="text"></input>
+      <input type="email"></input>
+      <input type="password"></input>
+      <input type="password"></input>
+    </form>
   );
 };
 

@@ -1,147 +1,157 @@
-body {
-  margin: 0;
-  background-color: #efefef !important;
-  font-family: 'Montserrat', sans-serif !important;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@media screen and (min: width: 1236px) {
-  .container {
-    width: 1190px;
+@layer base {
+  html {
+    font-family: 'Montserrat', system-ui, sans-serif;
   }
 }
 
-.required-input:after {
-  content: '*';
-  color: red;
-  font-weight: bold;
-}
+/*body {*/
+/*margin: 0;*/
+/*background-color: #efefef !important;*/
+/*font-family: 'Montserrat', sans-serif !important;*/
+/*}*/
 
-a.nav-link, a.nav-link:hover {
-  color: #471a2a;
-}
+/*@media screen and (min: width: 1236px) {*/
+/*.container {*/
+/*width: 1190px;*/
+/*}*/
+/*}*/
 
-.title {
-  font-weight: bold;
-}
+/*.required-input:after {*/
+/*content: '*';*/
+/*color: red;*/
+/*font-weight: bold;*/
+/*}*/
 
-.content-header {
-  background-color: rgb(205, 205, 205, 0.75);
-}
+/*a.nav-link, a.nav-link:hover {*/
+/*color: #471a2a;*/
+/*}*/
 
-.content-title {
-  color: #471a2a;
-  font-size: calc(1rem + 1vw);
-  font-weight: normal;
-}
+/*.title {*/
+/*font-weight: bold;*/
+/*}*/
 
-.meme-buttons {
-  color: #471a2a !important;
-  text-decoration: none;
-}
+/*.content-header {*/
+/*background-color: rgb(205, 205, 205, 0.75);*/
+/*}*/
 
-.author-bar * {
-  color: #585858 !important;
-  text-decoration: none;
-  font-size: calc(1rem + 0.25vw);
-}
+/*.content-title {*/
+/*color: #471a2a;*/
+/*font-size: calc(1rem + 1vw);*/
+/*font-weight: normal;*/
+/*}*/
 
-.comments {
-  color: #585858 !important;
-}
+/*.meme-buttons {*/
+/*color: #471a2a !important;*/
+/*text-decoration: none;*/
+/*}*/
 
-.interactive-buttons {
-  color: #714f57db;
-}
+/*.author-bar * {*/
+/*color: #585858 !important;*/
+/*text-decoration: none;*/
+/*font-size: calc(1rem + 0.25vw);*/
+/*}*/
 
-.interactive-bar {
-  font-size: calc(0.8rem + 1vh);
-}
+/*.comments {*/
+/*color: #585858 !important;*/
+/*}*/
 
-.btn:focus {
-  outline: 0 !important;
-  box-shadow: none !important;
-}
+/*.interactive-buttons {*/
+/*color: #714f57db;*/
+/*}*/
 
-.btn-pink {
-  background-color: #eda6b7 !important;
-  border: none;
-  color: #471a2a !important;
-}
+/*.interactive-bar {*/
+/*font-size: calc(0.8rem + 1vh);*/
+/*}*/
 
-.dropdown-item:active {
-  background-color: #eda6b7;
-}
+/*.btn:focus {*/
+/*outline: 0 !important;*/
+/*box-shadow: none !important;*/
+/*}*/
 
-.page-number {
-  text-align: center;
-}
+/*.btn-pink {*/
+/*background-color: #eda6b7 !important;*/
+/*border: none;*/
+/*color: #471a2a !important;*/
+/*}*/
 
-.meme-thumbnail {
-  min-width: 12vh;
-  min-height: 12vh;
-}
+/*.dropdown-item:active {*/
+/*background-color: #eda6b7;*/
+/*}*/
 
-@media (hover: hover) {
-  .like-meme:hover * {
-    color: red;
-  }
-  .hide-meme:hover {
-    color: rgb(214, 41, 41);
-  }
-  .delete-meme:hover {
-    color: rgb(214, 41, 41);
-  }
-}
+/*.page-number {*/
+/*text-align: center;*/
+/*}*/
 
-.liked {
-  color: red;
-}
+/*.meme-thumbnail {*/
+/*min-width: 12vh;*/
+/*min-height: 12vh;*/
+/*}*/
 
-.meme {
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
-  overflow-wrap: break-word;
-}
+/*@media (hover: hover) {*/
+/*.like-meme:hover * {*/
+/*color: red;*/
+/*}*/
+/*.hide-meme:hover {*/
+/*color: rgb(214, 41, 41);*/
+/*}*/
+/*.delete-meme:hover {*/
+/*color: rgb(214, 41, 41);*/
+/*}*/
+/*}*/
 
-.list-buttons {
-  font-size: 1.75vmin;
-}
+/*.liked {*/
+/*color: red;*/
+/*}*/
 
-.navbar-brand {
-  color: #35271a;
-}
+/*.meme {*/
+/*background-color: #ffffff;*/
+/*border: 1px solid #cccccc;*/
+/*overflow-wrap: break-word;*/
+/*}*/
 
-.file-image-item {
-  height: 30vh;
-}
+/*.list-buttons {*/
+/*font-size: 1.75vmin;*/
+/*}*/
 
-#navbar {
-  background-color: #FF5FA2;
-}
+/*.navbar-brand {*/
+/*color: #35271a;*/
+/*}*/
 
-#mobileNav {
-  width: 50%;
-}
+/*.file-image-item {*/
+/*height: 30vh;*/
+/*}*/
 
-#signupForm {
-  text-align: -webkit-center;
-}
+/*#navbar {*/
+/*background-color: #FF5FA2;*/
+/*}*/
 
-#items-required:before {
-  content: '*';
-  color: red;
-}
+/*#mobileNav {*/
+/*width: 50%;*/
+/*}*/
 
-#items-required {
-  font-style: italic;
-  color: grey;
-}
+/*#signupForm {*/
+/*text-align: -webkit-center;*/
+/*}*/
 
-#profile-dropdown {
-  color: #471a2a;
-}
+/*#items-required:before {*/
+/*content: '*';*/
+/*color: red;*/
+/*}*/
 
-#title-input-label {
-  font-weight: normal;
-  font-size: 2.75vmin;
-}
+/*#items-required {*/
+/*font-style: italic;*/
+/*color: grey;*/
+/*}*/
+
+/*#profile-dropdown {*/
+/*color: #471a2a;*/
+/*}*/
+
+/*#title-input-label {*/
+/*font-weight: normal;*/
+/*font-size: 2.75vmin;*/
+/*}*/

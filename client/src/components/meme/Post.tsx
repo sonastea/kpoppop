@@ -1,12 +1,11 @@
 import Content from './Content';
-import { Container } from 'react-bootstrap';
 
 const Post = () => {
   return (
     <>
-      <Container fluid className="mb-3 mt-3">
+      <div className="mb-3 mt-3">
         <Content />
-      </Container>
+      </div>
     </>
   );
 };
