@@ -38,6 +38,7 @@ const NavBar = () => {
         setActive(item.id);
       }
     });
+    setMobileNav(false);
   }, [location.pathname, navItems]);
 
   const toggleMobileNav = () => {
@@ -46,14 +47,14 @@ const NavBar = () => {
 
   return (
     <nav className="relative bg-white shadow">
-      <div className="mx-auto lg:max-w-screen-2xl">
+      <div className="mx-auto md:max-w-screen-2xl">
         <div className="flex justify-between">
           <div className="flex space-x-2">
             <a href="/" className="flex items-center px-2 py-2">
               <img src="/images/logo.png" alt="Kpoppop Logo" className="w-10 h-10 mr-2"></img>
             </a>
 
-            <ul className="items-center hidden border-b lg:flex space-x-1">
+            <ul className="items-center hidden border-b md:flex space-x-1">
               {navItems.map((item) => (
                 <li key={item.id}>
                   <a
@@ -68,7 +69,7 @@ const NavBar = () => {
             </ul>
           </div>
 
-          <div className="items-center hidden lg:flex space-x-2">
+          <div className="items-center hidden md:flex space-x-2">
             <a href="/login" className="px-2 py-2 font-semibold border-b-2 border-transparent hover:border-once">
               Login
             </a>
@@ -80,7 +81,7 @@ const NavBar = () => {
             </a>
           </div>
 
-          <div className="flex items-center lg:hidden">
+          <div className="flex items-center md:hidden">
             <button className="mobile-menu-toggle" onClick={toggleMobileNav}>
               <svg
                 className="w-6 h-6"
@@ -98,7 +99,7 @@ const NavBar = () => {
             id="mobileNav"
             className={`${
               !isActiveMobileNav && 'translate-x-full'
-            } h-screen rounded absolute right-0 pr-3 lg:hidden bg-gray-100 z-10 w-64 transform duration-200 ease-in-out`}
+            } md:hidden h-screen rounded absolute right-0 pr-3 bg-gray-200 z-10 w-64 transform duration-200 ease-in-out`}
           >
             <div className="pt-8 pl-4">
               <a href="/">KPOPPOP</a>

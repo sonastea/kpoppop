@@ -86,7 +86,7 @@ const Register = () => {
         <form className="space-y-4" id="signupForm" onSubmit={handleSubmit(submitHandler)}>
           <h3 className="py-3 font-semibold text-center text-white">Join kpoppop</h3>
           <div>
-            <label className="block mb-2 font-bold text-gray-300">Username</label>
+            <label className="block mb-2 font-bold text-gray-100">Username</label>
             <input
               className="w-full p-1 text-white bg-gray-700 border border-gray-800 rounded focus:outline-none focus:border-once"
               required
@@ -96,7 +96,7 @@ const Register = () => {
           </div>
 
           <div>
-            <label className="block mb-2 font-bold text-gray-300">Email</label>
+            <label className="block mb-2 font-bold text-gray-100">Email</label>
             <input
               className="w-full p-1 text-white bg-gray-700 border border-gray-800 rounded focus:outline-none focus:border-once"
               required
@@ -109,7 +109,7 @@ const Register = () => {
           </div>
 
           <div>
-            <label className="block mb-2 font-bold text-gray-300">Password</label>
+            <label className="block mb-2 font-bold text-gray-100">Password</label>
             <input
               className="w-full p-1 text-white bg-gray-700 border border-gray-800 rounded focus:outline-none focus:border-once"
               required
@@ -122,7 +122,7 @@ const Register = () => {
           </div>
 
           <div>
-            <label className="block mb-2 font-bold text-gray-300 focus:outline-none focus:border-once">
+            <label className="block mb-2 font-bold text-gray-100 focus:outline-none focus:border-once">
               Confirm password
             </label>
             <input
