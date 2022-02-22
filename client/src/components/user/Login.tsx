@@ -55,18 +55,18 @@ const Login = () => {
   };
 
   return (
-    <div className="d-grid justify-content-center">
+    <div className="text-center d-grid justify-content-center">
       <form id="loginForm" onSubmit={handleSubmit(loginHandler)}>
         <h3 className="mt-3 mb-3">Log in to kpoppop</h3>
 
         <p className="text-danger">{errors.password?.message}</p>
 
         <div className="text-center">
-          <input className="btn-block text-center mb-3" type="submit">
-            Log In
+          <button className="mb-3 btn-block" type="button">
+            Login
             {loginSuccess && <FontAwesomeIcon icon={faCheck} />}
             {redirecting && <FontAwesomeIcon icon={faSpinner} spin />}
-          </input>
+          </button>
         </div>
       </form>
     </div>

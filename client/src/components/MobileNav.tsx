@@ -1,6 +1,12 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../contexts/AuthContext';
 
-const MobileNav = () => {
+type MobileNavProps = {
+  isActive: boolean;
+};
+
+const MobileNav = ({ isActive }: MobileNavProps) => {
   const { user, logout } = useAuth();
 
   const logoutHandler = (e: React.MouseEvent<HTMLElement>): void => {
@@ -9,27 +15,22 @@ const MobileNav = () => {
   };
 
   return (
-    <>
+    <div
+      id="mobileNav"
+      className={`${
+        !isActive && '-translate-x-full'
+      } rounded absolute right-0 pr-3 md:hidden bg-white z-10 w-64 transform md:relative md:translate-x-0 duration-200 ease-in-out`}
+    >
       <div>
-        <div id="mobileNav">KPOPPOP</div>
-      </div>
-
-      <div className="justify-content-end flex-grow-1 pe-3">
+        <div>KPOPPOP</div>
         <a href="/memes">Memes</a>
-        {user?.username && (
-          <>
-            <a href={`/user/profile/${user.username}`}>{user.username}</a>
-            <div onClick={logoutHandler}>logout</div>
-          </>
-        )}
-        {!user?.username && (
-          <>
-            <a href="/register">Signup</a>
-            <a href="/login">Login</a>
-          </>
-        )}
       </div>
-    </>
+      <div>
+      <button onClick={() => !isActive}>
+          <FontAwesomeIcon icon={faXmark} />
+        </button>
+      </div>
+    </div>
   );
 };
 

@@ -60,32 +60,30 @@ const Memes = () => {
 
   return (
     <>
-      <div>
-        {posts &&
-          posts.map((meme: any) => {
-            if (meme.active) {
-              return (
-                <tr className="mt-3 mb-3 meme rounded-2" id={meme.id} key={meme.id}>
-                  <td>
-                    <a href={`/meme/${meme.id}/${meme.title}`}>
-                      <img className="max-w-xs mt-2 max-h-xs meme-thumbnail rounded-2" src={meme.url} alt={meme.title} />
-                    </a>
-                    </td>
-                    <td>
-                    <Buttons {...meme} />
-                    </td>
-                    <td>
-                    <Like memeId={meme.id} />
-                    </td>
-                  </tr>
-              );
-            } else {
-              return null;
-            }
-          })}
-        <div onScroll={handleScroll.current} id="scroll-load-div" className="p-5 page-number">
-          {loading && <FontAwesomeIcon icon={faSpinner} spin />}
-        </div>
+      {posts &&
+        posts.map((meme: any) => {
+          if (meme.active) {
+            return (
+              <div className="mt-3 mb-3 meme rounded-2" id={meme.id} key={meme.id}>
+                <div>
+                  <a href={`/meme/${meme.id}/${meme.title}`}>
+                    <img className="max-w-xs mt-2 max-h-xs meme-thumbnail rounded-2" src={meme.url} alt={meme.title} />
+                  </a>
+                <div>
+                  <Buttons {...meme} />
+                </div>
+                <div>
+                  <Like memeId={meme.id} />
+                </div>
+                </div>
+              </div>
+            );
+          } else {
+            return null;
+          }
+        })}
+      <div onScroll={handleScroll.current} id="scroll-load-div" className="p-5 page-number">
+        {loading && <FontAwesomeIcon icon={faSpinner} spin />}
       </div>
     </>
   );

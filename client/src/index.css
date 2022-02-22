@@ -8,6 +8,14 @@
   }
 }
 
+.active {
+  border-color: rgba(255, 95, 162, 1);
+}
+
+#recaptcha {
+  text-align: -webkit-center;
+}
+
 /*body {*/
 /*margin: 0;*/
 /*background-color: #efefef !important;*/

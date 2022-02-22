@@ -20,7 +20,7 @@ export class UserService {
         console.log('This username or email is already taken');
         return {
           errors: {
-            UserOrEmail: 'This username or email is already taken',
+            User: 'This username or email is already taken',
           },
         };
       }
