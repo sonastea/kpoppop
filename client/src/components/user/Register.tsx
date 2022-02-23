@@ -88,36 +88,42 @@ const Register = () => {
           <div>
             <label className="block mb-2 font-bold text-gray-100">Username</label>
             <input
-              className="w-full p-1 text-white bg-gray-700 border border-gray-800 rounded focus:outline-none focus:border-once"
               required
+              className="w-full p-1 text-white bg-gray-700 border border-gray-800 rounded focus:outline-none focus:border-once"
               type="text"
-              {...register('username')}
+              {...register('username', { required: true })}
             />
           </div>
 
           <div>
             <label className="block mb-2 font-bold text-gray-100">Email</label>
             <input
-              className="w-full p-1 text-white bg-gray-700 border border-gray-800 rounded focus:outline-none focus:border-once"
               required
+              className="w-full p-1 text-white bg-gray-700 border border-gray-800 rounded focus:outline-none focus:border-once"
               type="email"
-              {...register('email')}
+              {...register('email', { required: true })}
             />
             <div className="mt-1 text-center">
-              {errors.username?.message && <span className="text-red-500">{errors.username.message}</span>}
+              {errors.username?.message && <span className="text-error">{errors.username.message}</span>}
             </div>
           </div>
 
           <div>
             <label className="block mb-2 font-bold text-gray-100">Password</label>
             <input
-              className="w-full p-1 text-white bg-gray-700 border border-gray-800 rounded focus:outline-none focus:border-once"
               required
+              className="w-full p-1 text-white bg-gray-700 border border-gray-800 rounded focus:outline-none focus:border-once"
               type="password"
-              {...register('password')}
+              {...register('password', {
+                required: true,
+                minLength: {
+                  value: 8,
+                  message: 'Password must have at least 8 characters.',
+                },
+              })}
             />
             <div className="mt-1 text-center">
-              {errors.password?.message && <span className="text-red-500">{errors.password.message}</span>}
+              {errors.password?.message && <span className="text-error">{errors.password.message}</span>}
             </div>
           </div>
 
@@ -126,15 +132,16 @@ const Register = () => {
               Confirm password
             </label>
             <input
-              className="w-full p-1 text-white bg-gray-700 border border-gray-800 rounded focus:outline-none focus:border-once"
               required
+              className="w-full p-1 text-white bg-gray-700 border border-gray-800 rounded focus:outline-none focus:border-once"
               type="password"
               {...register('password2', {
+                required: true,
                 validate: (value) => value === watch('password') || 'Passwords do not match',
               })}
             />
             <div className="mt-1 text-center">
-              {errors.password2?.message && <span className="text-red-500">{errors.password2.message}</span>}
+              {errors.password2?.message && <span className="text-error">{errors.password2.message}</span>}
             </div>
           </div>
 
@@ -146,7 +153,7 @@ const Register = () => {
             )}
             rules={{ required: true }}
           />
-          {errors.recaptcha?.message && <span className="text-red-500">{errors.recaptcha.message}</span>}
+          {errors.recaptcha?.message && <span className="text-error">{errors.recaptcha.message}</span>}
 
           <div className="py-3">
             <button

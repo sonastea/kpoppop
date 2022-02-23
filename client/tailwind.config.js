@@ -17,6 +17,16 @@ module.exports = {
           800: '#B6004C',
           900: '#7E0035',
         },
+        error: {
+          DEFAULT: '#B11212'
+        }
+      },
+      transformOrigin: {
+        '0': '0%',
+      },
+      zIndex: {
+        '-1': '-1',
+        '-10': '-10',
       },
     },
   },

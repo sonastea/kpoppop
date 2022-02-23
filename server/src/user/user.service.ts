@@ -17,10 +17,10 @@ export class UserService {
       return strippedUser;
     } catch (err) {
       if (err.code === 'P2002') {
-        console.log('This username or email is already taken');
+        console.log('The username or email is already taken.');
         return {
           errors: {
-            User: 'This username or email is already taken',
+            User: 'The username or email is already taken.',
           },
         };
       }

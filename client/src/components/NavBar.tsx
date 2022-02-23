@@ -41,16 +41,12 @@ const NavBar = () => {
     setMobileNav(false);
   }, [location.pathname, navItems]);
 
-  const toggleMobileNav = () => {
-    setMobileNav((prev) => !prev);
-  };
-
   return (
     <nav className="relative bg-white shadow">
       <div className="mx-auto md:max-w-screen-2xl">
         <div className="flex justify-between">
           <div className="flex space-x-2">
-            <a href="/" className="flex items-center px-2 py-2">
+            <a href="/" className="flex items-center p-2">
               <img src="/images/logo.png" alt="Kpoppop Logo" className="w-10 h-10 mr-2"></img>
             </a>
 
@@ -70,19 +66,19 @@ const NavBar = () => {
           </div>
 
           <div className="items-center hidden md:flex space-x-2">
-            <a href="/login" className="px-2 py-2 font-semibold border-b-2 border-transparent hover:border-once">
+            <a href="/login" className="p-2 font-semibold border-b-2 border-transparent hover:border-once">
               Login
             </a>
             <a
               href="/register"
-              className="px-2 py-2 font-semibold border-b-2 border-transparent text-once hover:border-once"
+              className="p-2 font-semibold border-b-2 border-transparent text-once hover:border-once"
             >
               Register
             </a>
           </div>
 
-          <div className="flex items-center md:hidden">
-            <button className="mobile-menu-toggle" onClick={toggleMobileNav}>
+          <div className="flex items-center p-2 md:hidden">
+            <button className="mobile-menu-toggle" onClick={() => setMobileNav((prev) => !prev)}>
               <svg
                 className="w-6 h-6"
                 xmlns="http://www.w3.org/2000/svg"
@@ -98,8 +94,8 @@ const NavBar = () => {
           <div
             id="mobileNav"
             className={`${
-              !isActiveMobileNav && 'translate-x-full'
-            } md:hidden h-screen rounded absolute right-0 pr-3 bg-gray-200 z-10 w-64 transform duration-200 ease-in-out`}
+              !isActiveMobileNav && '-translate-x-full'
+            } w-64 h-screen md:hidden rounded absolute pr-3 bg-gray-200 z-10 transform duration-300 ease-in-out left-0`}
           >
             <div className="pt-8 pl-4">
               <a href="/">KPOPPOP</a>

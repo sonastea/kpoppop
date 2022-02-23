@@ -8,6 +8,29 @@
   }
 }
 
+input:focus-within ~ label,
+input:not(:placeholder-shown) ~ label {
+  @apply transform scale-75 -translate-y-6;
+}
+
+input:focus-within ~ label {
+  @apply text-once;
+}
+
+input:not(:focus-within) ~ label {
+  @apply transform duration-300 scale-100;
+}
+
+.label-outline input:focus-within ~ label,
+.label-outline input:not(:placeholder-shown) ~ label {
+  @apply transform scale-75 -translate-y-6;
+}
+
+.label-outline input:focus-within ~ label,
+.label-outline input:not(:placeholder-shown) ~ label {
+  @apply z-0 px-1 py-0 ml-3 transform scale-75 -translate-y-3;
+}
+
 .active {
   border-color: rgba(255, 95, 162, 1);
 }
