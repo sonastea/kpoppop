@@ -42,7 +42,7 @@ const NavBar = () => {
   }, [location.pathname, navItems]);
 
   return (
-    <nav className="relative bg-white shadow">
+    <nav className="relative shadow">
       <div className="mx-auto md:max-w-screen-2xl">
         <div className="flex justify-between">
           <div className="flex space-x-2">
