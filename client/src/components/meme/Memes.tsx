@@ -1,10 +1,9 @@
-import Buttons from './Buttons';
-import { debounce } from 'lodash';
-import { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import InteractiveButtons from './InteractiveButtons';
+import { useEffect, useRef, useState } from 'react';
 import { fetchMemes } from './MemeAPI';
-import Like from './Like';
+import { debounce } from 'lodash';
 
 let cursor: number = 0;
 
@@ -17,7 +16,7 @@ const Memes = () => {
       await fetchMemes(cursor)
         .then((memes) => {
           if (memes.length !== 0) {
-            setPosts((prev: any) => [...prev, ...memes]);
+            setPosts(memes);
             cursor = memes[memes.length - 1].id;
           }
         })
@@ -31,7 +30,7 @@ const Memes = () => {
     return () => {
       window.removeEventListener('scroll', handleScrollRef);
     };
-  }, []);
+  }, [posts]);
 
   const loadMorePosts = async () => {
     setLoading(false);
@@ -44,7 +43,7 @@ const Memes = () => {
           window.removeEventListener('scroll', handleScroll.current);
         }
       })
-      .catch((error) => console.log(error));
+      .catch((_error) => {});
   };
 
   const fetchData = debounce(loadMorePosts, 1000);
@@ -62,25 +61,30 @@ const Memes = () => {
     <>
       {posts &&
         posts.map((meme: any) => {
-          if (meme.active) {
-            return (
-              <div className="mt-3 mb-3 meme rounded-2" id={meme.id} key={meme.id}>
-                <div>
-                  <a href={`/meme/${meme.id}/${meme.title}`}>
-                    <img className="max-w-xs mt-2 max-h-xs meme-thumbnail rounded-2" src={meme.url} alt={meme.title} />
+          const title = meme.title.replace(/ /g, '_');
+          return (
+            <div className="m-4 shadow-md bg-gradient-to-br from-gray-300 rounded-md" key={meme.id}>
+              <div className="flex-row items-center p-8 box-border rounded-md">
+                <div className="flex pb-6 text-lg font-bold md:text-2xl author-bar">
+                  <a href={`/user/profile/${meme.author.username}`}>{meme.author.username}</a>
+                </div>
+                <div className="flex justify-center">
+                  <a className="contents" href={`/meme/${meme.id}/${title}`}>
+                    <img className="w-full mx-auto md:w-1/6 md:h-auto rounded-md" src={meme.url} alt={meme.title} />
                   </a>
-                <div>
-                  <Buttons {...meme} />
                 </div>
-                <div>
-                  <Like memeId={meme.id} />
+                <div className="flex justify-center py-3">
+                  <a
+                    className="font-bold text-gray-800 text-md md:text-3xl 2xl:text-5xl"
+                    href={`/meme/${meme.id}/${title}`}
+                  >
+                    {meme.title}
+                  </a>
                 </div>
-                </div>
+                <InteractiveButtons memeId={meme.id} />
               </div>
-            );
-          } else {
-            return null;
-          }
+            </div>
+          );
         })}
       <div onScroll={handleScroll.current} id="scroll-load-div" className="p-5 page-number">
         {loading && <FontAwesomeIcon icon={faSpinner} spin />}

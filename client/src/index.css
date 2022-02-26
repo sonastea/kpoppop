@@ -35,6 +35,10 @@ input:not(:focus-within) ~ label {
   border-color: rgba(255, 95, 162, 1);
 }
 
+.liked {
+  color: red;
+}
+
 #recaptcha {
   text-align: -webkit-center;
 }

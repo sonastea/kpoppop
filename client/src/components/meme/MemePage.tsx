@@ -4,7 +4,7 @@ import UploadMeme from './UploadMeme';
 const MemePage = () => {
   return (
     <>
-    {/*<UploadMeme />*/}
+      <UploadMeme />
       <Memes />
     </>
   );

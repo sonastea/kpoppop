@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchMeme } from './MemeAPI';
-import PostButtons from './PostButtons';
 
 const Content = () => {
   const { memeid } = useParams();
@@ -37,7 +36,6 @@ const Content = () => {
             </div>
           </div>
         </div>
-        <PostButtons memeId={parseInt(memeid!, 10)} />
       </div>
     </>
   );
