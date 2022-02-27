@@ -46,7 +46,7 @@ const NavBar = () => {
         <div className="flex justify-between">
           <div className="flex space-x-2">
             <a href="/" className="flex items-center p-2">
-              <img src="/images/logo.png" alt="Kpoppop Logo" className="w-auto h-12 mr-2"></img>
+              <img src="/images/logo.png" alt="Kpoppop Logo" className="w-auto h-20 mr-2 md:h-10"></img>
             </a>
 
             <ul className="items-center hidden border-b md:flex space-x-1">
