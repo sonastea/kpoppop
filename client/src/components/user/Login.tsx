@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAuth } from '../../contexts/AuthContext';
 import { API_URL } from '../../Global.d';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type LoginFormData = {
   username: string;
@@ -38,16 +38,11 @@ const Login = () => {
           });
         }
         if (response.status === 201) {
-          const el = document.getElementById('loginForm')?.children[4].children[0] as HTMLElement;
-          el.innerText = 'Log In Successful ';
+          setLoginSuccess(true);
           setTimeout(() => {
-            setLoginSuccess(true);
-            setTimeout(() => {
-              el.innerText = 'Redirecting ';
-              setRedirecting(true);
-            }, 500);
-            setTimeout(() => (window.location.href = '/'), 1000);
-          }, 100);
+            setRedirecting(true);
+          }, 500);
+          setTimeout(() => (window.location.href = '/'), 1000);
         }
         return response.json();
       })
@@ -86,18 +81,16 @@ const Login = () => {
           <label className="absolute top-0 p-3 text-lg bg-white origin-0 -z-1 duration-300">Password</label>
         </div>
 
-        {errors.password?.message && (
-          <span className="text-error">{errors.password.message}</span>
-        )}
+        {errors.password?.message && <span className="text-error">{errors.password.message}</span>}
 
         <div className="py-3">
           <button
             className="w-full p-2 overflow-hidden font-semibold border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
-            type="submit"
+            //setTimeout(() => (window.location.href = '/'), 1000);
           >
-            Login
-            {loginSuccess && <FontAwesomeIcon icon={faCheck} />}
-            {redirecting && <FontAwesomeIcon icon={faSpinner} spin />}
+            {loginSuccess ? 'Login successful' : 'Login'}
+            {loginSuccess && !redirecting && <FontAwesomeIcon className="px-2" icon={faCheck} />}
+            {redirecting && <FontAwesomeIcon className="px-2" icon={faSpinner} spin />}
           </button>
         </div>
       </form>

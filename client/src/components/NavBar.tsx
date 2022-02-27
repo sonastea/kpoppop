@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const NavBar = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   let location = useLocation();
   const [isActiveMobileNav, setMobileNav] = useState<boolean>(false);
   const [active, setActive] = useState<number>();
@@ -38,7 +38,6 @@ const NavBar = () => {
         setActive(item.id);
       }
     });
-    setMobileNav(false);
   }, [location.pathname, navItems]);
 
   return (
@@ -47,7 +46,7 @@ const NavBar = () => {
         <div className="flex justify-between">
           <div className="flex space-x-2">
             <a href="/" className="flex items-center p-2">
-              <img src="/images/logo.png" alt="Kpoppop Logo" className="w-10 h-10 mr-2"></img>
+              <img src="/images/logo.png" alt="Kpoppop Logo" className="w-auto h-12 mr-2"></img>
             </a>
 
             <ul className="items-center hidden border-b md:flex space-x-1">
@@ -65,17 +64,7 @@ const NavBar = () => {
             </ul>
           </div>
 
-          <div className="items-center hidden md:flex space-x-2">
-            <a href="/login" className="p-2 font-semibold border-b-2 border-transparent hover:border-once">
-              Login
-            </a>
-            <a
-              href="/register"
-              className="p-2 font-semibold border-b-2 border-transparent text-once hover:border-once"
-            >
-              Register
-            </a>
-          </div>
+          {user?.username ? <NavBarLoggedIn /> : <NavBarLoggedOut />}
 
           <div className="flex items-center p-2 md:hidden">
             <button className="mobile-menu-toggle" onClick={() => setMobileNav((prev) => !prev)}>
@@ -98,16 +87,30 @@ const NavBar = () => {
             } w-64 h-screen md:hidden rounded absolute pr-3 bg-gray-200 z-10 transform duration-300 ease-in-out left-0`}
           >
             <div className="pt-8 pl-4">
-              <a href="/">KPOPPOP</a>
+              <a className="inline-block" href="/">
+                <img src="/images/logo.png" alt="Kpoppop Logo" className="w-auto h-20"></img>
+              </a>
               <button className="absolute right-4" onClick={() => setMobileNav((prev) => !prev)}>
                 <FontAwesomeIcon icon={faXmark} />
               </button>
             </div>
             <div className="pt-8 pb-48 pl-4 pr-16">
               <div className="flex flex-col space-y-3">
-                <a href="/memes">Memes</a>
-                <a href="/login">Login</a>
-                <a href="/register">Register</a>
+                {user?.username ? (
+                  <>
+                    <a href="/memes">Memes</a>
+                    <a href={`/user/profile/${user?.username}`}>Profile</a>
+                    <button className="flex" onClick={logout}>
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <a href="/memes">Memes</a>
+                    <a href="/login">Login</a>
+                    <a href="/register">Register</a>
+                  </>
+                )}
               </div>
             </div>
           </div>
