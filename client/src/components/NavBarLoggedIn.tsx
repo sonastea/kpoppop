@@ -1,7 +1,7 @@
 import { faUser, faAngleDown, faAnglesDown, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Menu, Transition } from '@headlessui/react';
 import { useAuth } from '../contexts/AuthContext';
-import { Menu } from '@headlessui/react';
 
 const NavBarLoggedIn = () => {
   const { user, logout } = useAuth();
@@ -24,7 +24,16 @@ const NavBarLoggedIn = () => {
             )}
           </Menu.Button>
           {open && (
-            <Menu.Items className="absolute right-0 w-40 mt-2 mr-2 bg-white shadow-sm origin-top-right rounded-md ring-1 ring-once ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
+            <Transition
+              show={open}
+              enter="transition duration-100 ease-out"
+              enterFrom="transform scale-95 opacity-0"
+              enterTo="transofrm scale-100 opacity-100"
+              leave="transition duration-75 ease-out"
+              leaveFrom="transform scale-900 opacity-100"
+              leaveTo="transform scale-95 opacity-0"
+            >
+            <Menu.Items className="absolute right-0 w-40 mt-2 mr-2 bg-white border shadow origin-top-right rounded-md ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
               <Menu.Item>
                 {({ active }) => (
                   <a
@@ -48,6 +57,7 @@ const NavBarLoggedIn = () => {
                 )}
               </Menu.Item>
             </Menu.Items>
+            </Transition>
           )}
         </>
       )}
