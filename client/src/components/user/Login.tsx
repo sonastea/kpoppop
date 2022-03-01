@@ -85,8 +85,7 @@ const Login = () => {
 
         <div className="py-3">
           <button
-            className="w-full p-2 overflow-hidden font-semibold border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
-            //setTimeout(() => (window.location.href = '/'), 1000);
+            className="w-full p-2 overflow-hidden font-semibold text-gray-900 border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
           >
             {loginSuccess ? 'Login successful' : 'Login'}
             {loginSuccess && !redirecting && <FontAwesomeIcon className="px-2" icon={faCheck} />}

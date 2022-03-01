@@ -11,6 +11,22 @@ const Memes = () => {
   const [posts, setPosts] = useState([] as any);
   const [loading, setLoading] = useState(false);
 
+  const loadMorePosts = async () => {
+    setLoading(false);
+    await fetchMemes(cursor)
+      .then((memes) => {
+        if (memes.length !== 0) {
+          setPosts((prev: any) => [...prev, ...memes]);
+          cursor = memes[memes.length - 1].id;
+        } else {
+          window.removeEventListener('scroll', handleScroll.current);
+        }
+      })
+      .catch((_error) => {});
+  };
+
+  const fetchData = debounce(loadMorePosts, 1000);
+
   useEffect(() => {
     const loadData = async () => {
       await fetchMemes(cursor)
@@ -30,23 +46,7 @@ const Memes = () => {
     return () => {
       window.removeEventListener('scroll', handleScrollRef);
     };
-  }, [posts]);
-
-  const loadMorePosts = async () => {
-    setLoading(false);
-    await fetchMemes(cursor)
-      .then((memes) => {
-        if (memes.length !== 0) {
-          setPosts((prev: any) => [...prev, ...memes]);
-          cursor = memes[memes.length - 1].id;
-        } else {
-          window.removeEventListener('scroll', handleScroll.current);
-        }
-      })
-      .catch((_error) => {});
-  };
-
-  const fetchData = debounce(loadMorePosts, 1000);
+  }, []);
 
   const handleScroll = useRef((e: any) => {
     const { innerHeight, scrollY } = e.currentTarget;
@@ -86,8 +86,8 @@ const Memes = () => {
             </div>
           );
         })}
-      <div onScroll={handleScroll.current} id="scroll-load-div" className="p-5 page-number">
-        {loading && <FontAwesomeIcon icon={faSpinner} spin />}
+      <div onScroll={handleScroll.current} id="scroll-load-div" className="flex justify-center p-5 page-number">
+        {loading && <FontAwesomeIcon className="-z-1" icon={faSpinner} spin />}
       </div>
     </>
   );
