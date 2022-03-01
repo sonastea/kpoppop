@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAuth } from '../../contexts/AuthContext';
 import { API_URL } from '../../Global.d';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 type LoginFormData = {
   username: string;
