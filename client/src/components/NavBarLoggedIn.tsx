@@ -15,7 +15,7 @@ const NavBarLoggedIn = () => {
     <Menu as="div" className="relative hidden md:block">
       {({ open }) => (
         <>
-          <Menu.Button className="inline-flex items-center h-full p-2">
+          <Menu.Button className="inline-flex items-center h-full p-2 hover:bg-once">
             {user?.username}
             {open ? (
               <FontAwesomeIcon className="ml-2" icon={faAnglesDown} />
