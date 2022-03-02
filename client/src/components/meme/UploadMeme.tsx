@@ -1,6 +1,6 @@
 import { faSpinner, faCheck, faHourglass, faXmark, faUpload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { submitMeme } from './MemeAPI';
 import { identifyImage } from './IdentifyImage';
@@ -27,6 +27,14 @@ const UploadMeme = () => {
   const [flagged, setFlagged] = useState<boolean>(false);
   const [detecting, setDetecting] = useState<boolean>(false);
   const { register, handleSubmit } = useForm<MemeFormData>();
+
+  useEffect(() => {
+    if (open) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+  }, [open]);
 
   const memeHandler: SubmitHandler<MemeFormData> = async (data) => {
     const formData = new FormData();

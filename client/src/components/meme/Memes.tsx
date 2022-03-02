@@ -59,33 +59,36 @@ const Memes = () => {
 
   return (
     <>
-      {posts &&
-        posts.map((meme: any) => {
-          const title = meme.title.replace(/ /g, '_');
-          return (
-            <div className="m-4 shadow-md bg-gradient-to-br from-gray-300 rounded-md" key={meme.id}>
-              <div className="flex-row items-center p-8 box-border rounded-md">
-                <div className="flex pb-6 text-lg font-bold md:text-2xl author-bar">
-                  <a href={`/user/profile/${meme.author.username}`}>{meme.author.username}</a>
+      <div className="meme-container">
+        {posts &&
+          posts.map((meme: any) => {
+            const title = meme.title.replace(/ /g, '_');
+            return (
+              <div className="m-4 shadow-md bg-gradient-to-br from-gray-300 rounded-md" key={meme.id}>
+                <div className="flex-row items-center p-8 box-border rounded-md">
+                  <div className="flex pb-6 text-lg font-bold md:text-2xl author-bar">
+                    <a href={`/user/profile/${meme.author.username}`}>{meme.author.username}</a>
+                  </div>
+                  <div className="flex justify-center">
+                    <a className="contents" href={`/meme/${meme.id}/${title}`}>
+                      <img className="w-full mx-auto md:w-1/6 md:h-auto rounded-md" src={meme.url} alt={meme.title} />
+                    </a>
+                  </div>
+                  <div className="flex justify-center py-3">
+                    <a
+                      className="font-bold text-gray-800 text-md md:text-3xl 2xl:text-5xl"
+                      href={`/meme/${meme.id}/${title}`}
+                    >
+                      {meme.title}
+                    </a>
+                  </div>
+                  <InteractiveButtons memeId={meme.id} />
                 </div>
-                <div className="flex justify-center">
-                  <a className="contents" href={`/meme/${meme.id}/${title}`}>
-                    <img className="w-full mx-auto md:w-1/6 md:h-auto rounded-md" src={meme.url} alt={meme.title} />
-                  </a>
-                </div>
-                <div className="flex justify-center py-3">
-                  <a
-                    className="font-bold text-gray-800 text-md md:text-3xl 2xl:text-5xl"
-                    href={`/meme/${meme.id}/${title}`}
-                  >
-                    {meme.title}
-                  </a>
-                </div>
-                <InteractiveButtons memeId={meme.id} />
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+      </div>
+
       <div onScroll={handleScroll.current} id="scroll-load-div" className="flex justify-center p-5 page-number">
         {loading && <FontAwesomeIcon className="-z-1" icon={faSpinner} spin />}
       </div>
