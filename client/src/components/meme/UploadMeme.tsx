@@ -207,7 +207,7 @@ const UploadMeme = () => {
                   multiple
                   type="file"
                   accept="image/gif, image/jpg, image/jpeg, image/png"
-                  className="border"
+                  className="w-full border"
                   {...register('file')}
                   onChange={handleChangeEvent}
                   onInput={handleImageSelect}
