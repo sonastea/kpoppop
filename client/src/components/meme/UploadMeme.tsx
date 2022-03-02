@@ -1,10 +1,11 @@
-import { faSpinner, faCheck, faHourglass, faXmark, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faCheck, faHourglass, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { submitMeme } from './MemeAPI';
 import { identifyImage } from './IdentifyImage';
 import { compressImage } from './CompressImage';
+import { useEffect, useState } from 'react';
+import { submitMeme } from './MemeAPI';
+import { profanityFilter } from 'utils/profanity-filter';
 
 export type PredictionType = {
   className: string;
@@ -26,7 +27,11 @@ const UploadMeme = () => {
   const [postable, setPostable] = useState<boolean>(false);
   const [flagged, setFlagged] = useState<boolean>(false);
   const [detecting, setDetecting] = useState<boolean>(false);
-  const { register, handleSubmit } = useForm<MemeFormData>();
+  const {
+    formState: { errors },
+    register,
+    handleSubmit,
+  } = useForm<MemeFormData>();
 
   useEffect(() => {
     if (open) {
@@ -39,8 +44,6 @@ const UploadMeme = () => {
   const memeHandler: SubmitHandler<MemeFormData> = async (data) => {
     const formData = new FormData();
     const compressed = await compressImage(data.file![0]);
-    console.log(data.file![0].size);
-    console.log((compressed as File).size);
     formData.append('title', data.title);
     formData.append('url', data.url!);
     formData.append('file', compressed as File);
@@ -78,8 +81,6 @@ const UploadMeme = () => {
           setUploading(false);
           alert('Failed to upload meme.');
         });
-    } else {
-      window.alert('Please select a different image.');
     }
   };
 
@@ -184,10 +185,21 @@ const UploadMeme = () => {
                   title
                 </label>
                 <input
+                  required
                   className="w-full px-1 border appearance-none focus:outline-none label-outline"
                   type="text"
-                  {...register('title')}
+                  {...register('title', {
+                    required: true,
+                    minLength: 3,
+                    validate: profanityFilter,
+                  })}
                 />
+                {errors.title?.type === 'minLength' && (
+                  <span className="text-error">{'Title must be a minimum 3 characters.'}</span>
+                )}
+                {errors.title?.type === 'validate' && (
+                  <span className="text-error">{'Title contains a swear word.'}</span>
+                )}
               </div>
 
               <div id="url-input-box">
