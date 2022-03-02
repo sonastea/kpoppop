@@ -84,7 +84,7 @@ const NavBar = () => {
             id="mobileNav"
             className={`${
               !isActiveMobileNav && '-translate-x-full'
-            } w-64 h-screen md:hidden rounded absolute pr-3 bg-gray-200 z-10 transform duration-300 ease-in-out left-0`}
+            } w-64 h-screen md:hidden rounded absolute pr-3 bg-gray-200 z-100 transform duration-300 ease-in-out left-0`}
           >
             <div className="pt-8 pl-4">
               <a className="inline-block" href="/">
