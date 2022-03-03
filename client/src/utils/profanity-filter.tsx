@@ -4,7 +4,7 @@ export const profanityFilter = (text: string): boolean | undefined => {
   const texts = text.split(" ");
 
   for (const t of texts) {
-    if (words.includes(t)) return false;
+    if (words.includes(t.toLowerCase())) return false;
   }
   return true;
 }
