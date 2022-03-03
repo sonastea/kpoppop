@@ -69,7 +69,7 @@ const Memes = () => {
                   <div className="flex pb-6 text-lg font-bold md:text-2xl author-bar">
                     <a href={`/user/profile/${meme.author.username}`}>{meme.author.username}</a>
                   </div>
-                  <div className="flex justify-center">
+                  <div className="flex-col justify-center">
                     <a className="contents" href={`/meme/${meme.id}/${title}`}>
                       <img className="w-full mx-auto md:w-1/6 md:h-auto rounded-md" src={meme.url} alt={meme.title} />
                     </a>
