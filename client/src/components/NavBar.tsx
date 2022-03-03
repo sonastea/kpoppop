@@ -23,7 +23,7 @@ const NavBar = () => {
       },
       {
         id: 2,
-        name: 'Contact Us',
+        name: 'Contact',
         to: '/contact',
         className:
           'px-2 py-2 font-semibold text-slate-500 border-b-2 border-transparent duration-150 hover:border-once',

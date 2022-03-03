@@ -17,8 +17,24 @@ module.exports = {
           800: '#B6004C',
           900: '#7E0035',
         },
+        ponce: {
+          DEFAULT: '#FCC89B',
+          50: '#FFFFFF',
+          100: '#FFFFFF',
+          200: '#FFFFFF',
+          300: '#FEF4EA',
+          400: '#FDDEC3',
+          500: '#FCC89B',
+          600: '#FAAA65',
+          700: '#F98C2E',
+          800: '#E86F07',
+          900: '#B15505',
+        },
         error: {
           DEFAULT: '#B11212',
+        },
+        thrice: {
+          DEFAULT: '#860038',
         },
       },
       transformOrigin: {
@@ -27,7 +43,7 @@ module.exports = {
       zIndex: {
         '-1': '-1',
         '-10': '-10',
-        '100': '100',
+        100: '100',
       },
     },
   },
