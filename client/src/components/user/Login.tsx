@@ -1,8 +1,8 @@
 import { faCheck, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useAuth } from '../../contexts/AuthContext';
-import { API_URL } from '../../Global.d';
+import { useAuth } from 'contexts/AuthContext';
+import { API_URL } from 'Global.d';
 import { useState } from 'react';
 
 type LoginFormData = {

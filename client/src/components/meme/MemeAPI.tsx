@@ -1,4 +1,4 @@
-import { API_URL } from '../../Global.d';
+import { API_URL } from 'Global.d';
 
 export const submitMeme = async (data: FormData) => {
   return await fetch(`${API_URL}/meme/submit`, {

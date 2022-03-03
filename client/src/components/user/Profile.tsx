@@ -1,4 +1,4 @@
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from 'contexts/AuthContext';
 import { useParams } from 'react-router-dom';
 import MyProfile from './MyProfile';
 

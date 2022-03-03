@@ -8,7 +8,7 @@ import Profile from './components/user/Profile';
 import MemePage from 'components/meme/MemePage';
 import Post from './components/meme/Post';
 import ContactUs from 'components/ContactUs';
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider } from 'contexts/AuthContext';
 
 const App = () => {
   return (

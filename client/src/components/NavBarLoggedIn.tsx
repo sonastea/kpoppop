@@ -1,7 +1,7 @@
 import { faUser, faAngleDown, faAnglesDown, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Menu, Transition } from '@headlessui/react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from 'contexts/AuthContext';
 
 const NavBarLoggedIn = () => {
   const { user, logout } = useAuth();
