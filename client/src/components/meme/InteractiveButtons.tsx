@@ -59,12 +59,14 @@ const InteractiveButtons = (props: InteractiveButtonProps) => {
     <div className="flex justify-center text-md gap-3 md:text-xl">
       <div className="like" onClick={handleLiked} role="button" aria-label="like">
         {likedState ? <FontAwesomeIcon className="liked" icon={fasHeart} /> : <FontAwesomeIcon icon={faHeart} />}
-        <span className="ml-1 align-middle">{totalLikes ? `${totalLikes}` : `0`}</span>
+        <span className="ml-1 text-gray-700 align-middle">{totalLikes ? `${totalLikes}` : `0`}</span>
       </div>
-      <div className="comments" role="button" aria-label="comments">
-        <FontAwesomeIcon className="align-middle comments" icon={faComment} />
-        <span className="ml-1 align-middle ">{totalComments ? `${totalComments}` : `0`}</span>
-      </div>
+      {false && (
+        <div className="comments" role="button" aria-label="comments">
+          <FontAwesomeIcon className="align-middle comments" icon={faComment} />
+          <span className="ml-1 text-gray-700 align-middle ">{totalComments ? `${totalComments}` : `0`}</span>
+        </div>
+      )}
     </div>
   );
 };
