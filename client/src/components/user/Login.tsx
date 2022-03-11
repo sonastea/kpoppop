@@ -1,4 +1,4 @@
-import { faCheck, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faSpinner, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAuth } from 'contexts/AuthContext';
@@ -18,6 +18,7 @@ const Login = () => {
     setError,
   } = useForm<LoginFormData>();
   const [loginSuccess, setLoginSuccess] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [redirecting, setRedirecting] = useState<boolean>(false);
   const { updateUser } = useAuth();
 
@@ -75,10 +76,14 @@ const Login = () => {
             required
             placeholder=" "
             className="block w-full p-3 text-lg bg-transparent appearance-none focus:outline-none"
-            type="password"
+            type={showPassword ? "text" : "password"}
             {...register('password')}
           />
           <label className="absolute top-0 p-3 text-lg bg-white origin-0 -z-1 duration-300">Password</label>
+
+          <i className="absolute top-0 right-0 p-3 text-lg" onClick={() => setShowPassword((toggle) => !toggle)}>
+            <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash}/>
+          </i>
         </div>
 
         {errors.password?.message && <span className="text-error">{errors.password.message}</span>}
