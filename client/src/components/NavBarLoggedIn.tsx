@@ -37,7 +37,7 @@ const NavBarLoggedIn = () => {
               <Menu.Item>
                 {({ active }) => (
                   <a
-                    className={`flex items-center px-4 py-2 text-sm ${active && 'bg-once'}`}
+                    className={`flex items-center px-4 py-2 text-sm ${active && 'bg-once-200'}`}
                     href={`/user/profile/${user?.username}`}
                   >
                     <FontAwesomeIcon className="mr-2" icon={faUser} />
@@ -48,7 +48,7 @@ const NavBarLoggedIn = () => {
               <Menu.Item>
                 {({ active }) => (
                   <button
-                    className={`w-full flex items-center px-4 py-2 text-sm ${active && 'bg-once'}`}
+                    className={`w-full flex items-center px-4 py-2 text-sm ${active && 'bg-once-200'}`}
                     onClick={logoutHandler}
                   >
                     <FontAwesomeIcon viewBox="0 0 448 512" className="mr-2" icon={faArrowRightFromBracket} />
