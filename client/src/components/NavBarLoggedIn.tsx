@@ -15,12 +15,12 @@ const NavBarLoggedIn = () => {
     <Menu as="div" className="relative hidden md:block">
       {({ open }) => (
         <>
-          <Menu.Button className="inline-flex items-center h-full p-2 hover:bg-once">
+          <Menu.Button className="inline-flex items-center h-full p-2 font-semibold text-once-900 hover:bg-once-200">
             {user?.username}
             {open ? (
-              <FontAwesomeIcon className="ml-2" icon={faAnglesDown} />
+              <FontAwesomeIcon className="ml-2 text-slate-900" icon={faAnglesDown} />
             ) : (
-              <FontAwesomeIcon className="ml-2" icon={faAngleDown} />
+              <FontAwesomeIcon className="ml-2 text-slate-700" icon={faAngleDown} />
             )}
           </Menu.Button>
           {open && (
