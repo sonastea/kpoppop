@@ -1,4 +1,6 @@
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { API_URL, SITE_KEY } from '../../Global.d';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { useState } from 'react';
@@ -14,6 +16,7 @@ type FormData = {
 declare const grecaptcha: ReCAPTCHA;
 
 const Register = () => {
+  const [accountCreated, setAccountCreated] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [verified, setVerified] = useState<boolean>(false);
 
@@ -65,7 +68,10 @@ const Register = () => {
         })
         .then((data) => {
           if (data.id) {
-            window.location.href = '/';
+            setAccountCreated(true);
+            setTimeout(() => {
+              window.location.href = '/login';
+            }, 2000);
           }
           if (data.errors) {
             setError('username', {
@@ -164,6 +170,14 @@ const Register = () => {
               Sign Up
             </button>
           </div>
+          {accountCreated && (
+            <div className="text-white text-center">
+              Account created successfully.
+              <br />
+              <FontAwesomeIcon className="mr-2" icon={faSpinner} spin />
+              Redirecting to login...
+            </div>
+          )}
         </form>
       </div>
     </div>
