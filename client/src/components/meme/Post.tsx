@@ -30,7 +30,7 @@ const Post = () => {
           </div>
           <div className="flex-1 m-2">
             <div className="flex justify-end text-lg font-bold md:text-2xl">
-              <a href={`/user/profile/${meme.author.username}`}>{meme.author.username}</a>
+              <a href={`/user/${meme.author.username}`}>{meme.author.username}</a>
             </div>
             <div className="flex items-center font-bold h-3/4 text-md md:text-2xl">{meme.title}</div>
           </div>

@@ -14,7 +14,7 @@ const Buttons = (props: any) => {
           </a>
       </div>
       <div className="author-bar">
-        <a className="author-bar meme-buttons" href={`/user/profile/${username}`}>
+        <a className="author-bar meme-buttons" href={`/user/${username}`}>
             {username}
           </a>
       </div>

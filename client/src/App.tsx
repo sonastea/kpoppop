@@ -9,6 +9,7 @@ import MemePage from 'components/meme/MemePage';
 import Post from './components/meme/Post';
 import ContactUs from 'components/ContactUs';
 import { AuthProvider } from 'contexts/AuthContext';
+import EditProfile from 'components/user/EditProfile';
 
 const App = () => {
   return (
@@ -25,7 +26,8 @@ const App = () => {
           <Route path="contact" element={<ContactUs />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
-          <Route path="user/profile/:username" element={<Profile />} />
+          <Route path="user/:username" element={<Profile />} />
+          <Route path="profile/settings" element={<EditProfile />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

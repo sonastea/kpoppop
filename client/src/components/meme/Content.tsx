@@ -32,7 +32,7 @@ const Content = () => {
           </div>
           <div className="mt-auto author-bar">
             <div>
-              <a href={`/user/profile/${meme.author.username}`}>{meme.author.username}</a>
+              <a href={`/user/${meme.author.username}`}>{meme.author.username}</a>
             </div>
           </div>
         </div>

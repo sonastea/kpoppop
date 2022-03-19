@@ -99,7 +99,8 @@ const NavBar = () => {
                 {user?.username ? (
                   <>
                     <a href="/memes">Memes</a>
-                    <a href={`/user/profile/${user?.username}`}>Profile</a>
+                    <a href={`/user/${user?.username}`}>Profile</a>
+                    <a href={`/profile/settings`}>Settings</a>
                     <button className="flex" onClick={logout}>
                       Logout
                     </button>
