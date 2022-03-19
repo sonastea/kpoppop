@@ -8,7 +8,6 @@
 
 # TypeScript cache
 *.tsbuildinfo
-*.d.ts
 
 # nsfw.js models
 */public/model
