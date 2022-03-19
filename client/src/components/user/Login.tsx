@@ -1,9 +1,8 @@
-import { faCheck, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faSpinner, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, Container, Form } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useAuth } from '../../contexts/AuthContext';
-import { API_URL } from '../../Global.d';
+import { useAuth } from 'contexts/AuthContext';
+import { API_URL } from 'Global.d';
 import { useState } from 'react';
 
 type LoginFormData = {
@@ -19,10 +18,12 @@ const Login = () => {
     setError,
   } = useForm<LoginFormData>();
   const [loginSuccess, setLoginSuccess] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [redirecting, setRedirecting] = useState<boolean>(false);
   const { updateUser } = useAuth();
 
   const loginHandler: SubmitHandler<LoginFormData> = async (data): Promise<any> => {
+    if (!data.password || !data.username) return;
     setLoginSuccess(false);
     await fetch(`${API_URL}/user/login`, {
       method: 'POST',
@@ -38,46 +39,66 @@ const Login = () => {
           });
         }
         if (response.status === 201) {
-          const el = document.getElementById('loginForm')?.children[4].children[0] as HTMLElement;
-          el.innerText = 'Log In Successful ';
+          setLoginSuccess(true);
           setTimeout(() => {
-            setLoginSuccess(true);
-            setTimeout(() => { el.innerText = 'Redirecting '; setRedirecting(true); }, 500);
-            setTimeout(() => window.location.href = '/', 1000);
-          }, 100);
+            setRedirecting(true);
+          }, 500);
+          setTimeout(() => (window.location.href = '/'), 1000);
         }
         return response.json();
       })
       .then((user) => updateUser(user))
-      .catch((_error) => {})
+      .catch((_error) => {});
   };
 
   return (
-    <Container className="d-grid justify-content-center">
-      <Form id="loginForm" onSubmit={handleSubmit(loginHandler)}>
-        <h3 className="mt-3 mb-3">Log in to kpoppop</h3>
+    <div className="flex items-center justify-center h-screen">
+      <form
+        className="max-w-sm p-6 mx-auto overflow-hidden shadow-xl rounded-md space-y-6"
+        id="loginForm"
+        onSubmit={handleSubmit(loginHandler)}
+      >
+        <h3 className="py-3 font-semibold text-center text-gray-900">Log in to kpoppop</h3>
 
-        <Form.Group className="mb-3" controlId="formUsername">
-          <Form.Label>Username</Form.Label>
-          <Form.Control required type="text" {...register('username')} />
-        </Form.Group>
+        <div className="relative border-2 label-outline focus-within:border-once">
+          <input
+            required
+            placeholder=" "
+            className="block w-full p-3 text-lg bg-transparent appearance-none focus:outline-none"
+            type="text"
+            {...register('username')}
+          />
+          <label className="absolute top-0 p-3 text-lg bg-white origin-0 -z-1 duration-300">Username</label>
+        </div>
 
-        <Form.Group className="mb-3" controlId="formPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control required type="password" {...register('password')} />
-        </Form.Group>
+        <div className="relative border-2 label-outline focus-within:border-once">
+          <input
+            required
+            placeholder=" "
+            className="block w-full p-3 text-lg bg-transparent appearance-none focus:outline-none"
+            type={showPassword ? "text" : "password"}
+            {...register('password')}
+          />
+          <label className="absolute top-0 p-3 text-lg bg-white origin-0 -z-1 duration-300">Password</label>
 
-        <p className="text-danger">{errors.password?.message}</p>
+          <i className="absolute top-0 right-0 p-3 text-lg" onClick={() => setShowPassword((toggle) => !toggle)}>
+            <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash}/>
+          </i>
+        </div>
 
-        <Form.Group className="text-center">
-          <Button className="btn-block text-center mb-3" variant="primary" size="lg" type="submit">
-            Log In
-            {loginSuccess && <FontAwesomeIcon icon={faCheck} />}
-            {redirecting && <FontAwesomeIcon icon={faSpinner} spin />}
-          </Button>
-        </Form.Group>
-      </Form>
-    </Container>
+        {errors.password?.message && <span className="text-error">{errors.password.message}</span>}
+
+        <div className="py-3">
+          <button
+            className="w-full p-2 overflow-hidden font-semibold text-gray-900 border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
+          >
+            {loginSuccess ? 'Login successful' : 'Login'}
+            {loginSuccess && !redirecting && <FontAwesomeIcon className="px-2" icon={faCheck} />}
+            {redirecting && <FontAwesomeIcon className="px-2" icon={faSpinner} spin />}
+          </button>
+        </div>
+      </form>
+    </div>
   );
 };
 

@@ -8,38 +8,50 @@ datasource db {
 }
 
 model User {
-  id           Int       @id @default(autoincrement())
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime? @updatedAt
-  username     String    @unique
+  id           Int                @id @default(autoincrement())
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime?          @updatedAt
+  username     String             @unique
   password     String
-  email        String    @unique
+  email        String             @unique
   displayname  String?
-  role         Role      @default(USER)
+  banner       String?
+  photo        String?
+  role         Role               @default(USER)
   refreshtoken String?
   memes        Meme[]
-  likedMemes   Meme[]    @relation("UserLikesPost")
+  likedMemes   Meme[]             @relation("UserLikesPost")
+  socialMedias SocialMedia[]
 }
 
 model Meme {
-  id        Int          @id @default(autoincrement())
+  id        Int                   @id @default(autoincrement())
   title     String
   url       String?
   path      String?
   resource  MemeResource
   authorId  Int
-  active    Boolean      @default(true)
-  flagged   Boolean      @default(false)
-  createdAt DateTime     @default(now())
-  updatedAt DateTime?    @updatedAt
-  updatedBy String?      @ignore
-  author    User         @relation(fields: [authorId], references: [id])
-  likedBy   User[]       @relation("UserLikesPost")
+  active    Boolean               @default(true)
+  flagged   Boolean               @default(false)
+  createdAt DateTime              @default(now())
+  updatedAt DateTime?             @updatedAt
+  updatedBy String?               @ignore
+  author    User                  @relation(fields: [authorId], references: [id])
+  likedBy   User[]                @relation("UserLikesPost")
+}
+
+model SocialMedia {
+  id        Int                   @id @default(autoincrement())
+  uuid      String                @default(dbgenerated("gen_random_uuid()")) @db.Uuid @unique
+  title     String?
+  url       String
+  user      User                  @relation(fields: [userId], references: [id])
+  userId    Int
 }
 
 model Session {
-  id        String   @id
-  sid       String   @unique
+  id        String                @id
+  sid       String                @unique
   data      String
   expiresAt DateTime
 }

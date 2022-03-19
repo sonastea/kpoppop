@@ -1,4 +1,4 @@
-import { API_URL } from '../../Global.d';
+import { API_URL } from 'Global.d';
 
 const ValidateToken = async (): Promise<any> => {
   try {

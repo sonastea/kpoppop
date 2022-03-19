@@ -1,6 +1,6 @@
 import { ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { createContext } from 'react';
-import { API_URL } from '../Global.d';
+import { API_URL } from 'Global.d';
 
 export type User = {
   id?: number;

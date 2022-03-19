@@ -1,7 +1,12 @@
-import { Nav, Navbar, Offcanvas } from 'react-bootstrap';
-import { useAuth } from '../contexts/AuthContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { useAuth } from 'contexts/AuthContext';
 
-const MobileNav = () => {
+type MobileNavProps = {
+  isActive: boolean;
+};
+
+const MobileNav = ({ isActive }: MobileNavProps) => {
   const { user, logout } = useAuth();
 
   const logoutHandler = (e: React.MouseEvent<HTMLElement>): void => {
@@ -10,31 +15,22 @@ const MobileNav = () => {
   };
 
   return (
-    <Nav>
-      <Navbar.Toggle id="hamburgerToggle" aria-controls="mobileNav" />
-      <Navbar.Offcanvas scroll={true} id="mobileNav" aria-labelledby="mobileNav" placement="start">
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title id="mobileNav">KPOPPOP</Offcanvas.Title>
-        </Offcanvas.Header>
-        <Offcanvas.Body>
-          <Nav className="justify-content-end flex-grow-1 pe-3">
-            <Nav.Link href="/memes">Memes</Nav.Link>
-            {user?.username && (
-              <>
-                <Nav.Link href={`/user/profile/${user.username}`}>{user.username}</Nav.Link>
-                <Nav.Link onClick={logoutHandler}>logout</Nav.Link>
-              </>
-            )}
-            {!user?.username && (
-              <>
-                <Nav.Link href="/register">Signup</Nav.Link>
-                <Nav.Link href="/login">Login</Nav.Link>
-              </>
-            )}
-          </Nav>
-        </Offcanvas.Body>
-      </Navbar.Offcanvas>
-    </Nav>
+    <div
+      id="mobileNav"
+      className={`${
+        !isActive && '-translate-x-full'
+      } rounded absolute right-0 pr-3 md:hidden bg-white z-10 w-64 transform md:relative md:translate-x-0 duration-200 ease-in-out`}
+    >
+      <div>
+        <div>KPOPPOP</div>
+        <a href="/memes">Memes</a>
+      </div>
+      <div>
+      <button onClick={() => !isActive}>
+          <FontAwesomeIcon icon={faXmark} />
+        </button>
+      </div>
+    </div>
   );
 };
 

@@ -1,10 +1,11 @@
-import { faAngleDoubleDown, faAngleDoubleUp, faSpinner, faCheck, faHourglass } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faCheck, faHourglass, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
-import { Button, Col, Collapse, Container, Form, Image, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { submitMeme } from './MemeAPI';
 import { identifyImage } from './IdentifyImage';
+import { compressImage } from './CompressImage';
+import { useEffect, useState } from 'react';
+import { submitMeme } from './MemeAPI';
+import { profanityFilter } from 'utils/profanity-filter';
 
 export type PredictionType = {
   className: string;
@@ -26,13 +27,26 @@ const UploadMeme = () => {
   const [postable, setPostable] = useState<boolean>(false);
   const [flagged, setFlagged] = useState<boolean>(false);
   const [detecting, setDetecting] = useState<boolean>(false);
-  const { register, handleSubmit } = useForm<MemeFormData>();
+  const {
+    formState: { errors },
+    register,
+    handleSubmit,
+  } = useForm<MemeFormData>();
+
+  useEffect(() => {
+    if (open) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+  }, [open]);
 
   const memeHandler: SubmitHandler<MemeFormData> = async (data) => {
     const formData = new FormData();
+    const compressed = await compressImage(data.file![0]);
     formData.append('title', data.title);
     formData.append('url', data.url!);
-    formData.append('file', data.file![0]);
+    formData.append('file', compressed as File);
     formData.append('flagged', JSON.stringify(flagged));
 
     if (postable) {
@@ -67,8 +81,6 @@ const UploadMeme = () => {
           setUploading(false);
           alert('Failed to upload meme.');
         });
-    } else {
-      window.alert('Please select a different image.');
     }
   };
 
@@ -82,8 +94,8 @@ const UploadMeme = () => {
       return;
     }
 
-    switch (e.currentTarget.id) {
-      case 'url-input-box':
+    switch (e.currentTarget.name) {
+      case 'url':
         if (e.target.value !== '') {
           fileInput.style.display = 'none';
           setPostable(true);
@@ -93,7 +105,7 @@ const UploadMeme = () => {
         }
         break;
 
-      case 'file-input-box':
+      case 'file':
         if (e.target.value !== '') {
           urlInput.style.display = 'none';
         } else {
@@ -133,11 +145,8 @@ const UploadMeme = () => {
   };
 
   const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFiles(e.target.files); // UploadMeme Image Preview
-    }
-
     if (e.target.files && e.target.files.length >= 1) {
+      setFiles(e.target.files); // UploadMeme Image Preview
       setDetecting(true);
       const prediction = await identifyImage(e.target.files[0]);
       const postable = isSFW(prediction);
@@ -147,81 +156,110 @@ const UploadMeme = () => {
   };
 
   return (
-    <>
-      <Container>
-        <Collapse in={open}>
-          <Form id="post-meme-form" onSubmit={handleSubmit(memeHandler)}>
-            <h3 className="mt-3 mb-4">Post meme to kpoppop</h3>
+    <div className="flex justify-center">
+      <button
+        onClick={() => setOpen((open) => !open)}
+        type="button"
+        className="z-10 p-2 m-4 font-semibold text-gray-900 border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
+      >
+        Submit a post
+      </button>
 
-            <Form.Group id="title-input-form" className="w-75 mb-3" controlId="title-input-box">
-              <Form.Label className="title required-input">title</Form.Label>
-              <Form.Control required as="textarea" className="required-input" {...register('title')} />
-            </Form.Group>
+      {open && (
+        <div
+          onClick={() => setOpen((open) => !open)}
+          className="absolute flex justify-center w-full h-full overflow-hidden backdrop backdrop-filter backdrop-blur-lg"
+        >
+          <div
+            onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
+            className="absolute inset-x-0 bg-white rounded shadow-md sm:inset-x-auto sm:w-1/3 top-24"
+          >
+            <form onSubmit={handleSubmit(memeHandler)} className="p-8 space-y-5">
+              <button onClick={() => setOpen((open) => !open)} type="button" className="absolute top-0 p-2 right-2">
+                <FontAwesomeIcon icon={faXmark} />
+              </button>
+              <h2 className="mb-10 text-xl font-bold text-gray-900">Submit to kpoppop</h2>
 
-            <Form.Group id="url-input-box" className="w-75 mb-3" controlId="url-input-box">
-              <Form.Label>url</Form.Label>
-              <Form.Control type="url" {...register('url')} onChange={handleChangeEvent} />
-            </Form.Group>
+              <div>
+                <label className="block mb-1 font-semibold text-gray-800" htmlFor="title">
+                  title
+                </label>
+                <input
+                  required
+                  className="w-full px-1 border appearance-none focus:outline-none label-outline"
+                  type="text"
+                  {...register('title', {
+                    required: true,
+                    minLength: 3,
+                    validate: profanityFilter,
+                  })}
+                />
+                {errors.title?.type === 'minLength' && (
+                  <span className="text-error">{'Title must be a minimum 3 characters.'}</span>
+                )}
+                {errors.title?.type === 'validate' && (
+                  <span className="text-error">{'Title contains a swear word.'}</span>
+                )}
+              </div>
 
-            <Form.Group id="file-input-box" className="w-75 mb-3" controlId="file-input-box">
-              <Form.Control
-                multiple
-                type="file"
-                accept="image/gif, image/jpeg, image/png"
-                {...register('file')}
-                onChange={handleChangeEvent}
-                onInput={handleImageSelect}
-              />
-            </Form.Group>
+              <div id="url-input-box">
+                <label className="block mb-1 font-semibold text-gray-800" htmlFor="url">
+                  url
+                </label>
+                <input
+                  className="w-full px-1 border focus:outline-none focus-within:border-once"
+                  type="url"
+                  {...register('url')}
+                  onChange={handleChangeEvent}
+                />
+              </div>
 
-            <Form.Group id="file-image-preview" controlId="file-image-preview" className="w-75">
+              <div id="file-input-box">
+                <input
+                  multiple
+                  type="file"
+                  accept="image/gif, image/jpg, image/jpeg, image/png"
+                  className="w-full border"
+                  {...register('file')}
+                  onChange={handleChangeEvent}
+                  onInput={handleImageSelect}
+                />
+              </div>
+
+              {detecting && (
+                <div className="flex justify-center">
+                  <FontAwesomeIcon className="fa-beat-fade" icon={faHourglass} />
+                </div>
+              )}
+
               {files &&
+                files.length <= 1 &&
                 Array.from(files).map((file) => {
                   return (
-                    <Image
+                    <img
+                      className="w-20 mx-auto my-1 sm:w-30 md:w-40"
                       key={file.name}
-                      className="file-image-item mx-1 mb-3 rounded-3"
                       src={URL.createObjectURL(file)}
                       alt={file.name}
-                      fluid
                     />
                   );
                 })}
-              {detecting && <FontAwesomeIcon className="ms-3" icon={faHourglass} />}
-            </Form.Group>
 
-            <div id="items-required" className="w-75 mb-3">
-              {' '}
-              is required
-            </div>
-
-            <Form.Group className="w-75 mb-4">
-              <Button className="btn btn-pink btn-sm" type="submit">
-                Post
-              </Button>
-              {isUploading && <FontAwesomeIcon className="ms-3" icon={faSpinner} spin />}
-              {uploadFinished && <FontAwesomeIcon className="ms-3" icon={faCheck} />}
-            </Form.Group>
-          </Form>
-        </Collapse>
-      </Container>
-
-      <Container>
-        <Row>
-          <Col style={{ textAlign: 'center' }}>
-            <Button
-              className="mt-3 mb-4 btn-pink btn-sm"
-              onClick={() => setOpen(!open)}
-              aria-controls="post-meme-form"
-              aria-expanded={open}
-            >
-              {open ? 'Hide Form ' : 'Show Form '}
-              {open ? <FontAwesomeIcon icon={faAngleDoubleUp} /> : <FontAwesomeIcon icon={faAngleDoubleDown} />}
-            </Button>
-          </Col>
-        </Row>
-      </Container>
-    </>
+              <div className="flex justify-center">
+                <button
+                  type="submit"
+                  className="z-10 p-2 font-semibold text-gray-900 border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
+                >
+                  Post
+                  {isUploading && <FontAwesomeIcon className="ml-2" icon={faSpinner} spin />}
+                  {uploadFinished && <FontAwesomeIcon className="ml-2 text-green-600" icon={faCheck} />}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

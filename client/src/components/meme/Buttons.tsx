@@ -1,4 +1,3 @@
-import { Col, Row } from 'react-bootstrap';
 
 const Buttons = (props: any) => {
   const {
@@ -9,27 +8,21 @@ const Buttons = (props: any) => {
 
   return (
     <>
-      <Row className="content-title">
-        <Col>
+      <div className="content-title">
           <a className="meme-buttons" href={`/meme/${id}/${title}`}>
             {props.title}
           </a>
-        </Col>
-      </Row>
-      <Row className="author-bar mt-1">
-        <Col>
-        <a className="author-bar meme-buttons" href={`/user/profile/${username}`}>
+      </div>
+      <div className="author-bar">
+        <a className="author-bar meme-buttons" href={`/user/${username}`}>
             {username}
           </a>
-        </Col>
-      </Row>
-      <Row className="mt-auto">
-        <Col>
+      </div>
+      <div className="mt-auto">
           <a className="comments meme-buttons" href={`/meme/${id}/${title}`}>
             Comments
           </a>
-        </Col>
-      </Row>
+      </div>
     </>
   );
 };
