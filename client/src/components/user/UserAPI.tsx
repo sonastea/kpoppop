@@ -32,7 +32,8 @@ export const addSocialMediaLink = async (data: any) => {
 export const deleteSocialMediaLink = async (uuid: string) => {
   return await fetch(`${API_URL}/user/delete_social`, {
     method: 'DELETE',
-    body: JSON.stringify({uuid}),
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ uuid }),
     credentials: 'include',
   }).then((response) => response.json());
 };

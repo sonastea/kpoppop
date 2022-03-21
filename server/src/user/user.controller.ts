@@ -74,7 +74,6 @@ export class UserController {
   @UseGuards(LoginSessionGuard)
   @Post('login')
   async loginUser(@Req() req: Request): Promise<any> {
-    console.log(req.user);
     return req.user;
   }
 

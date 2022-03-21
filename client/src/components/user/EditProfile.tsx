@@ -96,8 +96,8 @@ const EditProfile = () => {
   const deleteSocial = async (e: any) => {
     const index = parseInt(e.currentTarget.dataset.index); // dataset is a string
 
-    await deleteSocialMediaLink(socials?.at(index)?.uuid!).then((success) => {
-      if (success) {
+    await deleteSocialMediaLink(socials?.at(index)?.uuid!).then((response) => {
+      if (response.success) {
         const updatedSocials = socials?.filter((_social, idx: number) => idx !== index);
         setSocials(updatedSocials);
       }
