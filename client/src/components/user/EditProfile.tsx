@@ -45,6 +45,9 @@ const EditProfile = () => {
 
   useEffect(() => {
     fetchUserSettings().then((data) => {
+      if (data.statusCode === 403) {
+        window.location.href = '/login';
+      }
       setData(data);
       setSocials(data.socialMedias);
       setLoading(false);
@@ -273,7 +276,8 @@ const EditProfile = () => {
                       {social.url}
                     </a>
                     <FontAwesomeIcon
-                      className="text-md sm:text-xl absolute my-auto p-1 rounded-md inset-y-0 right-2 hover:bg-gray-300 hover:text-black text-red-600 cursor-pointer "
+                      key={social.uuid}
+                      className="cursor-pointer text-md sm:text-xl absolute my-auto p-1 rounded-md inset-y-0 right-2 hover:bg-gray-300 hover:text-black text-red-600 cursor-pointer "
                       icon={faTrashCan}
                       data-index={index}
                       onClick={(e: any) => deleteSocial(e)}
