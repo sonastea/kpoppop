@@ -49,7 +49,7 @@ const NavBar = () => {
               <img src="/images/logo.png" alt="Kpoppop Logo" className="w-auto h-20 mr-2 md:h-10"></img>
             </a>
 
-            <ul className="items-center hidden border-b md:flex space-x-1">
+            <ul className="items-center hidden md:flex space-x-1">
               {navItems.map((item) => (
                 <li key={item.id}>
                   <a
