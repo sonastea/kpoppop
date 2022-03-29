@@ -30,6 +30,7 @@ const UploadMeme = () => {
   const {
     formState: { errors },
     register,
+    resetField,
     handleSubmit,
   } = useForm<MemeFormData>();
 
@@ -145,6 +146,12 @@ const UploadMeme = () => {
   };
 
   const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files![0].type !== 'image/gif' || 'image/png' || 'image/jpg' || 'image/jpeg') {
+      alert('We do not support ' + e.target.files![0].type + ' files');
+      resetField('file');
+      return;
+    }
+
     if (e.target.files && e.target.files.length >= 1) {
       setFiles(e.target.files); // UploadMeme Image Preview
       setDetecting(true);
