@@ -69,6 +69,7 @@ async function bootstrap() {
         origin: true,
         credentials: true,
       },
+      httpsOptions,
     });
 
     app.use(cookieParser());

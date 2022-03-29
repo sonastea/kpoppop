@@ -48,6 +48,7 @@ Reference for creating [ssl certificate](https://stackoverflow.com/questions/101
         🔴 public-certificate.pem   📄
 
 # database.env
+        // Used in creation of database:kpoppop_db in docker-compose.
         🔴 POSTGRES_USER                // User to login postgresql db.
         🔴 POSTGRES_PASSWORD            // Password to login postgresql db.
         🔴 POSTGRES_DB                  // Database name that stores the schemas.
