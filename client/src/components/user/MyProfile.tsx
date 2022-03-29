@@ -17,7 +17,6 @@ const MyProfile = () => {
       await fetchUser(user!.username!).then((d: UserProfileData) => {
         setData(d);
         setLoading(false);
-        console.log(d);
         if (d.displayname) setShowDisplayName(true);
       });
     };
