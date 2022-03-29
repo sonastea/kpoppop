@@ -1,6 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
-import { BaseSyntheticEvent, useEffect, useState } from 'react';
+import { faTrashCan } from '@fortawesome/free-regular-svg-icons'; import { BaseSyntheticEvent, useEffect, useState } from 'react';
 import { addSocialMediaLink, deleteSocialMediaLink, fetchUserSettings, updateProfile } from './UserAPI';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { EditSocialLinkFormData, SocialMediaLink } from './SocialMedias';
@@ -96,10 +95,10 @@ const EditProfile = () => {
     });
   };
 
-  const deleteSocial = async (e: any) => {
+  const deleteSocial = async (e: BaseSyntheticEvent<MouseEvent | TouchEvent>) => {
     const index = parseInt(e.currentTarget.dataset.index); // dataset is a string
 
-    await deleteSocialMediaLink(socials?.at(index)?.uuid!).then((response) => {
+    await deleteSocialMediaLink(socials![index].uuid).then((response) => {
       if (response.success) {
         const updatedSocials = socials?.filter((_social, idx: number) => idx !== index);
         setSocials(updatedSocials);
@@ -277,7 +276,7 @@ const EditProfile = () => {
                     </a>
                     <FontAwesomeIcon
                       key={social.uuid}
-                      className="cursor-pointer text-md sm:text-xl absolute my-auto p-1 rounded-md inset-y-0 right-2 hover:bg-gray-300 hover:text-black text-red-600 cursor-pointer "
+                      className="text-md sm:text-xl absolute my-auto p-1 rounded-md inset-y-0 right-2 hover:bg-gray-300 hover:text-black text-red-600 cursor-pointer"
                       icon={faTrashCan}
                       data-index={index}
                       onClick={(e: any) => deleteSocial(e)}
