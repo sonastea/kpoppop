@@ -67,7 +67,7 @@ Thumbs.db
 .vim/
 backup/
 pgdata/
-tags
+tags*
 
 old/
 .gitignore.bak

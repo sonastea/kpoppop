@@ -1,8 +1,9 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashCan } from '@fortawesome/free-regular-svg-icons'; import { BaseSyntheticEvent, useEffect, useState } from 'react';
 import { addSocialMediaLink, deleteSocialMediaLink, fetchUserSettings, updateProfile } from './UserAPI';
-import { SubmitHandler, useForm } from 'react-hook-form';
 import { EditSocialLinkFormData, SocialMediaLink } from './SocialMedias';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
+import { BaseSyntheticEvent, useEffect, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAuth } from 'contexts/AuthContext';
 
 const regex = new RegExp(
@@ -171,7 +172,9 @@ const EditProfile = () => {
                     );
                   })}
                 <div className="py-4">
-                  <span className="cursor-pointer text-once-600 hover:text-once-400 md:hidden">Edit</span>
+                  <label htmlFor="photo" className="cursor-pointer text-once-600 hover:text-once-400 md:hidden">
+                    Edit
+                  </label>
                   <label
                     htmlFor="photo"
                     className="hidden h-full cursor-pointer md:block text-once-600 hover:text-once-400"
