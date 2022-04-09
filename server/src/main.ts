@@ -34,7 +34,7 @@ async function bootstrap() {
     cookie: {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: true,
       domain: process.env.NODE_ENV === 'production' ? '.kpoppop.com' : null,
       samesite: process.env.NODE_ENV === 'production' ? 'lax' : 'none',
     },
