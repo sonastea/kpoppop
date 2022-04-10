@@ -16,7 +16,6 @@ export type MemeFormData = {
   title: string;
   url?: string | undefined;
   file?: FileList | undefined;
-  flagged: boolean;
 };
 
 const UploadMeme = () => {
@@ -24,6 +23,7 @@ const UploadMeme = () => {
   const [isUploading, setUploading] = useState<boolean>(false);
   const [uploadFinished, setUploadFinished] = useState<boolean>(false);
   const [files, setFiles] = useState<FileList | null>();
+  const [previewURL, setPreviewURL] = useState<string | null>();
   const [postable, setPostable] = useState<boolean>(false);
   const [flagged, setFlagged] = useState<boolean>(false);
   const [detecting, setDetecting] = useState<boolean>(false);
@@ -33,6 +33,7 @@ const UploadMeme = () => {
     resetField,
     handleSubmit,
   } = useForm<MemeFormData>();
+  const filter = ['image/gif', 'image/png', 'image/jpg', 'image/jpeg'];
 
   useEffect(() => {
     if (open) {
@@ -44,10 +45,15 @@ const UploadMeme = () => {
 
   const memeHandler: SubmitHandler<MemeFormData> = async (data) => {
     const formData = new FormData();
-    const compressed = await compressImage(data.file![0]);
+    if (files && files.length > 0) {
+      const compressed = await compressImage(files[0]);
+      formData.append('file', compressed as File);
+    } else {
+      formData.append('file', files?.[0] as File);
+    }
+
     formData.append('title', data.title);
     formData.append('url', data.url!);
-    formData.append('file', compressed as File);
     formData.append('flagged', JSON.stringify(flagged));
 
     if (postable) {
@@ -85,41 +91,6 @@ const UploadMeme = () => {
     }
   };
 
-  const handleChangeEvent = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const urlInput = document.getElementById('url-input-box')!;
-    const fileInput = document.getElementById('file-input-box')!;
-
-    if (e.currentTarget.files && e.currentTarget.files.length > 1) {
-      alert('Cannot post more than 1 photo.');
-      setPostable(false);
-      return;
-    }
-
-    switch (e.currentTarget.name) {
-      case 'url':
-        if (e.target.value !== '') {
-          fileInput.style.display = 'none';
-          setPostable(true);
-        } else {
-          fileInput.style.display = 'block';
-          setPostable(false);
-        }
-        break;
-
-      case 'file':
-        if (e.target.value !== '') {
-          urlInput.style.display = 'none';
-        } else {
-          urlInput.style.display = 'block';
-          setPostable(false);
-        }
-        break;
-      default:
-        setPostable(false);
-        break;
-    }
-  };
-
   const isSFW = (prediction: PredictionType) => {
     switch (prediction.className) {
       case 'Porn':
@@ -145,20 +116,52 @@ const UploadMeme = () => {
     }
   };
 
-  const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files![0].type !== 'image/gif' || 'image/png' || 'image/jpg' || 'image/jpeg') {
-      alert('We do not support ' + e.target.files![0].type + ' files');
-      resetField('file');
-      return;
-    }
+  const handleChangeEvent = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const urlInput = document.getElementById('url-input-box')!;
+    const fileInput = document.getElementById('file-input-box')!;
 
-    if (e.target.files && e.target.files.length >= 1) {
+    if (e.target.files && e.target.files.length > 1) {
+      if (!filter.some((format) => e.target.files?.[0].type.includes(format))) {
+        alert('We do not support ' + e.target.files[0].type + ' files');
+        resetField('file');
+        return;
+      }
+      alert('Cannot post more than 1 photo.');
+      setPostable(false);
+      return;
+    } else if (e.target.files?.length === 1) {
       setFiles(e.target.files); // UploadMeme Image Preview
       setDetecting(true);
       const prediction = await identifyImage(e.target.files[0]);
-      const postable = isSFW(prediction);
-      setPostable(postable);
+      const isPostable = isSFW(prediction);
+      setPostable(isPostable);
       setDetecting(false);
+    }
+
+    switch (e.target?.name) {
+      case 'url':
+        if (e.target.value !== '') {
+          fileInput.style.display = 'none';
+          setPreviewURL(e.target.value);
+          setPostable(true);
+        } else {
+          fileInput.style.display = 'block';
+          setPostable(false);
+        }
+        break;
+
+      case 'file':
+        if (e.target.files?.length !== 0) {
+          urlInput.style.display = 'none';
+        } else {
+          urlInput.style.display = 'block';
+          setPostable(false);
+        }
+        setFiles(e.target.files);
+        break;
+      default:
+        setPostable(false);
+        break;
     }
   };
 
@@ -175,14 +178,21 @@ const UploadMeme = () => {
       {open && (
         <div
           onClick={() => setOpen((open) => !open)}
-          className="absolute flex justify-center w-full h-full overflow-hidden backdrop backdrop-filter backdrop-blur-lg"
+          className="absolute flex justify-center w-full min-h-screen overflow-hidden backdrop backdrop-filter backdrop-blur-lg"
         >
           <div
             onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
-            className="absolute inset-x-0 bg-white rounded shadow-md sm:inset-x-auto sm:w-1/3 top-24"
+            className="absolute inset-x-0 bg-white rounded shadow-md sm:inset-x-auto sm:w-1/3 md:w-1/2 top-24"
           >
             <form onSubmit={handleSubmit(memeHandler)} className="p-8 space-y-5">
-              <button onClick={() => setOpen((open) => !open)} type="button" className="absolute top-0 p-2 right-2">
+              <button
+                onClick={() => {
+                  setFiles(null);
+                  setOpen((open) => !open);
+                }}
+                type="button"
+                className="absolute top-0 p-2 right-2"
+              >
                 <FontAwesomeIcon icon={faXmark} />
               </button>
               <h2 className="mb-10 text-xl font-bold text-gray-900">Submit to kpoppop</h2>
@@ -221,15 +231,14 @@ const UploadMeme = () => {
                 />
               </div>
 
-              <div id="file-input-box">
+              <div id="appearance-none file-input-box">
                 <input
                   multiple
                   type="file"
                   accept="image/gif, image/jpg, image/jpeg, image/png"
-                  className="w-full border"
+                  className="w-full"
                   {...register('file')}
-                  onChange={handleChangeEvent}
-                  onInput={handleImageSelect}
+                  onInput={handleChangeEvent}
                 />
               </div>
 
@@ -251,6 +260,8 @@ const UploadMeme = () => {
                     />
                   );
                 })}
+
+              {previewURL && <img src={previewURL} alt="previewURL thumbnail" />}
 
               <div className="flex justify-center">
                 <button
