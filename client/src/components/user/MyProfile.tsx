@@ -55,11 +55,11 @@ const MyProfile = () => {
                 <span className="text-sm text-gray-600">Likes</span>
               </div>
             </div>
-            <div className="flex justify-center w-full h-auto lg:order-2 lg:w-1/5">
+            <div className="flex justify-center w-full lg:order-2 lg:w-1/4">
               <div className="relative">
                 <a className="rounded-full" href={data.photo && `${data.photo}`}>
                   <img
-                    className="bg-white aspect-square mt-[-50%] border border-black rounded-full h-24 sm:h-32 md:h-48"
+                    className="bg-white rounded-full aspect-square mt-[-50%] border border-black w-24 h-24 sm:w-32 sm:h-32 md:w-48 md:h-48"
                     src={data.photo ? `${data.photo}` : '/images/default_photo_white_200x200.png'}
                     alt="profile"
                     onError={(e: BaseSyntheticEvent) => {
