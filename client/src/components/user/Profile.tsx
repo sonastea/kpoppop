@@ -96,7 +96,7 @@ const Profile = () => {
             </div>
           </div>
           <div className="text-center lg:m-6">
-            <h3 className="text-3xl leading-normal lg:text-4xl">{user?.username}</h3>
+            <h3 className="text-3xl leading-normal lg:text-4xl">{username}</h3>
           </div>
           <div className="w-full p-3 text-xs md:text-lg columns-3 md:columns-4 gap-3 space-y-6">
             {data?.memes?.map((meme: Post) => {
