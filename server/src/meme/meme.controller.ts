@@ -20,6 +20,7 @@ import { MemeService } from './meme.service';
 import { Meme, MemeResource } from '@prisma/client';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { SessionGuard } from 'src/auth/guards/session.guard';
+import { SkipThrottle, Throttle, ThrottlerGuard } from '@nestjs/throttler';
 
 let baseUrl: string = null;
 
@@ -30,10 +31,12 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 @Controller('meme')
+@UseGuards(ThrottlerGuard)
 export class MemeController {
   constructor(private readonly memeService: MemeService) {}
 
   @UseGuards(SessionGuard)
+  @Throttle(300, 5)
   @UseInterceptors(FileInterceptor('file'))
   @Post('submit')
   async createMeme(
@@ -96,6 +99,7 @@ export class MemeController {
   }
 
   @Post('posts')
+  @SkipThrottle()
   async getMemes(@Body() body: { cursor: number }): Promise<any> {
     if (body.cursor === 0) {
       return await this.memeService.posts({
@@ -147,6 +151,7 @@ export class MemeController {
   }
 
   @Get(':id')
+  @SkipThrottle()
   getMeme(@Param('id') id: string): Promise<Meme | null> {
     return this.memeService.post({
       where: {
@@ -166,6 +171,7 @@ export class MemeController {
   }
 
   @Get('likes/:id')
+  @SkipThrottle()
   getTotalLikes(@Param('id') id: string): Promise<any> {
     return this.memeService.totalLikes({ where: { id: parseInt(id) } });
   }

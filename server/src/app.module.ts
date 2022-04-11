@@ -4,7 +4,7 @@ import { PrismaService } from './database/prisma.service';
 import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
 import { AuthModule } from './auth/auth.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthController } from './auth/auth.controller';
 import { MemeController } from './meme/meme.controller';
 import { MemeService } from './meme/meme.service';
@@ -15,6 +15,7 @@ import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './auth/strategies/local.strategy';
 import { BotModule } from './discord/bot.module';
 import { LocalSerializer } from './auth/serializers/local.serializer';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -31,6 +32,8 @@ import { LocalSerializer } from './auth/serializers/local.serializer';
           .valid('images.kpoppop.com', 'test.kpoppop.com')
           .default('images.kpoppop.com')
           .required(),
+        THROTTLE_TTL: Joi.number().required(),
+        THROTTLE_LIMIT: Joi.number().required(),
         PORT: Joi.number().default(5000),
       }),
     }),
@@ -41,6 +44,14 @@ import { LocalSerializer } from './auth/serializers/local.serializer';
       }),
     }),
     PassportModule.register({ session: true }),
+    ThrottlerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        ttl: config.get('THROTTLE_TTL'),
+        limit: config.get('THROTTLE_LIMIT'),
+      }),
+    }),
   ],
   controllers: [AuthController, MemeController, UserController],
   providers: [PrismaService, MemeService, UserService, LocalStrategy, LocalSerializer],

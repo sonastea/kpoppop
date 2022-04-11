@@ -1,6 +1,7 @@
 import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { LoginSessionGuard } from 'src/auth/guards/login-session.guard';
 import { LocalSerializer } from 'src/auth/serializers/local.serializer';
+import { SkipThrottle, ThrottlerGuard } from '@nestjs/throttler';
 import { RecaptchaGuard } from 'src/auth/guards/recaptcha.guard';
 import { SessionGuard } from 'src/auth/guards/session.guard';
 import { UserService } from './user.service';
@@ -50,6 +51,7 @@ type SocialMediaLinkData = {
 };
 
 @Controller('user')
+@UseGuards(ThrottlerGuard)
 @UseInterceptors(LocalSerializer)
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -136,6 +138,7 @@ export class UserController {
   }
 
   @Get(':name')
+  @SkipThrottle()
   async getUser(@Res() res: Response, @Param('name') username: string): Promise<any> {
     const user = await this.userService.getUser({ username });
 
@@ -146,6 +149,7 @@ export class UserController {
   }
 
   @UseGuards(SessionGuard)
+  @SkipThrottle()
   @Put('add_social')
   @UseInterceptors(FileInterceptor('file'))
   async addSocialMediaLink(@Req() req: Request, @UploadedFile() _file: Express.Multer.File): Promise<any> {
@@ -156,6 +160,7 @@ export class UserController {
   }
 
   @UseGuards(SessionGuard)
+  @SkipThrottle()
   @Delete('delete_social')
   async deleteSocialMediaLink(@Req() req: Request, @Res() res: Response): Promise<any> {
     const { uuid } = req.body;
