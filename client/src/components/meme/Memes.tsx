@@ -71,7 +71,7 @@ const Memes = () => {
                   </div>
                   <div className="flex-col justify-center">
                     <a className="contents" href={`/meme/${meme.id}/${title}`}>
-                      <img className="w-full mx-auto md:w-1/6 md:h-auto rounded-md" src={meme.url} alt={meme.title} />
+                      <img className="mx-auto md:max-w-2xl rounded-md" src={meme.url} alt={meme.title} />
                     </a>
                   </div>
                   <div className="flex justify-center py-3">
