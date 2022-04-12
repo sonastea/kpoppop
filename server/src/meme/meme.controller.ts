@@ -177,6 +177,7 @@ export class MemeController {
   }
 
   @Get('liked/:id')
+  @SkipThrottle()
   getUserLike(@Param('id') id: string, @Session() session: Record<string, any>): Promise<any> {
     return this.memeService.likedMeme({
       where: {
