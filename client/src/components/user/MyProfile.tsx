@@ -21,7 +21,7 @@ const MyProfile = () => {
       });
     };
     getUserProfile();
-  }, [user, data?.banner, data?.photo]);
+  }, [user]);
 
   const toggleDisplayName = () => {
     setShowDisplayName((display) => !display);
