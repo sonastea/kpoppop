@@ -57,6 +57,7 @@ async function bootstrap() {
       httpsOptions,
     });
 
+    app.setGlobalPrefix('api');
     app.use(cookieParser());
     app.use(passport.initialize());
     app.use(expressSession(sessionOptions));
@@ -72,6 +73,7 @@ async function bootstrap() {
       httpsOptions,
     });
 
+    app.setGlobalPrefix('api');
     app.use(cookieParser());
     app.use(passport.initialize());
     app.use(expressSession(sessionOptions));
