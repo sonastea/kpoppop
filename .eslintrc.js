@@ -9,7 +9,7 @@ module.exports = {
   extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
   ignorePatterns: ['.eslintrc.js', '**/backup/*', '**/old/*'],
   rules: {
-    'max-len': { code: 100 },
+    'max-len': [1, { code: 100 }],
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
