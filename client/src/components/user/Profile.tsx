@@ -1,7 +1,7 @@
 import SocialMedias, { SocialMediaLink } from './SocialMedias';
 import { useAuth } from 'contexts/AuthContext';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { BaseSyntheticEvent, useEffect, useState } from 'react';
 import { fetchUser } from './UserAPI';
 import MyProfile from './MyProfile';
 import NoProfile from './NoProfile';
@@ -84,9 +84,12 @@ const Profile = () => {
                   href={`${data?.photo ? data?.photo : '/images/default_photo_white_200x200.png'}`}
                 >
                   <img
-                    className="h-24 sm:h-32 md:h-48 bg-white aspect-square mt-[-50%] border border-black rounded-full"
+                    className="bg-white rounded-full aspect-square mt-[-50%] border border-black w-24 h-24 sm:w-32 sm:h-32 md:w-48 md:h-48"
                     src={`${data?.photo ? data?.photo : '/images/default_photo_white_200x200.png'}`}
                     alt="profile"
+                    onError={(e: BaseSyntheticEvent) => {
+                      e.currentTarget.src = '/images/default_photo_white_200x200.png';
+                    }}
                   />
                 </a>
               </div>
@@ -104,7 +107,11 @@ const Profile = () => {
               return (
                 <div key={meme.id} className="inline-flex font-semibold text-center">
                   <a href={`/meme/${meme.id}/${title}`}>
-                    <img className="object-cover w-full rounded-lg" src={meme.url} alt={meme.title} />
+                    <img
+                      className="object-cover w-full rounded-lg"
+                      src={meme.url}
+                      alt={meme.title}
+                    />
                     {meme.title}
                   </a>
                 </div>
