@@ -182,7 +182,7 @@ const UploadMeme = () => {
         >
           <div
             onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
-            className="absolute inset-x-0 bg-white rounded shadow-md sm:inset-x-auto sm:w-1/3 md:w-1/2 top-24"
+            className="border absolute inset-x-0 bg-white rounded shadow-md sm:inset-x-auto sm:w-1/3 md:w-1/2 top-24"
           >
             <form onSubmit={handleSubmit(memeHandler)} className="p-8 space-y-5">
               <button
@@ -270,7 +270,9 @@ const UploadMeme = () => {
                 >
                   Post
                   {isUploading && <FontAwesomeIcon className="ml-2" icon={faSpinner} spin />}
-                  {uploadFinished && <FontAwesomeIcon className="ml-2 text-green-600" icon={faCheck} />}
+                  {uploadFinished && (
+                    <FontAwesomeIcon className="ml-2 text-green-600" icon={faCheck} />
+                  )}
                 </button>
               </div>
             </form>
