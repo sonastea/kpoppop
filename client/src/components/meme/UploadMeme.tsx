@@ -35,14 +35,6 @@ const UploadMeme = () => {
   } = useForm<MemeFormData>();
   const filter = ['image/gif', 'image/png', 'image/jpg', 'image/jpeg'];
 
-  useEffect(() => {
-    if (open) {
-      document.body.classList.add('overflow-hidden');
-    } else {
-      document.body.classList.remove('overflow-hidden');
-    }
-  }, [open]);
-
   const memeHandler: SubmitHandler<MemeFormData> = async (data) => {
     const formData = new FormData();
     if (files && files.length > 0) {
@@ -178,7 +170,7 @@ const UploadMeme = () => {
       {open && (
         <div
           onClick={() => setOpen((open) => !open)}
-          className="absolute flex justify-center w-full min-h-screen overflow-hidden backdrop backdrop-filter backdrop-blur-lg"
+          className="z-10 absolute flex justify-center w-full min-h-screen overflow-hidden backdrop backdrop-filter backdrop-blur-lg"
         >
           <div
             onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
@@ -253,7 +245,7 @@ const UploadMeme = () => {
                 Array.from(files).map((file) => {
                   return (
                     <img
-                      className="w-20 mx-auto my-1 sm:w-30 md:w-40"
+                      className="lg:max-h-96 mx-auto my-1"
                       key={file.name}
                       src={URL.createObjectURL(file)}
                       alt={file.name}
