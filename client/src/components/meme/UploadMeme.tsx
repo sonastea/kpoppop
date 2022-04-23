@@ -80,7 +80,7 @@ const UploadMeme = () => {
               setUploadFinished(true);
               setUploading(false);
               window.location.reload();
-            }, 1000);
+            }, 2000);
           }
         })
         .catch((err) => {
@@ -182,7 +182,7 @@ const UploadMeme = () => {
         >
           <div
             onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
-            className="border absolute inset-x-0 bg-white rounded shadow-md sm:inset-x-auto sm:w-1/3 md:w-1/2 top-24"
+            className="border absolute inset-x-0 bg-white rounded shadow-md sm:inset-x-auto sm:w-1/2 top-20"
           >
             <form onSubmit={handleSubmit(memeHandler)} className="p-8 space-y-5">
               <button

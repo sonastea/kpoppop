@@ -4,6 +4,7 @@ import { API_URL } from 'Global.d';
 
 export type User = {
   id?: number;
+  discordId?: string;
   username?: string;
   role?: string;
   displayname?: string;
@@ -29,7 +30,7 @@ export function AuthProvider({ children, initialUser }: { children: ReactNode; i
       })
         .then((response) => response.json())
         .then((data) => {
-          if (data.id) {
+          if (data.id || data.discordId) {
             setUser(data);
           }
         })

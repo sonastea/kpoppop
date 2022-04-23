@@ -133,37 +133,85 @@ export class UserService {
     }
   }
 
-  async getUserProfile(where: Prisma.UserWhereUniqueInput): Promise<any> {
-    const user = await this.prisma.user.findUnique({
-      where,
-      select: {
-        ...UserProfileData,
+  async getUserProfile(
+    where: Prisma.UserWhereUniqueInput | Prisma.DiscordUserWhereUniqueInput
+  ): Promise<any> {
+    if (where.id) {
+      return await this.prisma.user.findUnique({
+        where,
+        select: {
+          ...UserProfileData,
 
-        socialMedias: {
-          select: {
-            ...SocialMediaLinkData,
+          socialMedias: {
+            select: {
+              ...SocialMediaLinkData,
+            },
           },
         },
-      },
-    });
-    return user;
+      });
+    } else {
+      const discordUser = await this.prisma.discordUser.findUnique({
+        where,
+        select: {
+          user: {
+            select: {
+              ...UserProfileData,
+
+              socialMedias: {
+                select: {
+                  ...SocialMediaLinkData,
+                },
+              },
+            },
+          },
+        },
+      });
+      return discordUser.user;
+    }
   }
 
-  async updateProfile(where: Prisma.UserWhereUniqueInput, data: Prisma.UserUpdateInput): Promise<any> {
-    const user = await this.prisma.user.update({
-      where,
-      data,
-      select: {
-        ...UserProfileData,
+  async updateProfile(
+    where: Prisma.UserWhereUniqueInput | Prisma.DiscordUserWhereUniqueInput,
+    data: Prisma.UserUpdateInput
+  ): Promise<any> {
+    if (where.id) {
+      return await this.prisma.user.update({
+        where,
+        data,
+        select: {
+          ...UserProfileData,
 
-        socialMedias: {
-          select: {
-            ...SocialMediaLinkData,
+          socialMedias: {
+            select: {
+              ...SocialMediaLinkData,
+            },
           },
         },
-      },
-    });
-    return user;
+      });
+    } else {
+      const user = await this.prisma.discordUser.update({
+        where,
+        data: {
+          user: {
+            update: data,
+          },
+        },
+        select: {
+          user: {
+            select: {
+              ...UserProfileData,
+
+              socialMedias: {
+                select: {
+                  ...SocialMediaLinkData,
+                },
+              },
+            },
+          },
+        },
+      });
+      return user;
+    }
   }
 
   async addSocialMediaLink(data: Prisma.SocialMediaCreateInput): Promise<any> {

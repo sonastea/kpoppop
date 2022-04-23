@@ -1,16 +1,3 @@
-import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
-import { LoginSessionGuard } from 'src/auth/guards/login-session.guard';
-import { LocalSerializer } from 'src/auth/serializers/local.serializer';
-import { SkipThrottle, ThrottlerGuard } from '@nestjs/throttler';
-import { RecaptchaGuard } from 'src/auth/guards/recaptcha.guard';
-import { SessionGuard } from 'src/auth/guards/session.guard';
-import { UserService } from './user.service';
-import { Request, Response } from 'express';
-import * as firebase from 'firebase-admin';
-import { User } from '@prisma/client';
-import { randomUUID } from 'crypto';
-import * as dotenv from 'dotenv';
-import path = require('path');
 import {
   Body,
   Controller,
@@ -28,6 +15,20 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
+import { SkipThrottle, ThrottlerGuard } from '@nestjs/throttler';
+import { User } from '@prisma/client';
+import { randomUUID } from 'crypto';
+import * as dotenv from 'dotenv';
+import { Request, Response } from 'express';
+import * as firebase from 'firebase-admin';
+import { LoginSessionGuard } from 'src/auth/guards/login-session.guard';
+import { RecaptchaGuard } from 'src/auth/guards/recaptcha.guard';
+import { SessionGuard } from 'src/auth/guards/session.guard';
+import { LocalSerializer } from 'src/auth/serializers/local.serializer';
+import { PrismaService } from 'src/database/prisma.service';
+import { UserService } from './user.service';
+import path = require('path');
 
 dotenv.config();
 
@@ -54,7 +55,7 @@ type SocialMediaLinkData = {
 @UseGuards(ThrottlerGuard)
 @UseInterceptors(LocalSerializer)
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService, private readonly prisma: PrismaService) {}
 
   @UseGuards(RecaptchaGuard)
   @Post('register')
@@ -82,14 +83,25 @@ export class UserController {
   @UseGuards(SessionGuard)
   @Get('profile/settings')
   async getUserSettings(@Session() session: Record<string, any>): Promise<any> {
-    return this.userService.getUserProfile({ id: session.passport.user.id });
+    const { id, discordId } = session.passport.user;
+    if (id) return this.userService.getUserProfile({ id });
+    else return this.userService.getUserProfile({ discordId });
   }
 
   @UseGuards(SessionGuard)
   @HttpCode(205)
   @Post('logout')
   async logout(@Res() res: Response): Promise<any> {
-    res.clearCookie('connect.sid').end();
+    /* res
+      .clearCookie('connect.sid', {
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        httpOnly: true,
+        secure: true,
+        domain: process.env.NODE_ENV === 'production' ? '.kpoppop.com' : null,
+        sameSite: process.env.NODE_ENV === 'production' ? 'lax' : 'none',
+      })
+      .end(); */
+      res.clearCookie('connect.sid').end();
   }
 
   @UseGuards(SessionGuard)
@@ -106,7 +118,7 @@ export class UserController {
     @Res() res: Response,
     @UploadedFiles() files: { banner?: Express.Multer.File[]; photo?: Express.Multer.File[] }
   ): Promise<any> {
-    const { id } = req.session.passport.user;
+    const { id, discordId } = req.session.passport.user;
     const data: UpdateProfileData = { ...req.body };
 
     for (const key in files) {
@@ -133,7 +145,10 @@ export class UserController {
         delete data[key];
       }
     }
-    const user = await this.userService.updateProfile({ id }, data);
+
+    let user;
+    if (id) user = await this.userService.updateProfile({ id }, data);
+    if (discordId) user = await this.userService.updateProfile({ discordId }, data);
     return res.json(user);
   }
 
@@ -152,11 +167,26 @@ export class UserController {
   @SkipThrottle()
   @Put('add_social')
   @UseInterceptors(FileInterceptor('file'))
-  async addSocialMediaLink(@Req() req: Request, @UploadedFile() _file: Express.Multer.File): Promise<any> {
-    const { id } = req.session.passport.user;
+  async addSocialMediaLink(
+    @Req() req: Request,
+    @UploadedFile() _file: Express.Multer.File
+  ): Promise<any> {
+    const { id, discordId } = req.session.passport.user;
     const data: SocialMediaLinkData = { ...req.body };
-    const socialLink = await this.userService.addSocialMediaLink({ ...data, user: { connect: { id } } });
-    return socialLink;
+    if (id) {
+      return await this.userService.addSocialMediaLink({
+        ...data,
+        user: { connect: { id } },
+      });
+    }
+    if (discordId) {
+      const user = await this.prisma.discordUser.findUnique({ where: { discordId } });
+      const u = await this.userService.addSocialMediaLink({
+        ...data,
+        user: { connect: { id: user.userId } },
+      });
+      return u;
+    }
   }
 
   @UseGuards(SessionGuard)

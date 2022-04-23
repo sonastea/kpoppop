@@ -6,7 +6,10 @@ import { Meme, Prisma } from '@prisma/client';
 export class MemeService {
   constructor(private prisma: PrismaService) {}
 
-  async post(params: { where: Prisma.MemeWhereInput; select: Prisma.MemeSelect }): Promise<any | null> {
+  async post(params: {
+    where: Prisma.MemeWhereInput;
+    select: Prisma.MemeSelect;
+  }): Promise<any | null> {
     const { where, select } = params;
     return this.prisma.meme.findFirst({
       where,
@@ -44,7 +47,10 @@ export class MemeService {
     return likes.likedBy.length;
   }
 
-  async likedMeme(params: { where: Prisma.MemeWhereUniqueInput; user: Prisma.UserWhereUniqueInput }): Promise<any> {
+  async likedMeme(params: {
+    where: Prisma.MemeWhereUniqueInput;
+    user: Prisma.UserWhereUniqueInput;
+  }): Promise<any> {
     const { where, user } = params;
     const meme = await this.prisma.meme.findUnique({
       where,
@@ -64,21 +70,24 @@ export class MemeService {
     }
   }
 
-  async likeMeme(params: { where: Prisma.MemeWhereUniqueInput; user: Prisma.UserWhereUniqueInput }): Promise<any> {
+  async likeMeme(params: {
+    where: Prisma.MemeWhereUniqueInput;
+    user: Prisma.UserWhereUniqueInput;
+  }): Promise<any> {
     const { where, user } = params;
     const liked = await this.prisma.meme.update({
       where,
       data: {
         likedBy: {
           connect: {
-            id: user as number,
+            id: user.id,
           },
         },
       },
       include: {
         likedBy: {
           where: {
-            id: user as number,
+            id: user.id,
           },
           select: {
             id: true,
@@ -93,21 +102,24 @@ export class MemeService {
     }
   }
 
-  async unlikeMeme(params: { where: Prisma.MemeWhereUniqueInput; user: Prisma.UserWhereUniqueInput }): Promise<any> {
+  async unlikeMeme(params: {
+    where: Prisma.MemeWhereUniqueInput;
+    user: Prisma.UserWhereUniqueInput;
+  }): Promise<any> {
     const { where, user } = params;
     const liked = await this.prisma.meme.update({
       where,
       data: {
         likedBy: {
           disconnect: {
-            id: user as number,
-          },
+            id: user.id,
+          }
         },
       },
       include: {
         likedBy: {
           where: {
-            id: user as number,
+            id: user.id,
           },
           select: {
             id: true,
@@ -122,14 +134,20 @@ export class MemeService {
     }
   }
 
-  async createMeme(data: Prisma.MemeCreateInput, select?: Prisma.MemeSelect): Promise<Prisma.MemeArgs> {
+  async createMeme(
+    data: Prisma.MemeCreateInput,
+    select?: Prisma.MemeSelect
+  ): Promise<Prisma.MemeArgs> {
     return this.prisma.meme.create({
       data,
       select,
     });
   }
 
-  async updateMeme(params: { where: Prisma.MemeWhereUniqueInput; data: Prisma.MemeUpdateInput }): Promise<Meme> {
+  async updateMeme(params: {
+    where: Prisma.MemeWhereUniqueInput;
+    data: Prisma.MemeUpdateInput;
+  }): Promise<Meme> {
     const { data, where } = params;
     return this.prisma.meme.update({
       data,

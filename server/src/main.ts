@@ -17,6 +17,14 @@ async function whatMode() {
   Logger.log(`Running in ${process.env.NODE_ENV} mode`);
 }
 
+export const cookie = {
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      httpOnly: true,
+      secure: true,
+      domain: process.env.NODE_ENV === 'production' ? '.kpoppop.com' : null,
+      samesite: process.env.NODE_ENV === 'production' ? 'lax' : 'none',
+}
+
 async function bootstrap() {
   // Firebase Initialization
   const serviceAccount = require('../firebaseCredentials.json');
@@ -31,13 +39,7 @@ async function bootstrap() {
   };
 
   const sessionOptions = {
-    cookie: {
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-      httpOnly: true,
-      secure: true,
-      domain: process.env.NODE_ENV === 'production' ? '.kpoppop.com' : null,
-      samesite: process.env.NODE_ENV === 'production' ? 'lax' : 'none',
-    },
+    cookie,
     resave: false,
     saveUninitialized: false,
     store: new PrismaSessionStore(new PrismaService(), {

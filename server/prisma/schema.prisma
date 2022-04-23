@@ -9,10 +9,11 @@ datasource db {
 
 model User {
   id           Int                @id @default(autoincrement())
+  discord      DiscordUser?
   createdAt    DateTime           @default(now())
   updatedAt    DateTime?          @updatedAt
   username     String             @unique
-  password     String
+  password     String?
   email        String             @unique
   displayname  String?
   banner       String?
@@ -22,6 +23,15 @@ model User {
   memes        Meme[]
   likedMemes   Meme[]             @relation("UserLikesPost")
   socialMedias SocialMedia[]
+}
+
+model DiscordUser {
+  id            Int               @id @default(autoincrement())
+  discordId     String            @unique
+  accessToken   String?
+  refreshToken  String?
+  user          User?             @relation(fields: [userId], references: [id])
+  userId        Int?
 }
 
 model Meme {

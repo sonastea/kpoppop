@@ -1,20 +1,30 @@
 import { PassportSerializer } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
-import { Prisma } from '@prisma/client';
+import { DiscordAuthService } from '../discord.service';
 
 @Injectable()
 export class LocalSerializer extends PassportSerializer {
-  constructor(private readonly userService: UserService) {
+  constructor(
+    private readonly userService: UserService,
+    private readonly discordService: DiscordAuthService
+  ) {
     super();
   }
 
-  async serializeUser(user: Prisma.UserWhereInput, done: CallableFunction) {
-    done(null, { id: user.id, role: user.role });
+  async serializeUser(user: Auth.SessionType, done: CallableFunction) {
+    if (user.id) done(null, { id: user.id });
+    if (user.discordId) done(null, { discordId: user.discordId });
   }
 
-  async deserializeUser(id: number, done: CallableFunction) {
-    const user = this.userService.findOne({ id });
-    done(null, user);
+  async deserializeUser(user: Auth.SessionType, done: CallableFunction) {
+    const { id, discordId } = user;
+    let result;
+    if (id) {
+      result = this.userService.findOne({ id });
+    } else if (discordId) {
+      result = this.discordService.findOne({ discordId });
+    }
+    return result ? done(null, result) : done(null, null);
   }
 }

@@ -4,6 +4,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAuth } from 'contexts/AuthContext';
 import { API_URL } from 'Global.d';
 import { useState } from 'react';
+import DiscordLoginButton from 'components/button/DiscordLoginButton';
+import { Outlet } from 'react-router';
 
 type LoginFormData = {
   username: string;
@@ -52,13 +54,15 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex mt-20 justify-center">
       <form
-        className="max-w-sm p-6 mx-auto overflow-hidden shadow-xl rounded-md space-y-6"
+        className="h-fit border p-6 my-auto shadow-md rounded-md space-y-6"
         id="loginForm"
         onSubmit={handleSubmit(loginHandler)}
       >
-        <h3 className="py-3 font-semibold text-center text-gray-900">Log in to kpoppop</h3>
+        <h3 className="py-3 font-bold text-center text-gray-900">Log in to kpoppop</h3>
+
+        <DiscordLoginButton />
 
         <div className="relative border-2 label-outline focus-within:border-once">
           <input
@@ -76,22 +80,20 @@ const Login = () => {
             required
             placeholder=" "
             className="block w-full p-3 text-lg bg-transparent appearance-none focus:outline-none"
-            type={showPassword ? "text" : "password"}
+            type={showPassword ? 'text' : 'password'}
             {...register('password')}
           />
           <label className="absolute top-0 p-3 text-lg bg-white origin-0 -z-1 duration-300">Password</label>
 
           <i className="absolute top-0 right-0 p-3 text-lg" onClick={() => setShowPassword((toggle) => !toggle)}>
-            <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash}/>
+            <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
           </i>
         </div>
 
         {errors.password?.message && <span className="text-error">{errors.password.message}</span>}
 
         <div className="py-3">
-          <button
-            className="w-full p-2 overflow-hidden font-semibold text-gray-900 border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
-          >
+          <button className="w-full p-2 overflow-hidden font-bold text-gray-900 border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400">
             {loginSuccess ? 'Login successful' : 'Login'}
             {loginSuccess && !redirecting && <FontAwesomeIcon className="px-2" icon={faCheck} />}
             {redirecting && <FontAwesomeIcon className="px-2" icon={faSpinner} spin />}

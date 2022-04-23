@@ -16,11 +16,14 @@ import { LocalStrategy } from './auth/strategies/local.strategy';
 import { BotModule } from './discord/bot.module';
 import { LocalSerializer } from './auth/serializers/local.serializer';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { DiscordAuthModule } from './auth/discord.module';
+import { DiscordController } from './auth/discord.controller';
 
 @Module({
   imports: [
     AuthModule,
     BotModule,
+    DiscordAuthModule,
     HttpModule,
     ConfigModule.forRoot({
       validationSchema: Joi.object({
@@ -53,7 +56,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
       }),
     }),
   ],
-  controllers: [AuthController, MemeController, UserController],
+  controllers: [AuthController, DiscordController, MemeController, UserController],
   providers: [PrismaService, MemeService, UserService, LocalStrategy, LocalSerializer],
 })
 export class AppModule {}

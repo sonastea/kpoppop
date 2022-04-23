@@ -1,10 +1,11 @@
-import SocialMedias, { SocialMediaLink } from './SocialMedias';
+import { faGear } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAuth } from 'contexts/AuthContext';
-import { useParams } from 'react-router-dom';
 import { BaseSyntheticEvent, useEffect, useState } from 'react';
-import { fetchUser } from './UserAPI';
-import MyProfile from './MyProfile';
+import { useParams } from 'react-router-dom';
 import NoProfile from './NoProfile';
+import SocialMedias, { SocialMediaLink } from './SocialMedias';
+import { fetchUser } from './UserAPI';
 
 export type UserProfileData = {
   id: number;
@@ -33,19 +34,21 @@ type CountData = {
 const Profile = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<UserProfileData>();
+  const [showDisplayName, setShowDisplayName] = useState<boolean>();
   const { username } = useParams();
   const { user } = useAuth();
 
   useEffect(() => {
-    fetchUser(username as string).then((data) => {
-      setData(data);
+    fetchUser(username as string).then((d) => {
+      setData(d);
+      if (d.displayname) setShowDisplayName(true);
       setLoading(false);
     });
   }, [username]);
 
-  if (user?.username === username) {
-    return <MyProfile />;
-  }
+  const toggleDisplayName = () => {
+    setShowDisplayName((display) => !display);
+  };
 
   if (!loading && data && !data?.errors?.User) {
     return (
@@ -69,55 +72,60 @@ const Profile = () => {
           <div className="flex flex-wrap items-center justify-center w-full h-auto">
             <div className="flex justify-center order-1 w-full lg:order-2 lg:w-1/3">
               <div className="flex flex-col m-3 text-center">
-                <span className="text-xl font-bold tracking-wide">{data?._count.memes}</span>
+                <span className="text-xl font-bold tracking-wide">{data._count.memes}</span>
                 <span className="text-sm text-gray-600">Posts</span>
               </div>
               <div className="flex flex-col m-3 text-center">
-                <span className="text-xl font-bold tracking-wide">{data?._count.likedMemes}</span>
+                <span className="text-xl font-bold tracking-wide">{data._count.likedMemes}</span>
                 <span className="text-sm text-gray-600">Likes</span>
               </div>
             </div>
             <div className="flex justify-center w-full lg:order-2 lg:w-1/4">
               <div className="relative">
-                <a
-                  className="rounded-full"
-                  href={`${data?.photo ? data?.photo : '/images/default_photo_white_200x200.png'}`}
-                >
+                <a className="rounded-full" href={data.photo && `${data.photo}`}>
                   <img
                     className="bg-white rounded-full aspect-square mt-[-50%] border border-black w-24 h-24 sm:w-32 sm:h-32 md:w-48 md:h-48"
-                    src={`${data?.photo ? data?.photo : '/images/default_photo_white_200x200.png'}`}
+                    src={data.photo ? `${data.photo}` : '/images/default_photo_white_200x200.png'}
                     alt="profile"
                     onError={(e: BaseSyntheticEvent) => {
                       e.currentTarget.src = '/images/default_photo_white_200x200.png';
                     }}
                   />
                 </a>
+                {username === user?.username && (
+                  <div className="absolute top-0 right-[-15px] text-xs md:text-sm">
+                    <a href="/profile/settings" className="w-full text-gray-500 hover:text-once">
+                      <FontAwesomeIcon icon={faGear} className="hover:animate-spin-slow" />
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
             <div className="w-full lg:order-3 lg:w-1/3">
               <SocialMedias socialMedias={data?.socialMedias} />
             </div>
           </div>
-          <div className="text-center lg:m-6">
-            <h3 className="text-3xl leading-normal lg:text-4xl">{username}</h3>
+          <div className="mx-auto fit-content">
+            <h3
+              onClick={() => toggleDisplayName()}
+              className="text-3xl leading-normal lg:m-6 lg:text-4xl"
+            >
+              {showDisplayName ? `${data?.displayname} *` : data?.username}
+            </h3>
           </div>
-          <div className="w-full p-3 text-xs md:text-lg columns-3 md:columns-4 gap-3 space-y-6">
-            {data?.memes?.map((meme: Post) => {
-              const title = meme.title.replace(/ /g, '_');
-              return (
-                <div key={meme.id} className="inline-flex font-semibold text-center">
-                  <a href={`/meme/${meme.id}/${title}`}>
-                    <img
-                      className="object-cover w-full rounded-lg"
-                      src={meme.url}
-                      alt={meme.title}
-                    />
-                    {meme.title}
-                  </a>
-                </div>
-              );
-            })}
-          </div>
+        </div>
+        <div className="w-full p-3 text-xs md:text-lg columns-3 md:columns-4 gap-3 space-y-6">
+          {data?.memes?.map((meme: Post) => {
+            const title = meme.title.replace(/ /g, '_');
+            return (
+              <div key={meme.id} className="inline-flex font-semibold text-center">
+                <a href={`/meme/${meme.id}/${title}`}>
+                  <img className="object-cover w-full rounded-lg" src={meme.url} alt={meme.title} />
+                  {meme.title}
+                </a>
+              </div>
+            );
+          })}
         </div>
       </div>
     );

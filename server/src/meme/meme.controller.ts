@@ -21,6 +21,7 @@ import { Meme, MemeResource } from '@prisma/client';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { SessionGuard } from 'src/auth/guards/session.guard';
 import { SkipThrottle, Throttle, ThrottlerGuard } from '@nestjs/throttler';
+import { PrismaService } from 'src/database/prisma.service';
 
 let baseUrl: string = null;
 
@@ -33,19 +34,34 @@ if (process.env.NODE_ENV === 'production') {
 @Controller('meme')
 @UseGuards(ThrottlerGuard)
 export class MemeController {
-  constructor(private readonly memeService: MemeService) {}
+  constructor(private readonly memeService: MemeService, private readonly prisma: PrismaService) {}
 
   @UseGuards(SessionGuard)
-  @Throttle(300, 5)
+  @Throttle(300, 10)
   @UseInterceptors(FileInterceptor('file'))
   @Post('submit')
   async createMeme(
     @UploadedFile() file: Express.Multer.File,
-    @Body() body: { title: string; url?: string; files?: FileList; flagged: Boolean },
+    @Body() body: { title: string; url?: string; files?: FileList; flagged: boolean },
     @Session() session: Record<string, any>,
     @Res() res: Response
   ): Promise<any> {
-    let data: any = { ...body, authorId: session.passport.user.id };
+    let data: any;
+    if (session.passport.user.id) {
+      data = { ...body, authorId: session.passport.user.id };
+    } else {
+      const user = await this.prisma.user.findFirst({
+        where: {
+          discord: {
+            discordId: session.passport.user.discordId,
+          },
+        },
+        select: {
+          id: true,
+        },
+      });
+      data = { ...body, authorId: user.id };
+    }
     data.resource = MemeResource.URL;
 
     if (body.url.length > 0) {
@@ -178,32 +194,89 @@ export class MemeController {
 
   @Get('liked/:id')
   @SkipThrottle()
-  getUserLike(@Param('id') id: string, @Session() session: Record<string, any>): Promise<any> {
-    return this.memeService.likedMeme({
-      where: {
-        id: parseInt(id),
-      },
-      user: {
-        id: session.passport.user.id,
-      },
-    });
+  async getUserLike(
+    @Param('id') id: string,
+    @Session() session: Record<string, any>
+  ): Promise<any> {
+    if (session.passport.user.id) {
+      return this.memeService.likedMeme({
+        where: {
+          id: parseInt(id),
+        },
+        user: {
+          id: session.passport.user.id,
+        },
+      });
+    } else {
+      const user = await this.prisma.user.findFirst({
+        where: {
+          discord: {
+            discordId: session.passport.user.discordId,
+          },
+        },
+      });
+      return this.memeService.likedMeme({
+        where: {
+          id: parseInt(id),
+        },
+        user: {
+          id: user.id,
+        },
+      });
+    }
   }
 
   @UseGuards(SessionGuard)
+  @Throttle(60, 15)
   @Put('like/:id')
-  likeMeme(@Param('id') id: string, @Session() session: Record<string, any>): Promise<any> {
-    return this.memeService.likeMeme({
-      where: { id: parseInt(id) },
-      user: session.passport.user.id,
-    });
+  async likeMeme(@Param('id') id: string, @Session() session: Record<string, any>): Promise<any> {
+    if (session.passport.user.id) {
+      return await this.memeService.likeMeme({
+        where: { id: parseInt(id) },
+        user: { id: session.passport.user.id },
+      });
+    } else {
+      const user = await this.prisma.user.findFirst({
+        where: {
+          discord: {
+            discordId: session.passport.user.discordId,
+          },
+        },
+        select: {
+          id: true,
+        },
+      });
+      return await this.memeService.likeMeme({
+        where: { id: parseInt(id) },
+        user: { id: user.id },
+      });
+    }
   }
 
   @UseGuards(SessionGuard)
+  @Throttle(60, 15)
   @Delete('like/:id')
-  unlikeMeme(@Param('id') id: string, @Session() session: Record<string, any>): Promise<any> {
-    return this.memeService.unlikeMeme({
-      where: { id: parseInt(id) },
-      user: session.passport.user.id,
-    });
+  async unlikeMeme(@Param('id') id: string, @Session() session: Record<string, any>): Promise<any> {
+    if (session.passport.user.id) {
+      return await this.memeService.unlikeMeme({
+        where: { id: parseInt(id) },
+        user: { id: session.passport.user.id },
+      });
+    } else {
+      const user = await this.prisma.user.findFirst({
+        where: {
+          discord: {
+            discordId: session.passport.user.discordId,
+          },
+        },
+        select: {
+          id: true,
+        },
+      });
+      return await this.memeService.unlikeMeme({
+        where: { id: parseInt(id) },
+        user: { id: user.id },
+      });
+    }
   }
 }

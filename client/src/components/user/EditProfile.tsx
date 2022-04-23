@@ -1,4 +1,9 @@
-import { addSocialMediaLink, deleteSocialMediaLink, fetchUserSettings, updateProfile } from './UserAPI';
+import {
+  addSocialMediaLink,
+  deleteSocialMediaLink,
+  fetchUserSettings,
+  updateProfile,
+} from './UserAPI';
 import { EditSocialLinkFormData, SocialMediaLink } from './SocialMedias';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
@@ -44,12 +49,12 @@ const EditProfile = () => {
   } = useForm<EditSocialLinkFormData>({});
 
   useEffect(() => {
-    fetchUserSettings().then((data) => {
-      if (data.statusCode === 403) {
+    fetchUserSettings().then((d) => {
+      if (d.statusCode === 403) {
         window.location.href = '/login';
       }
-      setData(data);
-      setSocials(data.socialMedias);
+      setData(d);
+      setSocials(d.socialMedias);
       setLoading(false);
     });
   }, []);
@@ -59,10 +64,10 @@ const EditProfile = () => {
     formData.append('displayname', newData.displayname);
     formData.append('banner', newData.banner[0]);
     formData.append('photo', newData.photo[0]);
-    await updateProfile(formData).then(() => {
+    await updateProfile(formData).finally(() => {
       setTimeout(() => {
         window.location.reload();
-      }, 500);
+      }, 1000);
     });
   };
 
@@ -86,7 +91,9 @@ const EditProfile = () => {
     }
   };
 
-  const addSocial: SubmitHandler<EditSocialLinkFormData> = async (newData: EditSocialLinkFormData) => {
+  const addSocial: SubmitHandler<EditSocialLinkFormData> = async (
+    newData: EditSocialLinkFormData
+  ) => {
     const formData = new FormData();
     formData.append('title', newData.title!);
     formData.append('url', newData.url);
@@ -119,7 +126,9 @@ const EditProfile = () => {
             <div className="mx-2 space-y-3">
               <div className="flex flex-wrap w-full py-3 text-center">
                 <img
-                  className={`${banner?.length === 1 && 'hidden'} w-full h-40 sm:h-60 lg:h-80 rounded-md`}
+                  className={`${
+                    banner?.length === 1 && 'hidden'
+                  } w-full h-40 sm:h-60 lg:h-80 rounded-md`}
                   src={data?.banner ? data?.banner : '/images/default_banner_white_1920x320.png'}
                   alt="banner"
                   onError={(e) => imageChange(e)}
@@ -129,7 +138,9 @@ const EditProfile = () => {
                   Array.from(banner).map((file) => {
                     return (
                       <img
-                        className={`${banner.length === 0 && 'hidden'} w-full h-40 sm:h-60 lg:h-80 rounded-md`}
+                        className={`${
+                          banner.length === 0 && 'hidden'
+                        } w-full h-40 sm:h-60 lg:h-80 rounded-md`}
                         key={file.name}
                         src={URL.createObjectURL(file)}
                         alt={file.name}
@@ -137,7 +148,10 @@ const EditProfile = () => {
                     );
                   })}
                 <div className="w-full my-2 text-right">
-                  <label htmlFor="banner" className="cursor-pointer text-once-600 hover:text-once-400">
+                  <label
+                    htmlFor="banner"
+                    className="cursor-pointer text-once-600 hover:text-once-400"
+                  >
                     Edit banner
                     <input
                       id="banner"
@@ -172,7 +186,10 @@ const EditProfile = () => {
                     );
                   })}
                 <div className="py-4">
-                  <label htmlFor="photo" className="cursor-pointer text-once-600 hover:text-once-400 md:hidden">
+                  <label
+                    htmlFor="photo"
+                    className="cursor-pointer text-once-600 hover:text-once-400 md:hidden"
+                  >
                     Edit
                   </label>
                   <label
@@ -191,7 +208,9 @@ const EditProfile = () => {
                 </div>
               </div>
               <div className="text-sm sm:text-lg flex justify-between">
-                <label className="my-auto pr-2 whitespace-nowrap font-semibold md:text-xl">Display Name</label>
+                <label className="my-auto pr-2 whitespace-nowrap font-semibold md:text-xl">
+                  Display Name
+                </label>
                 <input
                   type="text"
                   placeholder={data?.displayname}
@@ -209,7 +228,9 @@ const EditProfile = () => {
                 <button
                   className="w-auto p-1 text-sm border md:text-xl shadow-sm bg-slate-200 text-slate-600 border-slate-700 rounded-md hover:bg-slate-300 hover:text-slate-800"
                   type="reset"
-                  onClick={() => setValue('displayname', `${data?.displayname}`, { shouldValidate: false })}
+                  onClick={() =>
+                    setValue('displayname', `${data?.displayname}`, { shouldValidate: false })
+                  }
                 >
                   Cancel
                 </button>
@@ -254,15 +275,21 @@ const EditProfile = () => {
                   pattern: regex,
                 })}
               />
-              <span className="text-sm text-slate-500">For example: https://twitter.com/OfficialKpoppop</span>
-              {errors.url && <span className="align-middle p-1 bg-red-300/50 text-error">Please enter a URL</span>}
+              <span className="text-sm text-slate-500">
+                For example: https://twitter.com/OfficialKpoppop
+              </span>
+              {errors.url && (
+                <span className="align-middle p-1 bg-red-300/50 text-error">
+                  Please enter a URL
+                </span>
+              )}
             </div>
             <div className="p-2 relative text-right border-b border-slate-300">
               <button
                 type="button"
                 className="disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer w-auto p-1 text-sm border md:text-xl shadow-sm shadow-once-500/50 border-once-700 rounded-md bg-once-500 text-once-100 hover:bg-once-700"
                 onClick={handleSubmitSocial(addSocial)}
-                disabled={socials === undefined || socials?.length >= 6 ? true : false}
+                disabled={socials && socials?.length >= 6 ? true : false}
               >
                 Add
               </button>
