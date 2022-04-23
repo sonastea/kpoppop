@@ -47,10 +47,15 @@ export class DiscordController {
     const d = await this.discordService.findOneWithCredentials({
       discordId: req.session.passport.user.discordId,
     });
-    const discordUser = await this.discordService.getCurrentUser(d.accessToken as string);
-    const linked = await this.discordService.findOneByEmail({ email: discordUser.email });
-    if (linked === true) res.json({ linked });
-    else res.json({ ...discordUser, SocialType: 'discord', ...linked });
+    if (d.user) {
+      res.json({ linked: true });
+    } else {
+      const discordUser = await this.discordService.getCurrentUser(d.accessToken as string);
+      const linked = await this.discordService.findOneByEmail({ email: discordUser.email });
+
+      if (linked === true) res.json({ linked });
+      else res.json({ ...discordUser, SocialType: 'discord', ...linked });
+    }
   }
 
   @Post('register')

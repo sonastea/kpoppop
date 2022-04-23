@@ -25,6 +25,7 @@ const RegisterRedirect = () => {
   const [accountCreated, setAccountCreated] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [linkExisting, setLinkExisting] = useState<boolean>();
+  const [linked, setLinked] = useState<boolean>(false);
 
   const {
     formState: { errors },
@@ -38,7 +39,12 @@ const RegisterRedirect = () => {
       await linkDiscord()
         .then((data) => {
           if (data.statusCode === 403) window.location.href = '/';
-          if (data.linked) window.location.href = '/';
+          if (data.linked) {
+            setLinked(true);
+            setTimeout(() => {
+              window.location.href = '/';
+            }, 1000);
+          }
           setData(data);
         })
         .finally(() => setLoading(false));
@@ -52,9 +58,9 @@ const RegisterRedirect = () => {
     await createLocalLinkedUser(data).then((data) => {
       if (data.userId) {
         setAccountCreated(true);
-        setTimeout(() => {
+        /* setTimeout(() => {
           window.location.href = '/';
-        }, 2000);
+        }, 2000); */
       }
       if (data.errors) {
         setError('username', {
@@ -67,7 +73,7 @@ const RegisterRedirect = () => {
   };
 
   const InitialPrompt = () => {
-    if (linkExisting === undefined) {
+    if (linkExisting === undefined && !linked) {
       return (
         <div className="flex items-center justify-center mt-20">
           <div className="p-8 border rounded shadow-md bg-opacity-95 md:max-w-lg border-once-200">
@@ -234,6 +240,12 @@ const RegisterRedirect = () => {
   if (!loading) {
     return (
       <>
+        {linked && (
+          <div className="text-center mt-20 text-xl text-once font-bold">
+            Found linked account, redirecting...
+            <FontAwesomeIcon className="ml-2" icon={faSpinner} spin />
+          </div>
+        )}
         <InitialPrompt />
         <LinkAccount />
         <CreateAccount />

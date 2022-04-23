@@ -5,7 +5,6 @@ import { useAuth } from 'contexts/AuthContext';
 import { API_URL } from 'Global.d';
 import { useState } from 'react';
 import DiscordLoginButton from 'components/button/DiscordLoginButton';
-import { Outlet } from 'react-router';
 
 type LoginFormData = {
   username: string;
