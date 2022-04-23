@@ -105,12 +105,14 @@ export class DiscordAuthService {
       const user = await this.prisma.user.findUnique({
         where,
       });
-      const linked = await this.prisma.discordUser.findFirst({
-        where: {
-          userId: user.id,
-        }
-      });
-      if (linked !== null && linked) return true;
+      if (user) {
+        const linked = await this.prisma.discordUser.findFirst({
+          where: {
+            userId: user.id,
+          },
+        });
+        if (linked !== null && linked) return true;
+      }
       if (user !== null && user.username) return { existing: user.username };
       else return null;
     } catch (err) {
