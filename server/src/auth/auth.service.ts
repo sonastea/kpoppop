@@ -9,7 +9,7 @@ export class AuthService {
 
   async validateLoginInfo(username: string, password: string): Promise<Prisma.UserWhereInput> {
     const user = await this.userService.findOneWithCredentials({ username });
-    if (!user) {
+    if (!user || !user.password) {
       return null;
     }
 
