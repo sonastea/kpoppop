@@ -17,11 +17,13 @@ import { randomUUID } from 'crypto';
 import * as firebase from 'firebase-admin';
 import { Response } from 'express';
 import { MemeService } from './meme.service';
-import { Meme, MemeResource } from '@prisma/client';
+import { Comment, Meme, MemeResource } from '@prisma/client';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { SessionGuard } from 'src/auth/guards/session.guard';
 import { SkipThrottle, Throttle, ThrottlerGuard } from '@nestjs/throttler';
 import { PrismaService } from 'src/database/prisma.service';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 
 let baseUrl: string = null;
 
@@ -177,7 +179,7 @@ export class MemeController {
       },
       select: {
         author: {
-          select: { username: true },
+          select: { id: true, username: true },
         },
         id: true,
         title: true,
@@ -278,5 +280,211 @@ export class MemeController {
         user: { id: user.id },
       });
     }
+  }
+
+  @Throttle(60, 15)
+  @Get('comment/:id')
+  async getMemeComments(@Param('id') memeId: string): Promise<Comment[]> {
+    return await this.memeService.comments({
+      where: { id: parseInt(memeId) },
+      select: {
+        comments: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+          select: {
+            id: true,
+            text: true,
+            createdAt: true,
+            updatedAt: true,
+            edited: true,
+            user: {
+              select: {
+                banner: true,
+                id: true,
+                role: true,
+                username: true,
+                displayname: true,
+                photo: true,
+              },
+            },
+          },
+          where: {
+            active: { equals: true },
+          },
+        },
+      },
+    });
+  }
+
+  @Get('comments/:id')
+  @SkipThrottle()
+  getTotalComments(@Param('id') id: string): Promise<any> {
+    return this.memeService.totalComments({ where: { id: parseInt(id) } });
+  }
+
+  @UseGuards(SessionGuard)
+  @SkipThrottle()
+  @Post('comment/:id')
+  async commentMeme(
+    @Param('id') memeId: string,
+    @Body() body: { comment: string },
+    @Session() session: Record<string, any>
+  ): Promise<any> {
+    let user;
+    if (session.passport.user.id) {
+      user = {
+        connect: { id: session.passport.user.id },
+      };
+    } else {
+      const u = await this.prisma.user.findFirst({
+        where: {
+          discord: {
+            discordId: session.passport.user.discordId,
+          },
+        },
+        select: {
+          id: true,
+        },
+      });
+      user = {
+        connect: { id: u.id },
+      };
+    }
+
+    return await this.memeService.commentMeme({
+      data: {
+        text: body.comment,
+        meme: {
+          connect: { id: parseInt(memeId) },
+        },
+        user,
+      },
+      select: {
+        id: true,
+        text: true,
+        createdAt: true,
+        updatedAt: true,
+        user: {
+          select: {
+            banner: true,
+            id: true,
+            role: true,
+            username: true,
+            displayname: true,
+            photo: true,
+          },
+        },
+      },
+    });
+  }
+
+  @UseGuards(SessionGuard, RolesGuard)
+  @Roles('ADMIN','MODERATOR')
+  @SkipThrottle()
+  @Put('delete/:id')
+  async toggleComment(@Param('id') memeId: string): Promise<any> {
+    return await this.memeService.toggleComment(parseInt(memeId));
+  }
+
+  @UseGuards(SessionGuard)
+  @Delete('delete/:id')
+  async deleteComment(
+    @Param('id') commentId: string,
+    @Session() session: Record<string, any>
+  ): Promise<any> {
+    let where;
+    if (session.passport.user.id) {
+      where = {
+        id: session.passport.user.id,
+      };
+    } else {
+      const user = await this.prisma.user.findFirst({
+        where: {
+          discord: {
+            discordId: session.passport.user.discordId,
+          },
+        },
+        select: {
+          id: true,
+        },
+      });
+      where = {
+        id: user.id,
+      };
+    }
+
+    return await this.memeService.deleteComment({
+      where,
+      select: {
+        id: true,
+      },
+      data: {
+        comments: {
+          delete: {
+            id: parseInt(commentId),
+          },
+        },
+      },
+    });
+  }
+
+  @UseGuards(SessionGuard)
+  @Put('edit/:id')
+  async editComment(
+    @Body() body: { comment: string },
+    @Param('id') commentId: string,
+    @Session() session: Record<string, any>
+  ): Promise<any> {
+    let where;
+    if (session.passport.user.id) {
+      where = {
+        id: session.passport.user.id,
+      };
+    } else {
+      const user = await this.prisma.user.findFirst({
+        where: {
+          discord: {
+            discordId: session.passport.user.discordId,
+          },
+        },
+        select: {
+          id: true,
+        },
+      });
+      where = {
+        id: user.id,
+      };
+    }
+    return await this.memeService.editComment({
+      where,
+      select: {
+        id: true,
+        comments: {
+          where: {
+            id: parseInt(commentId),
+          },
+          select: {
+            id: true,
+            text: true,
+            updatedAt: true,
+            edited: true,
+          },
+        },
+      },
+      data: {
+        comments: {
+          update: {
+            where: {
+              id: parseInt(commentId),
+            },
+            data: {
+              text: body.comment,
+              edited: true,
+            },
+          },
+        },
+      },
+    });
   }
 }

@@ -1,8 +1,9 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import InteractiveButtons from './InteractiveButtons';
-import { useParams } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import InteractiveButtons from './InteractiveButtons';
+import InteractiveComments from './InteractiveComments';
 import { fetchMeme } from './MemeAPI';
 
 const Post = () => {
@@ -23,19 +24,28 @@ const Post = () => {
     <FontAwesomeIcon id="scroll-load-div" icon={faSpinner} spin />
   ) : (
     <>
-      <div className="m-5 shadow-md">
-        <div className="flex">
-          <div className="w-1/2 md:w-1/5">
-            <img className="object-fill rounded-md lg:rounded-none" src={meme.url} alt={meme.title} />
+      <div className="mx-4 shadow-sm">
+        <div className="p-2 flex border-x">
+          <div className="w-1/2 self-center">
+            <img
+              className="object-fit rounded-md lg:rounded-none"
+              src={meme.url}
+              alt={meme.title}
+            />
           </div>
           <div className="flex-1 m-2">
-            <div className="flex justify-end text-lg font-bold md:text-2xl">
+            <div className="flex justify-end text-md md:text-xl text-once-900">
               <a href={`/user/${meme.author.username}`}>{meme.author.username}</a>
             </div>
-            <div className="flex items-center font-bold h-3/4 text-md md:text-2xl">{meme.title}</div>
+            <div className="items-center h-3/4 text-sm md:text-xl">{meme.title}</div>
           </div>
         </div>
-        <InteractiveButtons memeId={parseInt(memeid!, 10)} />
+        <div className="border-t border-x">
+          <InteractiveButtons memeId={parseInt(memeid!, 10)} memeTitle={meme.title} />
+        </div>
+        <div className="divide-y border">
+          <InteractiveComments memeId={parseInt(memeid!, 10)} ownerId={meme.author.id} />
+        </div>
       </div>
     </>
   );

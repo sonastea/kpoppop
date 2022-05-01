@@ -200,6 +200,7 @@ const UploadMeme = () => {
                   {...register('title', {
                     required: true,
                     minLength: 3,
+                    maxLength: 320,
                     validate: profanityFilter,
                   })}
                 />

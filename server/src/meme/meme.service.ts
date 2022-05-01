@@ -40,11 +40,15 @@ export class MemeService {
     const { where } = params;
     const likes = await this.prisma.meme.findUnique({
       where,
-      include: {
-        likedBy: true,
+      select: {
+        _count: {
+          select: {
+            likedBy: true,
+          },
+        },
       },
     });
-    return likes.likedBy.length;
+    return likes._count.likedBy;
   }
 
   async likedMeme(params: {
@@ -113,7 +117,7 @@ export class MemeService {
         likedBy: {
           disconnect: {
             id: user.id,
-          }
+          },
         },
       },
       include: {
@@ -153,5 +157,76 @@ export class MemeService {
       data,
       where,
     });
+  }
+
+  async totalComments(params: { where: Prisma.MemeWhereUniqueInput }): Promise<any> {
+    const { where } = params;
+    const likes = await this.prisma.meme.findUnique({
+      where,
+      include: {
+        _count: {
+          select: { comments: true },
+        },
+      },
+    });
+    return likes._count.comments;
+  }
+
+  async comments(params: {
+    where: Prisma.MemeWhereUniqueInput;
+    select: Prisma.MemeSelect;
+  }): Promise<any> {
+    const { where, select } = params;
+    const meme = await this.prisma.meme.findUnique({
+      where,
+      select,
+    });
+    return meme;
+  }
+
+  async commentMeme(params: {
+    data: Prisma.CommentCreateInput;
+    select: Prisma.CommentSelect;
+  }): Promise<Prisma.CommentSelect> {
+    const { data, select } = params;
+    const comment = await this.prisma.comment.create({
+      data,
+      select,
+    });
+    return comment;
+  }
+
+  async toggleComment(memeId: number): Promise<any> {
+    const meme = await this.prisma
+      .$queryRaw`update "Comment" SET "active" = not "active" WHERE "id" = ${memeId} returning "id", "active"`; // eslint-disable-line max-len
+    return meme[0];
+  }
+
+  async deleteComment(params: {
+    where: Prisma.UserWhereUniqueInput;
+    select: Prisma.UserSelect;
+    data: Prisma.UserUpdateInput;
+  }): Promise<any> {
+    const { where, select, data } = params;
+    const comment = await this.prisma.user.update({
+      where,
+      select,
+      data,
+    });
+    return comment;
+  }
+
+  async editComment(params: {
+    where: Prisma.UserWhereUniqueInput;
+    select: Prisma.UserSelect;
+    data: Prisma.UserUpdateInput;
+  }): Promise<any> {
+    const { where, select, data } = params;
+    const comment = await this.prisma.user.update({
+      where,
+      select,
+      data,
+    });
+    return comment['comments'][0];
   }
 }

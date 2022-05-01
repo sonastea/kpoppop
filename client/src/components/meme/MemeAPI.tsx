@@ -48,3 +48,38 @@ export const unlikeMeme = async (id: number) => {
     credentials: 'include',
   }).then((response) => response.json());
 };
+
+export const fetchMemeTotalComments = async (id: number) => {
+  return await fetch(`${API_URL}/meme/comments/${id}`, {
+    method: 'GET',
+  }).then((response) => response.json());
+};
+
+export const fetchMemeComments = async (id: number) => {
+  return await fetch(`${API_URL}/meme/comment/${id}`, {
+    method: 'GET',
+  }).then((response) => response.json());
+};
+
+export const toggleMemeComment = async (id: number) => {
+  return await fetch(`${API_URL}/meme/delete/${id}`, {
+    method: 'PUT',
+    credentials: 'include',
+  }).then((response) => response.json());
+};
+
+export const deleteComment = async (id: number) => {
+  return await fetch(`${API_URL}/meme/delete/${id}`, {
+    method: 'DELETE',
+    credentials: 'include',
+  }).then((response) => response.json());
+};
+
+export const editComment = async (comment: string, id: number) => {
+  return await fetch(`${API_URL}/meme/edit/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({comment}),
+  }).then((response) => response.json());
+};
