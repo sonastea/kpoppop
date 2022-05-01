@@ -20,6 +20,7 @@ export class DiscordAuthService {
               username: true,
               displayname: true,
               role: true,
+              photo: true,
             },
           },
         },

@@ -82,7 +82,7 @@ const Memes = () => {
                       {meme.title}
                     </a>
                   </div>
-                  <InteractiveButtons memeId={meme.id} />
+                  <InteractiveButtons memeId={meme.id} memeTitle={title}/>
                 </div>
               </div>
             );

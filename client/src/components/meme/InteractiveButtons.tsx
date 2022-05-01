@@ -1,17 +1,24 @@
-import { useEffect, useState } from 'react';
 import { faComment, faHeart } from '@fortawesome/free-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { fetchMemeTotalLikes, fetchMemeUserLike, likeMeme, unlikeMeme } from './MemeAPI';
 import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAuth } from 'contexts/AuthContext';
+import { useEffect, useState } from 'react';
+import {
+  fetchMemeTotalComments,
+  fetchMemeTotalLikes,
+  fetchMemeUserLike,
+  likeMeme,
+  unlikeMeme,
+} from './MemeAPI';
 
-export type InteractiveButtonProps = {
+type InteractiveButtonProps = {
   memeId: number;
+  memeTitle: string;
 };
 
 const InteractiveButtons = (props: InteractiveButtonProps) => {
   const { user } = useAuth();
-  const { memeId } = props;
+  const { memeId, memeTitle } = props;
   const [likedState, setLiked] = useState<boolean>();
   const [totalLikes, setLikes] = useState<number>();
   const [totalComments, setTotalComments] = useState<number>();
@@ -37,9 +44,11 @@ const InteractiveButtons = (props: InteractiveButtonProps) => {
   useEffect(() => {
     const fetchLikes = async (memeId: number) => {
       const likes = await fetchMemeTotalLikes(memeId);
+      const comments = await fetchMemeTotalComments(memeId);
       setTotalLikes(likes);
+      setTotalComments(comments);
 
-      if (user?.id) {
+      if (user && user.id) {
         await fetchMemeUserLike(memeId).then((response) => {
           if (response.statusCode !== 401) {
             setLiked(response);
@@ -56,17 +65,33 @@ const InteractiveButtons = (props: InteractiveButtonProps) => {
   }, [user, likedState, memeId]);
 
   return (
-    <div className="flex justify-center text-md gap-3 md:text-xl">
-      <div className="like" onClick={handleLiked} role="button" aria-label="like">
-        {likedState ? <FontAwesomeIcon className="liked" icon={fasHeart} /> : <FontAwesomeIcon icon={faHeart} />}
-        <span className="ml-1 text-gray-700 align-middle">{totalLikes ? `${totalLikes}` : `0`}</span>
+    <div className="p-1 flex justify-center space-x-4">
+      <div className="group like" onClick={handleLiked} role="button" aria-label="like">
+        {likedState ? (
+          <FontAwesomeIcon
+            className="group-hover:text-slate-700 md:text-lg liked text-sm"
+            icon={fasHeart}
+          />
+        ) : (
+          <FontAwesomeIcon className="group-hover:text-red-500 md:text-lg text-sm" icon={faHeart} />
+        )}
+        <span
+          className={`${!likedState && 'group-hover:text-red-500'} ml-1 text-gray-700 align-middle`}
+        >
+          {totalLikes ? `${totalLikes}` : `0`}
+        </span>
       </div>
-      {false && (
-        <div className="comments" role="button" aria-label="comments">
-          <FontAwesomeIcon className="align-middle comments" icon={faComment} />
-          <span className="ml-1 text-gray-700 align-middle ">{totalComments ? `${totalComments}` : `0`}</span>
-        </div>
-      )}
+      <div className="group comments" role="button" aria-label="comments">
+        <a href={`/meme/${memeId}/${memeTitle}`}>
+          <FontAwesomeIcon
+            className="group-hover:text-cyan-500 md:text-lg align-middle comments text-sm"
+            icon={faComment}
+          />
+          <span className="group-hover:text-cyan-500 ml-1 text-gray-700 align-middle ">
+            {totalComments ? `${totalComments}` : `0`}
+          </span>
+        </a>
+      </div>
     </div>
   );
 };

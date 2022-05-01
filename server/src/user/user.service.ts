@@ -58,6 +58,7 @@ export class UserService {
           username: true,
           displayname: true,
           role: true,
+          photo: true,
         },
       });
       return user;

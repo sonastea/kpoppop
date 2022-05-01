@@ -10,8 +10,8 @@ datasource db {
 model User {
   id           Int                @id @default(autoincrement())
   discord      DiscordUser?
-  createdAt    DateTime           @default(now())
-  updatedAt    DateTime?          @updatedAt
+  createdAt    DateTime           @default(now()) @db.Timestamptz()
+  updatedAt    DateTime?          @updatedAt @db.Timestamptz()
   username     String             @unique
   password     String?
   email        String             @unique
@@ -22,6 +22,7 @@ model User {
   refreshtoken String?
   memes        Meme[]
   likedMemes   Meme[]             @relation("UserLikesPost")
+  comments     Comment[]          @relation("CommentsByUser")
   socialMedias SocialMedia[]
 }
 
@@ -36,18 +37,32 @@ model DiscordUser {
 
 model Meme {
   id        Int                   @id @default(autoincrement())
-  title     String
+  title     String                @db.VarChar(320)
   url       String?
   path      String?
   resource  MemeResource
   authorId  Int
   active    Boolean               @default(true)
   flagged   Boolean               @default(false)
-  createdAt DateTime              @default(now())
-  updatedAt DateTime?             @updatedAt
+  createdAt DateTime              @default(now()) @db.Timestamptz()
+  updatedAt DateTime?             @updatedAt @db.Timestamptz()
   updatedBy String?               @ignore
   author    User                  @relation(fields: [authorId], references: [id])
   likedBy   User[]                @relation("UserLikesPost")
+  comments  Comment[]             @relation("CommentsForMeme")
+}
+
+model Comment {
+  id            Int               @id @default(autoincrement())
+  text          String            @db.VarChar(640)
+  active        Boolean           @default(true)
+  edited        Boolean           @default(false)
+  meme          Meme              @relation("CommentsForMeme", fields: [memeId], references: [id])
+  memeId        Int
+  user          User              @relation("CommentsByUser", fields: [userId], references: [id])
+  userId        Int
+  createdAt     DateTime          @default(now()) @db.Timestamptz()
+  updatedAt     DateTime?         @updatedAt @db.Timestamptz()
 }
 
 model SocialMedia {
@@ -63,7 +78,7 @@ model Session {
   id        String                @id
   sid       String                @unique
   data      String
-  expiresAt DateTime
+  expiresAt DateTime              @db.Timestamptz()
 }
 
 enum Role {

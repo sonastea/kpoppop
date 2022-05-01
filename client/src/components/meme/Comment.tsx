@@ -1,0 +1,105 @@
+import { useAuth } from 'contexts/AuthContext';
+import { BaseSyntheticEvent, useRef, useState } from 'react';
+import CommentButtons from './CommentButtons';
+import CommentModerationButtons from './CommentModerationButtons';
+import { CommentProps } from './InteractiveComments';
+import { editComment } from './MemeAPI';
+
+const MAX_COMMENT_CHAR_LENGTH: number = 640;
+
+const Comment = (props: { props: CommentProps; memeOwnerId: number }) => {
+  const [comment, setComment] = useState<CommentProps>(props.props);
+  const [newComment, setNewComment] = useState<string>(props.props.text);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const newTextRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
+  const { user } = useAuth();
+  const isAuthor = comment.user.id === user?.id;
+
+  const handleEditComment = async (e: BaseSyntheticEvent) => {
+    if (newComment?.length > MAX_COMMENT_CHAR_LENGTH) {
+      window.alert(`Comment exceeds maximum limit of ${MAX_COMMENT_CHAR_LENGTH} characters.`);
+      return;
+    }
+
+    await editComment(newComment, comment.id).then(
+      (data: { id: number; text: string; updatedAt: string; edited: boolean }) => {
+        if (data.id) {
+          newTextRef?.current?.classList.add('hidden');
+          textRef?.current?.parentElement?.classList.remove('hidden');
+          setComment((prev) => ({
+            ...prev,
+            text: data.text,
+            updatedAt: data.updatedAt,
+            edited: data.edited,
+            user: {
+              ...prev.user,
+            },
+          }));
+        }
+        containerRef!.current!.children[3].children[1].children[1].classList.remove('text-red-500');
+        containerRef!.current!.children[3].children[1].children[1].textContent = 'Edit';
+      }
+    );
+  };
+
+  return (
+    <div className="p-2 comment-container" ref={containerRef}>
+      <div className="font-bold space-x-2 flex mb-1">
+        <img
+          className="w-12 h-12 rounded-full"
+          src={comment.user.photo ? comment.user.photo : '/images/default_photo_white_200x200.png'}
+          alt={`${comment.user.username} profile`}
+        />
+        <span
+          className={`${comment.user.id === props.memeOwnerId && 'text-white bg-once-900'} ${
+            comment.user.role === 'ADMIN' && 'text-black bg-once-500'
+          } self-center rounded-md px-1`}
+        >
+          {comment.user.displayname ? comment.user.displayname : comment.user.username}
+        </span>
+      </div>
+      <div className="text-slate-800 text-sm sm:text-lg break-words">
+        <p className="whitespace-pre-wrap" ref={textRef}>
+          {comment.text}
+        </p>
+        {comment.edited && (
+          <p className="text-xs text-right text-gray-400/90">
+            Edited{' '}
+            {`${new Date(comment.updatedAt).toLocaleTimeString()} ${new Date(
+              comment.updatedAt
+            ).toLocaleDateString()}`}
+          </p>
+        )}
+      </div>
+      <div
+        aria-label="edit-comment-input"
+        className="hidden rounded-md h-60 bg-gray-100 text-slate-800 text-xs sm:text-lg break-words"
+        ref={newTextRef}
+      >
+        <div className="rounded-md h-full flex text-center">
+          <textarea
+            className="focus:outline-none focus:border-once border resize-none p-2 h-full w-full bg-gray-100 rounded-md"
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+          />
+          <div className="flex flex-col place-content-between">
+            <p className={`${newComment && newComment.length > 640 && 'text-red-500'} m-1`}>
+              {newComment?.length}
+            </p>
+            <button
+              type="button"
+              className="m-1 self-end p-1 bg-once rounded-md h-min"
+              onClick={(e: BaseSyntheticEvent) => handleEditComment(e)}
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+      {isAuthor && <CommentButtons commentId={comment.id} containerRef={containerRef} />}
+      {!isAuthor && <CommentModerationButtons commentId={comment.id} />}
+    </div>
+  );
+};
+export default Comment;

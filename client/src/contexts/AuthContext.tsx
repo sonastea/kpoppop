@@ -8,6 +8,7 @@ export type User = {
   username?: string;
   role?: string;
   displayname?: string;
+  photo?: string;
 };
 
 export interface IAuthContext {
