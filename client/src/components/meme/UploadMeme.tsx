@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { identifyImage } from './IdentifyImage';
 import { compressImage } from './CompressImage';
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 import { submitMeme } from './MemeAPI';
 import { profanityFilter } from 'utils/profanity-filter';
 

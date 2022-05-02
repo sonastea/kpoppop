@@ -170,8 +170,8 @@ export class MemeController {
 
   @Get(':id')
   @SkipThrottle()
-  getMeme(@Param('id') id: string): Promise<Meme | null> {
-    return this.memeService.post({
+  async getMeme(@Param('id') id: string): Promise<Meme | object> {
+    const meme = await this.memeService.post({
       where: {
         id: parseInt(id),
         active: { equals: true },
@@ -186,6 +186,8 @@ export class MemeController {
         url: true,
       },
     });
+    if (meme === null) return {};
+    return meme;
   }
 
   @Get('likes/:id')
@@ -380,7 +382,7 @@ export class MemeController {
   }
 
   @UseGuards(SessionGuard, RolesGuard)
-  @Roles('ADMIN','MODERATOR')
+  @Roles('ADMIN', 'MODERATOR')
   @SkipThrottle()
   @Put('delete/:id')
   async toggleComment(@Param('id') memeId: string): Promise<any> {

@@ -5,23 +5,38 @@ import { useParams } from 'react-router-dom';
 import InteractiveButtons from './InteractiveButtons';
 import InteractiveComments from './InteractiveComments';
 import { fetchMeme } from './MemeAPI';
+import PostNonexistent from './PostNonexistent';
+
+type PostProps = {
+  author: {
+    id: number;
+    username: string;
+  };
+  id: number;
+  title: string;
+  url: string;
+};
 
 const Post = () => {
   const { memeid } = useParams();
-  const [meme, setMeme] = useState({} as any);
+  const [meme, setMeme] = useState<PostProps>({} as any);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadMeme = async (id: number) => {
       setLoading(true);
-      await fetchMeme(id).then((data) => setMeme(data));
+      await fetchMeme(id).then((data: PostProps) => {
+        setMeme(data);
+      });
       setLoading(false);
     };
     loadMeme(parseInt(memeid!));
   }, [setMeme, memeid]);
 
-  return loading ? (
-    <FontAwesomeIcon id="scroll-load-div" icon={faSpinner} spin />
+  if (loading) return <FontAwesomeIcon id="scroll-load-div" icon={faSpinner} spin />;
+
+  return Object.keys(meme).length === 0 ? (
+    <PostNonexistent message={'Post does not exist'} />
   ) : (
     <>
       <div className="mx-4 shadow-sm">
