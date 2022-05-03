@@ -92,7 +92,7 @@ export class UserController {
   @HttpCode(205)
   @Post('logout')
   async logout(@Res() res: Response): Promise<any> {
-    /* res
+    res
       .clearCookie('connect.sid', {
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         httpOnly: true,
@@ -100,8 +100,7 @@ export class UserController {
         domain: process.env.NODE_ENV === 'production' ? '.kpoppop.com' : null,
         sameSite: process.env.NODE_ENV === 'production' ? 'lax' : 'none',
       })
-      .end(); */
-      res.clearCookie('connect.sid').end();
+      .end();
   }
 
   @UseGuards(SessionGuard)
