@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../database/prisma.service';
-import { User, Prisma } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { PrismaService } from '../database/prisma.service';
+import { RegisterUserData } from './user.controller';
 
 const UserProfileData: Prisma.UserSelect = {
   id: true,
@@ -22,7 +23,7 @@ const SocialMediaLinkData: Prisma.SocialMediaSelect = {
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createUser(data: Prisma.UserCreateInput): Promise<User | object> {
+  async createUser(data: Prisma.UserCreateInput): Promise<User | RegisterUserData> {
     data.password = bcrypt.hashSync(data.password, 10);
     data.banner = '';
     data.photo = '';
@@ -34,7 +35,8 @@ export class UserService {
       });
       // User object received contains all fields that
       // we must sanitize before sending back to the user.
-      const { updatedAt, email, refreshtoken, password, banner, photo, ...strippedUser } = user;
+      const { updatedAt, emailVerified, refreshtoken, password, banner, photo, ...strippedUser } =
+        user;
       return strippedUser;
     } catch (err) {
       if (err.code === 'P2002') {

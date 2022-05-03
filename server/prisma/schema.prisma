@@ -8,22 +8,23 @@ datasource db {
 }
 
 model User {
-  id           Int                @id @default(autoincrement())
-  discord      DiscordUser?
-  createdAt    DateTime           @default(now()) @db.Timestamptz()
-  updatedAt    DateTime?          @updatedAt @db.Timestamptz()
-  username     String             @unique
-  password     String?
-  email        String             @unique
-  displayname  String?
-  banner       String?
-  photo        String?
-  role         Role               @default(USER)
-  refreshtoken String?
-  memes        Meme[]
-  likedMemes   Meme[]             @relation("UserLikesPost")
-  comments     Comment[]          @relation("CommentsByUser")
-  socialMedias SocialMedia[]
+  id            Int                @id @default(autoincrement())
+  discord       DiscordUser?
+  createdAt     DateTime           @default(now()) @db.Timestamptz()
+  updatedAt     DateTime?          @updatedAt @db.Timestamptz()
+  username      String             @unique
+  password      String?
+  email         String             @unique
+  emailVerified Boolean            @default(false)
+  displayname   String?
+  banner        String?
+  photo         String?
+  role          Role               @default(USER)
+  refreshtoken  String?
+  memes         Meme[]
+  likedMemes    Meme[]             @relation("UserLikesPost")
+  comments      Comment[]          @relation("CommentsByUser")
+  socialMedias  SocialMedia[]
 }
 
 model DiscordUser {
