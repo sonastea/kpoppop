@@ -44,9 +44,9 @@ const NavBar = () => {
     <nav className="relative w-full shadow">
       <div className="mx-auto md:max-w-screen-2xl">
         <div className="flex justify-between">
-          <div className="flex space-x-2">
-            <a href="/" className="flex items-center p-2">
-              <img src="/images/logo.png" alt="Kpoppop Logo" className="w-auto h-20 mr-2 md:h-10"></img>
+          <div className="flex flex-shrink-0 space-x-2">
+            <a href="/" className="flex items-center m-2">
+              <img src="/images/header_logo.png" alt="Kpoppop Logo" className="grow-0 w-auto h-10 sm:h-16"></img>
             </a>
 
             <ul className="items-center hidden md:flex space-x-1">
@@ -66,7 +66,7 @@ const NavBar = () => {
 
           {user?.username ? <NavBarLoggedIn /> : <NavBarLoggedOut />}
 
-          <div className="flex items-center p-2 md:hidden">
+          <div className="flex items-center m-2 md:hidden">
             <button className="mobile-menu-toggle" onClick={() => setMobileNav((prev) => !prev)}>
               <svg
                 className="w-6 h-6"
@@ -88,7 +88,7 @@ const NavBar = () => {
           >
             <div className="pt-8 pl-4">
               <a className="inline-block" href="/">
-                <img src="/images/logo.png" alt="Kpoppop Logo" className="w-auto h-20"></img>
+                <img src="/images/header_logo.png" alt="Kpoppop Logo" className="w-5/6 h-auto"></img>
               </a>
               <button className="absolute right-4" onClick={() => setMobileNav((prev) => !prev)}>
                 <FontAwesomeIcon icon={faXmark} />
