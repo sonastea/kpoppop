@@ -58,9 +58,9 @@ const RegisterRedirect = () => {
     await createLocalLinkedUser(data).then((data) => {
       if (data.userId) {
         setAccountCreated(true);
-        /* setTimeout(() => {
+        setTimeout(() => {
           window.location.href = '/';
-        }, 2000); */
+        }, 2000);
       }
       if (data.errors) {
         setError('username', {
