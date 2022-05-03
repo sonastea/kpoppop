@@ -13,7 +13,7 @@ import {
   UploadedFile,
   UploadedFiles,
   UseGuards,
-  UseInterceptors,
+  UseInterceptors
 } from '@nestjs/common';
 import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { SkipThrottle, ThrottlerGuard } from '@nestjs/throttler';
@@ -27,6 +27,7 @@ import { RecaptchaGuard } from 'src/auth/guards/recaptcha.guard';
 import { SessionGuard } from 'src/auth/guards/session.guard';
 import { LocalSerializer } from 'src/auth/serializers/local.serializer';
 import { PrismaService } from 'src/database/prisma.service';
+import { MailService } from 'src/mail/mail.service';
 import { UserService } from './user.service';
 import path = require('path');
 
@@ -51,18 +52,32 @@ type SocialMediaLinkData = {
   url: string;
 };
 
+export type RegisterUserData = {
+  id?: number;
+  createdAt?: Date;
+  username?: string;
+  email?: string;
+  displayname?: string;
+  role?: string;
+  errors?: { User: string };
+}
+
 @Controller('user')
 @UseGuards(ThrottlerGuard)
 @UseInterceptors(LocalSerializer)
 export class UserController {
-  constructor(private readonly userService: UserService, private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly mailService: MailService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   @UseGuards(RecaptchaGuard)
   @Post('register')
   async signupUser(
     @Res() res: Response,
     @Body() data: { username: string; password: string; email: string; recaptcha: string }
-  ): Promise<User | object> {
+  ): Promise<User | RegisterUserData | object> {
     const { recaptcha, ...newData } = data;
     const user = await this.userService.createUser(newData);
     // Check if user is valid
@@ -70,6 +85,7 @@ export class UserController {
       return res.status(200).json(user);
     } else {
       console.log(user);
+      this.mailService.sendVerificationLink(user.email);
       res.status(201).json(user);
     }
   }
