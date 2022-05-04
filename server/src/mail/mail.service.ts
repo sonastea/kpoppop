@@ -1,9 +1,10 @@
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { MailerService } from '@nestjs-modules/mailer';
+import { MailerService } from '@derech1e/mailer';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import ejs = require('ejs');
 
 @Injectable()
 export class MailService {
@@ -13,20 +14,8 @@ export class MailService {
     private readonly jwtService: JwtService
   ) {}
 
-  public example(): void {
-    this.mailerService
-      .sendMail({
-        to: 'sonastea@gmail.com',
-        from: 'noreply@nestjs.com',
-        subject: 'Testing Nest Mailermodule with html ✔',
-        template: './verify-email.html',
-      })
-      .then(() => {})
-      .catch(() => {});
-  }
-
   async sendVerificationLink(email: string) {
-    const token = this.jwtService.sign(
+    const token = await this.jwtService.sign(
       { email },
       {
         secret: this.configService.get('JWT_VERIFICATION_SECRET'),
@@ -34,13 +23,13 @@ export class MailService {
       }
     );
     const url = `${this.configService.get('EMAIL_CONFIRMATION_URL')}?token=${token}`;
-    console.log(url);
     const text = `Welcome to kpoppop. Confirm your email by clicking here: ${url}`;
 
     await this.mailerService.sendMail({
-      from: this.configService.get('MAIL_FROm'),
+      from: this.configService.get('MAIL_FROM'),
       to: email,
       subject: 'Verify your email address',
+      html: await ejs.renderFile(process.env.PWD + '/src/mail/verify-email.ejs', { url: url }),
       text,
     });
   }
