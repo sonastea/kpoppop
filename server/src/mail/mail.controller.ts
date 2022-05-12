@@ -12,9 +12,12 @@ export class MailController {
   @Get('verify?')
   @SkipThrottle()
   async verifyEmail(@Query('token') token: string, @Res() res: Response) {
+    let invalid: boolean;
     // Check email jwt verification token
     await this.jwtService.verifyAsync(token).catch(async (err) => {
-      // invalid token due to format or some sort
+      // invalid token due to format or some sort, invalid is used as a check for valid tokens
+      // because it still send headers after being set
+      if (err.name) invalid = true;
       if (err.name === 'JsonWebTokenError') {
         res.status(401).end();
       }
@@ -24,11 +27,13 @@ export class MailController {
         res.status(401).end();
       }
     });
-    // Valid token, decode token to get email to verify the email and disable the token
-    const decoded = this.jwtService.decode(token);
-    await this.mailService.verifyEmail(decoded["email"]);
-    await this.mailService.disableToken(token);
-    res.status(200).end();
+    if (!invalid) {
+      // Valid token, decode token to get email to verify the email and disable the token
+      const decoded = this.jwtService.decode(token);
+      await this.mailService.verifyEmail(decoded['email']);
+      await this.mailService.disableToken(token);
+      res.status(200).end();
+    }
   }
 
   @Post('resend-link')
