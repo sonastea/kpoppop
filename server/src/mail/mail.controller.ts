@@ -37,10 +37,13 @@ export class MailController {
   }
 
   @Post('resend-link')
-  // @Throttle(60, 2)
+  @Throttle(60, 3)
   @HttpCode(201)
   async resend(@Res() res: Response, @Body() data: { email: string }) {
-    await this.mailService.sendVerificationLink(data.email);
-    // res.end();
+    await this.mailService.sendVerificationLink(data.email).then((data) => {
+      if (data === null)
+        res.status(400).json({ message: 'An account with this email does not exist' });
+    });
+    res.end();
   }
 }
