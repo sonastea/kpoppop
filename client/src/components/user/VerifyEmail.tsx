@@ -1,5 +1,5 @@
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
-import { faCheck, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faSpinner, faX } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { API_URL } from 'Global.d';
 import { useEffect, useState } from 'react';
@@ -15,7 +15,8 @@ const VerifyEmail = () => {
   const [queryParams, setQueryParams] = useSearchParams();
   const [loading, setLoading] = useState<boolean>(true);
   const [verified, setVerified] = useState<boolean>();
-  const [isResend, setResend] = useState<boolean>(false);
+  const [isResend, setResend] = useState<boolean>();
+  const [isFailResend, setIsFail] = useState<boolean>();
   const [verifyError, setVerifyError] = useState<string>(
     'Email verification link expired or invalid'
   );
@@ -32,13 +33,21 @@ const VerifyEmail = () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
-    }).then((response) => {
-      if (response.status === 201) {
-        setVerifyError(`Verification email sent to\n${data.email}`);
-      } else {
-        setTimeout(() => setResend(false), 30000);
-      }
-    });
+    })
+      .then((response) => {
+        if (response.status === 201) {
+          setIsFail(false);
+          setVerifyError(`Verification email sent to\n${data.email}`);
+        }
+        if (response.status === 400) {
+          setIsFail(true);
+          setTimeout(() => setResend(false), 30000);
+          return response.json();
+        }
+      })
+      .then((data) => {
+        data?.message && setVerifyError(data.message);
+      });
   };
 
   useEffect(() => {
@@ -96,13 +105,17 @@ const VerifyEmail = () => {
 
             <div className="py-3 grid">
               <button
-                className={`${
-                  isResend && 'cursor-not-allowed'
-                } place-self-center p-2 overflow-hidden font-bold text-gray-900 border-once-400 rounded-md bg-once-400 hover:bg-once disabled:hover:bg-once-400 transition duration-400`}
+                className={`${isResend && 'cursor-not-allowed'
+                  } place-self-center p-2 overflow-hidden font-bold text-gray-900 border-once-400 rounded-md bg-once-400 hover:bg-once disabled:hover:bg-once-400 transition duration-400`}
                 disabled={isResend && true}
               >
                 Resend verification link
-                {isResend && <FontAwesomeIcon className="text-green-600 pl-2" icon={faCheck} />}
+                {isFailResend === true && (
+                  <FontAwesomeIcon className="text-red-600 pl-2" icon={faX} />
+                )}
+                {isFailResend === false && (
+                  <FontAwesomeIcon className="text-green-600 pl-2" icon={faCheck} />
+                )}
               </button>
             </div>
           </form>

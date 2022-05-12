@@ -51,6 +51,14 @@ export class MailService {
   }
 
   async sendVerificationLink(email: string) {
+    // check if email even exists before proceeding at all
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+    if (!user) return null;
+
     const token = await this.createToken(email);
     const url = `${this.configService.get('EMAIL_CONFIRMATION_URL')}?token=${token}`;
     const text = `Welcome to kpoppop. Confirm your email by clicking here: ${url}`;
