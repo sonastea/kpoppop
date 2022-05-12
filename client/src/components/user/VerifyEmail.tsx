@@ -46,11 +46,12 @@ const VerifyEmail = () => {
     const verifyEmail = async () => {
       await fetch(`${API_URL}/email/verify?token=${queryParams.get('token')}`, {
         method: 'GET',
-      }).then((response) => {
-        if (response.status === 401) setVerified(false);
-        if (response.status === 200) setVerified(true);
-        setLoading(false);
-      });
+      })
+        .then((response) => {
+          if (response.status === 401) setVerified(false);
+          if (response.status === 200) setVerified(true);
+        })
+        .finally(() => setLoading(false));
     };
     verifyEmail();
   }, [queryParams, setError]);
@@ -95,8 +96,9 @@ const VerifyEmail = () => {
 
             <div className="py-3 grid">
               <button
-                className={`${isResend && 'cursor-not-allowed'
-                  } place-self-center p-2 overflow-hidden font-bold text-gray-900 border-once-400 rounded-md bg-once-400 hover:bg-once disabled:hover:bg-once-400 transition duration-400`}
+                className={`${
+                  isResend && 'cursor-not-allowed'
+                } place-self-center p-2 overflow-hidden font-bold text-gray-900 border-once-400 rounded-md bg-once-400 hover:bg-once disabled:hover:bg-once-400 transition duration-400`}
                 disabled={isResend && true}
               >
                 Resend verification link
