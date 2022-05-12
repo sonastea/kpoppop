@@ -2,9 +2,9 @@ import { MailerModule } from '@derech1e/mailer';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { PrismaService } from 'src/database/prisma.service';
 import { MailService } from './mail.service';
 
-console.log(__dirname + '/templates/');
 @Module({
   imports: [
     JwtModule.registerAsync({
@@ -33,7 +33,7 @@ console.log(__dirname + '/templates/');
       inject: [ConfigService],
     }),
   ],
-  providers: [MailService],
-  exports: [MailService],
+  providers: [MailService, PrismaService],
+  exports: [MailService, JwtModule],
 })
 export class MailModule {}

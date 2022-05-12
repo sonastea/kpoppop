@@ -1,7 +1,6 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { JwtModule, JwtService } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { MulterModule } from '@nestjs/platform-express';
 import { ThrottlerModule } from '@nestjs/throttler';
@@ -11,10 +10,11 @@ import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { DiscordController } from './auth/discord.controller';
 import { DiscordAuthModule } from './auth/discord.module';
-// import { BotModule } from './discord/bot.module';
+import { BotModule } from './discord/bot.module';
 import { LocalSerializer } from './auth/serializers/local.serializer';
 import { LocalStrategy } from './auth/strategies/local.strategy';
 import { PrismaService } from './database/prisma.service';
+import { MailController } from './mail/mail.controller';
 import { MailModule } from './mail/mail.module';
 import { MemeController } from './meme/meme.controller';
 import { MemeService } from './meme/meme.service';
@@ -24,7 +24,7 @@ import { UserService } from './user/user.service';
 @Module({
   imports: [
     AuthModule,
-    // BotModule,
+    BotModule,
     DiscordAuthModule,
     HttpModule,
     MailModule,
@@ -66,7 +66,7 @@ import { UserService } from './user/user.service';
       }),
     }),
   ],
-  controllers: [AuthController, DiscordController, MemeController, UserController],
+  controllers: [AuthController, DiscordController, MailController, MemeController, UserController],
   providers: [PrismaService, MemeService, UserService, LocalStrategy, LocalSerializer],
 })
 export class AppModule {}

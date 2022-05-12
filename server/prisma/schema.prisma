@@ -82,6 +82,11 @@ model Session {
   expiresAt DateTime              @db.Timestamptz()
 }
 
+model EmailToken {
+  token     String                @id @unique
+  active    Boolean               @default(true)
+}
+
 enum Role {
   USER
   MODERATOR
