@@ -39,7 +39,8 @@ export class MemeController {
   constructor(private readonly memeService: MemeService, private readonly prisma: PrismaService) {}
 
   @UseGuards(SessionGuard)
-  @Throttle(300, 10)
+  // @Throttle(300, 10)
+  @SkipThrottle()
   @UseInterceptors(FileInterceptor('file'))
   @Post('submit')
   async createMeme(
@@ -231,7 +232,8 @@ export class MemeController {
   }
 
   @UseGuards(SessionGuard)
-  @Throttle(60, 15)
+  // @Throttle(60, 15)
+  @SkipThrottle()
   @Put('like/:id')
   async likeMeme(@Param('id') id: string, @Session() session: Record<string, any>): Promise<any> {
     if (session.passport.user.id) {
@@ -258,7 +260,8 @@ export class MemeController {
   }
 
   @UseGuards(SessionGuard)
-  @Throttle(60, 15)
+  // @Throttle(60, 15)
+  @SkipThrottle()
   @Delete('like/:id')
   async unlikeMeme(@Param('id') id: string, @Session() session: Record<string, any>): Promise<any> {
     if (session.passport.user.id) {
@@ -284,7 +287,8 @@ export class MemeController {
     }
   }
 
-  @Throttle(60, 15)
+  // @Throttle(60, 15)
+  @SkipThrottle()
   @Get('comment/:id')
   async getMemeComments(@Param('id') memeId: string): Promise<Comment[]> {
     return await this.memeService.comments({
@@ -488,5 +492,36 @@ export class MemeController {
         },
       },
     });
+  }
+
+  @UseGuards(SessionGuard, RolesGuard)
+  @Roles('ADMIN', 'MODERATOR')
+  @SkipThrottle()
+  @Put('hide_meme')
+  async hideMeme(@Res() res: Response, @Body() data: { memeId: string }): Promise<any> {
+    const meme = await this.memeService.updateMeme({
+          where: { id: parseInt(data.memeId) },
+          data: {
+            active: false,
+            flagged: true,
+          },
+        });
+    res.json(meme);
+  }
+
+
+  @UseGuards(SessionGuard, RolesGuard)
+  @Roles('ADMIN', 'MODERATOR')
+  @SkipThrottle()
+  @Put('show_meme')
+  async showMeme(@Res() res: Response, @Body() data: { memeId: string }): Promise<any> {
+    const meme = await this.memeService.updateMeme({
+          where: { id: parseInt(data.memeId) },
+          data: {
+            active: true,
+            flagged: false,
+          },
+        });
+    res.json(meme);
   }
 }

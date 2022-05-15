@@ -11,6 +11,7 @@ import ContactUs from 'components/ContactUs';
 import { AuthProvider } from 'contexts/AuthContext';
 import EditProfile from 'components/user/EditProfile';
 import RegisterRedirect from 'components/user/RegisterRedirect';
+import AdminPanel from 'components/admin/AdminPanel';
 
 const App = () => {
   return (
@@ -31,6 +32,7 @@ const App = () => {
           <Route path="register/redirect" element={<RegisterRedirect />} />
           <Route path="user/:username" element={<Profile />} />
           <Route path="profile/settings" element={<EditProfile />} />
+          <Route path="employees-only-do-not-enter" element={<AdminPanel />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

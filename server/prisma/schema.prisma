@@ -31,7 +31,7 @@ model DiscordUser {
   discordId     String            @unique
   accessToken   String?
   refreshToken  String?
-  user          User?             @relation(fields: [userId], references: [id])
+  user          User?             @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        Int?
 }
 
@@ -47,7 +47,7 @@ model Meme {
   createdAt DateTime              @default(now()) @db.Timestamptz()
   updatedAt DateTime?             @updatedAt @db.Timestamptz()
   updatedBy String?               @ignore
-  author    User                  @relation(fields: [authorId], references: [id])
+  author    User                  @relation(fields: [authorId], references: [id], onDelete: Cascade)
   likedBy   User[]                @relation("UserLikesPost")
   comments  Comment[]             @relation("CommentsForMeme")
 }
@@ -59,7 +59,7 @@ model Comment {
   edited        Boolean           @default(false)
   meme          Meme              @relation("CommentsForMeme", fields: [memeId], references: [id])
   memeId        Int
-  user          User              @relation("CommentsByUser", fields: [userId], references: [id])
+  user          User              @relation("CommentsByUser", fields: [userId], references: [id], onDelete: Cascade)
   userId        Int
   createdAt     DateTime          @default(now()) @db.Timestamptz()
   updatedAt     DateTime?         @updatedAt @db.Timestamptz()
@@ -70,7 +70,7 @@ model SocialMedia {
   uuid      String                @default(dbgenerated("gen_random_uuid()")) @db.Uuid @unique
   title     String?
   url       String
-  user      User                  @relation(fields: [userId], references: [id])
+  user      User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
 }
 

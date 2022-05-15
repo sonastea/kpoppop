@@ -17,7 +17,7 @@ import {
 } from '@nestjs/common';
 import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { SkipThrottle, ThrottlerGuard } from '@nestjs/throttler';
-import { User } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import { randomUUID } from 'crypto';
 import * as dotenv from 'dotenv';
 import { Request, Response } from 'express';
@@ -29,6 +29,8 @@ import { LocalSerializer } from 'src/auth/serializers/local.serializer';
 import { PrismaService } from 'src/database/prisma.service';
 import { UserService } from './user.service';
 import path = require('path');
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 dotenv.config();
 
@@ -200,5 +202,42 @@ export class UserController {
     } else {
       return res.json({ success: false });
     }
+  }
+
+  @UseGuards(SessionGuard, RolesGuard)
+  @Roles('ADMIN')
+  @SkipThrottle()
+  @Put('mod_user')
+  async modUser(@Res() res: Response, @Body() data: { username: string }): Promise<any> {
+    console.log(data);
+    const updatedUser = await this.prisma.user.update({
+      where: { username: data.username },
+      data: { role: 'MODERATOR' },
+    });
+    res.json(updatedUser);
+  }
+
+  @UseGuards(SessionGuard, RolesGuard)
+  @Roles('ADMIN')
+  @SkipThrottle()
+  @Put('unmod_user')
+  async unmodUser(@Res() res: Response, @Body() data: { username: string }): Promise<any> {
+    const updatedUser = await this.prisma.user.update({
+      where: { username: data.username },
+      data: { role: 'USER' },
+    });
+    res.json(updatedUser);
+  }
+
+
+  @UseGuards(SessionGuard, RolesGuard)
+  @Roles('ADMIN')
+  @SkipThrottle()
+  @Put('ban_user')
+  async banUser(@Res() res: Response, @Body() data: { username: string }): Promise<any> {
+    const bannedUser = await this.prisma.user.delete({
+      where: { username: data.username },
+    });
+    res.json(bannedUser);
   }
 }
