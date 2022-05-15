@@ -13,7 +13,7 @@ type LoginFormData = {
 
 const Login = () => {
   const {
-    formState: { errors },
+    formState: { errors }, 
     register,
     handleSubmit,
     setError,
@@ -90,6 +90,7 @@ const Login = () => {
         </div>
 
         {errors.password?.message && <span className="text-error">{errors.password.message}</span>}
+        <div className="text-center">New to KPOPPOP? <a className="hover:text-blue-500 font-semibold text-blue-700" href="/register">SIGNUP</a></div>
 
         <div className="py-3">
           <button className="w-full p-2 overflow-hidden font-bold text-gray-900 border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400">
