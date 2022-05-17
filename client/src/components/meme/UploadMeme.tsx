@@ -224,7 +224,7 @@ const UploadMeme = () => {
                 />
               </div>
 
-              <div id="appearance-none file-input-box">
+              <div id="file-input-box">
                 <input
                   multiple
                   type="file"
