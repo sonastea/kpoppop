@@ -65,7 +65,7 @@ const InteractiveComments = (props: InteractiveCommentsProps) => {
     <>
       <form className="space-y-2 space-x-2 flex-wrap items-center p-1 flex justify-center">
         <img
-          className="rounded-full max-w-12 max-h-12"
+          className="rounded-full w-12 h-12 max-w-12 max-h-12"
           src={user && user?.photo ? user.photo : '/images/default_photo_white_200x200.png'}
           alt="user by comment box"
         />
