@@ -88,37 +88,39 @@ const Register = () => {
 
   return (
     <div className="flex items-center justify-center h-full md:min-h-screen">
-      <div className="w-2/3 p-8 bg-gray-700 border rounded shadow-md bg-opacity-95 md:max-w-lg border-once-200">
+      <div className="w-2/3 p-8 rounded shadow-md bg-opacity-95 md:max-w-lg">
         <form className="space-y-4" id="signupForm" onSubmit={handleSubmit(submitHandler)}>
-          <h3 className="py-3 font-semibold text-center text-white">Join kpoppop</h3>
+          <h3 className="py-3 font-semibold text-center">Join kpoppop</h3>
           <div>
-            <label className="block mb-2 font-bold text-gray-100">Username</label>
+            <label className="block mb-2 font-bold">Username</label>
             <input
               required
-              className="w-full p-1 text-white bg-gray-700 border border-gray-800 rounded focus:outline-none focus:border-once"
+              className="w-full p-1 border border-gray-800 rounded focus:outline-none focus:border-once"
               type="text"
               {...register('username', { required: true })}
             />
           </div>
 
           <div>
-            <label className="block mb-2 font-bold text-gray-100">Email</label>
+            <label className="block mb-2 font-bold">Email</label>
             <input
               required
-              className="w-full p-1 text-white bg-gray-700 border border-gray-800 rounded focus:outline-none focus:border-once"
+              className="w-full p-1 border border-gray-800 rounded focus:outline-none focus:border-once"
               type="email"
               {...register('email', { required: true })}
             />
             <div className="mt-1 text-center">
-              {errors.username?.message && <span className="text-error">{errors.username.message}</span>}
+              {errors.username?.message && (
+                <span className="text-error">{errors.username.message}</span>
+              )}
             </div>
           </div>
 
           <div>
-            <label className="block mb-2 font-bold text-gray-100">Password</label>
+            <label className="block mb-2 font-bold">Password</label>
             <input
               required
-              className="w-full p-1 text-white bg-gray-700 border border-gray-800 rounded focus:outline-none focus:border-once"
+              className="w-full p-1 border border-gray-800 rounded focus:outline-none focus:border-once"
               type="password"
               {...register('password', {
                 required: true,
@@ -129,17 +131,19 @@ const Register = () => {
               })}
             />
             <div className="mt-1 text-center">
-              {errors.password?.message && <span className="text-error">{errors.password.message}</span>}
+              {errors.password?.message && (
+                <span className="text-error">{errors.password.message}</span>
+              )}
             </div>
           </div>
 
           <div>
-            <label className="block mb-2 font-bold text-gray-100 focus:outline-none focus:border-once">
+            <label className="block mb-2 font-bold focus:outline-none focus:border-once">
               Confirm password
             </label>
             <input
               required
-              className="w-full p-1 text-white bg-gray-700 border border-gray-800 rounded focus:outline-none focus:border-once"
+              className="w-full p-1 border border-gray-800 rounded focus:outline-none focus:border-once"
               type="password"
               {...register('password2', {
                 required: true,
@@ -147,7 +151,9 @@ const Register = () => {
               })}
             />
             <div className="mt-1 text-center">
-              {errors.password2?.message && <span className="text-error">{errors.password2.message}</span>}
+              {errors.password2?.message && (
+                <span className="text-error">{errors.password2.message}</span>
+              )}
             </div>
           </div>
 
@@ -155,11 +161,18 @@ const Register = () => {
             control={control}
             name="recaptcha"
             render={() => (
-              <ReCAPTCHA className="pt-3 overflow-auto" id="recaptcha" sitekey={SITE_KEY} onChange={onVerify} />
+              <ReCAPTCHA
+                className="pt-3 overflow-auto"
+                id="recaptcha"
+                sitekey={SITE_KEY}
+                onChange={onVerify}
+              />
             )}
             rules={{ required: true }}
           />
-          {errors.recaptcha?.message && <span className="text-error">{errors.recaptcha.message}</span>}
+          {errors.recaptcha?.message && (
+            <span className="text-error">{errors.recaptcha.message}</span>
+          )}
 
           <div className="py-3">
             <button
@@ -171,7 +184,7 @@ const Register = () => {
             </button>
           </div>
           {accountCreated && (
-            <div className="text-white text-center">
+            <div className="text-center">
               Account created successfully.
               <br />
               <FontAwesomeIcon className="mr-2" icon={faSpinner} spin />
