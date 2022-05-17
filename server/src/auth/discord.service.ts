@@ -101,6 +101,23 @@ export class DiscordAuthService {
     }
   }
 
+  async linkUserToDiscord(props: {
+    where: Prisma.UserWhereUniqueInput;
+    data: Prisma.UserUpdateInput;
+  }) {
+    const { where, data } = props;
+    try {
+      const user = await this.prisma.user.update({
+        where,
+        data,
+        include: { discord: true },
+      });
+      return user;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   async findOneByEmail(where: Prisma.UserWhereUniqueInput): Promise<any> {
     try {
       const user = await this.prisma.user.findUnique({

@@ -1,6 +1,6 @@
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { createLocalLinkedUser, linkDiscord } from 'components/auth/DiscordAPI';
+import { createLocalLinkedUser, linkDiscord, linkedDiscord } from 'components/auth/DiscordAPI';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
@@ -35,8 +35,8 @@ const RegisterRedirect = () => {
   } = useForm<FormData>();
 
   useEffect(() => {
-    const link = async () => {
-      await linkDiscord()
+    const linked = async () => {
+      await linkedDiscord()
         .then((data) => {
           if (data.statusCode === 403) window.location.href = '/';
           if (data.linked) {
@@ -49,7 +49,7 @@ const RegisterRedirect = () => {
         })
         .finally(() => setLoading(false));
     };
-    link();
+    linked();
   }, []);
 
   const submitHandler: SubmitHandler<FormData> = async (data) => {
@@ -72,6 +72,19 @@ const RegisterRedirect = () => {
     setIsSubmitting(false);
   };
 
+  const linkAccountToDiscord = async () => {
+    setIsSubmitting(true);
+
+    const payload = { username: data?.existing, email: data?.email };
+    await linkDiscord(payload).then((data) => {
+      if (data.linked) setAccountCreated(true);
+      else alert('Failed to link accounts. Please try again later.');
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 2000);
+    });
+  };
+
   const InitialPrompt = () => {
     if (linkExisting === undefined && !linked) {
       return (
@@ -85,19 +98,17 @@ const RegisterRedirect = () => {
               )}
 
               <div className="space-y-3">
-                {linkExisting && (
-                  <>
-                    <button
-                      className="w-full px-2 py-2 overflow-hidden font-bold border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
-                      type="button"
-                      onClick={() => setLinkExisting(true)}
-                    >
-                      Link <span className="underline">{data?.existing}</span>{' '}
-                      {` to ${data?.SocialType}`}
-                    </button>
-                    <h3 className="font-bold text-center">or</h3>
-                  </>
-                )}
+                <>
+                  <button
+                    className="w-full px-2 py-2 overflow-hidden font-bold border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
+                    type="button"
+                    onClick={() => setLinkExisting(true)}
+                  >
+                    Link account <span className="underline">{data?.existing}</span>{' '}
+                    {` to ${data?.SocialType}`}
+                  </button>
+                  <h3 className="font-bold text-center">or</h3>
+                </>
                 <button
                   className="w-full px-2 py-2 overflow-hidden font-bold border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
                   type="button"
@@ -152,6 +163,7 @@ const RegisterRedirect = () => {
                   className="w-1/2 px-2 py-2 overflow-hidden font-bold border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
                   type="button"
                   disabled={isSubmitting}
+                  onClick={() => linkAccountToDiscord()}
                 >
                   Yes
                 </button>

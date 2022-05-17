@@ -4,6 +4,7 @@ import {
   Get,
   HttpCode,
   Post,
+  Put,
   Req,
   Res,
   UseGuards,
@@ -42,8 +43,8 @@ export class DiscordController {
 
   @UseGuards(SessionGuard)
   @HttpCode(200)
-  @Get('link')
-  async link(@Req() req: Request, @Res() res: Response) {
+  @Get('linked')
+  async linked(@Req() req: Request, @Res() res: Response) {
     const d = await this.discordService.findOneWithCredentials({
       discordId: req.session.passport.user.discordId,
     });
@@ -56,6 +57,24 @@ export class DiscordController {
       if (linked === true) res.json({ linked });
       else res.json({ ...discordUser, SocialType: 'discord', ...linked });
     }
+  }
+
+  @UseGuards(SessionGuard)
+  @HttpCode(200)
+  @Put('link')
+  async link(@Req() req: Request, @Res() res: Response) {
+    const user = await this.discordService.linkUserToDiscord({
+      where: { username: req.body.username },
+      data: {
+        discord: {
+          connect: {
+            discordId: req.session.passport.user.discordId,
+          },
+        },
+      },
+    });
+    if (user.discord.discordId === req.session.passport.user.discordId) res.json({ linked: true });
+    else res.json({ linked: false });
   }
 
   @Post('register')
