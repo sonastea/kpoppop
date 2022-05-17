@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { identifyImage } from './IdentifyImage';
 import { compressImage } from './CompressImage';
-import {  useState } from 'react';
+import { useState } from 'react';
 import { submitMeme } from './MemeAPI';
 import { profanityFilter } from 'utils/profanity-filter';
 
@@ -170,11 +170,11 @@ const UploadMeme = () => {
       {open && (
         <div
           onClick={() => setOpen((open) => !open)}
-          className="z-10 absolute flex justify-center w-full min-h-screen overflow-hidden backdrop backdrop-filter backdrop-blur-lg"
+          className="z-10 absolute flex justify-center w-full min-h-screen overflow-hidden"
         >
           <div
             onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
-            className="border absolute inset-x-0 bg-white rounded shadow-md sm:inset-x-auto sm:w-1/2 top-20"
+            className="border border-once/50 absolute inset-x-0 bg-white rounded shadow-md sm:inset-x-auto sm:w-1/2 top-20"
           >
             <form onSubmit={handleSubmit(memeHandler)} className="p-8 space-y-5">
               <button
@@ -246,7 +246,7 @@ const UploadMeme = () => {
                 Array.from(files).map((file) => {
                   return (
                     <img
-                      className="lg:max-h-96 mx-auto my-1"
+                      className="flex-initial max-h-96 mx-auto my-1"
                       key={file.name}
                       src={URL.createObjectURL(file)}
                       alt={file.name}
@@ -254,7 +254,13 @@ const UploadMeme = () => {
                   );
                 })}
 
-              {previewURL && <img src={previewURL} alt="previewURL thumbnail" />}
+              {previewURL && (
+                <img
+                  className="flex-initial max-h-96 mx-auto my-1"
+                  src={previewURL}
+                  alt="previewURL thumbnail"
+                />
+              )}
 
               <div className="flex justify-center">
                 <button

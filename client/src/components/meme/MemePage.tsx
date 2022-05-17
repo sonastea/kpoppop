@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Memes from './Memes';
 import UploadMeme from './UploadMeme';
 
