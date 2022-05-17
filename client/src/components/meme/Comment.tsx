@@ -1,4 +1,5 @@
 import { useAuth } from 'contexts/AuthContext';
+import { PUBLIC_URL } from 'Global.d';
 import { BaseSyntheticEvent, useRef, useState } from 'react';
 import CommentButtons from './CommentButtons';
 import CommentModerationButtons from './CommentModerationButtons';
@@ -52,11 +53,17 @@ const Comment = (props: { props: CommentProps; memeOwnerId: number }) => {
           alt={`${comment.user.username} profile`}
         />
         <span
-          className={`${comment.user.id === props.memeOwnerId && 'text-white bg-once-900'} ${
+          className={`${
+            comment.user.id === props.memeOwnerId &&
+            comment.user.role !== 'ADMIN' &&
+            'text-white bg-once-900'
+          } ${
             comment.user.role === 'ADMIN' && 'text-black bg-once-500'
           } self-center rounded-md px-1`}
         >
-          {comment.user.displayname ? comment.user.displayname : comment.user.username}
+          <a className="hover:underline" href={`${PUBLIC_URL}/user/${comment.user.username}`}>
+            {comment.user.displayname ? comment.user.displayname : comment.user.username}
+          </a>
         </span>
       </div>
       <div className="text-slate-800 text-sm sm:text-lg break-words">
