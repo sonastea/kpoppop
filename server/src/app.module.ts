@@ -1,23 +1,25 @@
-import * as Joi from 'joi';
-import { Module } from '@nestjs/common';
-import { PrismaService } from './database/prisma.service';
-import { UserController } from './user/user.controller';
-import { UserService } from './user/user.service';
-import { AuthModule } from './auth/auth.module';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AuthController } from './auth/auth.controller';
-import { MemeController } from './meme/meme.controller';
-import { MemeService } from './meme/meme.service';
-import { MulterModule } from '@nestjs/platform-express';
-import { memoryStorage } from 'multer';
 import { HttpModule } from '@nestjs/axios';
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
-import { LocalStrategy } from './auth/strategies/local.strategy';
+import { MulterModule } from '@nestjs/platform-express';
+import { ThrottlerModule } from '@nestjs/throttler';
+import * as Joi from 'joi';
+import { memoryStorage } from 'multer';
+import { AuthController } from './auth/auth.controller';
+import { AuthModule } from './auth/auth.module';
+import { DiscordController } from './auth/discord.controller';
+import { DiscordAuthModule } from './auth/discord.module';
 import { BotModule } from './discord/bot.module';
 import { LocalSerializer } from './auth/serializers/local.serializer';
-import { ThrottlerModule } from '@nestjs/throttler';
-import { DiscordAuthModule } from './auth/discord.module';
-import { DiscordController } from './auth/discord.controller';
+import { LocalStrategy } from './auth/strategies/local.strategy';
+import { PrismaService } from './database/prisma.service';
+// import { MailController } from './mail/mail.controller';
+// import { MailModule } from './mail/mail.module';
+import { MemeController } from './meme/meme.controller';
+import { MemeService } from './meme/meme.service';
+import { UserController } from './user/user.controller';
+import { UserService } from './user/user.service';
 
 @Module({
   imports: [
@@ -25,10 +27,18 @@ import { DiscordController } from './auth/discord.controller';
     BotModule,
     DiscordAuthModule,
     HttpModule,
+    // MailModule,
     ConfigModule.forRoot({
+      envFilePath: ['.env.development.local', '.env.development'],
+      isGlobal: true,
       validationSchema: Joi.object({
         DISCORDBOT_TOKEN: Joi.string().required(),
         DISCORDBOT_WEBHOOK: Joi.string().required(),
+        JWT_VERIFICATION_SECRET: Joi.string().required(),
+        JWT_VERIFICATION_EXPIRATION_TIME: Joi.string().required(),
+        EMAIL_CONFIRMATION_URL: Joi.string().required(),
+        MAIL_USER: Joi.string().required(),
+        MAIL_PASSWORD: Joi.string().required(),
         NODE_ENV: Joi.string().valid('development', 'production', 'test').default('production'),
         SESSION_SECRET_KEY: Joi.string().required(),
         STORAGE_BUCKET: Joi.string()
@@ -56,7 +66,13 @@ import { DiscordController } from './auth/discord.controller';
       }),
     }),
   ],
-  controllers: [AuthController, DiscordController, MemeController, UserController],
+  controllers: [
+    AuthController,
+    DiscordController,
+    //MailController,
+    MemeController,
+    UserController,
+  ],
   providers: [PrismaService, MemeService, UserService, LocalStrategy, LocalSerializer],
 })
 export class AppModule {}
