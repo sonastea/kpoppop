@@ -5,7 +5,7 @@ const options = {
   useWebWorker: true,
 };
 
-export const compressImage = async (image: File): Promise<File | undefined>  => {
+export const compressImage = async (image: File): Promise<File | undefined> => {
   try {
     const compressed = await imageCompression(image, options);
 

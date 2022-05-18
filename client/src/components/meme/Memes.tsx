@@ -63,33 +63,58 @@ const Memes = () => {
         {posts &&
           posts.map((meme: any) => {
             const title = meme.title.replace(/ /g, '_');
+            console.log(meme);
             return (
-              <div className="m-4 shadow-md bg-gradient-to-br from-gray-300 rounded-md" key={meme.id}>
+              <div
+                className="m-4 shadow-md bg-gradient-to-br from-gray-300 rounded-md"
+                key={meme.id}
+              >
                 <div className="flex-row items-center p-8 box-border rounded-md">
                   <div className="flex pb-6 text-lg font-bold md:text-2xl author-bar">
-                    <a href={`/user/${meme.author.username}`}>{meme.author.username}</a>
+                    <a className="hover:text-once-700" href={`/user/${meme.author.username}`}>
+                      {meme.author.username}
+                    </a>
                   </div>
                   <div className="flex-col justify-center">
-                    <a className="contents" href={`/meme/${meme.id}/${title}`}>
-                      <img className="mx-auto md:max-w-2xl rounded-md" src={meme.url} alt={meme.title} />
-                    </a>
+                    {meme.url.split('.')[3] === 'mp4' ? (
+                      <video
+                        key={meme.title}
+                        className="rounded-md mx-auto md:max-w-2xl"
+                        controls
+                        muted
+                      >
+                        <source src={meme.url} type="video/mp4" />
+                      </video>
+                    ) : (
+                      <a className="contents" href={`/meme/${meme.id}/${title}`}>
+                        <img
+                          className="mx-auto md:max-w-2xl rounded-md"
+                          src={meme.url}
+                          alt={meme.title}
+                        />
+                      </a>
+                    )}
                   </div>
                   <div className="flex justify-center py-3">
                     <a
-                      className="font-bold text-gray-800 text-md md:text-3xl 2xl:text-5xl"
+                      className="hover:underline font-bold text-gray-800 text-md md:text-3xl 2xl:text-5xl"
                       href={`/meme/${meme.id}/${title}`}
                     >
                       {meme.title}
                     </a>
                   </div>
-                  <InteractiveButtons memeId={meme.id} memeTitle={title}/>
+                  <InteractiveButtons memeId={meme.id} memeTitle={title} />
                 </div>
               </div>
             );
           })}
       </div>
 
-      <div onScroll={handleScroll.current} id="scroll-load-div" className="flex justify-center p-5 page-number">
+      <div
+        onScroll={handleScroll.current}
+        id="scroll-load-div"
+        className="flex justify-center p-5 page-number"
+      >
         {loading && <FontAwesomeIcon className="-z-1" icon={faSpinner} spin />}
       </div>
     </>

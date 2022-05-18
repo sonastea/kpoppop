@@ -120,7 +120,17 @@ const Profile = () => {
             return (
               <div key={meme.id} className="inline-flex font-semibold text-center">
                 <a href={`/meme/${meme.id}/${title}`}>
-                  <img className="object-cover w-full rounded-lg" src={meme.url} alt={meme.title} />
+                  {meme.url.split('.')[3] === 'mp4' ? (
+                    <video key={meme.title} className="rounded-lg w-full" controls muted>
+                      <source src={meme.url} type="video/mp4" />
+                    </video>
+                  ) : (
+                    <img
+                      className="object-cover w-full rounded-lg"
+                      src={meme.url}
+                      alt={meme.title}
+                    />
+                  )}
                   {meme.title}
                 </a>
               </div>

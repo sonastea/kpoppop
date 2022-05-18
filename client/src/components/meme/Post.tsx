@@ -42,11 +42,22 @@ const Post = () => {
       <div className="mx-4 shadow-sm">
         <div className="p-2 flex border-x">
           <div className="w-1/2 self-center">
-            <img
-              className="object-fit rounded-md lg:rounded-none"
-              src={meme.url}
-              alt={meme.title}
-            />
+            {meme.url.split('.')[3] === 'mp4' ? (
+              <video
+                key={meme.title}
+                className="object-fit rounded-md lg:rounded-none w-auto"
+                controls
+                muted
+              >
+                <source src={meme.url} type="video/mp4" />
+              </video>
+            ) : (
+              <img
+                className="object-fit rounded-md lg:rounded-none"
+                src={meme.url}
+                alt={meme.title}
+              />
+            )}
           </div>
           <div className="flex-1 m-2">
             <div className="flex justify-end text-md md:text-xl text-once-900">

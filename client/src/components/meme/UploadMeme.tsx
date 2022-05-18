@@ -33,12 +33,25 @@ const UploadMeme = () => {
     resetField,
     handleSubmit,
   } = useForm<MemeFormData>();
-  const filter = ['image/gif', 'image/png', 'image/jpg', 'image/jpeg'];
+  const filter = [
+    'image/gif',
+    'image/png',
+    'image/jpg',
+    'image/jpeg',
+    'video/quicktime',
+    'video/mp4',
+  ];
 
   const memeHandler: SubmitHandler<MemeFormData> = async (data) => {
     const formData = new FormData();
     if (files && files.length > 0) {
-      const compressed = await compressImage(files[0]);
+      let compressed;
+      if (files[0].type === 'video/quicktime' || 'video/mp4') {
+        compressed = files[0];
+        console.log(compressed);
+      } else {
+        compressed = await compressImage(files[0]);
+      }
       formData.append('file', compressed as File);
     } else {
       formData.append('file', files?.[0] as File);
@@ -123,11 +136,14 @@ const UploadMeme = () => {
       return;
     } else if (e.target.files?.length === 1) {
       setFiles(e.target.files); // UploadMeme Image Preview
+      // Skip identifying video formats and just set postable to true.
+      if (e.target.files[0].type === 'filetype/quicktime' || 'filetype/mp4') {
+        setPostable(true);
+        return;
+      }
       setDetecting(true);
-      const prediction = await identifyImage(e.target.files[0]);
-      const isPostable = isSFW(prediction);
-      setPostable(isPostable);
-      setDetecting(false);
+      const prediction = await identifyImage(e.target.files[0]).finally(() => setDetecting(false));
+      setPostable(isSFW(prediction));
     }
 
     switch (e.target?.name) {
@@ -170,7 +186,7 @@ const UploadMeme = () => {
       {open && (
         <div
           onClick={() => setOpen((open) => !open)}
-          className="z-10 absolute flex justify-center w-full min-h-screen overflow-hidden"
+          className="z-10 absolute flex justify-center w-full min-h-screen"
         >
           <div
             onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
@@ -228,7 +244,7 @@ const UploadMeme = () => {
                 <input
                   multiple
                   type="file"
-                  accept="image/gif, image/jpg, image/jpeg, image/png"
+                  accept="image/gif, image/jpg, image/jpeg, image/png, video/quicktime, video/mp4"
                   className="w-full"
                   {...register('file')}
                   onInput={handleChangeEvent}
@@ -244,14 +260,25 @@ const UploadMeme = () => {
               {files &&
                 files.length <= 1 &&
                 Array.from(files).map((file) => {
-                  return (
-                    <img
-                      className="flex-initial max-h-96 mx-auto my-1"
-                      key={file.name}
-                      src={URL.createObjectURL(file)}
-                      alt={file.name}
-                    />
-                  );
+                  switch (file.type) {
+                    case 'video/mp4':
+                    case 'video/quicktime':
+                      return (
+                        <video key={file.name} className="h-auto w-full" controls>
+                          <source src={URL.createObjectURL(file)} type="video/mp4" />
+                        </video>
+                      );
+
+                    default:
+                      return (
+                        <img
+                          className="flex-initial max-h-96 mx-auto my-1"
+                          key={file.name}
+                          src={URL.createObjectURL(file)}
+                          alt={file.name}
+                        />
+                      );
+                  }
                 })}
 
               {previewURL && (

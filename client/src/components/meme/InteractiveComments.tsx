@@ -3,7 +3,6 @@ import { API_URL } from 'Global.d';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import Comment from './Comment';
 import { fetchMemeComments } from './MemeAPI';
-
 type InteractiveCommentsProps = {
   memeId: number;
   ownerId: number;
@@ -77,9 +76,16 @@ const InteractiveComments = (props: InteractiveCommentsProps) => {
           ref={textAreaRef}
           onChange={(e) => addCommentEventHandler(e)}
         />
-        <div className="text-sm">
-          <span>{textAreaRef.current?.value.length}</span>
-          <span> / 640</span>
+        <div className="flex-shrink text-sm w-6">
+          <span
+            className={`${
+              textAreaRef.current &&
+              textAreaRef.current.value.length > 640 &&
+              'text-error font-bold'
+            }`}
+          >
+            {textAreaRef.current?.value.length}
+          </span>
         </div>
         <button
           type="button"
