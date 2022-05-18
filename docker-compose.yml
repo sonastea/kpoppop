@@ -1,7 +1,7 @@
 services:
   database:
     container_name: kpoppop_db
-    image: 'postgres:14.1'
+    image: 'postgres:14.3'
     restart: unless-stopped
     env_file:
       - database.env
