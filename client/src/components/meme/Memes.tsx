@@ -63,7 +63,6 @@ const Memes = () => {
         {posts &&
           posts.map((meme: any) => {
             const title = meme.title.replace(/ /g, '_');
-            console.log(meme);
             return (
               <div
                 className="m-4 shadow-md bg-gradient-to-br from-gray-300 rounded-md"
