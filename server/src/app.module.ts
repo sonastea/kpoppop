@@ -14,8 +14,8 @@ import { BotModule } from './discord/bot.module';
 import { LocalSerializer } from './auth/serializers/local.serializer';
 import { LocalStrategy } from './auth/strategies/local.strategy';
 import { PrismaService } from './database/prisma.service';
-import { MailController } from './mail/mail.controller';
-import { MailModule } from './mail/mail.module';
+// import { MailController } from './mail/mail.controller';
+// import { MailModule } from './mail/mail.module';
 import { MemeController } from './meme/meme.controller';
 import { MemeService } from './meme/meme.service';
 import { UserController } from './user/user.controller';
@@ -27,7 +27,7 @@ import { UserService } from './user/user.service';
     BotModule,
     DiscordAuthModule,
     HttpModule,
-    MailModule,
+    // MailModule,
     ConfigModule.forRoot({
       envFilePath: ['.env.development.local', '.env.development'],
       isGlobal: true,
@@ -66,7 +66,13 @@ import { UserService } from './user/user.service';
       }),
     }),
   ],
-  controllers: [AuthController, DiscordController, MailController, MemeController, UserController],
+  controllers: [
+    AuthController,
+    DiscordController,
+    //MailController,
+    MemeController,
+    UserController,
+  ],
   providers: [PrismaService, MemeService, UserService, LocalStrategy, LocalSerializer],
 })
 export class AppModule {}
