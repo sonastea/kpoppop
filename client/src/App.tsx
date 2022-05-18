@@ -1,3 +1,4 @@
+import AdminPanel from 'admin/AdminPanel';
 import ContactUs from 'components/ContactUs';
 import MemePage from 'components/meme/MemePage';
 import EditProfile from 'components/user/EditProfile';

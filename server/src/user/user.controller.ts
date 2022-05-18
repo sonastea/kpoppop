@@ -13,7 +13,7 @@ import {
   UploadedFile,
   UploadedFiles,
   UseGuards,
-  UseInterceptors
+  UseInterceptors,
 } from '@nestjs/common';
 import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { SkipThrottle, ThrottlerGuard } from '@nestjs/throttler';
@@ -62,7 +62,7 @@ export type RegisterUserData = {
   displayname?: string;
   role?: string;
   errors?: { User: string };
-}
+};
 
 @Controller('user')
 @UseGuards(ThrottlerGuard)
@@ -70,9 +70,9 @@ export type RegisterUserData = {
 export class UserController {
   constructor(
     private readonly userService: UserService,
-    private readonly mailService: MailService,
-    private readonly prisma: PrismaService,
-  ) {}
+    // private readonly mailService: MailService,
+    private readonly prisma: PrismaService
+  ) { }
 
   @UseGuards(RecaptchaGuard)
   @Post('register')
@@ -87,7 +87,7 @@ export class UserController {
       return res.status(200).json(user);
     } else {
       console.log(user);
-      this.mailService.sendVerificationLink(user.email);
+      // this.mailService.sendVerificationLink(user.email);
       res.status(201).json(user);
     }
   }
@@ -244,7 +244,6 @@ export class UserController {
     });
     res.json(updatedUser);
   }
-
 
   @UseGuards(SessionGuard, RolesGuard)
   @Roles('ADMIN')
