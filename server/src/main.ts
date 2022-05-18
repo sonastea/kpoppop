@@ -18,12 +18,12 @@ async function whatMode() {
 }
 
 export const cookie: expressSession.CookieOptions = {
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-      httpOnly: true,
-      secure: true,
-      domain: process.env.NODE_ENV === 'production' ? '.kpoppop.com' : null,
-      sameSite: process.env.NODE_ENV === 'production' ? "lax" : "none",
-}
+  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+  httpOnly: true,
+  secure: true,
+  domain: process.env.NODE_ENV === 'production' ? '.kpoppop.com' : null,
+  sameSite: process.env.NODE_ENV === 'production' ? 'lax' : 'none',
+};
 
 async function bootstrap() {
   // Firebase Initialization
