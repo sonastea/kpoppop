@@ -46,7 +46,11 @@ const NavBar = () => {
         <div className="flex justify-between">
           <div className="flex flex-shrink-0 space-x-2">
             <a href="/" className="flex items-center m-2">
-              <img src="/images/header_logo.png" alt="Kpoppop Logo" className="grow-0 w-auto h-10 sm:h-16"></img>
+              <img
+                src="/images/header_logo.png"
+                alt="Kpoppop Logo"
+                className="grow-0 w-auto h-10 sm:h-16"
+              ></img>
             </a>
 
             <ul className="items-center hidden md:flex space-x-1">
@@ -67,15 +71,21 @@ const NavBar = () => {
           {user?.username ? <NavBarLoggedIn /> : <NavBarLoggedOut />}
 
           <div className="flex items-center m-2 md:hidden">
+            {user?.username && <span className="font-semibold text-once-900">{user.username}</span>}
             <button className="mobile-menu-toggle" onClick={() => setMobileNav((prev) => !prev)}>
               <svg
-                className="w-6 h-6"
+                className={`${isActiveMobileNav && 'bg-once-200 rounded-xl'} w-8 h-8`}
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               </svg>
             </button>
           </div>
@@ -88,7 +98,11 @@ const NavBar = () => {
           >
             <div className="pt-8 pl-4">
               <a className="inline-block" href="/">
-                <img src="/images/header_logo.png" alt="Kpoppop Logo" className="w-5/6 h-auto"></img>
+                <img
+                  src="/images/header_logo.png"
+                  alt="Kpoppop Logo"
+                  className="w-5/6 h-auto"
+                ></img>
               </a>
               <button className="absolute right-4" onClick={() => setMobileNav((prev) => !prev)}>
                 <FontAwesomeIcon icon={faXmark} />
