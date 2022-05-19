@@ -26,6 +26,7 @@ export type CommentProps = {
 
 const InteractiveComments = (props: InteractiveCommentsProps) => {
   const [comments, setComments] = useState<CommentProps[] | undefined>([]);
+  const [isCommenting, setIsCommenting] = useState<boolean>();
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [comment, setComment] = useState<string>();
   const { user } = useAuth();
@@ -42,6 +43,7 @@ const InteractiveComments = (props: InteractiveCommentsProps) => {
   }, [user?.role, props.memeId]);
 
   const addComment = async (id: number) => {
+    setIsCommenting(true);
     await fetch(`${API_URL}/meme/comment/${id}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -51,7 +53,8 @@ const InteractiveComments = (props: InteractiveCommentsProps) => {
       .then((response) => response.json())
       .then((data) => {
         setComments((prev: any) => [data, ...prev]);
-      });
+      })
+      .finally(() => setTimeout(() => setIsCommenting(false), 10000));
   };
 
   const addCommentEventHandler = async (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -89,8 +92,11 @@ const InteractiveComments = (props: InteractiveCommentsProps) => {
         </div>
         <button
           type="button"
-          className="self-center p-1 bg-once rounded-md"
+          className={`${
+            isCommenting ? 'bg-once-200 cursor-not-allowed' : 'bg-once'
+          } self-center p-1 rounded-md`}
           onClick={() => addComment(props.memeId)}
+          disabled={isCommenting ? true : false}
         >
           Comment
         </button>
