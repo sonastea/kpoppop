@@ -1,9 +1,9 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import InteractiveButtons from './InteractiveButtons';
-import { useEffect, useRef, useState } from 'react';
-import { fetchMemes } from './MemeAPI';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { debounce } from 'lodash';
+import { useEffect, useRef, useState } from 'react';
+import InteractiveButtons from './InteractiveButtons';
+import { fetchMemes } from './MemeAPI';
 
 let cursor: number = 0;
 

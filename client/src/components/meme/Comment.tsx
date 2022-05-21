@@ -1,5 +1,5 @@
+import UserTooltip from 'components/user/UserTooltip';
 import { useAuth } from 'contexts/AuthContext';
-import { PUBLIC_URL } from 'Global.d';
 import { BaseSyntheticEvent, useRef, useState } from 'react';
 import CommentButtons from './CommentButtons';
 import CommentModerationButtons from './CommentModerationButtons';
@@ -59,11 +59,9 @@ const Comment = (props: { props: CommentProps; memeOwnerId: number }) => {
             'text-white bg-once-900'
           } ${
             comment.user.role === 'ADMIN' && 'text-black bg-once-500'
-          } self-center rounded-md px-1`}
+          } self-center rounded-md`}
         >
-          <a className="hover:underline" href={`${PUBLIC_URL}/user/${comment.user.username}`}>
-            {comment.user.displayname ? comment.user.displayname : comment.user.username}
-          </a>
+          <UserTooltip comment={comment} />
         </span>
       </div>
       <div className="text-slate-800 text-sm sm:text-lg break-words">

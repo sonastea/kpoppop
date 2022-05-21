@@ -30,6 +30,7 @@
     "react-fontawesome": "^1.7.1",
     "react-google-recaptcha": "^2.1.0",
     "react-hook-form": "^7.19.5",
+    "react-popper": "^2.3.0",
     "react-router-dom": "^6.2.1",
     "react-scripts": "^5.0.0",
     "react-social-icons": "^5.11.0",
