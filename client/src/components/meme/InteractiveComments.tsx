@@ -52,8 +52,12 @@ const InteractiveComments = (props: InteractiveCommentsProps) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.createdAt) setComments((prev: any) => [data, ...prev]);
-        else alert('There was an error uploading your comment.');
+        if (data.createdAt) {
+          setComment('');
+          setComments((prev: any) => [data, ...prev]);
+        } else {
+          alert('There was an error uploading your comment.');
+        }
       })
       .finally(() => setTimeout(() => setIsCommenting(false), 10000));
   };
