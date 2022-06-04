@@ -8,83 +8,84 @@ datasource db {
 }
 
 model User {
-  id            Int                @id @default(autoincrement())
+  id            Int           @id @default(autoincrement())
   discord       DiscordUser?
-  createdAt     DateTime           @default(now()) @db.Timestamptz()
-  updatedAt     DateTime?          @updatedAt @db.Timestamptz()
-  username      String             @unique
+  createdAt     DateTime      @default(now()) @db.Timestamptz()
+  updatedAt     DateTime?     @updatedAt @db.Timestamptz()
+  username      String        @unique
   password      String?
-  email         String             @unique
-  emailVerified Boolean            @default(false)
+  email         String        @unique
+  emailVerified Boolean       @default(false)
   displayname   String?
   banner        String?
   photo         String?
-  role          Role               @default(USER)
+  role          Role          @default(USER)
+  status        UserStatus    @default(ACTIVE)
   refreshtoken  String?
   memes         Meme[]
-  likedMemes    Meme[]             @relation("UserLikesPost")
-  comments      Comment[]          @relation("CommentsByUser")
+  likedMemes    Meme[]        @relation("UserLikesPost")
+  comments      Comment[]     @relation("CommentsByUser")
   socialMedias  SocialMedia[]
 }
 
 model DiscordUser {
-  id            Int               @id @default(autoincrement())
-  discordId     String            @unique
-  accessToken   String?
-  refreshToken  String?
-  user          User?             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId        Int?
+  id           Int     @id @default(autoincrement())
+  discordId    String  @unique
+  accessToken  String?
+  refreshToken String?
+  user         User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int?    @unique
 }
 
 model Meme {
-  id        Int                   @id @default(autoincrement())
-  title     String                @db.VarChar(320)
+  id        Int          @id @default(autoincrement())
+  title     String       @db.VarChar(320)
   url       String?
   path      String?
   resource  MemeResource
   authorId  Int
-  active    Boolean               @default(true)
-  flagged   Boolean               @default(false)
-  createdAt DateTime              @default(now()) @db.Timestamptz()
-  updatedAt DateTime?             @updatedAt @db.Timestamptz()
-  updatedBy String?               @ignore
-  author    User                  @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  likedBy   User[]                @relation("UserLikesPost")
-  comments  Comment[]             @relation("CommentsForMeme")
+  active    Boolean      @default(true)
+  flagged   Boolean      @default(false)
+  createdAt DateTime     @default(now()) @db.Timestamptz()
+  updatedAt DateTime?    @updatedAt @db.Timestamptz()
+  updatedBy String?      @ignore
+  author    User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  likedBy   User[]       @relation("UserLikesPost")
+  comments  Comment[]    @relation("CommentsForMeme")
 }
 
 model Comment {
-  id            Int               @id @default(autoincrement())
-  text          String            @db.VarChar(640)
-  active        Boolean           @default(true)
-  edited        Boolean           @default(false)
-  meme          Meme              @relation("CommentsForMeme", fields: [memeId], references: [id])
-  memeId        Int
-  user          User              @relation("CommentsByUser", fields: [userId], references: [id], onDelete: Cascade)
-  userId        Int
-  createdAt     DateTime          @default(now()) @db.Timestamptz()
-  updatedAt     DateTime?         @updatedAt @db.Timestamptz()
+  id        Int       @id @default(autoincrement())
+  text      String    @db.VarChar(640)
+  active    Boolean   @default(true)
+  edited    Boolean   @default(false)
+  meme      Meme      @relation("CommentsForMeme", fields: [memeId], references: [id])
+  memeId    Int
+  user      User      @relation("CommentsByUser", fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  createdAt DateTime  @default(now()) @db.Timestamptz()
+  updatedAt DateTime? @updatedAt @db.Timestamptz()
 }
 
 model SocialMedia {
-  id        Int                   @id @default(autoincrement())
-  uuid      String                @default(dbgenerated("gen_random_uuid()")) @db.Uuid @unique
-  title     String?
-  url       String
-  user      User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int
+  id     Int     @id @default(autoincrement())
+  uuid   String  @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title  String?
+  url    String
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
 }
 
 model Session {
-  id        String                @id
-  sid       String                @unique
+  id        String   @id
+  sid       String   @unique
   data      String
-  expiresAt DateTime              @db.Timestamptz()
+  expiresAt DateTime @db.Timestamptz()
 }
 
 model EmailToken {
-  token     String                @id @unique
-  active    Boolean               @default(true)
+  token  String  @id @unique
+  active Boolean @default(true)
 }
 
 enum Role {
@@ -96,4 +97,10 @@ enum Role {
 enum MemeResource {
   URL
   PATH
+}
+
+enum UserStatus {
+  ACTIVE
+  BANNED
+  SUSPENDED
 }

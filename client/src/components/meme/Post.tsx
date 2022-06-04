@@ -63,7 +63,7 @@ const Post = () => {
             <div className="flex justify-end text-md md:text-xl text-once-900">
               <a href={`/user/${meme.author.username}`}>{meme.author.username}</a>
             </div>
-            <div className="items-center h-3/4 text-sm md:text-xl">{meme.title}</div>
+            <div className="grid content-center h-3/4 text-sm md:text-xl">{meme.title}</div>
           </div>
         </div>
         <div className="border-t border-x">

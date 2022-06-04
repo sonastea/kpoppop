@@ -1,13 +1,18 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Observable } from 'rxjs';
 import { AuthService } from '../auth.service';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(private readonly reflector: Reflector, private readonly authService: AuthService) {}
 
-  canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+  async canActivate(context: ExecutionContext): Promise<any> {
     // Roles authorized by @Roles decorator are retrieved here.
     const roles = this.reflector.get<string[]>('roles', context.getHandler());
 
@@ -15,6 +20,15 @@ export class RolesGuard implements CanActivate {
     const req = context.switchToHttp().getRequest();
 
     // Check if user is authorized for the route.
-    return this.authService.isAuthorized(roles, req.session.passport.user);
+    const allowed = await this.authService.isAuthorized(roles, req.session.passport.user);
+    if (!allowed)
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'You do not have the required privileges to complete this request.',
+        },
+        HttpStatus.FORBIDDEN
+      );
+    return allowed;
   }
 }

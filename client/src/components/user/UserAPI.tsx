@@ -37,3 +37,39 @@ export const deleteSocialMediaLink = async (uuid: string) => {
     credentials: 'include',
   }).then((response) => response.json());
 };
+
+export const banUser = async (user: number) => {
+  return await fetch(`${API_URL}/user/ban_user`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ userId: user }),
+    credentials: 'include',
+  }).then((response) => response.json());
+};
+
+export const unbanUser = async (user: number) => {
+  return await fetch(`${API_URL}/user/unban_user`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ userId: user }),
+    credentials: 'include',
+  }).then((response) => response.json());
+};
+
+export const modUser = async (user: number) => {
+  return await fetch(`${API_URL}/user/mod_user`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: modUser }),
+    credentials: 'include',
+  }).then((response) => response.json());
+};
+
+export const unmodUser = async (user: number) => {
+  return await fetch(`${API_URL}/user/unmod_user`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: unmodUser }),
+    credentials: 'include',
+  }).then((response) => response.json());
+};

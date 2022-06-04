@@ -4,6 +4,8 @@ import {
   Delete,
   Get,
   HttpCode,
+  HttpException,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -17,7 +19,7 @@ import {
 } from '@nestjs/common';
 import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { SkipThrottle, ThrottlerGuard } from '@nestjs/throttler';
-import { Prisma, User } from '@prisma/client';
+import { Role, User } from '@prisma/client';
 import { randomUUID } from 'crypto';
 import * as dotenv from 'dotenv';
 import { Request, Response } from 'express';
@@ -72,7 +74,7 @@ export class UserController {
     private readonly userService: UserService,
     // private readonly mailService: MailService,
     private readonly prisma: PrismaService
-  ) { }
+  ) {}
 
   @UseGuards(RecaptchaGuard)
   @Post('register')
@@ -226,11 +228,17 @@ export class UserController {
   @Put('mod_user')
   async modUser(@Res() res: Response, @Body() data: { username: string }): Promise<any> {
     console.log(data);
-    const updatedUser = await this.prisma.user.update({
-      where: { username: data.username },
-      data: { role: 'MODERATOR' },
-    });
-    res.json(updatedUser);
+    const { username } = data;
+    const moddedUser = await this.userService.modUser(
+      { username },
+      { role: 'MODERATOR' },
+      {
+        id: true,
+        username: true,
+        status: true,
+      }
+    );
+    res.json(moddedUser);
   }
 
   @UseGuards(SessionGuard, RolesGuard)
@@ -238,21 +246,74 @@ export class UserController {
   @SkipThrottle()
   @Put('unmod_user')
   async unmodUser(@Res() res: Response, @Body() data: { username: string }): Promise<any> {
-    const updatedUser = await this.prisma.user.update({
-      where: { username: data.username },
-      data: { role: 'USER' },
-    });
-    res.json(updatedUser);
+    const { username } = data;
+    const unmoddedUser = await this.userService.unmodUser(
+      { username },
+      { role: 'USER' },
+      {
+        id: true,
+        username: true,
+        status: true,
+      }
+    );
+    res.json(unmoddedUser);
   }
 
   @UseGuards(SessionGuard, RolesGuard)
-  @Roles('ADMIN')
+  @Roles('ADMIN', 'MODERATOR')
   @SkipThrottle()
   @Put('ban_user')
-  async banUser(@Res() res: Response, @Body() data: { username: string }): Promise<any> {
-    const bannedUser = await this.prisma.user.delete({
-      where: { username: data.username },
-    });
+  async banUser(@Res() res: Response, @Body() data: { userId: number }): Promise<any> {
+    // Check if suspect is an ADMIN, returns error
+    const banSuspect = await this.userService.findOne({ id: data.userId });
+    if (banSuspect.role === Role.ADMIN) {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'You do not have the authority to ban this person.',
+        },
+        HttpStatus.FORBIDDEN
+      );
+    }
+
+    const bannedUser = await this.userService.banUser(
+      { id: data.userId },
+      { status: 'BANNED' },
+      {
+        id: true,
+        username: true,
+        status: true,
+      }
+    );
     res.json(bannedUser);
+  }
+
+  @UseGuards(SessionGuard, RolesGuard)
+  @Roles('ADMIN', 'MODERATOR')
+  @SkipThrottle()
+  @Put('unban_user')
+  async unbanUser(@Res() res: Response, @Body() data: { userId: number }): Promise<any> {
+    // Check if suspect is an ADMIN, returns error
+    const banSuspect = await this.userService.findOne({ id: data.userId });
+    if (banSuspect.role === Role.ADMIN) {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'You do not have the authority to ban this person.',
+        },
+        HttpStatus.FORBIDDEN
+      );
+    }
+
+    const unbannedUser = await this.userService.unbanUser(
+      { id: data.userId },
+      { status: 'ACTIVE' },
+      {
+        id: true,
+        username: true,
+        status: true,
+      }
+    );
+    res.json(unbannedUser);
   }
 }

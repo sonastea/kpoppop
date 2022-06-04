@@ -3,6 +3,7 @@ import { API_URL } from 'Global.d';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import Comment from './Comment';
 import { fetchMemeComments } from './MemeAPI';
+
 type InteractiveCommentsProps = {
   memeId: number;
   ownerId: number;
@@ -21,6 +22,7 @@ export type CommentProps = {
     photo?: string;
     role: string;
     username: string;
+    status: string;
   };
 };
 

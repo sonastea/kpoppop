@@ -4,13 +4,14 @@ import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../database/prisma.service';
 import { RegisterUserData } from './user.controller';
 
-const UserProfileData: Prisma.UserSelect = {
+export const UserProfileData: Prisma.UserSelect = {
   id: true,
   username: true,
   displayname: true,
   role: true,
   banner: true,
   photo: true,
+  status: true,
 };
 
 const SocialMediaLinkData: Prisma.SocialMediaSelect = {
@@ -56,11 +57,7 @@ export class UserService {
       const user = await this.prisma.user.findUnique({
         where: data,
         select: {
-          id: true,
-          username: true,
-          displayname: true,
-          role: true,
-          photo: true,
+          ...UserProfileData,
         },
       });
       return user;
@@ -230,5 +227,57 @@ export class UserService {
       where,
     });
     return status;
+  }
+
+  async modUser(
+    where: Prisma.UserWhereUniqueInput,
+    data: Prisma.UserUpdateInput,
+    select: Prisma.UserSelect
+  ): Promise<any> {
+    const moddedUser = await this.prisma.user.update({
+      where,
+      data,
+      select,
+    });
+    return moddedUser;
+  }
+
+  async unmodUser(
+    where: Prisma.UserWhereUniqueInput,
+    data: Prisma.UserUpdateInput,
+    select: Prisma.UserSelect
+  ): Promise<any> {
+    const unmoddedUser = await this.prisma.user.update({
+      where,
+      data,
+      select,
+    });
+    return unmoddedUser;
+  }
+
+  async banUser(
+    where: Prisma.UserWhereUniqueInput,
+    data: Prisma.UserUpdateInput,
+    select: Prisma.UserSelect
+  ): Promise<any> {
+    const bannedUser = await this.prisma.user.update({
+      where,
+      data,
+      select,
+    });
+    return bannedUser;
+  }
+
+  async unbanUser(
+    where: Prisma.UserWhereUniqueInput,
+    data: Prisma.UserUpdateInput,
+    select: Prisma.UserSelect
+  ): Promise<any> {
+    const unbannedUser = await this.prisma.user.update({
+      where,
+      data,
+      select,
+    });
+    return unbannedUser;
   }
 }

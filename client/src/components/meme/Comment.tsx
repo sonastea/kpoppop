@@ -53,13 +53,10 @@ const Comment = (props: { props: CommentProps; memeOwnerId: number }) => {
           alt={`${comment.user.username} profile`}
         />
         <span
-          className={`${
-            comment.user.id === props.memeOwnerId &&
+          className={`${comment.user.id === props.memeOwnerId &&
             comment.user.role !== 'ADMIN' &&
             'text-white bg-once-900'
-          } ${
-            comment.user.role === 'ADMIN' && 'text-black bg-once-500'
-          } self-center rounded-md`}
+            } ${comment.user.role === 'ADMIN' && 'text-black bg-once-500'} self-center rounded-md`}
         >
           <UserTooltip comment={comment} />
         </span>
