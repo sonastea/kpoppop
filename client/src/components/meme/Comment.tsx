@@ -17,6 +17,14 @@ const Comment = (props: { props: CommentProps; memeOwnerId: number }) => {
   const { user } = useAuth();
   const isAuthor = comment.user.id === user?.id;
 
+  const user_bg = ['self-center', 'rounded-md'].concat(
+    comment.user.id === props.memeOwnerId && comment.user.role !== 'ADMIN'
+      ? 'text-white bg-once-900'
+      : [],
+    comment.user.role === 'ADMIN' ? 'bg-once-500' : [],
+    comment.user.role === 'MODERATOR' ? 'bg-blue-400' : []
+  );
+
   const handleEditComment = async (e: BaseSyntheticEvent) => {
     if (newComment?.length > MAX_COMMENT_CHAR_LENGTH) {
       window.alert(`Comment exceeds maximum limit of ${MAX_COMMENT_CHAR_LENGTH} characters.`);
@@ -52,12 +60,7 @@ const Comment = (props: { props: CommentProps; memeOwnerId: number }) => {
           src={comment.user.photo ? comment.user.photo : '/images/default_photo_white_200x200.png'}
           alt={`${comment.user.username} profile`}
         />
-        <span
-          className={`${comment.user.id === props.memeOwnerId &&
-            comment.user.role !== 'ADMIN' &&
-            'text-white bg-once-900'
-            } ${comment.user.role === 'ADMIN' && 'text-black bg-once-500'} self-center rounded-md`}
-        >
+        <span className={user_bg.join(' ')}>
           <UserTooltip comment={comment} />
         </span>
       </div>
