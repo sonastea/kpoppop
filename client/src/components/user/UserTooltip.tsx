@@ -43,7 +43,6 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
   });
 
   useEffect(() => {
-    console.log(isBanned);
     if (isBanned) {
       setCommentUser((prev) => ({
         ...prev,
