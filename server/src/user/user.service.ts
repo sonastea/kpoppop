@@ -7,6 +7,7 @@ import { RegisterUserData } from './user.controller';
 export const UserProfileData: Prisma.UserSelect = {
   id: true,
   username: true,
+  createdAt: true,
   displayname: true,
   role: true,
   banner: true,

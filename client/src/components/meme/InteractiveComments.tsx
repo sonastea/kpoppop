@@ -17,6 +17,7 @@ export type CommentProps = {
   edited: boolean;
   user: {
     banner?: string;
+    createdAt: string;
     displayname?: string;
     id: number;
     photo?: string;

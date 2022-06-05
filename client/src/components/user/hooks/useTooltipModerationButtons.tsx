@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import { banUser, modUser, unbanUser, unmodUser } from '../UserAPI';
 
-export type TooltipModerationProps = {
+export interface IUserProps {
   user: {
     banner?: string;
     displayname?: string;
@@ -13,9 +13,9 @@ export type TooltipModerationProps = {
     username: string;
     status: string;
   };
-};
+}
 
-const useTooltipModerationButtons = (props: TooltipModerationProps) => {
+const useTooltipModerationButtons = (props: IUserProps) => {
   const [isBanned, setBanned] = useState<boolean>(props.user.status === 'BANNED' && true);
   const [isModded, setModded] = useState<boolean>(false);
 

@@ -3,6 +3,7 @@ import { CommentProps } from 'components/meme/InteractiveComments';
 import { useAuth } from 'contexts/AuthContext';
 import { useEffect, useState } from 'react';
 import { usePopper } from 'react-popper';
+import Badges from './Badges';
 import useTooltipModerationButtons from './hooks/useTooltipModerationButtons';
 
 export interface UserTooltipProps {
@@ -61,8 +62,9 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
     <Popover className="relative">
       <Popover.Button onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
         <a
-          className={`hover:underline hover:decoration-black hover:decoration-solid px-1 ${isBanned && 'decoration-ponce-500 line-through'
-            }`}
+          className={`hover:underline hover:decoration-black hover:decoration-solid px-1 ${
+            isBanned && 'decoration-ponce-500 line-through'
+          }`}
           href={`/user/${comment.user.username}`}
           ref={setReferenceElement}
         >
@@ -87,8 +89,8 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
           {...attributes.popper}
         >
           <div className="w-[75vw] md:w-[35vw] tooltip-contents divide-y divide-slate-300">
-            <div className="p-2 flex flex-wrap gap-2">
-              <a className="contents" href={comment.user.photo && comment.user.photo}>
+            <div className="tooltip-contents p-2 flex flex-wrap gap-2">
+              <a className="tooltip-image" href={comment.user.photo && comment.user.photo}>
                 <img
                   className="h-16 rounded-full"
                   src={
@@ -100,16 +102,22 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
                 />
               </a>
               <div
-                className={`${!isShowing && 'duration-150 scale-75 transform'
-                  } grid content-between`}
+                className={`${
+                  !isShowing && 'duration-150 scale-75 transform'
+                } grid grow content-between`}
               >
-                <div>Cool Badge</div>
-                <a
-                  className={`${!isShowing ? 'duration-150 scale-75 transform' : ''}`}
-                  href={`/user/${comment.user.username}`}
-                >
-                  {comment.user.username}
-                </a>
+                <Badges user={comment.user} />
+                <div className="flex flex-wrap justify-between text-xs">
+                  <a
+                    className={`${
+                      !isShowing ? 'duration-150 scale-75 transform' : 'hover:underline'
+                    } text-once-900`}
+                    href={`/user/${comment.user.username}`}
+                  >
+                    {comment.user.username}
+                  </a>
+                  <span>{new Date(comment.user.createdAt).toLocaleDateString()}</span>
+                </div>
               </div>
             </div>
             {isAuthorized && user?.id !== comment.user.id && ModerationButtons}
