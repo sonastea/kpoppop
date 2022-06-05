@@ -1,15 +1,9 @@
 import { faGem } from '@fortawesome/free-regular-svg-icons';
-import {
-  faGem as fasGem,
-  faGavel,
-  faShield,
-  faStar,
-  faSquare,
-} from '@fortawesome/free-solid-svg-icons';
+import { faGavel, faShield, faSquare, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IUserProps } from './hooks/useTooltipModerationButtons';
+import { IUserProps } from 'components/meme/InteractiveComments';
 
-const Badges = (props: IUserProps) => {
+const Badges = (props: { user: IUserProps }) => {
   const { user } = props;
 
   const role = () => {

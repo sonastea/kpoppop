@@ -9,22 +9,24 @@ type InteractiveCommentsProps = {
   ownerId: number;
 };
 
+export interface IUserProps {
+  banner?: string;
+  createdAt: string;
+  displayname?: string;
+  id: number;
+  photo?: string;
+  role: string;
+  username: string;
+  status: string;
+}
+
 export type CommentProps = {
   id: number;
   text: string;
   createdAt: string;
   updatedAt: string;
   edited: boolean;
-  user: {
-    banner?: string;
-    createdAt: string;
-    displayname?: string;
-    id: number;
-    photo?: string;
-    role: string;
-    username: string;
-    status: string;
-  };
+  user: IUserProps;
 };
 
 const InteractiveComments = (props: InteractiveCommentsProps) => {

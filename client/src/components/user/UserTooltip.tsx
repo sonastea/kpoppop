@@ -1,5 +1,5 @@
 import { Popover, Transition } from '@headlessui/react';
-import { CommentProps } from 'components/meme/InteractiveComments';
+import { CommentProps, IUserProps } from 'components/meme/InteractiveComments';
 import { useAuth } from 'contexts/AuthContext';
 import { useEffect, useState } from 'react';
 import { usePopper } from 'react-popper';
@@ -11,6 +11,7 @@ export interface UserTooltipProps {
 }
 
 const UserTooltip = ({ comment }: UserTooltipProps) => {
+  const [commentUser, setCommentUser] = useState<IUserProps>(comment.user);
   const [isShowing, setIsShowing] = useState(false);
   const [delayHandler, setDelayHandler] = useState<number>();
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
@@ -40,6 +41,21 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
       },
     ],
   });
+
+  useEffect(() => {
+    console.log(isBanned);
+    if (isBanned) {
+      setCommentUser((prev) => ({
+        ...prev,
+        status: 'BANNED',
+      }));
+    } else {
+      setCommentUser((prev) => ({
+        ...prev,
+        status: 'ACTIVE',
+      }));
+    }
+  }, [isBanned]);
 
   useEffect(() => {
     if (user?.role === 'MODERATOR' || user?.role === 'ADMIN') setAuthorized(true);
@@ -106,7 +122,7 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
                   !isShowing && 'duration-150 scale-75 transform'
                 } grid grow content-between`}
               >
-                <Badges user={comment.user} />
+                <Badges user={commentUser} />
                 <div className="flex flex-wrap justify-between text-xs">
                   <a
                     className={`${
