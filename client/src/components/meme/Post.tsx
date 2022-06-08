@@ -40,7 +40,7 @@ const Post = () => {
   ) : (
     <>
       <div className="mx-4 shadow-sm">
-        <div className="p-2 flex border-x">
+        <div className="p-2 flex flex-wrap overflow-auto border-x">
           <div className="w-1/2 self-center">
             {meme.url.split('.')[3] === 'mp4' ? (
               <video

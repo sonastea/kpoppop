@@ -22,7 +22,7 @@ const CommentModerationButtons = (props: { commentId: number }) => {
 
   if (isAuthorized) {
     return (
-      <div className="p-1 flex flex-wrap justify-center">
+      <div className="p-1 flex flex-wrap justify-center overflow-auto">
         <div
           className="flex hover:text-red-500 space-x-1 mx-2"
           role="button"

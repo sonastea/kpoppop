@@ -17,7 +17,7 @@ const Comment = (props: { props: CommentProps; memeOwnerId: number }) => {
   const { user } = useAuth();
   const isAuthor = comment.user.id === user?.id;
 
-  const user_bg = ['self-center', 'rounded-md'].concat(
+  const user_bg = ['self-center', 'rounded-md', 'ml-2'].concat(
     comment.user.id === props.memeOwnerId && comment.user.role !== 'ADMIN'
       ? 'text-white bg-once-900'
       : [],
@@ -54,7 +54,7 @@ const Comment = (props: { props: CommentProps; memeOwnerId: number }) => {
 
   return (
     <div className="p-2 comment-container" ref={containerRef}>
-      <div className="font-bold space-x-2 flex mb-1">
+      <div className="font-bold gap-x-2 flex flex-wrap mb-1">
         <img
           className="w-12 h-12 rounded-full"
           src={comment.user.photo ? comment.user.photo : '/images/default_photo_white_200x200.png'}
