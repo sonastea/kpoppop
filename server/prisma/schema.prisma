@@ -26,6 +26,8 @@ model User {
   likedMemes    Meme[]        @relation("UserLikesPost")
   comments      Comment[]     @relation("CommentsByUser")
   socialMedias  SocialMedia[]
+  reportsList   ReportUser[]  @relation("ReportsForUser")
+  reportedList  ReportUser[]  @relation("ReportsByUser")
 }
 
 model DiscordUser {
@@ -86,6 +88,16 @@ model Session {
 model EmailToken {
   token  String  @id @unique
   active Boolean @default(true)
+}
+
+model ReportUser {
+  id          BigInt @id @default(autoincrement())
+  username    String
+  description String
+  user        User   @relation("ReportsForUser", fields: [userId], references: [id])
+  userId      Int
+  reporter    User   @relation("ReportsByUser", fields: [reporterId], references: [id])
+  reporterId  Int
 }
 
 enum Role {

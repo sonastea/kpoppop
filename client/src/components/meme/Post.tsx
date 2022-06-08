@@ -1,5 +1,6 @@
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ReportUserModal from 'components/user/ReportUserModal';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import InteractiveButtons from './InteractiveButtons';
@@ -39,6 +40,7 @@ const Post = () => {
     <PostNonexistent message={'Post does not exist'} />
   ) : (
     <>
+      <ReportUserModal user={{ id: meme.author.id, username: meme.author.username }} />
       <div className="mx-4 shadow-sm">
         <div className="p-2 flex flex-wrap overflow-auto border-x">
           <div className="w-1/2 self-center">

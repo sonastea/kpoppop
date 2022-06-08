@@ -1,3 +1,4 @@
+import UserMenu from 'components/user/UserMenu';
 import UserTooltip from 'components/user/UserTooltip';
 import { useAuth } from 'contexts/AuthContext';
 import { BaseSyntheticEvent, useRef, useState } from 'react';
@@ -62,6 +63,9 @@ const Comment = (props: { props: CommentProps; memeOwnerId: number }) => {
         />
         <span className={user_bg.join(' ')}>
           <UserTooltip comment={comment} />
+        </span>
+        <span className="ml-auto">
+          <UserMenu user={comment.user} />
         </span>
       </div>
       <div className="text-slate-800 text-sm sm:text-lg break-words">

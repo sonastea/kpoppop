@@ -21,6 +21,13 @@ const SocialMediaLinkData: Prisma.SocialMediaSelect = {
   url: true,
 };
 
+const ReportUserData: Prisma.ReportUserSelect = {
+  id: true,
+  userId: true,
+  username: true,
+  description: true,
+};
+
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
@@ -228,6 +235,14 @@ export class UserService {
       where,
     });
     return status;
+  }
+
+  async reportUser(data: Prisma.ReportUserCreateInput): Promise<any> {
+    const reported = await this.prisma.reportUser.create({
+      data,
+      select: { ...ReportUserData },
+    });
+    return reported;
   }
 
   async modUser(
