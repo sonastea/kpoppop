@@ -74,7 +74,7 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
   };
 
   return (
-    <Popover className="relative">
+    <Popover className="relative z-100">
       <Popover.Button onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
         <a
           className={`hover:underline hover:decoration-black hover:decoration-solid px-1 ${

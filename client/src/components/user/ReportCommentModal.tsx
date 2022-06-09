@@ -1,40 +1,35 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dialog } from '@headlessui/react';
-import useReportUserStore from 'hooks/useReportUser';
+import useReportCommentStore from 'hooks/useReportComment';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { reportUser } from './UserAPI';
+import { reportComment } from './UserAPI';
 
-export type ReportUserInfoData = {
-  id: number;
-  username: string;
-};
-
-type ReportUserData = {
-  user: ReportUserInfoData;
+type ReportCommentData = {
+  commentId: number;
   description: string;
 };
 
-const ReportUserModal = (props: { user: ReportUserInfoData }) => {
+const ReportCommentModal = () => {
   const [responseMsg, setResponseMsg] = useState<string>('');
   const [reported, setReported] = useState<boolean>(false);
-  const { reporting, reportingUser } = useReportUserStore();
+  const { reporting, commentId, reportingComment } = useReportCommentStore();
   const {
     reset,
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ReportUserData>();
+  } = useForm<ReportCommentData>();
 
-  const handleReportUser: SubmitHandler<ReportUserData> = async (data) => {
+  const handleReportComment: SubmitHandler<ReportCommentData> = async (data) => {
     setReported(true);
 
-    await reportUser({ id: props.user.id, username: props.user.username }, data.description)
+    await reportComment(commentId, data.description)
       .then((data) => {
         if (data.statusCode === 403) {
           alert('You must be logged in to do that!');
-          reportingUser();
+          reportingComment();
           resetForm();
         } else {
           setResponseMsg(data.message);
@@ -49,15 +44,19 @@ const ReportUserModal = (props: { user: ReportUserInfoData }) => {
   };
 
   return (
-    <Dialog open={reporting} onClose={reportingUser} className="relative z-100">
+    <Dialog open={reporting} onClose={() => reportingComment()} className="relative z-100">
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
 
       <div className="fixed inset-0 flex items-center justify-center">
         <Dialog.Panel className="bg-gray-200 p-6 w-full md:w-3/4 rounded-md">
-          <button onClick={reportingUser} type="button" className="fixed right-6 md:right-[15%]">
+          <button
+            onClick={() => reportingComment()}
+            type="button"
+            className="fixed right-6 md:right-[15%]"
+          >
             <FontAwesomeIcon icon={faXmark} />
           </button>
-          <Dialog.Title className="text-2xl">Report user</Dialog.Title>
+          <Dialog.Title className="text-2xl">Report comment</Dialog.Title>
           <div className="p-4" />
 
           {reported ? (
@@ -71,7 +70,7 @@ const ReportUserModal = (props: { user: ReportUserInfoData }) => {
               </Dialog.Description>
             </>
           ) : (
-            <form className="grid gap-2" onSubmit={handleSubmit(handleReportUser)}>
+            <form className="grid gap-2" onSubmit={handleSubmit(handleReportComment)}>
               <textarea
                 placeholder="Description of the report"
                 className="p-1 border border-once-300 rounded-md outline-none focus:border-once-500"
@@ -86,7 +85,7 @@ const ReportUserModal = (props: { user: ReportUserInfoData }) => {
                 <button
                   className="w-full border bg-white border-once rounded-md text-once p-1 mr-1"
                   type="button"
-                  onClick={reportingUser}
+                  onClick={() => null}
                 >
                   Cancel
                 </button>
@@ -104,4 +103,4 @@ const ReportUserModal = (props: { user: ReportUserInfoData }) => {
     </Dialog>
   );
 };
-export default ReportUserModal;
+export default ReportCommentModal;

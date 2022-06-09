@@ -1,45 +1,47 @@
 import { faFlag, faFrown } from '@fortawesome/free-regular-svg-icons';
 import { faBan, faGavel } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IUserProps } from 'components/meme/InteractiveComments';
+import useReportCommentStore from 'hooks/useReportComment';
 import useReportUserStore from 'hooks/useReportUser';
 import { useEffect, useState } from 'react';
 import { banUser, modUser, unbanUser, unmodUser } from '../UserAPI';
+import { UserTooltipProps as UserMenuProps } from '../UserTooltip';
 
-const useUserMenuButtons = (props: { user: IUserProps }) => {
-  const [isBanned, setBanned] = useState<boolean>(props.user.status === 'BANNED' && true);
+const useUserMenuButtons = ({ comment }: UserMenuProps) => {
+  const [isBanned, setBanned] = useState<boolean>(comment.user.role === 'BANNED' && true);
   const [isModded, setModded] = useState<boolean>(false);
-  const { isReporting } = useReportUserStore();
+  const { reportingComment } = useReportCommentStore();
+  const { reportingUser } = useReportUserStore();
 
   const button_bg = 'grid grid-flow-col auto-cols-max gap-x-2 p-2 py-1 hover:bg-gray-200';
 
   useEffect(() => {
-    if (props.user.role === 'MODERATOR' || props.user.role === 'ADMIN') setModded(true);
-  }, [props.user.role]);
+    if (comment.user.role === 'MODERATOR' || comment.user.role === 'ADMIN') setModded(true);
+  }, [comment.user.role]);
 
   const handleBanUser = async () => {
-    await banUser(undefined, props.user.id).then((data) => {
+    await banUser(undefined, comment.user.id).then((data) => {
       if (data.id) setBanned(true);
       else alert('An error occurred.');
     });
   };
 
   const handleUnbanUser = async () => {
-    await unbanUser(undefined, props.user.id).then((data) => {
+    await unbanUser(undefined, comment.user.id).then((data) => {
       if (data.id) setBanned(false);
       else alert('An error occurred.');
     });
   };
 
   const handleModUser = async () => {
-    await modUser(undefined, props.user.id).then((data) => {
+    await modUser(undefined, comment.user.id).then((data) => {
       if (data.id) setModded(true);
       else alert('An error occurred.');
     });
   };
 
   const handleUnmodUser = async () => {
-    await unmodUser(undefined, props.user.id).then((data) => {
+    await unmodUser(undefined, comment.user.id).then((data) => {
       if (data.id) setModded(false);
       else alert('An error occurred.');
     });
@@ -48,11 +50,24 @@ const useUserMenuButtons = (props: { user: IUserProps }) => {
   return {
     DefaultMenuButtons: (
       <>
-        <div className={button_bg} role="button" aria-label="report-user" onClick={isReporting}>
+        <div
+          className={button_bg}
+          role="button"
+          aria-label="report-comment"
+          onClick={() => reportingComment(comment.id)}
+        >
+          <span>
+            <FontAwesomeIcon className="text-red-500" icon={faFlag} flip="horizontal" />
+          </span>
+          <span className="hover:bg-gray-200 whitespace-nowrap">Report comment</span>{' '}
+        </div>
+        <div className={button_bg} role="button" aria-label="report-user" onClick={reportingUser}>
           <span>
             <FontAwesomeIcon className="text-red-500" icon={faFrown} />
           </span>
-          <span className="hover:bg-gray-200 whitespace-nowrap">Report @{props.user.username}</span>
+          <span className="hover:bg-gray-200 whitespace-nowrap">
+            Report @{comment.user.username}
+          </span>
         </div>
       </>
     ),

@@ -18,7 +18,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
-import { SkipThrottle, Throttle, ThrottlerGuard } from '@nestjs/throttler';
+import { SkipThrottle, ThrottlerGuard } from '@nestjs/throttler';
 import { Role, User } from '@prisma/client';
 import { randomUUID } from 'crypto';
 import * as dotenv from 'dotenv';
@@ -74,7 +74,7 @@ export class UserController {
     private readonly userService: UserService,
     // private readonly mailService: MailService,
     private readonly prisma: PrismaService
-  ) {}
+  ) { }
 
   @UseGuards(RecaptchaGuard)
   @Post('register')
@@ -223,7 +223,47 @@ export class UserController {
   }
 
   @UseGuards(SessionGuard)
-  @Throttle()
+  @Post('report_comment')
+  async reportComment(
+    @Res() res: Response,
+    @Body() body: { commentId: number; description: string },
+    @Session() session: Record<string, any>
+  ): Promise<any> {
+    const { commentId, description } = body;
+
+    // Check if user is logged in through local-account or discord
+    const { id: reporterId, discordId: reporterDiscordId } = session.passport.user;
+    let reporter: { id: number };
+    if (reporterId) {
+      reporter = { id: reporterId };
+    } else {
+      reporter = { id: reporterDiscordId };
+      const user = await this.prisma.discordUser.findUnique({
+        where: { discordId: reporterDiscordId },
+      });
+      reporter = { id: user.userId };
+    }
+
+    const reported = await this.userService.reportComment({
+      description: description,
+      comment: {
+        connect: {
+          id: commentId,
+        },
+      },
+      reporter: {
+        connect: reporter,
+      },
+    });
+
+    if (reported.id) {
+      res.json({ message: `You successfully reported the comment.` });
+    } else {
+      res.status(400).json({ message: 'Error processing your report' });
+    }
+  }
+
+  @UseGuards(SessionGuard)
   @Post('report')
   async reportUser(
     @Res() res: Response,

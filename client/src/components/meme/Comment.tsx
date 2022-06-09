@@ -65,7 +65,7 @@ const Comment = (props: { props: CommentProps; memeOwnerId: number }) => {
           <UserTooltip comment={comment} />
         </span>
         <span className="ml-auto">
-          <UserMenu user={comment.user} />
+          <UserMenu comment={comment} />
         </span>
       </div>
       <div className="text-slate-800 text-sm sm:text-lg break-words">

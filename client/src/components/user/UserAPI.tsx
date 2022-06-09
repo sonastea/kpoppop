@@ -38,6 +38,15 @@ export const deleteSocialMediaLink = async (uuid: string) => {
   }).then((response) => response.json());
 };
 
+export const reportComment = async (commentId: number, description: string) => {
+  return await fetch(`${API_URL}/user/report_comment`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ commentId, description }),
+    credentials: 'include',
+  }).then((response) => response.json());
+};
+
 export const reportUser = async (user: { id: number; username: string }, description: string) => {
   return await fetch(`${API_URL}/user/report`, {
     method: 'POST',
