@@ -1,5 +1,9 @@
 module.exports = {
-  content: ['./src/**/*.{js,jsx,ts,tsx}', './public/**/*.html', './src/components/*.{js,jsx,ts,tsx}'],
+  content: [
+    './src/**/*.{js,jsx,ts,tsx}',
+    './public/**/*.html',
+    './src/components/*.{js,jsx,ts,tsx}',
+  ],
   theme: {
     extend: {
       animation: {
@@ -38,6 +42,9 @@ module.exports = {
         thrice: {
           DEFAULT: '#860038',
         },
+      },
+      maxHeight: {
+        '2xl': '42rem',
       },
       transformOrigin: {
         0: '0%',

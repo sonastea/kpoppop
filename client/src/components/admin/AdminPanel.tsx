@@ -22,7 +22,9 @@ const AdminPanel = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: modUser }),
       credentials: 'include',
-    }).then((response) => response.json()).then(data => window.alert(data));
+    })
+      .then((response) => response.json())
+      .then((data) => window.alert(data));
   };
 
   const banUserHandler = async (e: any) => {
@@ -32,7 +34,9 @@ const AdminPanel = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: banUser }),
       credentials: 'include',
-    }).then((response) => response.json()).then(data => window.alert(JSON.stringify(data)));
+    })
+      .then((response) => response.json())
+      .then((data) => window.alert(JSON.stringify(data)));
   };
 
   const unmodUserHandler = async (e: any) => {
@@ -42,7 +46,9 @@ const AdminPanel = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: unmodUser }),
       credentials: 'include',
-    }).then((response) => response.json()).then(data => window.alert(JSON.stringify(data)));
+    })
+      .then((response) => response.json())
+      .then((data) => window.alert(JSON.stringify(data)));
   };
 
   const hideMemeHandler = async (e: any) => {
@@ -52,7 +58,9 @@ const AdminPanel = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ memeId: hideMemeId }),
       credentials: 'include',
-    }).then((response) => response.json()).then(data => window.alert(JSON.stringify(data)));
+    })
+      .then((response) => response.json())
+      .then((data) => window.alert(JSON.stringify(data)));
   };
 
   const showMemeHandler = async (e: any) => {
@@ -62,7 +70,9 @@ const AdminPanel = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ memeId: showMemeId }),
       credentials: 'include',
-    }).then((response) => response.json()).then(data => window.alert(JSON.stringify(data)));
+    })
+      .then((response) => response.json())
+      .then((data) => window.alert(JSON.stringify(data)));
   };
 
   if (isAuthorized) {

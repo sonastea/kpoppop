@@ -4,6 +4,8 @@ import {
   Delete,
   Get,
   HttpCode,
+  HttpException,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -17,21 +19,21 @@ import {
 } from '@nestjs/common';
 import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { SkipThrottle, ThrottlerGuard } from '@nestjs/throttler';
-import { Prisma, User } from '@prisma/client';
+import { Role, User } from '@prisma/client';
 import { randomUUID } from 'crypto';
 import * as dotenv from 'dotenv';
 import { Request, Response } from 'express';
 import * as firebase from 'firebase-admin';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 import { LoginSessionGuard } from 'src/auth/guards/login-session.guard';
 import { RecaptchaGuard } from 'src/auth/guards/recaptcha.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { SessionGuard } from 'src/auth/guards/session.guard';
 import { LocalSerializer } from 'src/auth/serializers/local.serializer';
 import { PrismaService } from 'src/database/prisma.service';
 import { MailService } from 'src/mail/mail.service';
 import { UserService } from './user.service';
 import path = require('path');
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 dotenv.config();
 
@@ -220,39 +222,193 @@ export class UserController {
     }
   }
 
+  @UseGuards(SessionGuard)
+  @Post('report_comment')
+  async reportComment(
+    @Res() res: Response,
+    @Body() body: { commentId: number; description: string },
+    @Session() session: Record<string, any>
+  ): Promise<any> {
+    const { commentId, description } = body;
+
+    // Check if user is logged in through local-account or discord
+    const { id: reporterId, discordId: reporterDiscordId } = session.passport.user;
+    let reporter: { id: number };
+    if (reporterId) {
+      reporter = { id: reporterId };
+    } else {
+      reporter = { id: reporterDiscordId };
+      const user = await this.prisma.discordUser.findUnique({
+        where: { discordId: reporterDiscordId },
+      });
+      reporter = { id: user.userId };
+    }
+
+    const reported = await this.userService.reportComment({
+      description: description,
+      comment: {
+        connect: {
+          id: commentId,
+        },
+      },
+      reporter: {
+        connect: reporter,
+      },
+    });
+
+    if (reported.id) {
+      res.json({ message: `You successfully reported the comment.` });
+    } else {
+      res.status(400).json({ message: 'Error processing your report' });
+    }
+  }
+
+  @UseGuards(SessionGuard)
+  @Post('report')
+  async reportUser(
+    @Res() res: Response,
+    @Body() body: { user: { id: number; username: string }; description: string },
+    @Session() session: Record<string, any>
+  ): Promise<any> {
+    const {
+      user: { id, username },
+      description,
+    } = body;
+
+    // Check if user is logged in through local-account or discord
+    const { id: reporterId, discordId: reporterDiscordId } = session.passport.user;
+    let reporter: { id: number };
+    if (reporterId) {
+      reporter = { id: reporterId };
+    } else {
+      reporter = { id: reporterDiscordId };
+      const user = await this.prisma.discordUser.findUnique({
+        where: { discordId: reporterDiscordId },
+      });
+      reporter = { id: user.userId };
+    }
+
+    const reported = await this.userService.reportUser({
+      description: description,
+      username: username,
+      user: {
+        connect: { id },
+      },
+      reporter: {
+        connect: reporter,
+      },
+    });
+
+    if (reported.id) {
+      res.json({ message: `You successfully reported ${reported.username}.` });
+    } else {
+      res.status(400).json({ message: 'Error processing your report' });
+    }
+  }
+
   @UseGuards(SessionGuard, RolesGuard)
   @Roles('ADMIN')
   @SkipThrottle()
   @Put('mod_user')
-  async modUser(@Res() res: Response, @Body() data: { username: string }): Promise<any> {
-    console.log(data);
-    const updatedUser = await this.prisma.user.update({
-      where: { username: data.username },
-      data: { role: 'MODERATOR' },
-    });
-    res.json(updatedUser);
+  async modUser(
+    @Res() res: Response,
+    @Body() data: { username?: string; userId?: number }
+  ): Promise<any> {
+    const { username, userId } = data;
+    const moddedUser = await this.userService.modUser(
+      { username: username, id: userId },
+      { role: 'MODERATOR' },
+      {
+        id: true,
+        username: true,
+        status: true,
+      }
+    );
+    res.json(moddedUser);
   }
 
   @UseGuards(SessionGuard, RolesGuard)
   @Roles('ADMIN')
   @SkipThrottle()
   @Put('unmod_user')
-  async unmodUser(@Res() res: Response, @Body() data: { username: string }): Promise<any> {
-    const updatedUser = await this.prisma.user.update({
-      where: { username: data.username },
-      data: { role: 'USER' },
-    });
-    res.json(updatedUser);
+  async unmodUser(
+    @Res() res: Response,
+    @Body() data: { username?: string; userId?: number }
+  ): Promise<any> {
+    const { username, userId } = data;
+    const unmoddedUser = await this.userService.unmodUser(
+      { username: username, id: userId },
+      { role: 'USER' },
+      {
+        id: true,
+        username: true,
+        status: true,
+      }
+    );
+    res.json(unmoddedUser);
   }
 
   @UseGuards(SessionGuard, RolesGuard)
-  @Roles('ADMIN')
+  @Roles('ADMIN', 'MODERATOR')
   @SkipThrottle()
   @Put('ban_user')
-  async banUser(@Res() res: Response, @Body() data: { username: string }): Promise<any> {
-    const bannedUser = await this.prisma.user.delete({
-      where: { username: data.username },
-    });
+  async banUser(
+    @Res() res: Response,
+    @Body() data: { name?: string; userId?: number }
+  ): Promise<any> {
+    // Check if suspect is an ADMIN, returns error
+    const banSuspect = await this.userService.findOne({ id: data.userId });
+    if (banSuspect.role === Role.ADMIN) {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'You do not have the authority to ban this person.',
+        },
+        HttpStatus.FORBIDDEN
+      );
+    }
+
+    const bannedUser = await this.userService.banUser(
+      { id: data.userId },
+      { status: 'BANNED' },
+      {
+        id: true,
+        username: true,
+        status: true,
+      }
+    );
     res.json(bannedUser);
+  }
+
+  @UseGuards(SessionGuard, RolesGuard)
+  @Roles('ADMIN', 'MODERATOR')
+  @SkipThrottle()
+  @Put('unban_user')
+  async unbanUser(
+    @Res() res: Response,
+    @Body() data: { name?: string; userId?: number }
+  ): Promise<any> {
+    // Check if suspect is an ADMIN, returns error
+    const banSuspect = await this.userService.findOne({ id: data.userId });
+    if (banSuspect.role === Role.ADMIN) {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'You do not have the authority to ban this person.',
+        },
+        HttpStatus.FORBIDDEN
+      );
+    }
+
+    const unbannedUser = await this.userService.unbanUser(
+      { id: data.userId },
+      { status: 'ACTIVE' },
+      {
+        id: true,
+        username: true,
+        status: true,
+      }
+    );
+    res.json(unbannedUser);
   }
 }

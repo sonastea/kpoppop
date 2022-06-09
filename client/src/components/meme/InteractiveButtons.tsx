@@ -65,7 +65,7 @@ const InteractiveButtons = (props: InteractiveButtonProps) => {
   }, [user, likedState, memeId]);
 
   return (
-    <div className="p-1 flex justify-center space-x-4">
+    <div className="p-1 flex flex-wrap justify-center gap-x-4 space-x-4">
       <div className="group like" onClick={handleLiked} role="button" aria-label="like">
         {likedState ? (
           <FontAwesomeIcon

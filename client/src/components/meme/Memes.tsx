@@ -1,9 +1,9 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import InteractiveButtons from './InteractiveButtons';
-import { useEffect, useRef, useState } from 'react';
-import { fetchMemes } from './MemeAPI';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { debounce } from 'lodash';
+import { useEffect, useRef, useState } from 'react';
+import InteractiveButtons from './InteractiveButtons';
+import { fetchMemes } from './MemeAPI';
 
 let cursor: number = 0;
 
@@ -78,7 +78,7 @@ const Memes = () => {
                     {meme.url.split('.')[3] === 'mp4' ? (
                       <video
                         key={meme.title}
-                        className="rounded-md mx-auto md:max-w-2xl"
+                        className="rounded-md mx-auto md:max-w-2xl md:max-h-2xl"
                         controls
                         muted
                       >
@@ -87,7 +87,7 @@ const Memes = () => {
                     ) : (
                       <a className="contents" href={`/meme/${meme.id}/${title}`}>
                         <img
-                          className="mx-auto md:max-w-2xl rounded-md"
+                          className="mx-auto md:max-w-2xl rounded-md md:max-h-2xl"
                           src={meme.url}
                           alt={meme.title}
                         />

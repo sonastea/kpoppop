@@ -43,150 +43,39 @@ input:not(:focus-within) ~ label {
   text-align: -webkit-center;
 }
 
-/*body {*/
-/*margin: 0;*/
-/*background-color: #efefef !important;*/
-/*font-family: 'Montserrat', sans-serif !important;*/
-/*}*/
+#arrow,
+#arrow::before {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background: inherit;
+  background-blend-mode: color;
+  mix-blend-mode: color;
+  z-index: -10;
+}
 
-/*@media screen and (min: width: 1236px) {*/
-/*.container {*/
-/*width: 1190px;*/
-/*}*/
-/*}*/
+#arrow {
+  visibility: hidden;
+}
 
-/*.required-input:after {*/
-/*content: '*';*/
-/*color: red;*/
-/*font-weight: bold;*/
-/*}*/
+#arrow::before {
+  visibility: visible;
+  content: '';
+  transform: rotate(45deg);
+}
 
-/*a.nav-link, a.nav-link:hover {*/
-/*color: #471a2a;*/
-/*}*/
+div[id^='headlessui-popover-panel'][data-popper-placement^='top'] > #arrow {
+  bottom: -4px;
+}
 
-/*.title {*/
-/*font-weight: bold;*/
-/*}*/
+div[id^='headlessui-popover-panel'][data-popper-placement^='bottom'] > #arrow {
+  top: -4px;
+}
 
-/*.content-header {*/
-/*background-color: rgb(205, 205, 205, 0.75);*/
-/*}*/
+div[id^='headlessui-popover-panel'][data-popper-placement^='left'] > #arrow {
+  right: -4px;
+}
 
-/*.content-title {*/
-/*color: #471a2a;*/
-/*font-size: calc(1rem + 1vw);*/
-/*font-weight: normal;*/
-/*}*/
-
-/*.meme-buttons {*/
-/*color: #471a2a !important;*/
-/*text-decoration: none;*/
-/*}*/
-
-/*.author-bar * {*/
-/*color: #585858 !important;*/
-/*text-decoration: none;*/
-/*font-size: calc(1rem + 0.25vw);*/
-/*}*/
-
-/*.comments {*/
-/*color: #585858 !important;*/
-/*}*/
-
-/*.interactive-buttons {*/
-/*color: #714f57db;*/
-/*}*/
-
-/*.interactive-bar {*/
-/*font-size: calc(0.8rem + 1vh);*/
-/*}*/
-
-/*.btn:focus {*/
-/*outline: 0 !important;*/
-/*box-shadow: none !important;*/
-/*}*/
-
-/*.btn-pink {*/
-/*background-color: #eda6b7 !important;*/
-/*border: none;*/
-/*color: #471a2a !important;*/
-/*}*/
-
-/*.dropdown-item:active {*/
-/*background-color: #eda6b7;*/
-/*}*/
-
-/*.page-number {*/
-/*text-align: center;*/
-/*}*/
-
-/*.meme-thumbnail {*/
-/*min-width: 12vh;*/
-/*min-height: 12vh;*/
-/*}*/
-
-/*@media (hover: hover) {*/
-/*.like-meme:hover * {*/
-/*color: red;*/
-/*}*/
-/*.hide-meme:hover {*/
-/*color: rgb(214, 41, 41);*/
-/*}*/
-/*.delete-meme:hover {*/
-/*color: rgb(214, 41, 41);*/
-/*}*/
-/*}*/
-
-/*.liked {*/
-/*color: red;*/
-/*}*/
-
-/*.meme {*/
-/*background-color: #ffffff;*/
-/*border: 1px solid #cccccc;*/
-/*overflow-wrap: break-word;*/
-/*}*/
-
-/*.list-buttons {*/
-/*font-size: 1.75vmin;*/
-/*}*/
-
-/*.navbar-brand {*/
-/*color: #35271a;*/
-/*}*/
-
-/*.file-image-item {*/
-/*height: 30vh;*/
-/*}*/
-
-/*#navbar {*/
-/*background-color: #FF5FA2;*/
-/*}*/
-
-/*#mobileNav {*/
-/*width: 50%;*/
-/*}*/
-
-/*#signupForm {*/
-/*text-align: -webkit-center;*/
-/*}*/
-
-/*#items-required:before {*/
-/*content: '*';*/
-/*color: red;*/
-/*}*/
-
-/*#items-required {*/
-/*font-style: italic;*/
-/*color: grey;*/
-/*}*/
-
-/*#profile-dropdown {*/
-/*color: #471a2a;*/
-/*}*/
-
-/*#title-input-label {*/
-/*font-weight: normal;*/
-/*font-size: 2.75vmin;*/
-/*}*/
+div[id^='headlessui-popover-panel'][data-popper-placement^='right'] > #arrow {
+  left: -4px;
+}

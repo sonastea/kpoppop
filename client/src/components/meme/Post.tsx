@@ -1,5 +1,7 @@
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ReportCommentModal from 'components/user/ReportCommentModal';
+import ReportUserModal from 'components/user/ReportUserModal';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import InteractiveButtons from './InteractiveButtons';
@@ -39,8 +41,10 @@ const Post = () => {
     <PostNonexistent message={'Post does not exist'} />
   ) : (
     <>
+      <ReportCommentModal />
+      <ReportUserModal user={{ id: meme.author.id, username: meme.author.username }} />
       <div className="mx-4 shadow-sm">
-        <div className="p-2 flex border-x">
+        <div className="p-2 flex flex-wrap overflow-auto border-x">
           <div className="w-1/2 self-center">
             {meme.url.split('.')[3] === 'mp4' ? (
               <video
@@ -63,7 +67,7 @@ const Post = () => {
             <div className="flex justify-end text-md md:text-xl text-once-900">
               <a href={`/user/${meme.author.username}`}>{meme.author.username}</a>
             </div>
-            <div className="items-center h-3/4 text-sm md:text-xl">{meme.title}</div>
+            <div className="grid content-center h-3/4 text-sm md:text-xl">{meme.title}</div>
           </div>
         </div>
         <div className="border-t border-x">

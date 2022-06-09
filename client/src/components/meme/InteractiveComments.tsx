@@ -3,10 +3,22 @@ import { API_URL } from 'Global.d';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import Comment from './Comment';
 import { fetchMemeComments } from './MemeAPI';
+
 type InteractiveCommentsProps = {
   memeId: number;
   ownerId: number;
 };
+
+export interface IUserProps {
+  banner?: string;
+  createdAt: string;
+  displayname?: string;
+  id: number;
+  photo?: string;
+  role: string;
+  username: string;
+  status: string;
+}
 
 export type CommentProps = {
   id: number;
@@ -14,14 +26,7 @@ export type CommentProps = {
   createdAt: string;
   updatedAt: string;
   edited: boolean;
-  user: {
-    banner?: string;
-    displayname?: string;
-    id: number;
-    photo?: string;
-    role: string;
-    username: string;
-  };
+  user: IUserProps;
 };
 
 const InteractiveComments = (props: InteractiveCommentsProps) => {
@@ -70,7 +75,7 @@ const InteractiveComments = (props: InteractiveCommentsProps) => {
 
   return (
     <>
-      <form className="space-y-2 space-x-2 flex-wrap items-center p-1 flex justify-center">
+      <form className="space-y-2 space-x-2 flex-wrap items-center p-1 flex justify-center overflow-auto">
         <img
           className="rounded-full w-12 h-12 max-w-12 max-h-12"
           src={user && user?.photo ? user.photo : '/images/default_photo_white_200x200.png'}
@@ -99,7 +104,7 @@ const InteractiveComments = (props: InteractiveCommentsProps) => {
           type="button"
           className={`${
             isCommenting ? 'bg-once-200 cursor-not-allowed' : 'bg-once'
-          } self-center p-1 rounded-md`}
+          } self-center p-1 rounded-md hover:bg-once-400`}
           onClick={() => addComment(props.memeId)}
           disabled={isCommenting ? true : false}
         >

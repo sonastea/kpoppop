@@ -1,5 +1,6 @@
+import UserMenu from 'components/user/UserMenu';
+import UserTooltip from 'components/user/UserTooltip';
 import { useAuth } from 'contexts/AuthContext';
-import { PUBLIC_URL } from 'Global.d';
 import { BaseSyntheticEvent, useRef, useState } from 'react';
 import CommentButtons from './CommentButtons';
 import CommentModerationButtons from './CommentModerationButtons';
@@ -16,6 +17,14 @@ const Comment = (props: { props: CommentProps; memeOwnerId: number }) => {
   const textRef = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
   const isAuthor = comment.user.id === user?.id;
+
+  const user_bg = ['self-center', 'rounded-md', 'ml-2'].concat(
+    comment.user.id === props.memeOwnerId && comment.user.role !== 'ADMIN'
+      ? 'text-white bg-once-900'
+      : [],
+    comment.user.role === 'ADMIN' ? 'bg-once-500' : [],
+    comment.user.role === 'MODERATOR' ? 'bg-blue-400' : []
+  );
 
   const handleEditComment = async (e: BaseSyntheticEvent) => {
     if (newComment?.length > MAX_COMMENT_CHAR_LENGTH) {
@@ -46,24 +55,17 @@ const Comment = (props: { props: CommentProps; memeOwnerId: number }) => {
 
   return (
     <div className="p-2 comment-container" ref={containerRef}>
-      <div className="font-bold space-x-2 flex mb-1">
+      <div className="font-bold gap-x-2 flex flex-wrap mb-1">
         <img
           className="w-12 h-12 rounded-full"
           src={comment.user.photo ? comment.user.photo : '/images/default_photo_white_200x200.png'}
           alt={`${comment.user.username} profile`}
         />
-        <span
-          className={`${
-            comment.user.id === props.memeOwnerId &&
-            comment.user.role !== 'ADMIN' &&
-            'text-white bg-once-900'
-          } ${
-            comment.user.role === 'ADMIN' && 'text-black bg-once-500'
-          } self-center rounded-md px-1`}
-        >
-          <a className="hover:underline" href={`${PUBLIC_URL}/user/${comment.user.username}`}>
-            {comment.user.displayname ? comment.user.displayname : comment.user.username}
-          </a>
+        <span className={user_bg.join(' ')}>
+          <UserTooltip comment={comment} />
+        </span>
+        <span className="ml-auto">
+          <UserMenu comment={comment} />
         </span>
       </div>
       <div className="text-slate-800 text-sm sm:text-lg break-words">
