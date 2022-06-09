@@ -1,6 +1,9 @@
+import { faFlag } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Popover, Transition } from '@headlessui/react';
 import { CommentProps, IUserProps } from 'components/meme/InteractiveComments';
 import { useAuth } from 'contexts/AuthContext';
+import useReportCommentStore from 'hooks/useReportComment';
 import { useEffect, useState } from 'react';
 import { usePopper } from 'react-popper';
 import Badges from './Badges';
@@ -19,6 +22,7 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
   const [arrowElement, setArrowElement] = useState<HTMLElement | null>(null);
   const [isAuthorized, setAuthorized] = useState<boolean>(false);
   const { isBanned, ModerationButtons } = useTooltipModerationButtons(comment);
+  const { reportingComment } = useReportCommentStore();
   const { user } = useAuth();
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement: 'right',
@@ -75,16 +79,17 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
 
   return (
     <Popover className="relative z-100">
-      <Popover.Button onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-        <a
-          className={`hover:underline hover:decoration-black hover:decoration-solid px-1 ${
-            isBanned && 'decoration-ponce-500 line-through'
-          }`}
-          href={`/user/${comment.user.username}`}
-          ref={setReferenceElement}
-        >
-          {comment.user.displayname ? comment.user.displayname : comment.user.username}
-        </a>
+      <Popover.Button
+        as="a"
+        className={`hover:underline hover:decoration-black hover:decoration-solid hover:cursor-pointer px-1 ${
+          isBanned && 'decoration-ponce-500 line-through'
+        }`}
+        ref={setReferenceElement}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onClick={() => (window.location.href = `/user/${comment.user.username}`)}
+      >
+        {comment.user.displayname ? comment.user.displayname : comment.user.username}
       </Popover.Button>
       <Transition
         show={isShowing}
@@ -135,7 +140,20 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
                 </div>
               </div>
             </div>
-            {isAuthorized && user?.id !== comment.user.id && ModerationButtons}
+            <div className="p-1 flex flex-wrap justify-evenly">
+              <div
+                className="flex flex-wrap space-x-1 mx-2"
+                role="button"
+                aria-label="report-user"
+                onClick={() => reportingComment(comment.id)}
+              >
+                <span>
+                  <FontAwesomeIcon className="text-red-500" icon={faFlag} transform="flip" />
+                </span>
+                <span className="hover:text-red-500 whitespace-nowrap">Report</span>
+              </div>
+              {isAuthorized && user?.id !== comment.user.id && ModerationButtons}
+            </div>
           </div>
           <div id="arrow" ref={setArrowElement} style={styles.arrow} />
         </Popover.Panel>

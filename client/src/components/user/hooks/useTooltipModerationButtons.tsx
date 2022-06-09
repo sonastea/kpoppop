@@ -45,7 +45,7 @@ const useTooltipModerationButtons = (props: { user: IUserProps }) => {
   return {
     isBanned,
     ModerationButtons: (
-      <div className="p-1 flex flex-wrap justify-evenly">
+      <>
         {isBanned ? (
           <div
             className={button_bg}
@@ -74,10 +74,10 @@ const useTooltipModerationButtons = (props: { user: IUserProps }) => {
             onClick={handleUnmodUser}
           >
             <span className="fa-layers my-auto">
-              <FontAwesomeIcon className="text-red-600" icon={faBan} />
+              <FontAwesomeIcon className="text-red-500" icon={faBan} />
               <FontAwesomeIcon size="xs" icon={faGavel} />
             </span>
-            <span className="hover:text-red-600 whitespace-nowrap">Unmod</span>
+            <span className="hover:text-red-500 whitespace-nowrap">Unmod</span>
           </div>
         ) : (
           <div className={button_bg} role="button" aria-label="mod-user" onClick={handleModUser}>
@@ -87,7 +87,7 @@ const useTooltipModerationButtons = (props: { user: IUserProps }) => {
             <span className="hover:text-once-500 whitespace-nowrap">Mod</span>
           </div>
         )}
-      </div>
+      </>
     ),
   };
 };

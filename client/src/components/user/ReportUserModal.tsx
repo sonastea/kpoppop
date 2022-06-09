@@ -44,6 +44,7 @@ const ReportUserModal = (props: { user: ReportUserInfoData }) => {
   };
 
   const resetForm = () => {
+    reportingUser();
     setReported(false);
     reset({ description: '' });
   };

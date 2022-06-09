@@ -39,6 +39,7 @@ const ReportCommentModal = () => {
   };
 
   const resetForm = () => {
+    reportingComment();
     setReported(false);
     reset({ description: '' });
   };
@@ -85,7 +86,7 @@ const ReportCommentModal = () => {
                 <button
                   className="w-full border bg-white border-once rounded-md text-once p-1 mr-1"
                   type="button"
-                  onClick={() => null}
+                  onClick={() => reportingComment()}
                 >
                   Cancel
                 </button>
