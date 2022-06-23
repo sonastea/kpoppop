@@ -112,7 +112,7 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
             <div className="tooltip-contents p-2 flex flex-wrap gap-2">
               <a className="tooltip-image" href={comment.user.photo && comment.user.photo}>
                 <img
-                  className="h-16 rounded-full"
+                  className="w-16 h-16 rounded-full"
                   src={
                     comment.user.photo
                       ? comment.user.photo
