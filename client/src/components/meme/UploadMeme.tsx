@@ -48,7 +48,6 @@ const UploadMeme = () => {
       let compressed;
       if (files[0].type === 'video/quicktime' || 'video/mp4') {
         compressed = files[0];
-        console.log(compressed);
       } else {
         compressed = await compressImage(files[0]);
       }
@@ -137,7 +136,7 @@ const UploadMeme = () => {
     } else if (e.target.files?.length === 1) {
       setFiles(e.target.files); // UploadMeme Image Preview
       // Skip identifying video formats and just set postable to true.
-      if (e.target.files[0].type === 'filetype/quicktime' || 'filetype/mp4') {
+      if (e.target.files[0].type === ('video/quicktime' || 'video/mp4')) {
         setPostable(true);
         return;
       }

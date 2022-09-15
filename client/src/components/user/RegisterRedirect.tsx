@@ -92,31 +92,31 @@ const RegisterRedirect = () => {
           <div className="p-8 border rounded shadow-md bg-opacity-95 md:max-w-lg border-once-200">
             <form className="space-y-4" id="signupForm" onSubmit={handleSubmit(submitHandler)}>
               {data?.existing && (
-                <h3 className="py-3 font-bold text-center">
-                  {`Found existing account with email ${data.email}`}
-                </h3>
+                <>
+                  <h3 className="py-3 font-bold text-center">
+                    {`Found existing account with email ${data.email}`}
+                  </h3>
+                  <div className="space-y-3">
+                    <button
+                      className="w-full px-2 py-2 overflow-hidden font-bold border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
+                      type="button"
+                      onClick={() => setLinkExisting(true)}
+                    >
+                      Link account <span className="underline">{data?.existing}</span>{' '}
+                      {` to ${data?.SocialType}`}
+                    </button>
+                    <h3 className="font-bold text-center">or</h3>
+                  </div>
+                </>
               )}
 
-              <div className="space-y-3">
-                <>
-                  <button
-                    className="w-full px-2 py-2 overflow-hidden font-bold border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
-                    type="button"
-                    onClick={() => setLinkExisting(true)}
-                  >
-                    Link account <span className="underline">{data?.existing}</span>{' '}
-                    {` to ${data?.SocialType}`}
-                  </button>
-                  <h3 className="font-bold text-center">or</h3>
-                </>
-                <button
-                  className="w-full px-2 py-2 overflow-hidden font-bold border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
-                  type="button"
-                  onClick={() => setLinkExisting(false)}
-                >
-                  Link and create a new account.
-                </button>
-              </div>
+              <button
+                className="w-full px-2 py-2 overflow-hidden font-bold border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
+                type="button"
+                onClick={() => setLinkExisting(false)}
+              >
+                Link and create a new account.
+              </button>
             </form>
           </div>
         </div>
