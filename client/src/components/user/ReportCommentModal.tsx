@@ -51,6 +51,7 @@ const ReportCommentModal = () => {
       <div className="fixed inset-0 flex items-center justify-center">
         <Dialog.Panel className="bg-gray-200 p-6 w-full md:w-3/4 rounded-md">
           <button
+            aria-label="Report comment"
             onClick={() => reportingComment()}
             type="button"
             className="fixed right-6 md:right-[15%]"

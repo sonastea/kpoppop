@@ -28,7 +28,7 @@ const UserMenu = ({ comment }: UserMenuProps) => {
   return (
     <>
       <Popover>
-        <Popover.Button ref={setReferenceElement}>
+        <Popover.Button ref={setReferenceElement} aria-label="Toggle user menu">
           <FontAwesomeIcon icon={faEllipsis} />
         </Popover.Button>
         <Transition
