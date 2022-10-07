@@ -7,7 +7,7 @@ import useReportMemeStore from './useReportMeme';
 const useMemeMenuButtons = (id: string) => {
   const { reportingMeme } = useReportMemeStore();
 
-  const button_bg = 'grid grid-flow-col auto-cols-max gap-x-2 p-2 py-1 hover:bg-gray-200';
+  const button_bg = 'grid grid-flow-col auto-cols-max gap-x-2 p-2 py-1 hover:bg-gray-100';
 
   const removeMemeHandler = async (e: any) => {
     e.preventDefault();
@@ -27,7 +27,7 @@ const useMemeMenuButtons = (id: string) => {
           <span>
             <FontAwesomeIcon className="text-red-500" icon={faFlag} flip="horizontal" />
           </span>
-          <span className="hover:bg-gray-200 whitespace-nowrap">Report meme</span>{' '}
+          <span className="whitespace-nowrap">Report meme</span>{' '}
         </div>
       </>
     ),
