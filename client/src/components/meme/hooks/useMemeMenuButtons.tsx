@@ -19,7 +19,7 @@ const useMemeMenuButtons = (isLoggedIn: boolean, id: string) => {
     DefaultMenuButtons: (
       <>
         <div
-          className={`${button_bg} ${!isLoggedIn && "cursor-not-allowed"} rounded-t-md`}
+          className={`${button_bg} ${!isLoggedIn && "rounded-md cursor-not-allowed"} rounded-t-md`}
           role="button"
           aria-label="report-meme"
           onClick={() => reportingMeme(parseInt(id))}
