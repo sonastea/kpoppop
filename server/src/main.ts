@@ -46,6 +46,8 @@ async function bootstrap() {
       checkPeriod: 2 * 60 * 1000, //ms
       dbRecordIdIsSessionId: true,
       dbRecordIdFunction: undefined,
+      enableConcurrentSetInvocationsForSameSessionID: true,
+      enableConcurrentTouchInvocationsForSameSessionID: true,
     }),
     secret: process.env.SESSION_SECRET_KEY,
   };
