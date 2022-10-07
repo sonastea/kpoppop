@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toggleMeme } from '../MemeAPI';
 import useReportMemeStore from './useReportMeme';
 
-const useMemeMenuButtons = (id: string) => {
+const useMemeMenuButtons = (isLoggedIn: boolean, id: string) => {
   const { reportingMeme } = useReportMemeStore();
 
   const button_bg = 'grid grid-flow-col auto-cols-max gap-x-2 p-2 py-1 hover:bg-gray-100';
@@ -19,7 +19,7 @@ const useMemeMenuButtons = (id: string) => {
     DefaultMenuButtons: (
       <>
         <div
-          className={button_bg}
+          className={`${button_bg} ${!isLoggedIn && "cursor-not-allowed"} rounded-t-md`}
           role="button"
           aria-label="report-meme"
           onClick={() => reportingMeme(parseInt(id))}
@@ -27,14 +27,14 @@ const useMemeMenuButtons = (id: string) => {
           <span>
             <FontAwesomeIcon className="text-red-500" icon={faFlag} flip="horizontal" />
           </span>
-          <span className="whitespace-nowrap">Report meme</span>{' '}
+          <span className="whitespace-nowrap">{isLoggedIn ? "Report meme" : "Login to report"}</span>{' '}
         </div>
       </>
     ),
     ModerationMenuButtons: (
       <>
         <div
-          className={button_bg}
+          className={`${button_bg} rounded-b-md`}
           role="button"
           aria-label="remove-meme"
           onClick={removeMemeHandler}

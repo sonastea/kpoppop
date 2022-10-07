@@ -40,7 +40,7 @@ const UserMenu = ({ comment }: UserMenuProps) => {
           leaveTo="opacity-0"
         >
           <Popover.Panel
-            className="absolute z-10"
+            className="absolute z-100"
             ref={setPopperElement}
             style={styles.popper}
             {...attributes.popper}

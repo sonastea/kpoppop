@@ -51,7 +51,7 @@ const useUserMenuButtons = ({ comment }: UserMenuProps) => {
     DefaultMenuButtons: (
       <>
         <div
-          className={button_bg}
+          className={`${button_bg} rounded-t-sm`}
           role="button"
           aria-label="report-comment"
           onClick={() => reportingComment(comment.id)}
@@ -61,7 +61,7 @@ const useUserMenuButtons = ({ comment }: UserMenuProps) => {
           </span>
           <span className="hover:bg-gray-200 whitespace-nowrap">Report comment</span>{' '}
         </div>
-        <div className={button_bg} role="button" aria-label="report-user" onClick={reportingUser}>
+        <div className={`${button_bg} rounded-b-sm`} role="button" aria-label="report-user" onClick={reportingUser}>
           <span>
             <FontAwesomeIcon className="text-red-500" icon={faFrown} />
           </span>

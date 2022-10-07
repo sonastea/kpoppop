@@ -7,12 +7,14 @@ import { usePopper } from 'react-popper';
 import useMemeMenuButtons from './hooks/useMemeMenuButtons';
 
 const MemeMenu = ({ memeId: id }: { memeId: string }) => {
-  const { DefaultMenuButtons, ModerationMenuButtons } = useMemeMenuButtons(id);
+  const { user } = useAuth();
+  const { DefaultMenuButtons, ModerationMenuButtons } = useMemeMenuButtons(
+    user ? true : false,
+    id);
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
   const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
   const { styles, attributes } = usePopper(referenceElement, popperElement);
   const [isAuthorized, setAuthorized] = useState<boolean>(false);
-  const { user } = useAuth();
 
   useEffect(() => {
     if (user?.role === 'MODERATOR' || user?.role === 'ADMIN') setAuthorized(true);
