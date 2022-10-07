@@ -80,6 +80,22 @@ export const editComment = async (comment: string, id: number) => {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
-    body: JSON.stringify({comment}),
+    body: JSON.stringify({ comment }),
+  }).then((response) => response.json());
+};
+
+export const reportMeme = async (id: number, description: string) => {
+  return await fetch(`${API_URL}/meme/report`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id, description }),
+    credentials: 'include',
+  }).then((response) => response.json());
+};
+
+export const toggleMeme = async (id: number) => {
+  return await fetch(`${API_URL}/meme/toggle/${id}`, {
+    method: 'PUT',
+    credentials: 'include',
   }).then((response) => response.json());
 };

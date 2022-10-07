@@ -80,7 +80,6 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
   return (
     <Popover className="relative z-100">
       <Popover.Button
-        as="a"
         className={`hover:underline hover:decoration-black hover:decoration-solid hover:cursor-pointer px-1 ${
           isBanned && 'decoration-ponce-500 line-through'
         }`}
@@ -136,7 +135,7 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
                   >
                     {comment.user.username}
                   </a>
-                  <span>{new Date(comment.user.createdAt).toLocaleDateString()}</span>
+                  <span className="text-black">{new Date(comment.user.createdAt).toLocaleDateString()}</span>
                 </div>
               </div>
             </div>
@@ -150,7 +149,7 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
                 <span>
                   <FontAwesomeIcon className="text-red-500" icon={faFlag} transform="flip" />
                 </span>
-                <span className="hover:text-red-500 whitespace-nowrap">Report</span>
+                <span className="text-black hover:text-red-500 whitespace-nowrap">Report</span>
               </div>
               {isAuthorized && user?.id !== comment.user.id && ModerationButtons}
             </div>

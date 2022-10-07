@@ -29,6 +29,7 @@ model User {
   reportsList          ReportUser[]    @relation("ReportsForUser")
   reportedList         ReportUser[]    @relation("ReportsByUser")
   reportedCommentsList ReportComment[]
+  reportsMeme          ReportMeme[]
 }
 
 model DiscordUser {
@@ -41,20 +42,21 @@ model DiscordUser {
 }
 
 model Meme {
-  id        Int          @id @default(autoincrement())
-  title     String       @db.VarChar(320)
-  url       String?
-  path      String?
-  resource  MemeResource
-  authorId  Int
-  active    Boolean      @default(true)
-  flagged   Boolean      @default(false)
-  createdAt DateTime     @default(now()) @db.Timestamptz()
-  updatedAt DateTime?    @updatedAt @db.Timestamptz()
-  updatedBy String?      @ignore
-  author    User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  likedBy   User[]       @relation("UserLikesPost")
-  comments  Comment[]    @relation("CommentsForMeme")
+  id         Int          @id @default(autoincrement())
+  title      String       @db.VarChar(320)
+  url        String?
+  path       String?
+  resource   MemeResource
+  authorId   Int
+  active     Boolean      @default(true)
+  flagged    Boolean      @default(false)
+  createdAt  DateTime     @default(now()) @db.Timestamptz()
+  updatedAt  DateTime?    @updatedAt @db.Timestamptz()
+  updatedBy  String?      @ignore
+  author     User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  likedBy    User[]       @relation("UserLikesPost")
+  comments   Comment[]    @relation("CommentsForMeme")
+  reports    ReportMeme[] @relation("MemeForReport")
 }
 
 model Comment {
@@ -98,6 +100,15 @@ model ReportComment {
   commentId   Int
   description String
   reporter    User    @relation(fields: [reporterId], references: [id])
+  reporterId  Int
+}
+
+model ReportMeme {
+  id          BigInt   @id @default(autoincrement())
+  description String
+  meme        Meme     @relation("MemeForReport", fields: [memeId], references: [id])
+  memeId      Int
+  reporter    User     @relation(fields: [reporterId], references: [id])
   reporterId  Int
 }
 

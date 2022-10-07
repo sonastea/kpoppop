@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '@oauth-everything/passport-discord';
 import { Prisma } from '@prisma/client';
-import fetch from 'node-fetch';
 import { PrismaService } from 'src/database/prisma.service';
 
 @Injectable()
@@ -25,6 +24,7 @@ export class DiscordAuthService {
           },
         },
       });
+      if (!user) return null;
       const sanitized = { discordId: user.discordId, ...user.user };
       return sanitized;
     } catch (err) {
@@ -159,7 +159,7 @@ export class DiscordAuthService {
   }
 
   async getCurrentUser(accessToken: string): Promise<User> {
-    return await fetch('https://discord.com/api/v9/users/@me', {
+    return await fetch('https://discord.com/api/v10/users/@me', {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         Authorization: `Bearer ${accessToken}`,
@@ -184,7 +184,7 @@ export class DiscordAuthService {
   }
 
   async isInGuild(accessToken: string): Promise<boolean> {
-    return await fetch('https://discord.com/api/v9/users/@me/guilds', {
+    return await fetch('https://discord.com/api/v10/users/@me/guilds', {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         Authorization: `Bearer ${accessToken}`,
@@ -192,7 +192,7 @@ export class DiscordAuthService {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.some((guild) => guild.id === '933480163709181962')) return true;
+        if (data.some((guild: { id: string }) => guild.id === '933480163709181962')) return true;
         else return false;
       });
   }

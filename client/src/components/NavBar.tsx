@@ -72,7 +72,7 @@ const NavBar = () => {
 
           <div className="flex items-center m-2 md:hidden">
             {user?.username && <span className="font-semibold text-once-900">{user.username}</span>}
-            <button className="mobile-menu-toggle" onClick={() => setMobileNav((prev) => !prev)}>
+            <button aria-label="Mobile menu toggle" className="mobile-menu-toggle" onClick={() => setMobileNav((prev) => !prev)}>
               <svg
                 className={`${isActiveMobileNav && 'bg-once-200 rounded-xl'} w-8 h-8`}
                 xmlns="http://www.w3.org/2000/svg"
@@ -104,7 +104,7 @@ const NavBar = () => {
                   className="w-5/6 h-auto"
                 ></img>
               </a>
-              <button className="absolute right-4" onClick={() => setMobileNav((prev) => !prev)}>
+              <button className="absolute right-4" aria-label="Toggle mobile nav" onClick={() => setMobileNav((prev) => !prev)}>
                 <FontAwesomeIcon icon={faXmark} />
               </button>
             </div>

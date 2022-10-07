@@ -4,7 +4,7 @@ import { DiscordModule } from '@discord-nestjs/core';
 import { MemeModule } from 'src/meme/meme.module';
 import { BotGateway } from './bot.gateway';
 import { Module } from '@nestjs/common';
-import { Intents } from 'discord.js';
+import { GatewayIntentBits, Partials } from 'discord.js';
 
 @Module({
   imports: [
@@ -16,13 +16,13 @@ import { Intents } from 'discord.js';
         allowGuilds: ['933480163709181962'],
         discordClientOptions: {
           intents: [
-            Intents.FLAGS.GUILDS,
-            Intents.FLAGS.GUILD_MESSAGES,
-            Intents.FLAGS.GUILD_PRESENCES,
-            Intents.FLAGS.GUILD_MEMBERS,
-            Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+            GatewayIntentBits.Guilds,
+            GatewayIntentBits.GuildMessages,
+            GatewayIntentBits.GuildPresences,
+            GatewayIntentBits.GuildMembers,
+            GatewayIntentBits.GuildMessageReactions,
           ],
-          partials: ['MESSAGE', 'CHANNEL', 'REACTION', 'USER'],
+          partials: [Partials.Message, Partials.Channel, Partials.Reaction, Partials.User],
         },
         webhook: {
           url: configService.get<string>('DISCORDBOT_WEBHOOK'),

@@ -15,7 +15,7 @@ const initial: IAuthContext = {
   updateUser,
 };
 
-const customRender = (ui: JSX.Element | Element | null, { Context = initial, ...renderOptions }: any) => {
+const customRender = (ui: JSX.Element | null, { Context = initial, ...renderOptions }: any) => {
   return render(<AuthContext.Provider value={Context}>{ui}</AuthContext.Provider>, renderOptions);
 };
 

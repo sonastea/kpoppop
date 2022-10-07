@@ -43,13 +43,13 @@ const Post = () => {
     <>
       <ReportCommentModal />
       <ReportUserModal user={{ id: meme.author.id, username: meme.author.username }} />
-      <div className="mx-4 shadow-sm">
-        <div className="p-2 flex flex-wrap overflow-auto border-x">
-          <div className="w-1/2 self-center">
+      <div className="mx-4 shadow-sm mb-2">
+        <div className="p-0 md:p-2 flex flex-col md:flex-row md:flex-wrap overflow-auto border-x">
+          <div className="md:max-w-md 2xl:max-w-lg self-center">
             {meme.url.split('.')[3] === 'mp4' ? (
               <video
                 key={meme.title}
-                className="object-fit rounded-md lg:rounded-none w-auto"
+                className="object-fit w-auto rounded-b-md md:rounded-none md:-ml-2 md:-mt-2"
                 controls
                 muted
               >
@@ -57,7 +57,7 @@ const Post = () => {
               </video>
             ) : (
               <img
-                className="object-fit rounded-md lg:rounded-none"
+                className="object-fit w-auto rounded-b-md md:rounded-none md:-ml-2 md:-mt-2"
                 src={meme.url}
                 alt={meme.title}
               />

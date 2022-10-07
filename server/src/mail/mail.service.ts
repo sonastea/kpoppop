@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { MailerService } from '@derech1e/mailer';
+import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';

@@ -4,13 +4,12 @@ import { Popover, Transition } from '@headlessui/react';
 import { useAuth } from 'contexts/AuthContext';
 import { useEffect, useState } from 'react';
 import { usePopper } from 'react-popper';
-import useUserMenuButtons from './hooks/useUserMenuButtons';
-import { UserTooltipProps as UserMenuProps } from './UserTooltip';
+import useMemeMenuButtons from './hooks/useMemeMenuButtons';
 
-const UserMenu = ({ comment }: UserMenuProps) => {
+const MemeMenu = ({ memeId: id }: { memeId: string }) => {
+  const { DefaultMenuButtons, ModerationMenuButtons } = useMemeMenuButtons(id);
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
   const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
-  const { DefaultMenuButtons, ModerationMenuButtons } = useUserMenuButtons({ comment });
   const { styles, attributes } = usePopper(referenceElement, popperElement);
   const [isAuthorized, setAuthorized] = useState<boolean>(false);
   const { user } = useAuth();
@@ -47,7 +46,7 @@ const UserMenu = ({ comment }: UserMenuProps) => {
           >
             <div className="border bg-white shadow-sm border-gray-200 rounded-md text-sm">
               {DefaultMenuButtons}
-              {isAuthorized && user?.id !== comment.user.id && ModerationMenuButtons}
+              {isAuthorized && ModerationMenuButtons}
             </div>
           </Popover.Panel>
         </Transition>
@@ -55,4 +54,5 @@ const UserMenu = ({ comment }: UserMenuProps) => {
     </>
   );
 };
-export default UserMenu;
+
+export default MemeMenu;

@@ -333,7 +333,7 @@ export class MemeController {
     @Body() body: { comment: string },
     @Session() session: Record<string, any>
   ): Promise<any> {
-    let user;
+    let user: any;
     if (session.passport.user.id) {
       user = {
         connect: { id: session.passport.user.id },
@@ -390,7 +390,7 @@ export class MemeController {
     @Param('id') commentId: string,
     @Session() session: Record<string, any>
   ): Promise<any> {
-    let where;
+    let where: any;
     if (session.passport.user.id) {
       where = {
         id: session.passport.user.id,
@@ -433,7 +433,7 @@ export class MemeController {
     @Param('id') commentId: string,
     @Session() session: Record<string, any>
   ): Promise<any> {
-    let where;
+    let where: any;
     if (session.passport.user.id) {
       where = {
         id: session.passport.user.id,
@@ -513,5 +513,55 @@ export class MemeController {
       },
     });
     res.json(meme);
+  }
+
+  @UseGuards(SessionGuard)
+  @Post('report')
+  async reportComment(
+    @Res() res: Response,
+    @Body() body: { id: number; description: string },
+    @Session() session: Record<string, any>
+  ): Promise<any> {
+    const { id: memeId, description } = body;
+
+    const { id: reporterId, discordId: reporterDiscordId } = session.passport.user;
+    let reporter: { id: number };
+    if (reporterId) {
+      reporter = { id: reporterId };
+    } else {
+      reporter = { id: reporterDiscordId };
+      const user = await this.prisma.discordUser.findUnique({
+        where: { discordId: reporterDiscordId },
+      });
+      reporter = { id: user.userId };
+    }
+
+    const reported = await this.memeService.reportMeme({
+      data: {
+        description: description,
+        meme: {
+          connect: {
+            id: memeId,
+          },
+        },
+        reporter: {
+          connect: reporter,
+        },
+      },
+    });
+
+    if (reported.id) {
+      res.json({ message: `You successfully reported the meme.` });
+    } else {
+      res.status(400).json({ message: 'Error processing your report' });
+    }
+  }
+
+  @UseGuards(SessionGuard, RolesGuard)
+  @Roles('ADMIN', 'MODERATOR')
+  @SkipThrottle()
+  @Put('toggle/:id')
+  async toggleMeme(@Param('id') memeId: string): Promise<any> {
+    return await this.memeService.toggleMeme(parseInt(memeId));
   }
 }

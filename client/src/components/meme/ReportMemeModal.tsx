@@ -1,35 +1,35 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dialog } from '@headlessui/react';
-import useReportCommentStore from 'hooks/useReportComment';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { reportComment } from './UserAPI';
+import useReportMemeStore from './hooks/useReportMeme';
+import { reportMeme } from './MemeAPI';
 
-type ReportCommentData = {
-  commentId: number;
+type ReportMemeData = {
+  memeId: number;
   description: string;
 };
 
-const ReportCommentModal = () => {
+const ReportMemeModal = (props: { id: number }) => {
   const [responseMsg, setResponseMsg] = useState<string>('');
   const [reported, setReported] = useState<boolean>(false);
-  const { reporting, commentId, reportingComment } = useReportCommentStore();
+  const { reporting, reportingMeme } = useReportMemeStore();
   const {
     reset,
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ReportCommentData>();
+  } = useForm<ReportMemeData>();
 
-  const handleReportComment: SubmitHandler<ReportCommentData> = async (data) => {
+  const handleReportComment: SubmitHandler<ReportMemeData> = async (data) => {
     setReported(true);
 
-    await reportComment(commentId, data.description)
-      .then((data) => {
+    await reportMeme(props.id, data.description)
+      .then((data: any) => {
         if (data.statusCode === 403) {
           alert('You must be logged in to do that!');
-          reportingComment();
+          reportingMeme();
           resetForm();
         } else {
           setResponseMsg(data.message);
@@ -39,26 +39,26 @@ const ReportCommentModal = () => {
   };
 
   const resetForm = () => {
-    reportingComment();
+    reportingMeme();
     setReported(false);
     reset({ description: '' });
   };
 
   return (
-    <Dialog open={reporting} onClose={() => reportingComment()} className="relative z-100">
+    <Dialog open={reporting} onClose={() => reportingMeme()} className="relative z-100">
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
 
       <div className="fixed inset-0 flex items-center justify-center">
         <Dialog.Panel className="bg-gray-200 p-6 w-full md:w-3/4 rounded-md">
           <button
             aria-label="Report comment"
-            onClick={() => reportingComment()}
+            onClick={() => reportingMeme()}
             type="button"
             className="fixed right-6 md:right-[15%]"
           >
             <FontAwesomeIcon icon={faXmark} />
           </button>
-          <Dialog.Title className="text-2xl">Report comment</Dialog.Title>
+          <Dialog.Title className="text-2xl">Report meme</Dialog.Title>
           <div className="p-4" />
 
           {reported ? (
@@ -87,7 +87,7 @@ const ReportCommentModal = () => {
                 <button
                   className="w-full border bg-white border-once rounded-md text-once p-1 mr-1"
                   type="button"
-                  onClick={() => reportingComment()}
+                  onClick={() => reportingMeme()}
                 >
                   Cancel
                 </button>
@@ -105,4 +105,5 @@ const ReportCommentModal = () => {
     </Dialog>
   );
 };
-export default ReportCommentModal;
+
+export default ReportMemeModal;
