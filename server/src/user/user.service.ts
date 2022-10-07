@@ -236,6 +236,7 @@ export class UserService {
     });
     return status;
   }
+
   async reportComment(data: Prisma.ReportCommentCreateInput): Promise<any> {
     const reported = await this.prisma.reportComment.create({
       data,

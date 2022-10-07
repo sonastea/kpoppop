@@ -4,6 +4,8 @@ import { debounce } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import InteractiveButtons from './InteractiveButtons';
 import { fetchMemes } from './MemeAPI';
+import MemeMenu from './MemeMenu';
+import ReportMemeModal from './ReportMemeModal';
 
 let cursor: number = 0;
 
@@ -73,6 +75,10 @@ const Memes = () => {
                     <a className="hover:text-once-700" href={`/user/${meme.author.username}`}>
                       {meme.author.username}
                     </a>
+                    <div className="ml-auto">
+                      <ReportMemeModal id={meme.id} />
+                      <MemeMenu memeId={meme.id} />
+                    </div>
                   </div>
                   <div className="flex-col justify-center">
                     {meme.url.split('.')[3] === 'mp4' ? (

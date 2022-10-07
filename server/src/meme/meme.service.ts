@@ -229,4 +229,16 @@ export class MemeService {
     });
     return comment['comments'][0];
   }
+
+  async reportMeme(params: { data: Prisma.ReportMemeCreateInput }): Promise<any> {
+    const { data } = params;
+    const reported = await this.prisma.reportMeme.create({ data });
+    return reported;
+  }
+
+  async toggleMeme(memeId: number): Promise<any> {
+    const meme = await this.prisma
+      .$queryRaw`update "Meme" SET "active" = not "active" WHERE "id" = ${memeId} returning "id", "active"`; // eslint-disable-line max-len
+    return meme[0];
+  }
 }
