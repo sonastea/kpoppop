@@ -41,12 +41,12 @@ const MemeMenu = ({ memeId: id }: { memeId: string }) => {
           leaveTo="opacity-0"
         >
           <Popover.Panel
-            className="absolute z-10"
+            className="absolute z-100"
             ref={setPopperElement}
             style={styles.popper}
             {...attributes.popper}
           >
-            <div className="border bg-white shadow-sm border-gray-200 rounded-md text-sm">
+            <div className="border bg-white shadow-sm border-gray-200 rounded-md text-sm overflow-hidden">
               {DefaultMenuButtons}
               {isAuthorized && ModerationMenuButtons}
             </div>

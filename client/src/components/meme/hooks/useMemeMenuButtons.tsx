@@ -9,6 +9,13 @@ const useMemeMenuButtons = (isLoggedIn: boolean, id: string) => {
 
   const button_bg = 'grid grid-flow-col auto-cols-max gap-x-2 p-2 py-1 hover:bg-gray-100';
 
+  const reportMemeHandler = () => {
+    if (!isLoggedIn)
+      window.location.href = "/login";
+    else
+      reportingMeme(parseInt(id));
+  }
+
   const removeMemeHandler = async (e: any) => {
     e.preventDefault();
     await toggleMeme(parseInt(id))
@@ -19,10 +26,10 @@ const useMemeMenuButtons = (isLoggedIn: boolean, id: string) => {
     DefaultMenuButtons: (
       <>
         <div
-          className={`${button_bg} ${!isLoggedIn && "rounded-md cursor-not-allowed"} rounded-t-md`}
+          className={`${button_bg} ${!isLoggedIn && "cursor-not-allowed"}`}
           role="button"
           aria-label="report-meme"
-          onClick={() => reportingMeme(parseInt(id))}
+          onClick={() => reportMemeHandler()}
         >
           <span>
             <FontAwesomeIcon className="text-red-500" icon={faFlag} flip="horizontal" />
@@ -34,7 +41,7 @@ const useMemeMenuButtons = (isLoggedIn: boolean, id: string) => {
     ModerationMenuButtons: (
       <>
         <div
-          className={`${button_bg} rounded-b-md`}
+          className={`${button_bg}`}
           role="button"
           aria-label="remove-meme"
           onClick={removeMemeHandler}

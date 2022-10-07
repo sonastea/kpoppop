@@ -45,7 +45,7 @@ const UserMenu = ({ comment }: UserMenuProps) => {
             style={styles.popper}
             {...attributes.popper}
           >
-            <div className="border bg-white shadow-sm border-gray-200 rounded-md text-sm">
+            <div className="border bg-white shadow-sm border-gray-200 rounded-md text-sm overflow-hidden">
               {DefaultMenuButtons}
               {isAuthorized && user?.id !== comment.user.id && ModerationMenuButtons}
             </div>
