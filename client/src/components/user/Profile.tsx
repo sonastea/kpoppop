@@ -110,7 +110,7 @@ const Profile = () => {
               onClick={() => toggleDisplayName()}
               className="text-3xl leading-normal lg:m-6 lg:text-4xl"
             >
-              {showDisplayName ? `${data?.displayname} *` : data?.username}
+              {showDisplayName ? `${data?.displayname ?? ""} *` : data?.username}
             </h3>
           </div>
         </div>
