@@ -24,7 +24,7 @@ export class MemeService {
     where?: Prisma.MemeWhereInput;
     orderBy?: Prisma.MemeOrderByWithRelationInput;
     select?: Prisma.MemeSelect;
-  }): Promise<Prisma.MemeArgs[]> {
+  }): Promise<Prisma.MemeScalarWhereInput[]> {
     const { skip, take, cursor, where, orderBy, select } = params;
     return this.prisma.meme.findMany({
       skip,
@@ -138,10 +138,7 @@ export class MemeService {
     }
   }
 
-  async createMeme(
-    data: Prisma.MemeCreateInput,
-    select?: Prisma.MemeSelect
-  ): Promise<Prisma.MemeArgs> {
+  async createMeme(data: Prisma.MemeCreateInput, select?: Prisma.MemeSelect): Promise<any> {
     return this.prisma.meme.create({
       data,
       select,
@@ -187,7 +184,7 @@ export class MemeService {
   async commentMeme(params: {
     data: Prisma.CommentCreateInput;
     select: Prisma.CommentSelect;
-  }): Promise<Prisma.CommentSelect> {
+  }): Promise<any> {
     const { data, select } = params;
     const comment = await this.prisma.comment.create({
       data,

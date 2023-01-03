@@ -60,7 +60,7 @@ export class UserService {
   }
 
   // Used for local serializer login
-  async findOne(data: Prisma.UserWhereUniqueInput): Promise<Prisma.UserWhereInput> {
+  async findOne(data: Prisma.UserWhereUniqueInput): Promise<Prisma.UserScalarWhereInput> {
     try {
       const user = await this.prisma.user.findUnique({
         where: data,
