@@ -10,6 +10,7 @@ import * as cookieParser from 'cookie-parser';
 import * as expressSession from 'express-session';
 import { PrismaService } from './database/prisma.service';
 import { PrismaSessionStore } from '@quixo3/prisma-session-store';
+import { RedisIoAdapter } from './sockets/redis.adapter';
 
 dotenv.config();
 
@@ -60,11 +61,14 @@ async function bootstrap() {
       },
       httpsOptions,
     });
+    const redisIoAdapter = new RedisIoAdapter(app);
+    await redisIoAdapter.connectToRedis();
 
     app.setGlobalPrefix('api');
     app.use(cookieParser());
     app.use(passport.initialize());
     app.use(expressSession(sessionOptions));
+    app.useWebSocketAdapter(redisIoAdapter);
 
     app.enableShutdownHooks();
     await app.listen(process.env.PORT, () => whatMode());
@@ -76,11 +80,14 @@ async function bootstrap() {
       },
       httpsOptions,
     });
+    const redisIoAdapter = new RedisIoAdapter(app);
+    await redisIoAdapter.connectToRedis();
 
     app.setGlobalPrefix('api');
     app.use(cookieParser());
     app.use(passport.initialize());
     app.use(expressSession(sessionOptions));
+    app.useWebSocketAdapter(redisIoAdapter);
 
     app.enableShutdownHooks();
     await app.listen(process.env.PORT, () => whatMode());

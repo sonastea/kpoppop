@@ -20,6 +20,7 @@ import { MemeController } from './meme/meme.controller';
 import { MemeService } from './meme/meme.service';
 import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
+import { WebSocketServiceGateway } from './sockets/websocket.gateway';
 
 @Module({
   imports: [
@@ -65,6 +66,7 @@ import { UserService } from './user/user.service';
         limit: config.get('THROTTLE_LIMIT'),
       }),
     }),
+    WebSocketServiceGateway,
   ],
   controllers: [
     AuthController,

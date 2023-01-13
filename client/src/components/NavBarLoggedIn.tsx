@@ -1,4 +1,11 @@
-import { faUser, faAngleDown, faAnglesDown, faArrowRightFromBracket, faGears } from '@fortawesome/free-solid-svg-icons';
+import {
+  faUser,
+  faAngleDown,
+  faAnglesDown,
+  faArrowRightFromBracket,
+  faGears,
+  faMessage,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Menu, Transition } from '@headlessui/react';
 import { useAuth } from 'contexts/AuthContext';
@@ -49,6 +56,17 @@ const NavBarLoggedIn = () => {
                   {({ active }) => (
                     <a
                       className={`flex items-center px-4 py-2 text-sm ${active && 'bg-once-200'}`}
+                      href={`/messages`}
+                    >
+                      <FontAwesomeIcon viewBox="0 0 512 512" className="mr-3" icon={faMessage} />
+                      Messages
+                    </a>
+                  )}
+                </Menu.Item>
+                <Menu.Item>
+                  {({ active }) => (
+                    <a
+                      className={`flex items-center px-4 py-2 text-sm ${active && 'bg-once-200'}`}
                       href={`/profile/settings`}
                     >
                       <FontAwesomeIcon viewBox="0 0 512 512" className="mr-3" icon={faGears} />
@@ -59,10 +77,16 @@ const NavBarLoggedIn = () => {
                 <Menu.Item>
                   {({ active }) => (
                     <button
-                      className={`border-t w-full flex items-center px-4 py-2 text-sm ${active && 'bg-once-200'}`}
+                      className={`border-t w-full flex items-center px-4 py-2 text-sm ${
+                        active && 'bg-once-200'
+                      }`}
                       onClick={logoutHandler}
                     >
-                      <FontAwesomeIcon viewBox="0 0 512 512" className="mr-3" icon={faArrowRightFromBracket} />
+                      <FontAwesomeIcon
+                        viewBox="0 0 512 512"
+                        className="mr-3"
+                        icon={faArrowRightFromBracket}
+                      />
                       Logout
                     </button>
                   )}

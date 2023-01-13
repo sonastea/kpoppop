@@ -89,6 +89,15 @@ export class UserService {
     return user;
   }
 
+  // Find any live sessions with given sid - Sesssions cleanup every 2 hours
+  async findOneSid(where: Prisma.SessionWhereUniqueInput): Promise<boolean> {
+    const session = await this.prisma.session.findUnique({
+      where,
+    });
+    if (session) return true;
+    else return false;
+  }
+
   // Required information for profile display
   async getUser(data: Prisma.UserWhereUniqueInput): Promise<any> {
     try {
