@@ -6,6 +6,12 @@ export const fetchUser = async (user: string) => {
   }).then((response) => response.json());
 };
 
+export const fetchUserById = async (user: number) => {
+  return await fetch(`${API_URL}/user/id-${user}`, {
+    method: 'GET',
+  }).then((response) => response.json());
+};
+
 export const fetchUserSettings = async () => {
   return await fetch(`${API_URL}/user/profile/settings`, {
     method: 'GET',

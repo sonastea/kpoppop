@@ -13,7 +13,7 @@ type LoginFormData = {
 
 const Login = () => {
   const {
-    formState: { errors }, 
+    formState: { errors },
     register,
     handleSubmit,
     setError,
@@ -59,7 +59,7 @@ const Login = () => {
         id="loginForm"
         onSubmit={handleSubmit(loginHandler)}
       >
-        <h3 className="py-3 font-bold text-center text-gray-900">Log in to kpoppop</h3>
+        <h3 className="py-3 font-bold text-center text-gray-900">Login to kpoppop</h3>
 
         <DiscordLoginButton />
 

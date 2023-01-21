@@ -8,9 +8,8 @@ import { NestFactory } from '@nestjs/core';
 import * as firebase from 'firebase-admin';
 import * as cookieParser from 'cookie-parser';
 import * as expressSession from 'express-session';
-import { PrismaService } from './database/prisma.service';
-import { PrismaSessionStore } from '@quixo3/prisma-session-store';
 import { RedisIoAdapter } from './sockets/redis.adapter';
+import { prismaSessionStore } from './store/prisma-session-store';
 
 dotenv.config();
 
@@ -43,13 +42,7 @@ async function bootstrap() {
     cookie,
     resave: false,
     saveUninitialized: false,
-    store: new PrismaSessionStore(new PrismaService(), {
-      checkPeriod: 2 * 60 * 1000, //ms
-      dbRecordIdIsSessionId: true,
-      dbRecordIdFunction: undefined,
-      enableConcurrentSetInvocationsForSameSessionID: true,
-      enableConcurrentTouchInvocationsForSameSessionID: true,
-    }),
+    store: prismaSessionStore,
     secret: process.env.SESSION_SECRET_KEY,
   };
 

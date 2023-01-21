@@ -12,7 +12,7 @@
 # nsfw.js models
 */public/model
 
-/redis_data
+*/redis_data
 
 # Only exists if Bazel was run
 /bazel-out

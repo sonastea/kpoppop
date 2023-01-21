@@ -1,13 +1,31 @@
-import { useWebSocket } from 'contexts/WebSocketContext';
 import { KeyboardEvent, useRef } from 'react';
+import MessagesSocket from './socket';
 
-const MessageBox = () => {
+type MessagePayload = {
+  to: number;
+  content: string | null;
+};
+
+const MessageInputBox = ({
+  recipient,
+  message,
+  setMessage,
+}: {
+  recipient: number;
+  message: string | null;
+  setMessage: Function;
+}) => {
   const chatInput = useRef<HTMLTextAreaElement | null>(null);
-  const socket = useWebSocket();
+  const ws = MessagesSocket((socket) => socket.ws);
 
   const handleSendMessage = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.code === 'Enter' && !e.shiftKey) {
-      socket.emit('test', 'lorem');
+      const messagePayload: MessagePayload = {
+        to: recipient,
+        content: message,
+      };
+      ws?.emit('private message', messagePayload);
+      setMessage('');
     }
 
     if (e.code === 'Enter' && !e.shiftKey) e.preventDefault();
@@ -15,14 +33,16 @@ const MessageBox = () => {
 
   return (
     <div className="pt-4 px-2 pb-10">
-      <div className="write bg-white shadow flex rounded-lg border">
+      <div className="bg-white shadow flex rounded-lg border border-slate-400">
         <div className="flex-1">
           <textarea
-            className="w-full block outline-none py-4 px-4 bg-transparent"
+            className="w-full block outline-none py-4 px-4 bg-transparent whitespace-nowrap"
             ref={chatInput}
             placeholder="Start a new message"
             style={{ resize: 'none' }}
             rows={1}
+            value={message || ''}
+            onChange={(e) => setMessage(e.target.value)}
             onKeyDown={(e) => handleSendMessage(e)}
           />
         </div>
@@ -45,4 +65,4 @@ const MessageBox = () => {
   );
 };
 
-export default MessageBox;
+export default MessageInputBox;

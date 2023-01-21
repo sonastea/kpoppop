@@ -74,7 +74,7 @@ export class UserController {
     private readonly userService: UserService,
     // private readonly mailService: MailService,
     private readonly prisma: PrismaService
-  ) { }
+  ) {}
 
   @UseGuards(RecaptchaGuard)
   @Post('register')
@@ -169,6 +169,35 @@ export class UserController {
     if (id) user = await this.userService.updateProfile({ id }, data);
     if (discordId) user = await this.userService.updateProfile({ discordId }, data);
     return res.json(user);
+  }
+
+  @Get('exists-:name')
+  @SkipThrottle()
+  async getUserExists(@Res() res: Response, @Param('name') username: string): Promise<any> {
+    const user = await this.userService.getUser({ username });
+
+    if (user['errors']) {
+      return res.status(200).json(user).end();
+    }
+
+    const { banner, createdAt, role, memes, socialMedias, _count, ...strippedUser } = user;
+    return res.json(strippedUser);
+  }
+
+  @Get('id-:id')
+  @SkipThrottle()
+  async getUserById(@Res() res: Response, @Param('id') userID: string): Promise<any> {
+    if (userID === undefined) return res.status(400).send('Invalid url request').end();
+
+    const id = parseInt(userID, 10);
+    const user = await this.userService.getUser({ id });
+
+    if (user['errors']) {
+      return res.status(200).json(user).end();
+    }
+
+    const { banner, createdAt, role, memes, socialMedias, _count, ...strippedUser } = user;
+    return res.json(strippedUser);
   }
 
   @Get(':name')
