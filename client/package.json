@@ -1,7 +1,6 @@
 {
   "name": "client",
   "version": "0.6.0",
-  "proxy": "https://192.168.0.2:5000",
   "private": true,
   "dependencies": {
     "@craco/craco": "^7.0.0",
@@ -14,7 +13,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.3.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@headlessui/react": "^1.7.10",
-    "@tensorflow/tfjs": "^4.2.0",
+    "@tensorflow/tfjs": "~3.18.0",
     "@types/react-router-dom": "^5.3.3",
     "assert": "^2.0.0",
     "browser-image-compression": "^2.0.0",
@@ -39,7 +38,7 @@
     "svgo": "^3.0.2",
     "util": "^0.12.5",
     "web-vitals": "^3.1.1",
-    "zustand": "^4.3.2"
+    "zustand": "^4.3.3"
   },
   "scripts": {
     "start": "TAILWIND_MODE=watch craco start",
@@ -71,7 +70,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
     "@types/lodash": "^4.14.191",
-    "@types/react": "^18.0.27",
+    "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.10",
     "@types/react-google-recaptcha": "^2.1.5",
     "autoprefixer": "^10.4.13",
