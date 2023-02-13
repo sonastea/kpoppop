@@ -44,6 +44,7 @@ export class WebSocketStoreService {
             createdAt: message.createdAt,
             content: message.content,
             recipientId: message.to,
+            fromSelf: message.fromSelf,
           },
         },
         participants: {
@@ -57,6 +58,7 @@ export class WebSocketStoreService {
             createdAt: message.createdAt,
             content: message.content,
             recipientId: message.to,
+            fromSelf: message.fromSelf,
           },
         },
       },

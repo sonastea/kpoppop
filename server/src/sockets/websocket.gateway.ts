@@ -26,6 +26,7 @@ export type MessagePayload = {
   createdAt: string;
   content: string;
   from: number;
+  fromSelf: boolean;
 };
 
 @WebSocketGateway({
