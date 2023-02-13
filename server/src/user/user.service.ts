@@ -34,9 +34,6 @@ export class UserService {
 
   async createUser(data: Prisma.UserCreateInput): Promise<User | RegisterUserData> {
     data.password = bcrypt.hashSync(data.password, 10);
-    data.banner = '';
-    data.photo = '';
-    data.displayname = '';
 
     try {
       const user = await this.prisma.user.create({

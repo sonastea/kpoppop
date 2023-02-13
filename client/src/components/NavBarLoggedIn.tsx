@@ -40,7 +40,7 @@ const NavBarLoggedIn = () => {
               leaveFrom="transform scale-900 opacity-100"
               leaveTo="transform scale-95 opacity-0"
             >
-              <Menu.Items className="absolute right-0 w-40 mt-2 mr-2 bg-white border shadow origin-top-right rounded-md ring-opacity-5 focus:outline-none">
+              <Menu.Items className="absolute right-0 w-40 mt-2 mr-2 bg-white border shadow origin-top-right rounded-md ring-opacity-5 focus:outline-none z-50">
                 <Menu.Item>
                   {({ active }) => (
                     <a

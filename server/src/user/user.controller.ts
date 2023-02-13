@@ -31,7 +31,7 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { SessionGuard } from 'src/auth/guards/session.guard';
 import { LocalSerializer } from 'src/auth/serializers/local.serializer';
 import { PrismaService } from 'src/database/prisma.service';
-import { MailService } from 'src/mail/mail.service';
+/* import { MailService } from 'src/mail/mail.service'; */
 import { UserService } from './user.service';
 import path = require('path');
 

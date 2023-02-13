@@ -16,9 +16,9 @@ declare module 'socket.io' {
   interface Socket {
     sessionID?: string;
     user?: {
-        id?: number;
-        role?: string;
-        discordId?: string;
-    }
+      id?: number;
+      role?: string;
+      discordId?: string;
+    };
   }
 }
