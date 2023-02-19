@@ -268,17 +268,18 @@ function handleConversations(
       const conversationNotFound = !m.conversations.some(
         (conv) => conv.convid === action.message?.convid
       );
+      const fromSelfToUser = conversationNotFound && m.recipient?.id === action.message?.to;
       if (conversationNotFound) {
         return {
           recipient: recipient,
           conversations: [
             {
-              ...recipient,
+              ...(fromSelfToUser ? m.recipient : recipient),
               convid: action.message?.convid ?? null,
               id: action.message?.to ?? 0,
               messages: action.message ? [action.message] : [],
-              username: action.message?.fromUser,
-              unread: conversationNotFound ? 1 : 0,
+              username: fromSelfToUser ? m.recipient?.username : action.message?.fromUser,
+              unread: fromSelfToUser ? 0 : 1,
             },
             ...m.conversations,
           ],
