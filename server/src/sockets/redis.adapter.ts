@@ -31,9 +31,9 @@ export class RedisIoAdapter extends IoAdapter {
     this.adapterConstructor = createAdapter(pubClient, subClient);
   }
 
-  createIOServer(port: number, options?: ServerOptions): any {
+  createIOServer(port: number, options?: ServerOptions) {
     options.allowRequest = async (request, allowFunction) => {
-      const unparsed_sid = request.headers['cookie']?.split('=')[1];
+      const unparsed_sid = request.headers.cookie.match('(^| )connect.sid=([^;]+)')[2];
       if (unparsed_sid) {
         const sid = cookieParser.signedCookie(
           decodeURIComponent(unparsed_sid),
@@ -55,7 +55,7 @@ export class RedisIoAdapter extends IoAdapter {
         }
       }
 
-      return allowFunction('FORBIDDEN', false);
+      return allowFunction('INVALID COOKIE SESSION', false);
     };
 
     const server = super.createIOServer(port, options);

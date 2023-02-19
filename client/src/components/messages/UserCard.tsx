@@ -77,19 +77,19 @@ const UserCard = ({
           {/* <span className="absolute w-4 h-4 bg-green-400 rounded-full right-0 bottom-0 border-2 border-white"></span> */}
         </div>
       </div>
-      <div className="flex w-full overflow-y-hidden overflow-x-auto">
-        <div className="flex flex-col w-full px-2">
+      <div className="flex w-full overflow-hidden">
+        <div className="flex flex-col mx-2 w-full">
           <div className="truncate w-1/2">
             <span className="text-gray-800">{state.user?.displayname || state.user?.username}</span>
           </div>
-          <div className="flex w-full h-6">
-            <span className="h-6 text-gray-500 w-full">
+          <div className="flex max-w-full h-6 truncate">
+            <span className="h-6 text-gray-500 max-w-full">
               {user?.messages?.slice(-1)[0]?.content || ''}
             </span>
           </div>
         </div>
-        <div className="flex basis-1/6 flex-col flex-initial text-right justify-between">
-          <small className="flex h-6 text-gray-600 w-f">
+        <div className="flex basis-1/6 flex-col flex-initial text-right justify-between max-w-full">
+          <small className="flex h-6 text-gray-600">
             {user?.messages?.at(0)?.createdAt &&
               new Date(user?.messages?.at(0)!.createdAt).toLocaleDateString()}
           </small>
