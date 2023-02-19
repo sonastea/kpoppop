@@ -72,6 +72,7 @@ export class WebSocketStoreService {
         convid: conv.convid,
         fromUser: conv.users[0].username,
       };
+      this.saveMessageToCache(convidMsg);
       return convidMsg;
     } else {
       const conv = await this.prisma.conversation.update({
