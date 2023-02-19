@@ -35,6 +35,7 @@ import { WebSocketModule } from './sockets/websocket.module';
       validationSchema: Joi.object({
         DISCORDBOT_TOKEN: Joi.string().required(),
         DISCORDBOT_WEBHOOK: Joi.string().required(),
+        DISCORD_CALLBACK_URL: Joi.string().required(),
         JWT_VERIFICATION_SECRET: Joi.string().required(),
         JWT_VERIFICATION_EXPIRATION_TIME: Joi.string().required(),
         EMAIL_CONFIRMATION_URL: Joi.string().required(),

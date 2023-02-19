@@ -1,6 +1,7 @@
 -- CreateTable
 CREATE TABLE "Conversation" (
     "id" BIGSERIAL NOT NULL,
+    "convid" UUID NOT NULL DEFAULT gen_random_uuid(),
     "createdAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "flagged" BOOLEAN NOT NULL DEFAULT false,
 
@@ -12,10 +13,11 @@ CREATE TABLE "Message" (
     "id" BIGSERIAL NOT NULL,
     "createdAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "content" TEXT NOT NULL,
-    "conversationId" BIGINT,
+    "convId" UUID,
     "fromSelf" BOOLEAN NOT NULL DEFAULT false,
     "userId" INTEGER NOT NULL,
     "recipientId" INTEGER NOT NULL,
+    "read" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "Message_pkey" PRIMARY KEY ("id")
 );
@@ -27,13 +29,16 @@ CREATE TABLE "_ConversationToUser" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Conversation_convid_key" ON "Conversation"("convid");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "_ConversationToUser_AB_unique" ON "_ConversationToUser"("A", "B");
 
 -- CreateIndex
 CREATE INDEX "_ConversationToUser_B_index" ON "_ConversationToUser"("B");
 
 -- AddForeignKey
-ALTER TABLE "Message" ADD CONSTRAINT "Message_conversationId_fkey" FOREIGN KEY ("conversationId") REFERENCES "Conversation"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Message" ADD CONSTRAINT "Message_convId_fkey" FOREIGN KEY ("convId") REFERENCES "Conversation"("convid") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Message" ADD CONSTRAINT "Message_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

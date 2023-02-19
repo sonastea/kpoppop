@@ -126,24 +126,26 @@ model ReportUser {
 }
 
 model Conversation {
-  id           BigInt    @id @default(autoincrement())
-  createdAt    DateTime  @default(now()) @db.Timestamptz()
-  messages     Message[]
-  participants User[]
-  flagged      Boolean   @default(false)
+  id        BigInt    @id @default(autoincrement())
+  convid    String    @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime  @default(now()) @db.Timestamptz()
+  messages  Message[]
+  users     User[]
+  flagged   Boolean   @default(false)
 }
 
 model Message {
-  id             BigInt        @id @default(autoincrement())
-  createdAt      DateTime      @default(now()) @db.Timestamptz()
-  content        String
-  Conversation   Conversation? @relation(fields: [conversationId], references: [id])
-  conversationId BigInt?
-  fromSelf       Boolean       @default(false)
-  from           User?         @relation("MessagesByUser", fields: [userId], references: [id])
-  userId         Int
-  recipient      User?         @relation("MessagesForUser", fields: [recipientId], references: [id])
-  recipientId    Int
+  id          BigInt        @id @default(autoincrement())
+  createdAt   DateTime      @default(now()) @db.Timestamptz()
+  content     String
+  convid      Conversation? @relation(fields: [convId], references: [convid])
+  convId      String?       @db.Uuid
+  fromSelf    Boolean       @default(false)
+  from        User?         @relation("MessagesByUser", fields: [userId], references: [id])
+  userId      Int
+  recipient   User?         @relation("MessagesForUser", fields: [recipientId], references: [id])
+  recipientId Int
+  read        Boolean       @default(false)
 }
 
 enum Role {
