@@ -1,64 +1,106 @@
-import { fetchUserById } from 'components/user/UserAPI';
-import { useEffect, useState } from 'react';
+import { MessageProps } from 'components/user/Messages';
+import { useEffect, useReducer } from 'react';
+import { MessagePayload } from './MessageInputBox';
+import MessagesSocket from './socket';
 
 export type UserCardProps = {
-  userID: number;
-  username?: string;
-  displayname?: string;
+  convid: string | null;
+  displayname?: string | null;
+  id: number;
+  messages: MessageProps[];
   photo?: string;
   status?: string;
-  messages: { to: number; createdAt: string; content: string; from: number; fromSelf?: boolean }[];
+  username?: string;
+  unread: number;
 };
 
-const UserCard = ({ user, setRecipient }: { user: UserCardProps; setRecipient: Function }) => {
-  const [u, setUser] = useState<UserCardProps>(user);
-  /* const [u, setUser] = useReducer<any, any>(reducer, user); */
+function reducer(state: any, action: any) {
+  if (action.type === 'update') {
+    if (state?.user) {
+      return {
+        ...state,
+        user: action.user,
+      };
+    }
+    return state;
+  }
+}
+
+const UserCard = ({
+  convid,
+  user,
+  setRecipient,
+}: {
+  convid: string;
+  user: UserCardProps;
+  setRecipient: Function;
+}) => {
+  const [state, dispatch] = useReducer(reducer, {
+    user: user,
+    unread: user.unread,
+  });
+  const ws = MessagesSocket((socket) => socket.ws);
 
   useEffect(() => {
-    const getUpdatedUser = async () => {
-      const updatedUser = await fetchUserById(user.userID);
-      setUser(updatedUser);
-    };
-    getUpdatedUser();
-  }, [user.userID]);
+    dispatch({
+      type: 'update',
+      user: user,
+    });
+  }, [user]);
 
-  useEffect(() => {}, [u]);
+  const updateReadStatus = () => {
+    const messagePayload: MessagePayload = {
+      convid: convid,
+      to: user.id,
+      content: null,
+      read: true,
+    };
+    if (user) {
+      setRecipient(user);
+    }
+    ws?.emit('read message', messagePayload);
+  };
 
   return (
-    <div
-      className="cursor-pointer transform hover:scale-105 duration-300 transition-transform bg-white mb-4 rounded p-4 flex shadow-md"
-      key={user.userID}
-      onClick={() => setRecipient(u)}
+    <li
+      className="flex cursor-pointer transform hover:scale-95 duration-300 transition-transform bg-white mb-4 rounded p-4 shadow-sm mx-2 md:mx-0"
+      onClick={updateReadStatus}
     >
       <div className="flex">
         <div className="w-12 h-12 relative">
-          <img className="w-12 h-12 rounded-full mx-auto" src={u.photo} alt={'username'} />
+          <img
+            className="w-12 h-12 rounded-full mx-auto"
+            src={state.user.photo || '/images/default_photo_white_200x200.png'}
+            alt={`${user.username || user.displayname}`}
+          />
           {/*Online status indicator*/}
           {/* <span className="absolute w-4 h-4 bg-green-400 rounded-full right-0 bottom-0 border-2 border-white"></span> */}
         </div>
       </div>
-      <div className="flex-1 px-2">
-        <div className="truncate w-32">
-          <span className="text-gray-800">{}</span>
+      <div className="flex w-full overflow-y-hidden overflow-x-auto">
+        <div className="flex flex-col w-full px-2">
+          <div className="truncate w-1/2">
+            <span className="text-gray-800">{state.user?.displayname || state.user?.username}</span>
+          </div>
+          <div className="flex w-full h-6">
+            <span className="h-6 text-gray-500 w-full">
+              {user?.messages?.slice(-1)[0]?.content || ''}
+            </span>
+          </div>
         </div>
-        <div>
-          <small className="text-gray-600">
-            {new Date(user.messages.at(0)!.createdAt).toLocaleDateString()}
+        <div className="flex basis-1/6 flex-col flex-initial text-right justify-between">
+          <small className="flex h-6 text-gray-600 w-f">
+            {user?.messages?.at(0)?.createdAt &&
+              new Date(user?.messages?.at(0)!.createdAt).toLocaleDateString()}
           </small>
+          {user.unread > 0 && (
+            <small className="self-center text-xs bg-once-600 text-white rounded-full h-4 w-4 leading-4 text-center inline-block">
+              {user.unread}
+            </small>
+          )}
         </div>
       </div>
-      <div className="flex-2 flex-col text-right">
-        <small className="text-gray-500 whitespace-nowrap">
-          {user.messages.at(0)?.content || 0}
-        </small>
-        {/*Unread message badge*/}
-        {/* <div>
-          <small className="text-xs bg-red-500 text-white rounded-full h-6 w-6 leading-6 text-center inline-block">
-            {Math.floor(Math.random() * 10)}
-          </small>
-        </div> */}
-      </div>
-    </div>
+    </li>
   );
 };
 

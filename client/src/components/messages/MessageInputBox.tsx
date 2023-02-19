@@ -1,9 +1,12 @@
 import { KeyboardEvent, useRef } from 'react';
 import MessagesSocket from './socket';
+import { UserCardProps } from './UserCard';
 
-type MessagePayload = {
+export type MessagePayload = {
+  convid: string | null;
   to: number;
   content: string | null;
+  read: boolean;
 };
 
 const MessageInputBox = ({
@@ -11,7 +14,7 @@ const MessageInputBox = ({
   message,
   setMessage,
 }: {
-  recipient: number;
+  recipient: UserCardProps;
   message: string | null;
   setMessage: Function;
 }) => {
@@ -21,8 +24,10 @@ const MessageInputBox = ({
   const handleSendMessage = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.code === 'Enter' && !e.shiftKey) {
       const messagePayload: MessagePayload = {
-        to: recipient,
+        convid: recipient.convid,
+        to: recipient.id,
         content: message,
+        read: false,
       };
       ws?.emit('private message', messagePayload);
       setMessage('');
@@ -31,12 +36,24 @@ const MessageInputBox = ({
     if (e.code === 'Enter' && !e.shiftKey) e.preventDefault();
   };
 
+  const handleClickSendMessage = () => {
+    const messagePayload: MessagePayload = {
+      convid: recipient.convid,
+      to: recipient.id,
+      content: message,
+      read: false,
+    };
+
+    ws?.emit('private message', messagePayload);
+    setMessage('');
+  };
+
   return (
-    <div className="pt-4 px-2 pb-10">
-      <div className="bg-white shadow flex rounded-lg border border-slate-400">
+    <div className="z-10 p-4 border border-slate-300">
+      <div className="bg-white shadow flex rounded-lg">
         <div className="flex-1">
           <textarea
-            className="w-full block outline-none py-4 px-4 bg-transparent whitespace-nowrap"
+            className="w-full block outline-none py-4 px-4 bg-transparent whitespace-nowrap overflow-hidden"
             ref={chatInput}
             placeholder="Start a new message"
             style={{ resize: 'none' }}
@@ -48,7 +65,10 @@ const MessageInputBox = ({
         </div>
         <div className="p-2 flex content-center items-center">
           <div className="flex-1">
-            <button className="hover:bg-once-200/75 hover:rounded-full w-10 h-10 rounded-full inline-block">
+            <button
+              className="hover:bg-once-200/75 hover:rounded-full w-10 h-10 rounded-full inline-block"
+              onClick={handleClickSendMessage}
+            >
               <span className="inline-block align-text-bottom">
                 <svg style={{ width: '24px', height: '24px' }} viewBox="0 0 24 24">
                   <path

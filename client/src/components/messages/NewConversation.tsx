@@ -1,5 +1,6 @@
 import { faCircleRight } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { debounce as throttle } from 'lodash';
 import { useEffect, useState } from 'react';
 import { findUserIfExists } from './MessagesAPI';
 
@@ -14,7 +15,7 @@ const NewConversation = ({
   const [error, setError] = useState<string>();
   const [username, setUsername] = useState<string>('');
 
-  const findUser = () => {
+  const findUser = throttle(() => {
     if (username.length < 1) {
       setError('Please enter a valid username.');
     } else {
@@ -28,13 +29,13 @@ const NewConversation = ({
         }
       });
     }
-  };
+  }, 1000);
 
   useEffect(() => {}, [newMessage]);
 
   return (
-    <div className="flex-1 order-last">
-      <div className="flex w-full">
+    <div className="flex flex-col p-2 mx-2 md:mx-0">
+      <div className="flex w-full md:w-1/3">
         <div className="flex w-full">
           <div className="relative w-full">
             <input
@@ -44,6 +45,9 @@ const NewConversation = ({
               onChange={(e) => {
                 setUsername(e.target.value);
                 setError('');
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') findUser();
               }}
             />
             <button

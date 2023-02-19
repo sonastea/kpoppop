@@ -13,6 +13,10 @@ import { prismaSessionStore } from './store/prisma-session-store';
 
 dotenv.config();
 
+(BigInt.prototype as any).toJSON = function() {
+  return Number(this);
+};
+
 async function whatMode() {
   Logger.log(`Running in ${process.env.NODE_ENV} mode`);
 }
