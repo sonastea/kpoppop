@@ -41,7 +41,7 @@ const NavBar = () => {
   }, [location.pathname, navItems]);
 
   return (
-    <nav className="relative w-full shadow h-20 flex-nowrap">
+    <nav className="relative w-full shadow h-20 flex-nowrap inline-table">
       <div className="mx-auto md:max-w-screen-2xl">
         <div className="flex justify-between flex-wrap">
           <div className="flex flex-shrink-0 space-x-2">

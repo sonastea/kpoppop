@@ -148,9 +148,9 @@ const Messages = () => {
     return <UserCardSkeletonLoader />;
   } else {
     return (
-      <div className="h-[calc(100vh-80px)] overflow-auto">
-        <div className="flex flex-col h-full bg-gray-100">
-          <div className="flex heading m-4">
+      <div className="h-[calc(100vh-80px)]">
+        <div className="flex flex-col h-full bg-gray-100 overflow-hidden">
+          <div className="flex heading m-4 flex-wrap">
             <h1 className="justify-center text-3xl text-gray-700 mr-4">Messages</h1>
             <div
               className="justify-center hover:text-once-500"
@@ -167,8 +167,12 @@ const Messages = () => {
 
           {draft && <NewConversation setDrafting={setDrafting} setRecipient={setRecipient} />}
           <div className="flex md:mx-2 min-h-0">
-            <div className={`${m.recipient ? 'hidden md:flex w-1/3' : 'w-full md:w-1/3'} flex-col`}>
-              <ul className="basis-full w-full min-h-0 overflow-auto no-scrollbar">
+            <div
+              className={`${
+                m.recipient ? 'hidden md:flex w-1/3' : 'flex w-full md:w-1/3'
+              } flex-col`}
+            >
+              <ul className="w-full min-h-0 overflow-auto conversations-scroll-bar">
                 {m.conversations.map((user: UserCardProps) => {
                   return (
                     <UserCard

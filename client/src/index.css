@@ -7,7 +7,8 @@
     font-family: 'Montserrat', system-ui, sans-serif;
     height: 100%;
   }
-  html, body {
+  html,
+  body {
     height: 100%;
   }
 }
@@ -59,7 +60,7 @@ input:not(:focus-within) ~ label {
 .messages-scroll-bar::-webkit-scrollbar-thumb {
   background-color: #d2d7df;
   border-radius: 20px;
-  border: 6px solid transparent;
+  border: 8px solid transparent;
   background-clip: content-box;
 }
 
@@ -67,8 +68,27 @@ input:not(:focus-within) ~ label {
   background-color: #bec3cb;
 }
 
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+.conversations-scroll-bar::-webkit-scrollbar {
+  all: unset;
+}
+
+.conversations-scroll-bar::-webkit-scrollbar {
+  width: 20px;
+}
+
+.conversations-scroll-bar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.conversations-scroll-bar::-webkit-scrollbar-thumb {
+  background-color: #d2d7df;
+  border-radius: 20px;
+  border: 9.5px solid transparent;
+  background-clip: content-box;
+}
+
+.conversations-scroll-bar::-webkit-scrollbar-thumb:hover {
+  background-color: #bec3cb;
 }
 
 #recaptcha {

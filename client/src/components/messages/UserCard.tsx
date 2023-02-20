@@ -14,7 +14,18 @@ export type UserCardProps = {
   unread: number;
 };
 
-function reducer(state: any, action: any) {
+type UserCard = {
+  user: UserCardProps;
+  latestDate: string | undefined;
+  unread: number;
+};
+
+type UserCardAction = {
+  type: string;
+  user: UserCardProps;
+};
+
+function UserCardReducer(state: UserCard, action: UserCardAction) {
   if (action.type === 'update') {
     if (state?.user) {
       return {
@@ -24,6 +35,7 @@ function reducer(state: any, action: any) {
     }
     return state;
   }
+  return state;
 }
 
 const UserCard = ({
@@ -35,8 +47,9 @@ const UserCard = ({
   user: UserCardProps;
   setRecipient: Function;
 }) => {
-  const [state, dispatch] = useReducer(reducer, {
+  const [state, dispatch] = useReducer(UserCardReducer, {
     user: user,
+    latestDate: new Date(user?.messages?.at(-1)?.createdAt ?? NaN).toLocaleDateString(),
     unread: user.unread,
   });
   const ws = MessagesSocket((socket) => socket.ws);
@@ -66,7 +79,7 @@ const UserCard = ({
       className="flex cursor-pointer transform hover:scale-95 duration-300 transition-transform bg-white mb-4 rounded p-4 shadow-sm mx-2 md:mx-0"
       onClick={updateReadStatus}
     >
-      <div className="flex">
+      <div className="shrink-0">
         <div className="w-12 h-12 relative">
           <img
             className="w-12 h-12 rounded-full mx-auto"
@@ -77,24 +90,23 @@ const UserCard = ({
           {/* <span className="absolute w-4 h-4 bg-green-400 rounded-full right-0 bottom-0 border-2 border-white"></span> */}
         </div>
       </div>
-      <div className="flex w-full overflow-hidden">
-        <div className="flex flex-col mx-2 w-full">
-          <div className="truncate w-1/2">
+      <div className="flex flex-col min-w-0 w-full">
+        <div className="flex mx-2 w-full">
+          <div className="flex-auto truncate">
             <span className="text-gray-800">{state.user?.displayname || state.user?.username}</span>
           </div>
-          <div className="flex max-w-full h-6 truncate">
-            <span className="h-6 text-gray-500 max-w-full">
+          <small className="flex h-6 text-gray-600">
+            {state.latestDate === 'Invalid Date' ? '' : state.latestDate}
+          </small>
+        </div>
+        <div className="flex mx-2 min-w-0 w-full">
+          <div className="flex flex-auto h-6 min-w-0">
+            <span className="h-6 text-gray-500 truncate">
               {user?.messages?.slice(-1)[0]?.content || ''}
             </span>
           </div>
-        </div>
-        <div className="flex basis-1/6 flex-col flex-initial text-right justify-between max-w-full">
-          <small className="flex h-6 text-gray-600">
-            {user?.messages?.at(0)?.createdAt &&
-              new Date(user?.messages?.at(0)!.createdAt).toLocaleDateString()}
-          </small>
           {user.unread > 0 && (
-            <small className="self-center text-xs bg-once-600 text-white rounded-full h-4 w-4 leading-4 text-center inline-block">
+            <small className="self-center text-xs bg-once-600 text-white rounded-full h-4 w-4 leading-4 text-center inline-block shrink-0 mx-2">
               {user.unread}
             </small>
           )}
