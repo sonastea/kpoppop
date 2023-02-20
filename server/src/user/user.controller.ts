@@ -163,9 +163,12 @@ export class UserController {
       if (data[key] === 'undefined' && key !== 'displayname') {
         delete data[key];
       }
+      if (data[key] === '' && key === 'displayname') {
+        data[key] = null;
+      }
     }
 
-    let user;
+    let user: User;
     if (id) user = await this.userService.updateProfile({ id }, data);
     if (discordId) user = await this.userService.updateProfile({ discordId }, data);
     return res.json(user);

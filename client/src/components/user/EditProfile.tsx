@@ -59,9 +59,9 @@ const EditProfile = () => {
     });
   }, []);
 
-  const editProfileHandler: SubmitHandler<EditProfileFormData> = async (newData): Promise<any> => {
+  const editProfileHandler: SubmitHandler<EditProfileFormData> = async (newData) => {
     const formData = new FormData();
-    formData.append('displayname', newData.displayname);
+    formData.append('displayname', newData.displayname ?? '');
     formData.append('banner', newData.banner[0]);
     formData.append('photo', newData.photo[0]);
     await updateProfile(formData).finally(() => {
@@ -215,7 +215,7 @@ const EditProfile = () => {
                   type="text"
                   placeholder={data?.displayname}
                   className="w-1/2 p-1 border text-center focus:outline-none focus-within:border-once border-slate-400 rounded-md"
-                  onKeyPress={(e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+                  onKeyDown={(e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
                     if (e.key === 'Enter') {
                       e.preventDefault();
                       handleSubmit(editProfileHandler)();
