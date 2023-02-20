@@ -14,7 +14,7 @@ export type UserCardProps = {
   unread: number;
 };
 
-type UserCard = {
+type UserCardState = {
   user: UserCardProps;
   latestDate: string | undefined;
   unread: number;
@@ -25,7 +25,7 @@ type UserCardAction = {
   user: UserCardProps;
 };
 
-function UserCardReducer(state: UserCard, action: UserCardAction) {
+function UserCardReducer(state: UserCardState, action: UserCardAction) {
   if (action.type === 'update') {
     if (state?.user) {
       return {
