@@ -58,6 +58,23 @@ const Messages = () => {
     });
   };
 
+  const sortConversations = (conversations: UserCardProps[]) => {
+    conversations.sort((a, b) => {
+      if (
+        a.messages[a.messages.length - 1].createdAt > b.messages[b.messages.length - 1].createdAt
+      ) {
+        return -1;
+      }
+      if (
+        a.messages[a.messages.length - 1].createdAt < b.messages[b.messages.length - 1].createdAt
+      ) {
+        return 1;
+      }
+      return 0;
+    });
+    setLoading(false);
+  };
+
   useEffect(() => {
     if (ws) {
       ws.on('connect', () => {
@@ -71,11 +88,11 @@ const Messages = () => {
       });
 
       ws.on('conversations', (conversations: UserCardProps[]) => {
+        sortConversations(conversations);
         setConversations({
           type: MessageAction.SET_INITIAL_CONVERSATIONS,
           conversations: conversations,
         });
-        setLoading(false);
       });
 
       ws.on('private message', (message: MessageProps) => {
