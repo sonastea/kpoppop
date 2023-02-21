@@ -194,7 +194,6 @@ export class WebSocketStoreService {
     this.redis
       .multi()
       .hset(`convosession:${userID}`, 'id', userID)
-      .expire(`convosession:${userID}`, CONVERSATION_TTL)
       .exec();
   }
 
