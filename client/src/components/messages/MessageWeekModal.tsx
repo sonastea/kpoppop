@@ -1,13 +1,15 @@
 import { MessageProps } from 'components/user/Messages';
 
-const MessageModal = ({ message, latest }: { message: MessageProps; latest: boolean }) => {
+const MessageWeekModal = ({ message, latest }: { message: MessageProps; latest: boolean }) => {
   const id = localStorage.getItem('userID');
   const userID = id && parseInt(id);
-  const date = new Date(message.createdAt).toLocaleTimeString([], {
+  const date = new Date().toLocaleTimeString([], {
+    month: 'short',
+    day: 'numeric',
+    weekday: 'short',
     hour: 'numeric',
     minute: '2-digit',
   });
-
   const isAuthor = message.from === userID && !message.fromSelf;
 
   return (
@@ -21,9 +23,9 @@ const MessageModal = ({ message, latest }: { message: MessageProps; latest: bool
           <span>{message.content}</span>
         </div>
         <div
-          className={`message-time-stamp text-xs sm:text-sm mx-1 ${
+          className={`message-time-stamp text-xs sm:text-sm mx-1 group-hover:visible ${
             isAuthor ? 'text-end' : 'text-start'
-          } ${latest ? 'visible' : 'invisible group-hover:visible'}`}
+          } ${latest ? 'visible' : 'hidden group-hover:block'}`}
         >
           <small className="text-gray-500">{date}</small>
         </div>
@@ -32,4 +34,4 @@ const MessageModal = ({ message, latest }: { message: MessageProps; latest: bool
   );
 };
 
-export default MessageModal;
+export default MessageWeekModal;

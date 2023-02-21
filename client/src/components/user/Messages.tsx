@@ -1,7 +1,7 @@
 import { faCirclePlus, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MessageInputBox from 'components/messages/MessageInputBox';
-import MessageModal from 'components/messages/MessageModal';
+import MessagesList from 'components/messages/MessagesList';
 import NewConversation from 'components/messages/NewConversation';
 import MessagesSocket from 'components/messages/socket';
 import UserCard, { UserCardProps } from 'components/messages/UserCard';
@@ -46,8 +46,27 @@ const Messages = () => {
   const [message, setMessage] = useState<string | null>('');
   const scrollBottomRef = useRef<HTMLDivElement | null>(null);
 
+  const hasRecipient = draft || m.recipient;
+
   const goBackToConversations = () => {
     setDrafting((prev) => !prev);
+  };
+
+  const sortMessages = (conversations: UserCardProps[]) => {
+    const gm: { [index: string]: MessageProps[] } | undefined = conversations
+      .find((conv) => conv.convid === m.recipient?.convid)
+      ?.messages.reduce((msgs, msg) => {
+        const date = msg.createdAt.split('T')[0];
+        if (!msgs[date]) {
+          msgs[date] = [];
+        }
+        msgs[date].push(msg);
+
+        return msgs;
+      }, {} as { [index: string]: MessageProps[] });
+
+    if (gm === undefined) return {};
+    return gm;
   };
 
   const setRecipient = (u: UserCardProps | null) => {
@@ -156,8 +175,9 @@ const Messages = () => {
               className="justify-center hover:text-once-500"
               role="button"
               onClick={() => (m.recipient ? setRecipient(null) : goBackToConversations())}
+              aria-label={hasRecipient ? 'Back to conversations' : 'New conversation'}
             >
-              {draft || m.recipient ? (
+              {hasRecipient ? (
                 <FontAwesomeIcon className="cursor-pointer" icon={faRotateLeft} />
               ) : (
                 <FontAwesomeIcon className="cursor-pointer" icon={faCirclePlus} />
@@ -189,22 +209,21 @@ const Messages = () => {
               <div className="message-container flex flex-1 flex-col w-full md:relative md:mx-2">
                 <div className="message-header border-b border-b-slate-300 flex flex-col items-center z-10 backdrop-blur-sm">
                   <div className="w-12 h-12 mr-2 flex align-center">
-                    <img
-                      className="w-12 h-12 rounded-full"
-                      src={m.recipient?.photo || '/images/default_photo_white_200x200.png'}
-                      alt={`${m.recipient.username} profile`}
-                    />
+                    <a href={`/user/${m.recipient.username}`}>
+                      <img
+                        className="w-12 h-12 rounded-full"
+                        src={m.recipient?.photo || '/images/default_photo_white_200x200.png'}
+                        alt={`${m.recipient.username} profile`}
+                      />
+                    </a>
                   </div>
-                  <h2 className="text-xl py-1 font-bold">{m.recipient.username}</h2>
+                  <a className="hover:underline" href={`/user/${m.recipient.username}`}>
+                    <h2 className="text-xl py-1 font-bold">{m.recipient.username}</h2>
+                  </a>
                 </div>
                 <ul className="message-window break-all overflow-auto w-full h-screen messages-scroll-bar md:border-x border-x-slate-300 py-1">
-                  {m.conversations
-                    .find((conv: UserCardProps) => conv.id === m.recipient?.id)
-                    ?.messages.map((message: MessageProps, index: number) => {
-                      return <MessageModal message={message} key={index} />;
-                    })}
-
-                  <div ref={scrollBottomRef}></div>
+                  <MessagesList messages={sortMessages(m?.conversations)} />
+                  <div ref={scrollBottomRef} />
                 </ul>
                 <MessageInputBox
                   recipient={m.recipient}
