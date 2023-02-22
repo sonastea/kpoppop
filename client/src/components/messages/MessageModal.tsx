@@ -12,10 +12,10 @@ const MessageModal = ({ message, latest }: { message: MessageProps; latest: bool
 
   return (
     <li className={`mb-4 flex ${isAuthor ? 'flex-row-reverse' : 'flex-row'}`}>
-      <div className={`group max-w-[85%] ${isAuthor ? 'pr-2' : 'pl-2'}`}>
+      <div className={`flex flex-col group max-w-[85%] text-right ${isAuthor ? 'pr-2' : 'pl-2'}`}>
         <div
-          className={`inline-block rounded-xl p-2 px-3 text-xs sm:text-xl ${
-            isAuthor ? 'bg-once-400 rounded-br-sm' : 'bg-gray-200 rounded-bl-sm'
+          className={`inline-block rounded-xl p-2 px-3 self-start text-xs sm:text-xl ${
+            isAuthor ? 'bg-once-400 rounded-br-sm self-end' : 'bg-gray-200 rounded-bl-sm'
           }`}
         >
           <span>{message.content}</span>
