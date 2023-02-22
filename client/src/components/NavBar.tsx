@@ -41,9 +41,9 @@ const NavBar = () => {
   }, [location.pathname, navItems]);
 
   return (
-    <nav className="relative w-full shadow">
+    <nav className="relative w-full shadow h-20 flex-nowrap inline-table">
       <div className="mx-auto md:max-w-screen-2xl">
-        <div className="flex justify-between">
+        <div className="flex justify-between flex-wrap">
           <div className="flex flex-shrink-0 space-x-2">
             <a href="/" className="flex items-center m-2">
               <img
@@ -112,10 +112,11 @@ const NavBar = () => {
               <div className="flex flex-col space-y-3">
                 {user?.username ? (
                   <>
-                    <a href="/memes">Memes</a>
-                    <a href={`/user/${user?.username}`}>Profile</a>
-                    <a href={`/profile/settings`}>Settings</a>
-                    <button className="flex" onClick={logout}>
+                    <a className="hover:text-once-500" href="/memes">Memes</a>
+                    <a className="hover:text-once-500" href="/messages">Messages</a>
+                    <a className="hover:text-once-500" href={`/user/${user?.username}`}>Profile</a>
+                    <a className="hover:text-once-500" href={`/profile/settings`}>Settings</a>
+                    <button className="flex hover:text-once-500" onClick={logout}>
                       Logout
                     </button>
                   </>

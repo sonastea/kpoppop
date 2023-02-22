@@ -5,7 +5,17 @@
 @layer base {
   html {
     font-family: 'Montserrat', system-ui, sans-serif;
+    height: 100%;
   }
+  html,
+  body {
+    height: 100%;
+  }
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
 }
 
 input:focus-within ~ label,
@@ -37,6 +47,48 @@ input:not(:focus-within) ~ label {
 
 .liked {
   color: red;
+}
+
+.messages-scroll-bar::-webkit-scrollbar {
+  width: 20px;
+}
+
+.messages-scroll-bar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.messages-scroll-bar::-webkit-scrollbar-thumb {
+  background-color: #d2d7df;
+  border-radius: 20px;
+  border: 8px solid transparent;
+  background-clip: content-box;
+}
+
+.messages-scroll-bar::-webkit-scrollbar-thumb:hover {
+  background-color: #bec3cb;
+}
+
+.conversations-scroll-bar::-webkit-scrollbar {
+  all: unset;
+}
+
+.conversations-scroll-bar::-webkit-scrollbar {
+  width: 20px;
+}
+
+.conversations-scroll-bar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.conversations-scroll-bar::-webkit-scrollbar-thumb {
+  background-color: #d2d7df;
+  border-radius: 20px;
+  border: 9.5px solid transparent;
+  background-clip: content-box;
+}
+
+.conversations-scroll-bar::-webkit-scrollbar-thumb:hover {
+  background-color: #bec3cb;
 }
 
 #recaptcha {

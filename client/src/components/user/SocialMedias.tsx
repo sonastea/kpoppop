@@ -17,7 +17,7 @@ export type EditSocialLinkFormData = {
 }
 
 const SocialMedias = ({ socialMedias }: SocialMediasProps) => {
-  const [socials, updateSocials] = useState(socialMedias);
+  const [socials] = useState(socialMedias);
 
   if (!socials) return null;
   return (

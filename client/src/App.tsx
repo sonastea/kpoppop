@@ -2,6 +2,7 @@ import AdminPanel from 'components/admin/AdminPanel';
 import ContactUs from 'components/ContactUs';
 import MemePage from 'components/meme/MemePage';
 import EditProfile from 'components/user/EditProfile';
+import Messages from 'components/user/Messages';
 import RegisterRedirect from 'components/user/RegisterRedirect';
 import VerifyEmail from 'components/user/VerifyEmail';
 import { AuthProvider } from 'contexts/AuthContext';
@@ -32,6 +33,7 @@ const App = () => {
           <Route path="register/redirect" element={<RegisterRedirect />} />
           <Route path="email/verify" element={<VerifyEmail />} />
           <Route path="user/:username" element={<Profile />} />
+          <Route path="messages" element={<Messages />} />
           <Route path="profile/settings" element={<EditProfile />} />
           <Route path="employees-only-do-not-enter" element={<AdminPanel />} />
         </Routes>

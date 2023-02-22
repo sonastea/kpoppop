@@ -24,6 +24,17 @@ services:
       - /app/node_modules
     depends_on:
       - database
+      - redis
+
+  redis:
+    container_name: kpoppop_redis
+    command: redis-server --save 20 1
+    image: 'redis:7.0'
+    ports:
+      - '6379:6379'
+    volumes:
+      - ./server/redis_data:/data
+    restart: unless-stopped
 
   client:
     container_name: client

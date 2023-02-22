@@ -33,6 +33,7 @@ export function AuthProvider({ children, initialUser }: { children: ReactNode; i
         .then((data) => {
           if (data.id || data.discordId) {
             setUser(data);
+            localStorage.setItem('userID', data.id);
           }
         })
         .catch((_error) => {})
@@ -49,6 +50,7 @@ export function AuthProvider({ children, initialUser }: { children: ReactNode; i
       .then((response) => {
         if (response.ok) {
           window.location.reload();
+          localStorage.removeItem('userID');
         }
       })
       .catch((error) => console.log(error));

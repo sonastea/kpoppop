@@ -34,9 +34,6 @@ export class UserService {
 
   async createUser(data: Prisma.UserCreateInput): Promise<User | RegisterUserData> {
     data.password = bcrypt.hashSync(data.password, 10);
-    data.banner = '';
-    data.photo = '';
-    data.displayname = '';
 
     try {
       const user = await this.prisma.user.create({
@@ -87,6 +84,15 @@ export class UserService {
       },
     });
     return user;
+  }
+
+  // Find any live sessions with given sid - Sesssions cleanup every 2 hours
+  async findOneSid(where: Prisma.SessionWhereUniqueInput): Promise<boolean> {
+    const session = await this.prisma.session.findUnique({
+      where,
+    });
+    if (session) return true;
+    else return false;
   }
 
   // Required information for profile display

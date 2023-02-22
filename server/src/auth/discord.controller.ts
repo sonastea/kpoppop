@@ -16,9 +16,6 @@ import { DiscordGuard } from './guards/discord.guard';
 import { SessionGuard } from './guards/session.guard';
 import { LocalSerializer } from './serializers/local.serializer';
 
-const DOMAIN =
-  process.env.NODE_ENV === 'development' ? 'https://192.168.0.2:3000' : 'https://www.kpoppop.com';
-
 @Controller('auth/discord')
 @UseInterceptors(LocalSerializer)
 export class DiscordController {
@@ -33,7 +30,9 @@ export class DiscordController {
   @UseGuards(DiscordGuard)
   @Get('redirect')
   @HttpCode(302)
-  async redirect(@Req() req: Request, @Res() res: Response) {
+  async redirect(@Res() res: Response) {
+    const DOMAIN =
+      process.env.NODE_ENV === 'development' ? 'https://localhost:3000' : 'https://www.kpoppop.com';
     // redirect after user logins with social account
     // check for existing local account with discord email
     // if user wants to link both accounts with same email, link them

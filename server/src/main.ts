@@ -8,10 +8,14 @@ import { NestFactory } from '@nestjs/core';
 import * as firebase from 'firebase-admin';
 import * as cookieParser from 'cookie-parser';
 import * as expressSession from 'express-session';
-import { PrismaService } from './database/prisma.service';
-import { PrismaSessionStore } from '@quixo3/prisma-session-store';
+import { RedisIoAdapter } from './sockets/redis.adapter';
+import { prismaSessionStore } from './store/prisma-session-store';
 
 dotenv.config();
+
+(BigInt.prototype as any).toJSON = function() {
+  return Number(this);
+};
 
 async function whatMode() {
   Logger.log(`Running in ${process.env.NODE_ENV} mode`);
@@ -42,13 +46,7 @@ async function bootstrap() {
     cookie,
     resave: false,
     saveUninitialized: false,
-    store: new PrismaSessionStore(new PrismaService(), {
-      checkPeriod: 2 * 60 * 1000, //ms
-      dbRecordIdIsSessionId: true,
-      dbRecordIdFunction: undefined,
-      enableConcurrentSetInvocationsForSameSessionID: true,
-      enableConcurrentTouchInvocationsForSameSessionID: true,
-    }),
+    store: prismaSessionStore,
     secret: process.env.SESSION_SECRET_KEY,
   };
 
@@ -60,11 +58,14 @@ async function bootstrap() {
       },
       httpsOptions,
     });
+    const redisIoAdapter = new RedisIoAdapter(app);
+    await redisIoAdapter.connectToRedis();
 
     app.setGlobalPrefix('api');
     app.use(cookieParser());
     app.use(passport.initialize());
     app.use(expressSession(sessionOptions));
+    app.useWebSocketAdapter(redisIoAdapter);
 
     app.enableShutdownHooks();
     await app.listen(process.env.PORT, () => whatMode());
@@ -76,11 +77,14 @@ async function bootstrap() {
       },
       httpsOptions,
     });
+    const redisIoAdapter = new RedisIoAdapter(app);
+    await redisIoAdapter.connectToRedis();
 
     app.setGlobalPrefix('api');
     app.use(cookieParser());
     app.use(passport.initialize());
     app.use(expressSession(sessionOptions));
+    app.useWebSocketAdapter(redisIoAdapter);
 
     app.enableShutdownHooks();
     await app.listen(process.env.PORT, () => whatMode());

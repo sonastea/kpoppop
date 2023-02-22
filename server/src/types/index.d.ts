@@ -11,3 +11,14 @@ declare module 'express-session' {
     };
   }
 }
+
+declare module 'socket.io' {
+  interface Socket {
+    sessionID?: string;
+    user?: {
+      id?: number;
+      role?: string;
+      discordId?: string;
+    };
+  }
+}
