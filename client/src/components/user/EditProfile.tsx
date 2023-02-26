@@ -1,15 +1,16 @@
+import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useAuth } from 'contexts/AuthContext';
+import { BaseSyntheticEvent, useEffect, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import EditProfilePhoto from './EditProfilePhoto';
+import { EditSocialLinkFormData, SocialMediaLink } from './SocialMedias';
 import {
   addSocialMediaLink,
   deleteSocialMediaLink,
   fetchUserSettings,
   updateProfile,
 } from './UserAPI';
-import { EditSocialLinkFormData, SocialMediaLink } from './SocialMedias';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
-import { BaseSyntheticEvent, useEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { useAuth } from 'contexts/AuthContext';
 
 const regex = new RegExp(
   'https?://(www.)?[-a-zA-Z0-9@:%._+~#=]{1,256}.[a-zA-Z0-9()]{1,6}([-a-zA-Z0-9()@:%_+.~#?&//=]*)'
@@ -38,6 +39,7 @@ const EditProfile = () => {
   const [photo, setPhoto] = useState<FileList | null>();
   const [banner, setBanner] = useState<FileList | null>();
   const [isLoading, setLoading] = useState<boolean>(true);
+  const [croppedUrl, setCroppedUrl] = useState<string>();
   const [socials, setSocials] = useState<SocialMediaLink[] | undefined>([]);
   const { register, handleSubmit, setValue } = useForm<EditProfileFormData>({
     defaultValues: { displayname: user?.displayname },
@@ -63,7 +65,15 @@ const EditProfile = () => {
     const formData = new FormData();
     formData.append('displayname', newData.displayname ?? '');
     formData.append('banner', newData.banner[0]);
-    formData.append('photo', newData.photo[0]);
+
+    if (croppedUrl && photo) {
+      const file = await fetch(croppedUrl)
+        .then((r) => r.blob())
+        .then((blobFile) => new File([blobFile], photo[0].name, { type: photo[0].type }));
+
+      formData.append('photo', file, photo[0].name);
+    }
+
     await updateProfile(formData).finally(() => {
       setTimeout(() => {
         window.location.reload();
@@ -78,6 +88,7 @@ const EditProfile = () => {
         break;
 
       case 'photo':
+        setCroppedUrl(undefined);
         setPhoto(e.target.files);
         break;
     }
@@ -167,13 +178,14 @@ const EditProfile = () => {
               <div className="flex items-center justify-between w-full">
                 <img
                   className={`${
-                    photo?.length === 1 && 'hidden'
+                    photo?.length === 1 || croppedUrl ? 'hidden' : 'flex'
                   } w-24 h-24 bg-white border rounded-full border-slate-900 md:w-48 md:h-48`}
                   src={data?.photo ? data?.photo : '/images/default_photo_white_200x200.png'}
                   alt="profile"
                   onError={(e) => imageChange(e)}
                 />
                 {photo &&
+                  !croppedUrl &&
                   photo.length === 1 &&
                   Array.from(photo).map((file) => {
                     return (
@@ -185,6 +197,19 @@ const EditProfile = () => {
                       />
                     );
                   })}
+                {croppedUrl && (
+                  <img
+                    className="left-0 z-30 w-24 h-24 bg-white border rounded-full border-slate-900 md:w-48 md:h-48"
+                    src={croppedUrl}
+                    alt={'cropped profile'}
+                  />
+                )}
+                {photo && !croppedUrl && (
+                  <EditProfilePhoto
+                    image_src={URL.createObjectURL(photo[0])}
+                    setCroppedUrl={setCroppedUrl}
+                  />
+                )}
                 <div className="py-4">
                   <label
                     htmlFor="photo"

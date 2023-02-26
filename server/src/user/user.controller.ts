@@ -37,14 +37,6 @@ import path = require('path');
 
 dotenv.config();
 
-let baseUrl: string = null;
-
-if (process.env.NODE_ENV === 'production') {
-  baseUrl = 'https://images.kpoppop.com/';
-} else {
-  baseUrl = 'https://test.kpoppop.com/';
-}
-
 type UpdateProfileData = {
   displayname: string;
   banner: string;
@@ -139,6 +131,11 @@ export class UserController {
   ): Promise<any> {
     const { id, discordId } = req.session.passport.user;
     const data: UpdateProfileData = { ...req.body };
+
+    const baseUrl =
+      process.env.NODE_ENV === 'production'
+        ? 'https://images.kpoppop.com/'
+        : 'https://test.kpoppop.com/';
 
     for (const key in files) {
       const uuid = randomUUID();

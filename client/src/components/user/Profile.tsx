@@ -119,7 +119,7 @@ const Profile = () => {
             const title = meme.title.replace(/ /g, '_');
             return (
               <div key={meme.id} className="inline-flex font-semibold text-center">
-                <a href={`/meme/${meme.id}/${title}`}>
+                <a className="w-full xl:w-2/3" href={`/meme/${meme.id}/${title}`}>
                   {meme.url.split('.')[3] === 'mp4' ? (
                     <video key={meme.title} className="rounded-lg w-full" controls muted>
                       <source src={meme.url} type="video/mp4" />

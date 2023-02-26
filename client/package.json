@@ -26,6 +26,7 @@
     "profane-words": "^1.5.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-easy-crop": "^4.7.3",
     "react-fontawesome": "^1.7.1",
     "react-google-recaptcha": "^2.1.0",
     "react-hook-form": "^7.43.2",
