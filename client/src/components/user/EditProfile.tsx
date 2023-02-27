@@ -39,8 +39,9 @@ const EditProfile = () => {
   const [photo, setPhoto] = useState<FileList | null>();
   const [banner, setBanner] = useState<FileList | null>();
   const [isLoading, setLoading] = useState<boolean>(true);
-  const [croppedUrl, setCroppedUrl] = useState<string>();
+  const [croppedUrl, setCroppedUrl] = useState<RequestInfo | URL | null>(null);
   const [socials, setSocials] = useState<SocialMediaLink[] | undefined>([]);
+  const [edittingProfilePhoto, setEdittingProfilePhoto] = useState<boolean>(false);
   const { register, handleSubmit, setValue } = useForm<EditProfileFormData>({
     defaultValues: { displayname: user?.displayname },
   });
@@ -82,13 +83,14 @@ const EditProfile = () => {
   };
 
   const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e);
     switch (e.target.name) {
       case 'banner':
         setBanner(e.target.files);
         break;
 
       case 'photo':
-        setCroppedUrl(undefined);
+        setEdittingProfilePhoto(true);
         setPhoto(e.target.files);
         break;
     }
@@ -200,14 +202,15 @@ const EditProfile = () => {
                 {croppedUrl && (
                   <img
                     className="left-0 z-30 w-24 h-24 bg-white border rounded-full border-slate-900 md:w-48 md:h-48"
-                    src={croppedUrl}
+                    src={croppedUrl.toString()}
                     alt={'cropped profile'}
                   />
                 )}
-                {photo && !croppedUrl && (
+                {photo && photo[0] && edittingProfilePhoto && (
                   <EditProfilePhoto
                     image_src={URL.createObjectURL(photo[0])}
                     setCroppedUrl={setCroppedUrl}
+                    editting={setEdittingProfilePhoto}
                   />
                 )}
                 <div className="py-4">
@@ -228,6 +231,7 @@ const EditProfile = () => {
                       type="file"
                       {...register('photo')}
                       onInput={handleImageSelect}
+                      onClick={(e) => (e.currentTarget.value = '')}
                     />
                   </label>
                 </div>
