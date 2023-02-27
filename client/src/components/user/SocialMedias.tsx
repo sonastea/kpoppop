@@ -28,7 +28,7 @@ const SocialMedias = ({ socialMedias }: SocialMediasProps) => {
             <div className="m-3 hover:text-once-700" key={social.uuid}>
               <div className="space-x-1">
                 <SocialIcon style={{ verticalAlign: 'bottom', width: '24px', height: '24px' }} url={`${social.url}`} />
-                <a href={`${social.url}`}>
+                <a className="align-sub" href={`${social.url}`}>
                   <p className="hidden text-xl align-bottom lg:inline">{social.title}</p>
                 </a>
               </div>

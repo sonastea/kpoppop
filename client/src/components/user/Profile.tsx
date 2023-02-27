@@ -81,10 +81,10 @@ const Profile = () => {
               </div>
             </div>
             <div className="flex justify-center w-full lg:order-2 lg:w-1/4">
-              <div className="relative">
+              <div className="relative max-w-[50px] sm:max-w-[75px] md:max-w-[100px]">
                 <a className="rounded-full" href={data.photo && `${data.photo}`}>
                   <img
-                    className="bg-white rounded-full aspect-square mt-[-50%] border border-black w-24 h-24 sm:w-32 sm:h-32 md:w-48 md:h-48"
+                    className="bg-white rounded-full aspect-square mt-[-50%] border border-black"
                     src={data.photo ? `${data.photo}` : '/images/default_photo_white_200x200.png'}
                     alt="profile"
                     onError={(e: BaseSyntheticEvent) => {
