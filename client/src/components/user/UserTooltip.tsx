@@ -86,7 +86,7 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
         ref={setReferenceElement}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        onClick={() => (window.location.href = `/user/${comment.user.username}`)}
+        onMouseDown={() => (window.location.href = `/user/${comment.user.username}`)}
       >
         {comment.user.displayname ? comment.user.displayname : comment.user.username}
       </Popover.Button>
@@ -135,7 +135,9 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
                   >
                     {comment.user.username}
                   </a>
-                  <span className="text-black">{new Date(comment.user.createdAt).toLocaleDateString()}</span>
+                  <span className="text-black">
+                    {new Date(comment.user.createdAt).toLocaleDateString()}
+                  </span>
                 </div>
               </div>
             </div>
