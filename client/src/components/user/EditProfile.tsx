@@ -210,6 +210,7 @@ const EditProfile = () => {
                   <EditProfilePhoto
                     image_src={URL.createObjectURL(photo[0])}
                     setCroppedUrl={setCroppedUrl}
+                    setPhoto={setPhoto}
                     editting={setEdittingProfilePhoto}
                   />
                 )}

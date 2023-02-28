@@ -7,10 +7,12 @@ import { getCroppedImg } from './Crop';
 const EditProfilePhoto = ({
   image_src,
   setCroppedUrl,
+  setPhoto,
   editting,
 }: {
   image_src: string;
   setCroppedUrl: Function;
+  setPhoto: Function;
   editting: Function;
 }) => {
   const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
@@ -19,6 +21,7 @@ const EditProfilePhoto = ({
 
   useEffect(() => {
     document.body.classList.add('overflow-hidden');
+    window.scrollTo(0, 0);
   }, []);
 
   const onCropComplete = useCallback((_croppedArea: Area, croppedAreaPixels: Area) => {
@@ -26,18 +29,22 @@ const EditProfilePhoto = ({
     window.localStorage.setItem('croppedArea', JSON.stringify(_croppedArea));
   }, []);
 
+  const toggleEditting = useCallback(() => {
+    editting(false);
+    document.body.classList.remove('overflow-hidden');
+    setPhoto(undefined);
+  }, [editting, setPhoto]);
+
   const showCroppedImage = useCallback(async () => {
     try {
       const croppedImage = await getCroppedImg(image_src, croppedAreaPixels);
       setCroppedUrl(croppedImage);
-      editting(false);
-      document.body.classList.remove('overflow-hidden');
+      toggleEditting();
     } catch (e) {
-      editting(false);
-      document.body.classList.remove('overflow-hidden');
+      toggleEditting();
       console.error(e);
     }
-  }, [croppedAreaPixels, image_src, setCroppedUrl, editting]);
+  }, [croppedAreaPixels, image_src, setCroppedUrl, toggleEditting]);
 
   return (
     <div className="absolute inset-0 z-40 backdrop-blur-md bg-white-100/30">
@@ -56,7 +63,7 @@ const EditProfilePhoto = ({
         <div
           className="absolute justify-center z-40 hover:text-once-500 left-0 -top-1/4 text-once-900 p-1"
           role="button"
-          onClick={() => editting(false)}
+          onClick={toggleEditting}
           aria-label="Back to profile settings"
         >
           <FontAwesomeIcon className="cursor-pointer" icon={faRotateLeft} />
