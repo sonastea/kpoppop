@@ -12,7 +12,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.3.0",
     "@fortawesome/free-solid-svg-icons": "^6.3.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
-    "@headlessui/react": "^1.7.12",
+    "@headlessui/react": "^1.7.13",
     "@tensorflow/tfjs": "~3.18.0",
     "@types/react-router-dom": "^5.3.3",
     "assert": "^2.0.0",
@@ -26,12 +26,12 @@
     "profane-words": "^1.5.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-easy-crop": "^4.7.3",
+    "react-easy-crop": "^4.7.4",
     "react-fontawesome": "^1.7.1",
     "react-google-recaptcha": "^2.1.0",
-    "react-hook-form": "^7.43.2",
+    "react-hook-form": "^7.43.4",
     "react-popper": "^2.3.0",
-    "react-router-dom": "^6.8.1",
+    "react-router-dom": "^6.8.2",
     "react-scripts": "^5.0.1",
     "react-social-icons": "^5.15.0",
     "socket.io-client": "^4.6.1",
@@ -39,7 +39,7 @@
     "svgo": "^3.0.2",
     "util": "^0.12.5",
     "web-vitals": "^3.1.1",
-    "zustand": "^4.3.3"
+    "zustand": "^4.3.5"
   },
   "scripts": {
     "start": "TAILWIND_MODE=watch craco start",
