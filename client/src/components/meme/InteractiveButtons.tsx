@@ -65,19 +65,17 @@ const InteractiveButtons = (props: InteractiveButtonProps) => {
   }, [user, likedState, memeId]);
 
   return (
-    <div className="p-1 flex flex-wrap justify-center gap-x-4 space-x-4">
+    <div className="py-4 flex flex-wrap justify-center gap-x-4">
       <div className="group like" onClick={handleLiked} role="button" aria-label="like">
         {likedState ? (
           <FontAwesomeIcon
-            className="group-hover:text-slate-700 md:text-lg liked text-sm"
+            className="group-hover:text-red-500/80 md:text-lg liked text-sm"
             icon={fasHeart}
           />
         ) : (
           <FontAwesomeIcon className="group-hover:text-red-500 md:text-lg text-sm" icon={faHeart} />
         )}
-        <span
-          className={`${!likedState && 'group-hover:text-red-500'} ml-1 text-gray-700 align-middle`}
-        >
+        <span className="group-hover:text-red-500 ml-1 text-gray-700 align-middle">
           {totalLikes ? `${totalLikes}` : `0`}
         </span>
       </div>

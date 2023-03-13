@@ -61,55 +61,39 @@ const Memes = () => {
 
   return (
     <>
-      <div className="meme-container flex flex-col items-center md:m-4">
+      <div className="meme-container flex flex-col items-center">
         {posts &&
           posts.map((meme: any) => {
             const title = meme.title.replace(/ /g, '_');
             return (
-              <div
-                className="m-2 md:m-4 shadow-md bg-gradient-to-br from-gray-300 rounded-md w-full md:w-3/4"
-                key={meme.id}
-              >
-                <div className="flex-row items-center p-8 box-border rounded-md">
-                  <div className="flex pb-6 text-sm font-bold md:text-xl author-bar">
-                    <a className="hover:text-once-700" href={`/user/${meme.author.username}`}>
-                      {meme.author.username}
-                    </a>
-                    <div className="ml-auto">
-                      <ReportMemeModal id={meme.id} />
-                      <MemeMenu memeId={meme.id} />
-                    </div>
+              <div className="w-full my-2 shadow-sm sm:max-w-2xl rounded-md bg-white" key={meme.id}>
+                <div className="flex mx-4 mt-4 text-sm font-bold md:text-xl author-bar">
+                  <a className="hover:text-once-700" href={`/user/${meme.author.username}`}>
+                    {meme.author.username}
+                  </a>
+                  <div className="ml-auto">
+                    <ReportMemeModal id={meme.id} />
+                    <MemeMenu memeId={meme.id} />
                   </div>
-                  <div className="flex-col justify-center">
-                    {meme.url.split('.')[3] === 'mp4' ? (
-                      <video
-                        key={meme.title}
-                        className="rounded-md mx-auto md:max-h-48"
-                        controls
-                        muted
-                      >
-                        <source src={meme.url} type="video/mp4" />
-                      </video>
-                    ) : (
-                      <a className="contents" href={`/meme/${meme.id}/${title}`}>
-                        <img
-                          className="mx-auto rounded-md max-h-36 md:max-h-48"
-                          src={meme.url}
-                          alt={meme.title}
-                        />
-                      </a>
-                    )}
-                  </div>
-                  <div className="flex justify-center py-3">
-                    <a
-                      className="hover:underline font-bold text-gray-800 text-xs md:text-lg"
-                      href={`/meme/${meme.id}/${title}`}
-                    >
-                      {meme.title}
-                    </a>
-                  </div>
-                  <InteractiveButtons memeId={meme.id} memeTitle={title} />
                 </div>
+                <div className="flex justify-center mx-4">
+                  <a
+                    className="hover:underline font-bold text-gray-800 text-xs md:text-lg"
+                    href={`/meme/${meme.id}/${title}`}
+                  >
+                    {meme.title}
+                  </a>
+                </div>
+                {meme.url.split('.')[3] === 'mp4' ? (
+                  <video key={meme.title} className="rounded-md mx-auto md:max-h-48" controls muted>
+                    <source src={meme.url} type="video/mp4" />
+                  </video>
+                ) : (
+                  <a className="contents" href={`/meme/${meme.id}/${title}`}>
+                    <img className="w-full max-h-lg mt-2" src={meme.url} alt={meme.title} />
+                  </a>
+                )}
+                <InteractiveButtons memeId={meme.id} memeTitle={title} />
               </div>
             );
           })}
