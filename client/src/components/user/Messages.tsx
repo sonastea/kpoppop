@@ -104,6 +104,7 @@ const Messages = () => {
 
       ws.on('connect_error', (err) => {
         console.warn(err.message);
+        setLoading(false);
       });
 
       ws.on('conversations', (conversations: UserCardProps[]) => {
