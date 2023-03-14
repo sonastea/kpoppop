@@ -1,6 +1,5 @@
 import { ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { createContext } from 'react';
-import { API_URL } from 'Global.d';
 
 export type User = {
   id?: number;
@@ -25,7 +24,7 @@ export function AuthProvider({ children, initialUser }: { children: ReactNode; i
 
   useEffect(() => {
     const getCurrentUser = async () => {
-      await fetch(`${API_URL}/auth/session`, {
+      await fetch(`/api/auth/session`, {
         method: 'GET',
         credentials: 'include',
       })
@@ -43,7 +42,7 @@ export function AuthProvider({ children, initialUser }: { children: ReactNode; i
   }, []);
 
   const logout = useCallback(async () => {
-    await fetch(`${API_URL}/user/logout`, {
+    await fetch(`/api/user/logout`, {
       method: 'POST',
       credentials: 'include',
     })

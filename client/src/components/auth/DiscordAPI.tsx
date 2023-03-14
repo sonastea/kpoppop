@@ -1,7 +1,5 @@
-import { API_URL } from 'Global.d';
-
 export const linkedDiscord = async () => {
-  return await fetch(`${API_URL}/auth/discord/linked`, {
+  return await fetch(`/api/auth/discord/linked`, {
     method: 'GET',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
@@ -9,7 +7,7 @@ export const linkedDiscord = async () => {
 };
 
 export const linkDiscord = async (data: any) => {
-  return await fetch(`${API_URL}/auth/discord/link`, {
+  return await fetch(`/api/auth/discord/link`, {
     method: 'PUT',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
@@ -18,7 +16,7 @@ export const linkDiscord = async (data: any) => {
 };
 
 export const createLocalLinkedUser = async (data: any) => {
-  return await fetch(`${API_URL}/auth/discord/register`, {
+  return await fetch(`/api/auth/discord/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',

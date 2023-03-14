@@ -1,7 +1,5 @@
-import { API_URL } from 'Global.d';
-
 export const submitMeme = async (data: FormData) => {
-  return await fetch(`${API_URL}/meme/submit`, {
+  return await fetch(`/api/meme/submit`, {
     method: 'POST',
     credentials: 'include',
     body: data,
@@ -9,7 +7,7 @@ export const submitMeme = async (data: FormData) => {
 };
 
 export const fetchMemes = async (cursor: number | undefined) => {
-  return await fetch(`${API_URL}/meme/posts`, {
+  return await fetch(`/api/meme/posts`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ cursor }),
@@ -17,66 +15,66 @@ export const fetchMemes = async (cursor: number | undefined) => {
 };
 
 export const fetchMeme = async (id: number) => {
-  return await fetch(`${API_URL}/meme/${id}`, {
+  return await fetch(`/api/meme/${id}`, {
     method: 'GET',
   }).then((response) => response.json());
 };
 
 export const fetchMemeTotalLikes = async (id: number) => {
-  return await fetch(`${API_URL}/meme/likes/${id}`, {
+  return await fetch(`/api/meme/likes/${id}`, {
     method: 'GET',
   }).then((response) => response.json());
 };
 
 export const fetchMemeUserLike = async (id: number) => {
-  return await fetch(`${API_URL}/meme/liked/${id}`, {
+  return await fetch(`/api/meme/liked/${id}`, {
     method: 'GET',
     credentials: 'include',
   }).then((response) => response.json());
 };
 
 export const likeMeme = async (id: number) => {
-  return await fetch(`${API_URL}/meme/like/${id}`, {
+  return await fetch(`/api/meme/like/${id}`, {
     method: 'PUT',
     credentials: 'include',
   }).then((response) => response.json());
 };
 
 export const unlikeMeme = async (id: number) => {
-  return await fetch(`${API_URL}/meme/like/${id}`, {
+  return await fetch(`/api/meme/like/${id}`, {
     method: 'DELETE',
     credentials: 'include',
   }).then((response) => response.json());
 };
 
 export const fetchMemeTotalComments = async (id: number) => {
-  return await fetch(`${API_URL}/meme/comments/${id}`, {
+  return await fetch(`/api/meme/comments/${id}`, {
     method: 'GET',
   }).then((response) => response.json());
 };
 
 export const fetchMemeComments = async (id: number) => {
-  return await fetch(`${API_URL}/meme/comment/${id}`, {
+  return await fetch(`/api/meme/comment/${id}`, {
     method: 'GET',
   }).then((response) => response.json());
 };
 
 export const toggleMemeComment = async (id: number) => {
-  return await fetch(`${API_URL}/meme/delete/${id}`, {
+  return await fetch(`/api/meme/delete/${id}`, {
     method: 'PUT',
     credentials: 'include',
   }).then((response) => response.json());
 };
 
 export const deleteComment = async (id: number) => {
-  return await fetch(`${API_URL}/meme/delete/${id}`, {
+  return await fetch(`/api/meme/delete/${id}`, {
     method: 'DELETE',
     credentials: 'include',
   }).then((response) => response.json());
 };
 
 export const editComment = async (comment: string, id: number) => {
-  return await fetch(`${API_URL}/meme/edit/${id}`, {
+  return await fetch(`/api/meme/edit/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -85,7 +83,7 @@ export const editComment = async (comment: string, id: number) => {
 };
 
 export const reportMeme = async (id: number, description: string) => {
-  return await fetch(`${API_URL}/meme/report`, {
+  return await fetch(`/api/meme/report`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ id, description }),
@@ -94,7 +92,7 @@ export const reportMeme = async (id: number, description: string) => {
 };
 
 export const toggleMeme = async (id: number) => {
-  return await fetch(`${API_URL}/meme/toggle/${id}`, {
+  return await fetch(`/api/meme/toggle/${id}`, {
     method: 'PUT',
     credentials: 'include',
   }).then((response) => response.json());
