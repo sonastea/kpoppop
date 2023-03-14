@@ -185,7 +185,7 @@ const UploadMeme = () => {
       {open && (
         <div
           onClick={() => setOpen((open) => !open)}
-          className="z-10 absolute flex justify-center w-full min-h-screen"
+          className="z-10 fixed inset-0 flex justify-center w-full min-h-screen backdrop-blur"
         >
           <div
             onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
