@@ -200,7 +200,7 @@ const Messages = () => {
                       convid={user.convid ?? ''}
                       user={user}
                       setRecipient={setRecipient}
-                      key={user.convid}
+                      key={user.id}
                     />
                   );
                 })}

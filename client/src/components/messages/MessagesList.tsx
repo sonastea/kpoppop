@@ -9,7 +9,7 @@ type MessageListProps = {
 
 const DAY = 86400000;
 
-const MessagesList = ({ messages }: { messages: MessageListProps }): any => {
+const MessagesList = ({ messages }: { messages: MessageListProps }) => {
   return (
     <>
       {Object.entries(messages).map(([date, msgs]) => {
