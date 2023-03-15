@@ -65,15 +65,15 @@ const InteractiveButtons = (props: InteractiveButtonProps) => {
   }, [user, likedState, memeId]);
 
   return (
-    <div className="py-4 flex flex-wrap justify-center gap-x-4">
+    <div className="py-2 md:py-4 flex flex-wrap justify-center gap-x-4">
       <div className="group like" onClick={handleLiked} role="button" aria-label="like">
         {likedState ? (
           <FontAwesomeIcon
-            className="group-hover:text-red-500/80 md:text-lg liked text-sm"
+            className="group-hover:text-red-500/80 md:text-lg liked align-middle"
             icon={fasHeart}
           />
         ) : (
-          <FontAwesomeIcon className="group-hover:text-red-500 md:text-lg text-sm" icon={faHeart} />
+          <FontAwesomeIcon className="group-hover:text-red-500 md:text-lg" icon={faHeart} />
         )}
         <span className="group-hover:text-red-500 ml-1 text-gray-700 align-middle">
           {totalLikes ? `${totalLikes}` : `0`}
@@ -82,7 +82,7 @@ const InteractiveButtons = (props: InteractiveButtonProps) => {
       <div className="group comments" role="button" aria-label="comments">
         <a href={`/meme/${memeId}/${memeTitle}`}>
           <FontAwesomeIcon
-            className="group-hover:text-cyan-500 md:text-lg align-middle comments text-sm"
+            className="group-hover:text-cyan-500 md:text-lg align-middle comments"
             icon={faComment}
           />
           <span className="group-hover:text-cyan-500 ml-1 text-gray-700 align-middle ">

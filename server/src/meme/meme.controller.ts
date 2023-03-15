@@ -123,7 +123,7 @@ export class MemeController {
   async getMemes(@Body() body: { cursor: number }): Promise<any> {
     if (body.cursor === 0) {
       return await this.memeService.posts({
-        take: 7,
+        take: 15,
         orderBy: {
           id: 'desc',
         },
@@ -136,6 +136,7 @@ export class MemeController {
           id: true,
           title: true,
           url: true,
+          createdAt: true,
         },
         where: {
           active: { equals: true },
@@ -186,6 +187,7 @@ export class MemeController {
         id: true,
         title: true,
         url: true,
+        createdAt: true,
       },
     });
     if (meme === null) return {};

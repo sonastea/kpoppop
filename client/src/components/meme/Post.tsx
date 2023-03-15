@@ -2,6 +2,7 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ReportCommentModal from 'components/user/ReportCommentModal';
 import ReportUserModal from 'components/user/ReportUserModal';
+import { DAY } from 'Global.d';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import InteractiveButtons from './InteractiveButtons';
@@ -17,6 +18,7 @@ type PostProps = {
   id: number;
   title: string;
   url: string;
+  createdAt: string;
 };
 
 const Post = () => {
@@ -43,29 +45,23 @@ const Post = () => {
     <>
       <ReportCommentModal />
       <ReportUserModal user={{ id: meme.author.id, username: meme.author.username }} />
-      <div className="mx-4 shadow-sm mb-2">
-        <div className="p-0 md:p-2 flex flex-col md:flex-row md:flex-wrap overflow-auto border-x">
-          <div className="md:max-w-md 2xl:max-w-lg self-center">
+      <div className="shadow-sm mb-2">
+        <div className="flex flex-col md:flex-row md:flex-wrap overflow-auto border-x">
+          <div className="m-2 w-64 md:w-80 2xl:w-96 max-w-3xl self-center">
             {meme.url.split('.')[3] === 'mp4' ? (
-              <video
-                key={meme.title}
-                className="object-fit w-auto rounded-b-md md:rounded-none md:-ml-2 md:-mt-2"
-                controls
-                muted
-              >
+              <video key={meme.title} className="object-fit max-h-lg w-auto" controls muted>
                 <source src={meme.url} type="video/mp4" />
               </video>
             ) : (
-              <img
-                className="object-fit w-auto rounded-b-md md:rounded-none md:-ml-2 md:-mt-2"
-                src={meme.url}
-                alt={meme.title}
-              />
+              <img className="object-fill w-full" src={meme.url} alt={meme.title} />
             )}
           </div>
           <div className="flex-1 m-2">
-            <div className="flex justify-end text-md md:text-xl text-once-900">
-              <a href={`/user/${meme.author.username}`}>{meme.author.username}</a>
+            <div className="flex flex-col items-end text-md md:text-xl text-once-900">
+              <a href={`/user/${meme.author.username}`}>
+                {meme.author.username}
+              </a>
+                <span className="text-xs sm:text-sm text-once-900/70">{DAY(meme.createdAt).fromNow(false)} </span>
             </div>
             <div className="grid content-center h-3/4 text-sm md:text-xl">{meme.title}</div>
           </div>
