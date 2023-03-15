@@ -41,9 +41,9 @@ const NavBar = () => {
   }, [location.pathname, navItems]);
 
   return (
-    <nav className="relative w-full shadow overflow-hidden">
+    <nav className="relative w-full shadow">
       <div className="mx-auto md:max-w-screen-2xl">
-        <div className="flex justify-between flex-wrap">
+        <div className="flex justify-between flex-wrap overflow-hidden">
           <div className="flex flex-shrink-0 space-x-2">
             <a href="/" className="flex items-center m-2">
               <img
