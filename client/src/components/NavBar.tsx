@@ -41,7 +41,7 @@ const NavBar = () => {
   }, [location.pathname, navItems]);
 
   return (
-    <nav className="relative w-full shadow h-20 flex-nowrap inline-table">
+    <nav className="relative w-full shadow overflow-hidden">
       <div className="mx-auto md:max-w-screen-2xl">
         <div className="flex justify-between flex-wrap">
           <div className="flex flex-shrink-0 space-x-2">
@@ -50,7 +50,7 @@ const NavBar = () => {
                 src="/images/header_logo.png"
                 alt="Kpoppop Logo"
                 className="grow-0 w-auto h-10 sm:h-16"
-              ></img>
+              />
             </a>
 
             <ul className="items-center hidden md:flex space-x-1">
@@ -70,9 +70,13 @@ const NavBar = () => {
 
           {user?.username ? <NavBarLoggedIn /> : <NavBarLoggedOut />}
 
-          <div className="flex items-center m-2 md:hidden">
+          <div className="flex flex-wrap items-center m-2 md:hidden">
             {user?.username && <span className="font-semibold text-once-900">{user.username}</span>}
-            <button aria-label="Mobile menu toggle" className="mobile-menu-toggle" onClick={() => setMobileNav((prev) => !prev)}>
+            <button
+              aria-label="Mobile menu toggle"
+              className="mobile-menu-toggle"
+              onClick={() => setMobileNav((prev) => !prev)}
+            >
               <svg
                 className={`${isActiveMobileNav && 'bg-once-200 rounded-xl'} w-8 h-8 ml-1`}
                 xmlns="http://www.w3.org/2000/svg"
@@ -104,7 +108,11 @@ const NavBar = () => {
                   className="w-5/6 h-auto"
                 ></img>
               </a>
-              <button className="absolute right-4" aria-label="Toggle mobile nav" onClick={() => setMobileNav((prev) => !prev)}>
+              <button
+                className="absolute right-4"
+                aria-label="Toggle mobile nav"
+                onClick={() => setMobileNav((prev) => !prev)}
+              >
                 <FontAwesomeIcon icon={faXmark} />
               </button>
             </div>
@@ -112,10 +120,18 @@ const NavBar = () => {
               <div className="flex flex-col space-y-3">
                 {user?.username ? (
                   <>
-                    <a className="hover:text-once-500" href="/memes">Memes</a>
-                    <a className="hover:text-once-500" href="/messages">Messages</a>
-                    <a className="hover:text-once-500" href={`/user/${user?.username}`}>Profile</a>
-                    <a className="hover:text-once-500" href={`/profile/settings`}>Settings</a>
+                    <a className="hover:text-once-500" href="/memes">
+                      Memes
+                    </a>
+                    <a className="hover:text-once-500" href="/messages">
+                      Messages
+                    </a>
+                    <a className="hover:text-once-500" href={`/user/${user?.username}`}>
+                      Profile
+                    </a>
+                    <a className="hover:text-once-500" href={`/profile/settings`}>
+                      Settings
+                    </a>
                     <button className="flex hover:text-once-500" onClick={logout}>
                       Logout
                     </button>

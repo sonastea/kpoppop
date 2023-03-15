@@ -72,7 +72,7 @@ const Memes = () => {
 
   return (
     <>
-      <div className="meme-container flex flex-col items-center">
+      <div className="meme-container flex flex-col items-center overflow-hidden">
         {posts &&
           posts.map((meme: Meme) => {
             const title = meme.title.replace(/ /g, '_');
@@ -81,7 +81,7 @@ const Memes = () => {
                 className="w-full my-2 shadow-sm sm:max-w-2xl sm:rounded-md bg-white"
                 key={meme.id}
               >
-                <div className="flex overflow-hidden leading-normal mx-4 mt-4 mb-2 md:text-xl author-bar">
+                <div className="flex flex-wrap overflow-auto leading-normal mx-4 mt-4 mb-2 md:text-xl author-bar">
                   <a
                     className="font-bold hover:text-once-700"
                     href={`/user/${meme.author.username}`}

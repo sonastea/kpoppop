@@ -177,7 +177,7 @@ const UploadMeme = () => {
       <button
         onClick={() => setOpen((open) => !open)}
         type="button"
-        className="z-10 p-2 m-4 font-semibold text-gray-900 border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
+        className="z-10 p-2 m-4 whitespace-pre overflow-hidden font-semibold text-gray-900 border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
       >
         Submit a post
       </button>

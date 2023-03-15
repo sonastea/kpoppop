@@ -69,23 +69,23 @@ const InteractiveButtons = (props: InteractiveButtonProps) => {
       <div className="group like" onClick={handleLiked} role="button" aria-label="like">
         {likedState ? (
           <FontAwesomeIcon
-            className="group-hover:text-red-500/80 md:text-lg liked align-middle"
+            className="group-hover:text-red-500/80 md:text-lg liked"
             icon={fasHeart}
           />
         ) : (
           <FontAwesomeIcon className="group-hover:text-red-500 md:text-lg" icon={faHeart} />
         )}
-        <span className="group-hover:text-red-500 ml-1 text-gray-700 align-middle">
+        <span className="group-hover:text-red-500 ml-1 text-gray-700">
           {totalLikes ? `${totalLikes}` : `0`}
         </span>
       </div>
       <div className="group comments" role="button" aria-label="comments">
         <a href={`/meme/${memeId}/${memeTitle}`}>
           <FontAwesomeIcon
-            className="group-hover:text-cyan-500 md:text-lg align-middle comments"
+            className="group-hover:text-cyan-500 md:text-lg comments"
             icon={faComment}
           />
-          <span className="group-hover:text-cyan-500 ml-1 text-gray-700 align-middle ">
+          <span className="group-hover:text-cyan-500 ml-1 text-gray-700">
             {totalComments ? `${totalComments}` : `0`}
           </span>
         </a>
