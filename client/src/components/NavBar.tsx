@@ -74,7 +74,7 @@ const NavBar = () => {
             {user?.username && <span className="font-semibold text-once-900">{user.username}</span>}
             <button aria-label="Mobile menu toggle" className="mobile-menu-toggle" onClick={() => setMobileNav((prev) => !prev)}>
               <svg
-                className={`${isActiveMobileNav && 'bg-once-200 rounded-xl'} w-8 h-8`}
+                className={`${isActiveMobileNav && 'bg-once-200 rounded-xl'} w-8 h-8 ml-1`}
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
