@@ -4,7 +4,7 @@ import updateLocale from 'dayjs/plugin/updateLocale';
 
 const config = {
   thresholds: [
-    { l: 's', r: 1 },
+    { l: 's', r: 59, d: 'second' },
     { l: 'm', r: 1 },
     { l: 'mm', r: 59, d: 'minute' },
     { l: 'h', r: 1 },
@@ -25,7 +25,7 @@ dayjs.updateLocale('en', {
   relativeTime: {
     future: 'in %s',
     past: '%s ago',
-    s: '%s ago',
+    s: '%ds ago',
     m: '%dm',
     mm: '%dm',
     h: '%dh',
