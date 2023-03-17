@@ -235,7 +235,7 @@ export class MemeController {
   }
 
   @UseGuards(SessionGuard)
-  // @Throttle(60, 15)
+  @Throttle(60, 15)
   @SkipThrottle()
   @Put('like/:id')
   async likeMeme(@Param('id') id: string, @Session() session: Record<string, any>): Promise<any> {
@@ -263,7 +263,7 @@ export class MemeController {
   }
 
   @UseGuards(SessionGuard)
-  // @Throttle(60, 15)
+  @Throttle(60, 15)
   @SkipThrottle()
   @Delete('like/:id')
   async unlikeMeme(@Param('id') id: string, @Session() session: Record<string, any>): Promise<any> {
@@ -290,8 +290,8 @@ export class MemeController {
     }
   }
 
-  // @Throttle(60, 15)
-  @SkipThrottle()
+  @Throttle(60, 15)
+  // @SkipThrottle()
   @Get('comment/:id')
   async getMemeComments(@Param('id') memeId: string): Promise<Comment[]> {
     return await this.memeService.comments({
