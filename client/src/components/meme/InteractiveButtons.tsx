@@ -43,8 +43,10 @@ const InteractiveButtons = (props: InteractiveButtonProps) => {
 
   useEffect(() => {
     const fetchLikes = async (memeId: number) => {
-      const likes = await fetchMemeTotalLikes(memeId);
-      const comments = await fetchMemeTotalComments(memeId);
+      const [likes, comments] = await Promise.all([
+        fetchMemeTotalLikes(memeId),
+        fetchMemeTotalComments(memeId),
+      ]);
       setTotalLikes(likes);
       setTotalComments(comments);
 
