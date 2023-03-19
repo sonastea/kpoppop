@@ -114,7 +114,7 @@ const Memes = () => {
                   </a>
                   <div className="ml-2">
                     <span className="text-xs sm:text-sm text-gray-500">
-                      {DAY(meme.createdAt).fromNow(true)}
+                      {DAY(meme.createdAt).fromNow()}
                     </span>
                   </div>
                   <div className="ml-auto">
