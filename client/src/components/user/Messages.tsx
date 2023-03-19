@@ -104,6 +104,7 @@ const Messages = () => {
 
       ws.on('connect_error', (err) => {
         console.warn(err.message);
+        setLoading(false);
       });
 
       ws.on('conversations', (conversations: UserCardProps[]) => {
@@ -199,7 +200,7 @@ const Messages = () => {
                       convid={user.convid ?? ''}
                       user={user}
                       setRecipient={setRecipient}
-                      key={user.convid}
+                      key={user.id}
                     />
                   );
                 })}

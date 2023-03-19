@@ -118,12 +118,27 @@ export class MemeController {
     }
   }
 
+  @UseGuards(SessionGuard)
+  @Throttle(60, 15)
+  @Put('remove/:id')
+  async removeMeme(@Param('id') memeId: string, @Session() session: Record<string, any>) {
+    if (session.passport.user.id) {
+      return await this.memeService.removeMeme(parseInt(memeId), { id: session.passport.user.id });
+    }
+
+    if (session.passport.user.discordId) {
+      return await this.memeService.removeMeme(parseInt(memeId), {
+        discordId: session.passport.user.discordId,
+      });
+    }
+  }
+
   @Post('posts')
   @SkipThrottle()
   async getMemes(@Body() body: { cursor: number }): Promise<any> {
     if (body.cursor === 0) {
       return await this.memeService.posts({
-        take: 7,
+        take: 15,
         orderBy: {
           id: 'desc',
         },
@@ -136,6 +151,7 @@ export class MemeController {
           id: true,
           title: true,
           url: true,
+          createdAt: true,
         },
         where: {
           active: { equals: true },
@@ -186,6 +202,7 @@ export class MemeController {
         id: true,
         title: true,
         url: true,
+        createdAt: true,
       },
     });
     if (meme === null) return {};
@@ -233,7 +250,7 @@ export class MemeController {
   }
 
   @UseGuards(SessionGuard)
-  // @Throttle(60, 15)
+  @Throttle(60, 15)
   @SkipThrottle()
   @Put('like/:id')
   async likeMeme(@Param('id') id: string, @Session() session: Record<string, any>): Promise<any> {
@@ -261,7 +278,7 @@ export class MemeController {
   }
 
   @UseGuards(SessionGuard)
-  // @Throttle(60, 15)
+  @Throttle(60, 15)
   @SkipThrottle()
   @Delete('like/:id')
   async unlikeMeme(@Param('id') id: string, @Session() session: Record<string, any>): Promise<any> {
@@ -288,8 +305,8 @@ export class MemeController {
     }
   }
 
-  // @Throttle(60, 15)
-  @SkipThrottle()
+  @Throttle(60, 15)
+  // @SkipThrottle()
   @Get('comment/:id')
   async getMemeComments(@Param('id') memeId: string): Promise<Comment[]> {
     return await this.memeService.comments({

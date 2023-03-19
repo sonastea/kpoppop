@@ -1,7 +1,8 @@
+import autoAnimate from '@formkit/auto-animate';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAuth } from 'contexts/AuthContext';
-import { BaseSyntheticEvent, useEffect, useState } from 'react';
+import { BaseSyntheticEvent, useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import EditProfilePhoto from './EditProfilePhoto';
 import { EditSocialLinkFormData, SocialMediaLink } from './SocialMedias';
@@ -41,6 +42,7 @@ const EditProfile = () => {
   const [isLoading, setLoading] = useState<boolean>(true);
   const [croppedUrl, setCroppedUrl] = useState<RequestInfo | URL | null>(null);
   const [socials, setSocials] = useState<SocialMediaLink[] | undefined>([]);
+  const socialsRef = useRef<HTMLDivElement>(null);
   const [edittingProfilePhoto, setEdittingProfilePhoto] = useState<boolean>(false);
   const { register, handleSubmit, setValue } = useForm<EditProfileFormData>({
     defaultValues: { displayname: user?.displayname },
@@ -61,6 +63,10 @@ const EditProfile = () => {
       setLoading(false);
     });
   }, []);
+
+  useEffect(() => {
+    socialsRef.current && autoAnimate(socialsRef.current);
+  }, [socialsRef]);
 
   const editProfileHandler: SubmitHandler<EditProfileFormData> = async (newData) => {
     const formData = new FormData();
@@ -121,8 +127,7 @@ const EditProfile = () => {
 
     await deleteSocialMediaLink(socials![index].uuid).then((response) => {
       if (response.success) {
-        const updatedSocials = socials?.filter((_social, idx: number) => idx !== index);
-        setSocials(updatedSocials);
+        setSocials(socials?.filter((_, idx) => idx !== index));
       }
     });
   };
@@ -277,7 +282,7 @@ const EditProfile = () => {
         </form>
       </div>
 
-      <div className="mt-2 pb-40 flex justify-center mx-auto max-w-screen-lg w-full">
+      <div className="mt-2 pb-40 flex justify-center mx-auto max-w-screen-lg w-full h-3/5">
         <div className="w-full sm:w-3/4">
           <form className="edit-socials">
             <h2 className="py-3 text-2xl font-bold border-b md:text-3xl border-slate-300">
@@ -325,7 +330,7 @@ const EditProfile = () => {
               </button>
             </div>
           </form>
-          <div className="text-sm sm:text-lg m-2 space-y-2">
+          <div className="text-sm sm:text-lg m-2 space-y-2" ref={socialsRef}>
             {socials &&
               socials.map((social: SocialMediaLink, index: number) => {
                 return (

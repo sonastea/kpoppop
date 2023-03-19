@@ -44,6 +44,7 @@ module.exports = {
         },
       },
       maxHeight: {
+        'lg': '32rem',
         '2xl': '42rem',
       },
       transformOrigin: {

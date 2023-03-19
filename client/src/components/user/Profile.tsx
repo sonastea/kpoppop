@@ -114,7 +114,7 @@ const Profile = () => {
             </h3>
           </div>
         </div>
-        <div className="w-full p-3 text-xs md:text-lg columns-3 md:columns-4 gap-3 space-y-6">
+        <div className="w-full p-3 text-center text-xs md:text-lg columns-3 md:columns-4 gap-3 space-y-6">
           {data?.memes?.map((meme: Post) => {
             const title = meme.title.replace(/ /g, '_');
             return (

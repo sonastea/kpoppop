@@ -1,6 +1,13 @@
-import { ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { createContext } from 'react';
 import { API_URL } from 'Global.d';
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 export type User = {
   id?: number;
@@ -19,7 +26,13 @@ export interface IAuthContext {
 
 export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
-export function AuthProvider({ children, initialUser }: { children: ReactNode; initialUser?: User }): JSX.Element {
+export function AuthProvider({
+  children,
+  initialUser,
+}: {
+  children: ReactNode;
+  initialUser?: User;
+}): JSX.Element {
   const [user, setUser] = useState<User>(initialUser as User);
   const [loadingInitial, setLoadingInitial] = useState<boolean>(true);
 
@@ -62,7 +75,9 @@ export function AuthProvider({ children, initialUser }: { children: ReactNode; i
 
   const memoedValues = useMemo(() => ({ user, logout, updateUser }), [user, logout, updateUser]);
 
-  return <AuthContext.Provider value={memoedValues}>{!loadingInitial && children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={memoedValues}>{!loadingInitial && children}</AuthContext.Provider>
+  );
 }
 
 export function useAuth() {

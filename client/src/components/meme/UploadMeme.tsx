@@ -136,7 +136,7 @@ const UploadMeme = () => {
     } else if (e.target.files?.length === 1) {
       setFiles(e.target.files); // UploadMeme Image Preview
       // Skip identifying video formats and just set postable to true.
-      if (e.target.files[0].type === ('video/quicktime' || 'video/mp4')) {
+      if (e.target.files[0].type.match('^video/(quicktime|mp4)$')) {
         setPostable(true);
         return;
       }
@@ -177,7 +177,7 @@ const UploadMeme = () => {
       <button
         onClick={() => setOpen((open) => !open)}
         type="button"
-        className="z-10 p-2 m-4 font-semibold text-gray-900 border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
+        className="z-10 p-2 m-4 whitespace-pre overflow-hidden font-semibold text-gray-900 border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
       >
         Submit a post
       </button>
@@ -185,11 +185,11 @@ const UploadMeme = () => {
       {open && (
         <div
           onClick={() => setOpen((open) => !open)}
-          className="z-10 absolute flex justify-center w-full min-h-screen"
+          className="z-10 fixed inset-0 flex justify-center w-full min-h-screen backdrop-blur"
         >
           <div
             onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
-            className="border border-once/50 absolute inset-x-0 bg-white rounded shadow-md sm:inset-x-auto sm:w-1/2 top-20"
+            className="border border-once/50 absolute inset-x-0 bg-white rounded shadow-md sm:inset-x-auto sm:w-1/2 top-10 md:top-20"
           >
             <form onSubmit={handleSubmit(memeHandler)} className="p-8 space-y-5">
               <button
@@ -263,7 +263,11 @@ const UploadMeme = () => {
                     case 'video/mp4':
                     case 'video/quicktime':
                       return (
-                        <video key={file.name} className="h-auto w-full" controls>
+                        <video
+                          key={file.name}
+                          className="h-56 sm:h-64 md:h-96 m-auto aspect-video"
+                          controls
+                        >
                           <source src={URL.createObjectURL(file)} type="video/mp4" />
                         </video>
                       );

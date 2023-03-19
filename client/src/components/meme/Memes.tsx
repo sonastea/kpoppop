@@ -1,11 +1,25 @@
+import autoAnimate from '@formkit/auto-animate';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { DAY } from 'Global.d';
+import useRemoveMemeStore from 'hooks/useRemoveMeme';
 import { debounce } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
+import ConfirmationDialog from './ConfirmationDialog';
 import InteractiveButtons from './InteractiveButtons';
 import { fetchMemes } from './MemeAPI';
 import MemeMenu from './MemeMenu';
 import ReportMemeModal from './ReportMemeModal';
+
+type Meme = {
+  author: { username: string };
+  active: boolean;
+  authorId: number;
+  id: number;
+  title: string;
+  url: string;
+  createdAt: string;
+};
 
 let cursor: number = 0;
 
@@ -13,12 +27,17 @@ const Memes = () => {
   const [posts, setPosts] = useState([] as any);
   const [loading, setLoading] = useState(false);
 
+  const postsRef = useRef<HTMLDivElement>(null);
+
+  const [title, setTitle] = useState<string>('');
+  const { memeId: currentMemeId } = useRemoveMemeStore();
+
   const loadMorePosts = async () => {
     setLoading(false);
     await fetchMemes(cursor)
       .then((memes) => {
         if (memes.length !== 0) {
-          setPosts((prev: any) => [...prev, ...memes]);
+          setPosts((prev: Meme[]) => [...prev, ...memes]);
           cursor = memes[memes.length - 1].id;
         } else {
           window.removeEventListener('scroll', handleScroll.current);
@@ -38,10 +57,10 @@ const Memes = () => {
             cursor = memes[memes.length - 1].id;
           }
         })
-        .catch((_error) => {});
+        .catch((error) => console.error(error));
     };
 
-    loadData().catch((error) => console.log(error));
+    loadData().catch((error) => console.error(error));
 
     const handleScrollRef: any = handleScroll.current;
     window.addEventListener('scroll', handleScrollRef);
@@ -50,8 +69,8 @@ const Memes = () => {
     };
   }, []);
 
-  const handleScroll = useRef((e: any) => {
-    const { innerHeight, scrollY } = e.currentTarget;
+  const handleScroll = useRef((e: Event) => {
+    const { innerHeight, scrollY } = e.currentTarget as Window;
 
     if (!loading && innerHeight + scrollY >= document.body.scrollHeight) {
       setLoading(true);
@@ -59,64 +78,80 @@ const Memes = () => {
     }
   });
 
+  useEffect(() => {
+    postsRef.current && autoAnimate(postsRef.current);
+  }, [postsRef]);
+
+  const removeMemeFromList = (memeId: number) => {
+    setPosts((posts: Meme[]) => posts.filter((m: Meme) => m.id !== memeId));
+  };
+
+  useEffect(() => {
+    const meme: Meme | undefined = posts.find((m: Meme) => m.id === currentMemeId);
+    if (meme?.title) {
+      setTitle(meme?.title ?? '');
+    }
+  }, [currentMemeId, posts]);
+
   return (
     <>
-      <div className="meme-container flex flex-col items-center md:m-4">
+      <ConfirmationDialog title={title} updateList={removeMemeFromList} />
+      <div className="meme-container flex flex-col items-center overflow-hidden" ref={postsRef}>
         {posts &&
-          posts.map((meme: any) => {
+          posts.map((meme: Meme) => {
             const title = meme.title.replace(/ /g, '_');
             return (
               <div
-                className="m-2 md:m-4 shadow-md bg-gradient-to-br from-gray-300 rounded-md w-full md:w-3/4"
+                className="w-full my-2 shadow-sm sm:max-w-2xl sm:rounded-md bg-white"
                 key={meme.id}
               >
-                <div className="flex-row items-center p-8 box-border rounded-md">
-                  <div className="flex pb-6 text-sm font-bold md:text-xl author-bar">
-                    <a className="hover:text-once-700" href={`/user/${meme.author.username}`}>
-                      {meme.author.username}
-                    </a>
-                    <div className="ml-auto">
-                      <ReportMemeModal id={meme.id} />
-                      <MemeMenu memeId={meme.id} />
-                    </div>
+                <div className="flex flex-wrap overflow-auto leading-normal mx-4 mt-4 mb-2 md:text-xl author-bar">
+                  <a
+                    className="font-bold hover:text-once-700"
+                    href={`/user/${meme.author.username}`}
+                  >
+                    {meme.author.username}
+                  </a>
+                  <div className="ml-2">
+                    <span className="text-xs sm:text-sm text-gray-500">
+                      {DAY(meme.createdAt).fromNow(true)}
+                    </span>
                   </div>
-                  <div className="flex-col justify-center">
-                    {meme.url.split('.')[3] === 'mp4' ? (
-                      <video
-                        key={meme.title}
-                        className="rounded-md mx-auto md:max-h-48"
-                        controls
-                        muted
-                      >
-                        <source src={meme.url} type="video/mp4" />
-                      </video>
-                    ) : (
-                      <a className="contents" href={`/meme/${meme.id}/${title}`}>
-                        <img
-                          className="mx-auto rounded-md max-h-36 md:max-h-48"
-                          src={meme.url}
-                          alt={meme.title}
-                        />
-                      </a>
-                    )}
+                  <div className="ml-auto">
+                    <ReportMemeModal id={meme.id} />
+                    <MemeMenu authorId={meme.authorId} memeId={meme.id} />
                   </div>
-                  <div className="flex justify-center py-3">
-                    <a
-                      className="hover:underline font-bold text-gray-800 text-xs md:text-lg"
-                      href={`/meme/${meme.id}/${title}`}
-                    >
-                      {meme.title}
-                    </a>
-                  </div>
-                  <InteractiveButtons memeId={meme.id} memeTitle={title} />
                 </div>
+                <div className="flex mx-4 my-2">
+                  <a
+                    className="hover:underline text-slate-900 text-sm md:text-lg"
+                    href={`/meme/${meme.id}/${title}`}
+                  >
+                    {meme.title}
+                  </a>
+                </div>
+                {meme.url.split('.')[3] === 'mp4' ? (
+                  <video
+                    key={meme.title}
+                    className="object-cover aspect-square w-full mx-auto md:max-h-lg md:aspect-auto"
+                    controls
+                    muted
+                  >
+                    <source src={meme.url} type="video/mp4" />
+                  </video>
+                ) : (
+                  <a className="contents" href={`/meme/${meme.id}/${title}`}>
+                    <img className="w-full max-h-lg mt-2" src={meme.url} alt={meme.title} />
+                  </a>
+                )}
+                <InteractiveButtons memeId={meme.id} memeTitle={title} />
               </div>
             );
           })}
       </div>
 
       <div
-        onScroll={handleScroll.current}
+        onScroll={() => handleScroll.current}
         id="scroll-load-div"
         className="flex justify-center p-5 page-number"
       >

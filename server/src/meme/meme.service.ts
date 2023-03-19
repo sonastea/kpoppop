@@ -227,6 +227,26 @@ export class MemeService {
     return comment['comments'][0];
   }
 
+  async removeMeme(memeId: number, user: { id?: number; discordId?: string }): Promise<any> {
+    const { id, discordId } = user;
+    const meme = await this.prisma.meme.update({
+      where: {
+        id: memeId,
+        OR: [{ authorId: id }, { author: { discord: { discordId: discordId } } }],
+      },
+      data: {
+        id: memeId,
+        active: false,
+      },
+      select: {
+        id: true,
+        active: true,
+      },
+    });
+    if (meme.id) return { memeId: meme.id, success: true };
+    return { memeId: meme.id, success: false };
+  }
+
   async reportMeme(params: { data: Prisma.ReportMemeCreateInput }): Promise<any> {
     const { data } = params;
     const reported = await this.prisma.reportMeme.create({ data });

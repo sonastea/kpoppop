@@ -32,15 +32,16 @@ const NavBarLoggedIn = () => {
           </Menu.Button>
           {open && (
             <Transition
+              className="absolute right-0 w-40 mt-2 mr-2 z-50"
               show={open}
               enter="transition duration-100 ease-out"
               enterFrom="transform scale-95 opacity-0"
-              enterTo="transofrm scale-100 opacity-100"
+              enterTo="transform scale-100 opacity-100"
               leave="transition duration-75 ease-out"
               leaveFrom="transform scale-900 opacity-100"
               leaveTo="transform scale-95 opacity-0"
             >
-              <Menu.Items className="absolute right-0 w-40 mt-2 mr-2 bg-white border shadow origin-top-right rounded-md ring-opacity-5 focus:outline-none z-50">
+              <Menu.Items className="bg-white border shadow origin-top-right rounded-md ring-opacity-5 focus:outline-none">
                 <Menu.Item>
                   {({ active }) => (
                     <a
