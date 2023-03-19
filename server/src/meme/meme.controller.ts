@@ -118,6 +118,21 @@ export class MemeController {
     }
   }
 
+  @UseGuards(SessionGuard)
+  @Throttle(60, 15)
+  @Put('remove/:id')
+  async removeMeme(@Param('id') memeId: string, @Session() session: Record<string, any>) {
+    if (session.passport.user.id) {
+      return await this.memeService.removeMeme(parseInt(memeId), { id: session.passport.user.id });
+    }
+
+    if (session.passport.user.discordId) {
+      return await this.memeService.removeMeme(parseInt(memeId), {
+        discordId: session.passport.user.discordId,
+      });
+    }
+  }
+
   @Post('posts')
   @SkipThrottle()
   async getMemes(@Body() body: { cursor: number }): Promise<any> {

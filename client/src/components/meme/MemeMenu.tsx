@@ -6,15 +6,17 @@ import { useEffect, useState } from 'react';
 import { usePopper } from 'react-popper';
 import useMemeMenuButtons from './hooks/useMemeMenuButtons';
 
-const MemeMenu = ({ memeId: id }: { memeId: string }) => {
+const MemeMenu = ({ authorId, memeId }: { authorId: number; memeId: number }) => {
   const { user } = useAuth();
-  const { DefaultMenuButtons, ModerationMenuButtons } = useMemeMenuButtons(
-    user ? true : false,
-    id);
+  const { DefaultMenuButtons, LoggedInMenuButtons, ModerationMenuButtons } = useMemeMenuButtons(
+    user?.id ?? false,
+    memeId
+  );
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
   const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
   const { styles, attributes } = usePopper(referenceElement, popperElement);
   const [isAuthorized, setAuthorized] = useState<boolean>(false);
+  const isAuthor = user?.id === authorId;
 
   useEffect(() => {
     if (user?.role === 'MODERATOR' || user?.role === 'ADMIN') setAuthorized(true);
@@ -29,8 +31,15 @@ const MemeMenu = ({ memeId: id }: { memeId: string }) => {
   return (
     <>
       <Popover>
-        <Popover.Button ref={setReferenceElement} aria-label="Toggle user menu">
-          <FontAwesomeIcon icon={faEllipsis} />
+        <Popover.Button
+          className="-p-2 group outline-none"
+          ref={setReferenceElement}
+          aria-label="Toggle user menu"
+        >
+          <FontAwesomeIcon
+            className="group-hover:bg-gray-200 group-hover:rounded-full p-1"
+            icon={faEllipsis}
+          />
         </Popover.Button>
         <Transition
           enter="transition-opacity duration-150 ease-in-out"
@@ -47,8 +56,9 @@ const MemeMenu = ({ memeId: id }: { memeId: string }) => {
             {...attributes.popper}
           >
             <div className="border bg-white shadow-sm border-gray-200 rounded-md text-sm overflow-hidden">
+              {isAuthor && LoggedInMenuButtons}
               {DefaultMenuButtons}
-              {isAuthorized && ModerationMenuButtons}
+              {isAuthorized && !isAuthor && ModerationMenuButtons}
             </div>
           </Popover.Panel>
         </Transition>

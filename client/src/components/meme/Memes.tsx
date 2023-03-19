@@ -1,8 +1,11 @@
+import autoAnimate from '@formkit/auto-animate';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DAY } from 'Global.d';
+import useRemoveMemeStore from 'hooks/useRemoveMeme';
 import { debounce } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
+import ConfirmationDialog from './ConfirmationDialog';
 import InteractiveButtons from './InteractiveButtons';
 import { fetchMemes } from './MemeAPI';
 import MemeMenu from './MemeMenu';
@@ -23,6 +26,11 @@ let cursor: number = 0;
 const Memes = () => {
   const [posts, setPosts] = useState([] as any);
   const [loading, setLoading] = useState(false);
+
+  const postsRef = useRef<HTMLDivElement>(null);
+
+  const [title, setTitle] = useState<string>('');
+  const { memeId: currentMemeId } = useRemoveMemeStore();
 
   const loadMorePosts = async () => {
     setLoading(false);
@@ -70,9 +78,25 @@ const Memes = () => {
     }
   });
 
+  useEffect(() => {
+    postsRef.current && autoAnimate(postsRef.current);
+  }, [postsRef]);
+
+  const removeMemeFromList = (memeId: number) => {
+    setPosts((posts: Meme[]) => posts.filter((m: Meme) => m.id !== memeId));
+  };
+
+  useEffect(() => {
+    const meme: Meme | undefined = posts.find((m: Meme) => m.id === currentMemeId);
+    if (meme?.title) {
+      setTitle(meme?.title ?? '');
+    }
+  }, [currentMemeId, posts]);
+
   return (
     <>
-      <div className="meme-container flex flex-col items-center overflow-hidden">
+      <ConfirmationDialog title={title} updateList={removeMemeFromList} />
+      <div className="meme-container flex flex-col items-center overflow-hidden" ref={postsRef}>
         {posts &&
           posts.map((meme: Meme) => {
             const title = meme.title.replace(/ /g, '_');
@@ -95,7 +119,7 @@ const Memes = () => {
                   </div>
                   <div className="ml-auto">
                     <ReportMemeModal id={meme.id} />
-                    <MemeMenu memeId={meme.id.toString()} />
+                    <MemeMenu authorId={meme.authorId} memeId={meme.id} />
                   </div>
                 </div>
                 <div className="flex mx-4 my-2">

@@ -28,6 +28,11 @@ const ReportUserData: Prisma.ReportUserSelect = {
   description: true,
 };
 
+type UserIdentifier = {
+  id?: number;
+  discordId?: string;
+};
+
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
@@ -147,12 +152,10 @@ export class UserService {
     }
   }
 
-  async getUserProfile(
-    where: Prisma.UserWhereUniqueInput | Prisma.DiscordUserWhereUniqueInput
-  ): Promise<any> {
+  async getUserProfile(where: UserIdentifier): Promise<any> {
     if (where.id) {
       return await this.prisma.user.findUnique({
-        where,
+        where: { id: where.id },
         select: {
           ...UserProfileData,
 
@@ -165,7 +168,7 @@ export class UserService {
       });
     } else {
       const discordUser = await this.prisma.discordUser.findUnique({
-        where,
+        where: { discordId: where.discordId },
         select: {
           user: {
             select: {
@@ -184,13 +187,10 @@ export class UserService {
     }
   }
 
-  async updateProfile(
-    where: Prisma.UserWhereUniqueInput | Prisma.DiscordUserWhereUniqueInput,
-    data: Prisma.UserUpdateInput
-  ): Promise<any> {
+  async updateProfile(where: UserIdentifier, data: Prisma.UserUpdateInput): Promise<any> {
     if (where.id) {
       return await this.prisma.user.update({
-        where,
+        where: { id: where.id },
         data,
         select: {
           ...UserProfileData,
@@ -204,7 +204,7 @@ export class UserService {
       });
     } else {
       const user = await this.prisma.discordUser.update({
-        where,
+        where: { discordId: where.discordId },
         data: {
           user: {
             update: data,

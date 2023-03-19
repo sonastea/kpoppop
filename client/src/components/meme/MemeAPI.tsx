@@ -82,6 +82,13 @@ export const editComment = async (comment: string, id: number) => {
   }).then((response) => response.json());
 };
 
+export const removeMeme = async (id: number) => {
+  return await fetch(`/api/meme/remove/${id}`, {
+    method: 'PUT',
+    credentials: 'include',
+  }).then((response) => response.json());
+};
+
 export const reportMeme = async (id: number, description: string) => {
   return await fetch(`/api/meme/report`, {
     method: 'POST',

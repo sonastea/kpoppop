@@ -1,40 +1,70 @@
 import { faFlag } from '@fortawesome/free-regular-svg-icons';
-import { faBan, faGavel } from '@fortawesome/free-solid-svg-icons';
+import { faBan, faGavel, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import useRemoveMeme from 'hooks/useRemoveMeme';
 import { toggleMeme } from '../MemeAPI';
 import useReportMemeStore from './useReportMeme';
 
-const useMemeMenuButtons = (isLoggedIn: boolean, id: string) => {
+const useMemeMenuButtons = (userId: number | boolean, memeId: number) => {
   const { reportingMeme } = useReportMemeStore();
+  const { confirmingOpen } = useRemoveMeme();
 
-  const button_bg = 'grid grid-flow-col auto-cols-max gap-x-2 p-2 py-1 hover:bg-gray-100';
+  const button_bg = 'grid grid-flow-col auto-cols-max space-x-2 p-2 py-1 hover:bg-gray-100';
+
+  const removeMemeHandler = () => {
+    confirmingOpen(memeId);
+  };
 
   const reportMemeHandler = () => {
-    if (!isLoggedIn)
-      window.location.href = "/login";
-    else
-      reportingMeme(parseInt(id));
-  }
+    if (!userId) window.location.href = '/login';
+    else reportingMeme(memeId);
+  };
 
-  const removeMemeHandler = async (e: any) => {
+  const toggleMemeHandler = async (e: any) => {
     e.preventDefault();
-    await toggleMeme(parseInt(id))
-      .then((data) => window.alert(JSON.stringify(data)));
-  }
+    await toggleMeme(memeId).then((data) => window.alert(JSON.stringify(data)));
+  };
 
   return {
     DefaultMenuButtons: (
       <>
         <div
-          className={`${button_bg} ${!isLoggedIn && "cursor-not-allowed"}`}
+          className={`${button_bg} ${!userId && 'cursor-not-allowed'}`}
           role="button"
           aria-label="report-meme"
           onClick={() => reportMemeHandler()}
         >
           <span>
-            <FontAwesomeIcon className="text-red-500" icon={faFlag} flip="horizontal" />
+            <FontAwesomeIcon
+              height={18}
+              width={18}
+              className="text-red-500"
+              icon={faFlag}
+              flip="horizontal"
+            />
           </span>
-          <span className="whitespace-nowrap">{isLoggedIn ? "Report meme" : "Login to report"}</span>{' '}
+          <span className="whitespace-nowrap">{userId ? 'Report meme' : 'Login to report'}</span>{' '}
+        </div>
+      </>
+    ),
+    LoggedInMenuButtons: (
+      <>
+        <div
+          className={`${button_bg} ${!userId && 'cursor-not-allowed'}`}
+          role="button"
+          aria-label="remove-meme"
+          onClick={removeMemeHandler}
+        >
+          <span>
+            <FontAwesomeIcon
+              height={18}
+              width={18}
+              className="text-red-500 text-lg"
+              icon={faXmark}
+              flip="horizontal"
+            />
+          </span>
+          <span className="whitespace-nowrap">{'Remove meme'}</span>
         </div>
       </>
     ),
@@ -44,16 +74,16 @@ const useMemeMenuButtons = (isLoggedIn: boolean, id: string) => {
           className={`${button_bg}`}
           role="button"
           aria-label="remove-meme"
-          onClick={removeMemeHandler}
+          onClick={toggleMemeHandler}
         >
-          <span className="fa-layers my-auto">
-            <FontAwesomeIcon className="text-red-600" icon={faBan} />
-            <FontAwesomeIcon size="xs" icon={faGavel} />
+          <span className="fa-layers my-auto w-[18px]">
+            <FontAwesomeIcon height={18} className="text-red-600" icon={faBan} />
+            <FontAwesomeIcon height={18} size="xs" icon={faGavel} />
           </span>
-          <span className="whitespace-nowrap">Remove meme</span>
+          <span className="whitespace-nowrap">Toggle meme</span>
         </div>
       </>
-    )
+    ),
   };
 };
 

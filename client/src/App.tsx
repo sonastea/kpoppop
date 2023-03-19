@@ -7,6 +7,8 @@ import RegisterRedirect from 'components/user/RegisterRedirect';
 import VerifyEmail from 'components/user/VerifyEmail';
 import { AuthProvider } from 'contexts/AuthContext';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Home from './components/Home';
 import Post from './components/meme/Post';
 import NavBar from './components/NavBar';
@@ -18,9 +20,16 @@ const App = () => {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <>
-          <NavBar />
-        </>
+        <ToastContainer
+          autoClose={1000}
+          bodyClassName="toastifyBody"
+          closeOnClick
+          draggable
+          hideProgressBar={true}
+          position="top-right"
+          limit={3}
+        />
+        <NavBar />
 
         <Routes>
           <Route path="/" element={<Home />} />
