@@ -1,24 +1,26 @@
+import { API_URL } from "Global.d";
+
 export const fetchUser = async (user: string) => {
-  return await fetch(`/api/user/${user}`, {
+  return await fetch(`${API_URL}/user/${user}`, {
     method: 'GET',
   }).then((response) => response.json());
 };
 
 export const fetchUserById = async (user: number) => {
-  return await fetch(`/api/user/id-${user}`, {
+  return await fetch(`${API_URL}/user/id-${user}`, {
     method: 'GET',
   }).then((response) => response.json());
 };
 
 export const fetchUserSettings = async () => {
-  return await fetch(`/api/user/profile/settings`, {
+  return await fetch(`${API_URL}/user/profile/settings`, {
     method: 'GET',
     credentials: 'include',
   }).then((response) => response.json());
 };
 
 export const updateProfile = async (data: any) => {
-  return await fetch(`/api/user/update_profile`, {
+  return await fetch(`${API_URL}/user/update_profile`, {
     method: 'POST',
     body: data,
     credentials: 'include',
@@ -26,7 +28,7 @@ export const updateProfile = async (data: any) => {
 };
 
 export const addSocialMediaLink = async (data: any) => {
-  return await fetch(`/api/user/add_social`, {
+  return await fetch(`${API_URL}/user/add_social`, {
     method: 'PUT',
     body: data,
     credentials: 'include',
@@ -34,7 +36,7 @@ export const addSocialMediaLink = async (data: any) => {
 };
 
 export const deleteSocialMediaLink = async (uuid: string) => {
-  return await fetch(`/api/user/delete_social`, {
+  return await fetch(`${API_URL}/user/delete_social`, {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ uuid }),
@@ -43,7 +45,7 @@ export const deleteSocialMediaLink = async (uuid: string) => {
 };
 
 export const reportComment = async (commentId: number, description: string) => {
-  return await fetch(`/api/user/report_comment`, {
+  return await fetch(`${API_URL}/user/report_comment`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ commentId, description }),
@@ -52,7 +54,7 @@ export const reportComment = async (commentId: number, description: string) => {
 };
 
 export const reportUser = async (user: { id: number; username: string }, description: string) => {
-  return await fetch(`/api/user/report`, {
+  return await fetch(`${API_URL}/user/report`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ user, description }),
@@ -61,7 +63,7 @@ export const reportUser = async (user: { id: number; username: string }, descrip
 };
 
 export const banUser = async (name?: string, userId?: number) => {
-  return await fetch(`/api/user/ban_user`, {
+  return await fetch(`${API_URL}/user/ban_user`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username: name, userId }),
@@ -70,7 +72,7 @@ export const banUser = async (name?: string, userId?: number) => {
 };
 
 export const unbanUser = async (name?: string, userId?: number) => {
-  return await fetch(`/api/user/unban_user`, {
+  return await fetch(`${API_URL}/user/unban_user`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username: name, userId: userId }),
@@ -79,7 +81,7 @@ export const unbanUser = async (name?: string, userId?: number) => {
 };
 
 export const modUser = async (name?: string, userId?: number) => {
-  return await fetch(`/api/user/mod_user`, {
+  return await fetch(`${API_URL}/user/mod_user`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username: name, userId: userId }),
@@ -88,7 +90,7 @@ export const modUser = async (name?: string, userId?: number) => {
 };
 
 export const unmodUser = async (name?: string, userId?: number) => {
-  return await fetch(`/api/user/unmod_user`, {
+  return await fetch(`${API_URL}/user/unmod_user`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username: name, userId: userId }),
