@@ -1,6 +1,7 @@
 import { useAuth } from 'contexts/AuthContext';
 import { API_URL } from 'Global.d';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const AdminPanel = () => {
   const [modUser, setModUser] = useState<string>();
@@ -24,7 +25,7 @@ const AdminPanel = () => {
       credentials: 'include',
     })
       .then((response) => response.json())
-      .then((data) => window.alert(data));
+      .then((data) => toast.info(JSON.stringify(data)));
   };
 
   const banUserHandler = async (e: any) => {
@@ -36,7 +37,7 @@ const AdminPanel = () => {
       credentials: 'include',
     })
       .then((response) => response.json())
-      .then((data) => window.alert(JSON.stringify(data)));
+      .then((data) => toast.info(JSON.stringify(data)));
   };
 
   const unmodUserHandler = async (e: any) => {
@@ -48,7 +49,7 @@ const AdminPanel = () => {
       credentials: 'include',
     })
       .then((response) => response.json())
-      .then((data) => window.alert(JSON.stringify(data)));
+      .then((data) => toast.info(JSON.stringify(data)));
   };
 
   const hideMemeHandler = async (e: any) => {
@@ -60,7 +61,9 @@ const AdminPanel = () => {
       credentials: 'include',
     })
       .then((response) => response.json())
-      .then((data) => window.alert(JSON.stringify(data)));
+      .then((data) =>
+        toast.info(JSON.stringify(data, ['id', 'title', 'authorId', 'active', 'flagged'], 2))
+      );
   };
 
   const showMemeHandler = async (e: any) => {
@@ -72,7 +75,9 @@ const AdminPanel = () => {
       credentials: 'include',
     })
       .then((response) => response.json())
-      .then((data) => window.alert(JSON.stringify(data)));
+      .then((data) =>
+        toast.info(JSON.stringify(data, ['id', 'title', 'authorId', 'active', 'flagged'], 2))
+      );
   };
 
   if (isAuthorized) {
