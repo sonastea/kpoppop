@@ -66,31 +66,45 @@ const Login = () => {
         <div className="relative border-2 label-outline focus-within:border-once">
           <input
             required
+            autoComplete="username"
             placeholder=" "
             className="block w-full p-3 text-lg bg-transparent appearance-none focus:outline-none"
             type="text"
             {...register('username')}
           />
-          <label className="absolute top-0 p-3 text-lg bg-white origin-0 -z-1 duration-300">Username</label>
+          <label className="absolute top-0 p-3 text-lg bg-white origin-0 -z-1 duration-300">
+            Username
+          </label>
         </div>
 
         <div className="relative border-2 label-outline focus-within:border-once">
           <input
             required
+            autoComplete="current-password"
             placeholder=" "
             className="block w-full p-3 text-lg bg-transparent appearance-none focus:outline-none"
             type={showPassword ? 'text' : 'password'}
             {...register('password')}
           />
-          <label className="absolute top-0 p-3 text-lg bg-white origin-0 -z-1 duration-300">Password</label>
+          <label className="absolute top-0 p-3 text-lg bg-white origin-0 -z-1 duration-300">
+            Password
+          </label>
 
-          <i className="absolute top-0 right-0 p-3 text-lg" onClick={() => setShowPassword((toggle) => !toggle)}>
+          <i
+            className="absolute top-0 right-0 p-3 text-lg"
+            onClick={() => setShowPassword((toggle) => !toggle)}
+          >
             <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
           </i>
         </div>
 
         {errors.password?.message && <span className="text-error">{errors.password.message}</span>}
-        <div className="text-center">New to KPOPPOP? <a className="hover:text-blue-500 font-semibold text-blue-700" href="/register">SIGNUP</a></div>
+        <div className="text-center">
+          New to KPOPPOP?{' '}
+          <a className="hover:text-blue-500 font-semibold text-blue-700" href="/register">
+            SIGNUP
+          </a>
+        </div>
 
         <div className="py-3">
           <button className="w-full p-2 overflow-hidden font-bold text-gray-900 border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400">
