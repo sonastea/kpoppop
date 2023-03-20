@@ -1,6 +1,6 @@
 import { faCirclePlus, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import MessageInputBox from 'components/messages/MessageInputBox';
+import MessageInputBox, { MessagePayload } from 'components/messages/MessageInputBox';
 import MessagesList from 'components/messages/MessagesList';
 import NewConversation from 'components/messages/NewConversation';
 import MessagesSocket from 'components/messages/socket';
@@ -8,6 +8,7 @@ import UserCard, { UserCardProps } from 'components/messages/UserCard';
 import UserCardSkeletonLoader from 'components/messages/UserCardSkeletonLoader';
 import { useAuth } from 'contexts/AuthContext';
 import { useEffect, useReducer, useRef, useState } from 'react';
+import { Socket } from 'socket.io-client';
 
 export type MessageProps = {
   convid?: string | null;
@@ -125,6 +126,7 @@ const Messages = () => {
           setConversations({
             type: MessageAction.FROM_USER,
             message: message,
+            ws: ws,
           });
         }
 
@@ -247,6 +249,7 @@ type ConversationsActionType = {
   conversations?: UserCardProps[];
   message?: MessageProps;
   recipient?: UserCardProps | null;
+  ws?: Socket;
 };
 
 type MessagesProps = {
@@ -329,12 +332,23 @@ function handleConversations(
 
       const updatedConv = m.conversations.find((conv) => conv.convid === action.message?.convid);
       if (updatedConv === undefined || !action.message) return m;
+
+      const matchRecipient = updatedConv.id === (action.message?.from && m.recipient?.id);
+      if (matchRecipient) {
+        const messagePayload: MessagePayload = {
+          convid: updatedConv.convid,
+          to: updatedConv.id,
+          content: null,
+          read: true,
+        };
+        action.ws?.emit('read message', messagePayload);
+      }
+
       updatedConv.messages = [
         ...updatedConv.messages,
         {
           ...action.message,
-          unread:
-            updatedConv.id === action.message?.from ? ++updatedConv.unread : updatedConv.unread,
+          unread: matchRecipient ? updatedConv.unread : ++updatedConv.unread,
         },
       ];
 
