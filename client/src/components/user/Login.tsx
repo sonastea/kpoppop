@@ -4,6 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAuth } from 'contexts/AuthContext';
 import { useState } from 'react';
 import DiscordLoginButton from 'components/button/DiscordLoginButton';
+import { API_URL } from 'Global.d';
 
 type LoginFormData = {
   username: string;
@@ -25,7 +26,7 @@ const Login = () => {
   const loginHandler: SubmitHandler<LoginFormData> = async (data): Promise<any> => {
     if (!data.password || !data.username) return;
     setLoginSuccess(false);
-    await fetch(`/api/user/login`, {
+    await fetch(`${API_URL}/user/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
