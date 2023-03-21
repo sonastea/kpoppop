@@ -18,7 +18,7 @@ dotenv.config();
 };
 
 async function whatMode() {
-  Logger.log(`Running in ${process.env.NODE_ENV} mode`);
+  Logger.log(`Running in ${process.env.NODE_ENV} mode on port ${process.env.PORT}`);
 }
 
 export const cookie: expressSession.CookieOptions = {

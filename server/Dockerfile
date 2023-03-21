@@ -1,4 +1,4 @@
-FROM node:16-alpine as builder
+FROM node:18-alpine as builder
 
 RUN mkdir /app
 
@@ -15,7 +15,11 @@ RUN npm run build
 
 #
 
-FROM node:16-alpine
+FROM node:18-alpine
+
+ENV PORT=${PORT:-5000}
+
+WORKDIR /app
 
 COPY --from=builder /app/.env ./.env
 COPY --from=builder /app/package*.json ./
@@ -24,11 +28,9 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/secrets ./secrets
 COPY --from=builder /app/firebaseCredentials.json ./
 
-RUN npm install @nestjs/core
-RUN npm install prisma
+RUN npm install @nestjs/core@9.3.10
+RUN npm install prisma@4.11.0 && npx prisma migrate deploy
 
-RUN npx prisma migrate deploy
-
-EXPOSE 5000
+EXPOSE $PORT
 
 CMD ["npm", "run", "start:prod"]
