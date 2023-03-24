@@ -177,6 +177,7 @@ export class MemeController {
           id: true,
           title: true,
           url: true,
+          createdAt: true,
         },
         where: {
           active: { equals: true },
