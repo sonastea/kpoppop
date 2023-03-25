@@ -6,6 +6,7 @@ import { compressImage } from './CompressImage';
 import { useState } from 'react';
 import { submitMeme } from './MemeAPI';
 import { profanityFilter } from 'utils/profanity-filter';
+import { toast } from 'react-toastify';
 
 export type PredictionType = {
   className: string;
@@ -66,14 +67,14 @@ const UploadMeme = () => {
       submitMeme(formData)
         .then((response) => {
           if (response.status === 400) {
-            window.alert('Upload failed.');
+            toast.error('Upload failed.');
             setTimeout(() => {
               setUploadFinished(false);
               setUploading(false);
             }, 500);
           }
           if (response.status >= 401 && response.status < 600) {
-            window.alert('You must be logged in to submit a meme.');
+            toast.error('You must be logged in to submit a meme.');
             setTimeout(() => {
               setUploadFinished(false);
               setUploading(false);
@@ -90,7 +91,7 @@ const UploadMeme = () => {
         .catch((err) => {
           console.log(err);
           setUploading(false);
-          alert('Failed to upload meme.');
+          toast.error('Failed to upload meme.');
         });
     }
   };
@@ -126,11 +127,11 @@ const UploadMeme = () => {
 
     if (e.target.files && e.target.files.length > 1) {
       if (!filter.some((format) => e.target.files?.[0].type.includes(format))) {
-        alert('We do not support ' + e.target.files[0].type + ' files');
+        toast.error('We do not support ' + e.target.files[0].type + ' files');
         resetField('file');
         return;
       }
-      alert('Cannot post more than 1 photo.');
+      toast.error('Cannot post more than 1 photo.');
       setPostable(false);
       return;
     } else if (e.target.files?.length === 1) {

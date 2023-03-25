@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dialog } from '@headlessui/react';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import useReportMemeStore from './hooks/useReportMeme';
 import { reportMeme } from './MemeAPI';
 
@@ -28,7 +29,7 @@ const ReportMemeModal = (props: { id: number }) => {
     await reportMeme(props.id, data.description)
       .then((data: any) => {
         if (data.statusCode === 403) {
-          alert('You must be logged in to do that!');
+          toast.error('You must be logged in to do that!');
           reportingMeme();
           resetForm();
         } else {

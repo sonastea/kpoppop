@@ -2,6 +2,7 @@ import { faFlag } from '@fortawesome/free-regular-svg-icons';
 import { faBan, faGavel, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useRemoveMeme from 'hooks/useRemoveMeme';
+import { toast } from 'react-toastify';
 import { toggleMeme } from '../MemeAPI';
 import useReportMemeStore from './useReportMeme';
 
@@ -22,7 +23,7 @@ const useMemeMenuButtons = (userId: number | boolean, memeId: number) => {
 
   const toggleMemeHandler = async (e: any) => {
     e.preventDefault();
-    await toggleMeme(memeId).then((data) => window.alert(JSON.stringify(data)));
+    await toggleMeme(memeId).then((data) => toast.warning(JSON.stringify(data)));
   };
 
   return {

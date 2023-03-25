@@ -2,6 +2,7 @@ import { faBan, faGavel } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IUserProps } from 'components/meme/InteractiveComments';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { banUser, modUser, unbanUser, unmodUser } from '../UserAPI';
 
 const useTooltipModerationButtons = (props: { user: IUserProps }) => {
@@ -17,28 +18,28 @@ const useTooltipModerationButtons = (props: { user: IUserProps }) => {
   const handleBanUser = async () => {
     await banUser(undefined, props.user.id).then((data) => {
       if (data.id) setBanned(true);
-      else alert('An error occurred.');
+      else toast.error('An error occurred.');
     });
   };
 
   const handleUnbanUser = async () => {
     await unbanUser(undefined, props.user.id).then((data) => {
       if (data.id) setBanned(false);
-      else alert('An error occurred.');
+      else toast.error('An error occurred.');
     });
   };
 
   const handleModUser = async () => {
     await modUser(undefined, props.user.id).then((data) => {
       if (data.id) setModded(true);
-      else alert('An error occurred.');
+      else toast.error('An error occurred.');
     });
   };
 
   const handleUnmodUser = async () => {
     await unmodUser(undefined, props.user.id).then((data) => {
       if (data.id) setModded(false);
-      else alert('An error occurred.');
+      else toast.error('An error occurred.');
     });
   };
 

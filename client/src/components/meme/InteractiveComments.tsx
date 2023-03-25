@@ -1,6 +1,7 @@
 import { useAuth } from 'contexts/AuthContext';
 import { API_URL } from 'Global.d';
 import { ChangeEvent, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
 import Comment from './Comment';
 
 type InteractiveCommentsProps = {
@@ -50,7 +51,7 @@ const InteractiveComments = ({ memeId, ownerId, comments: c }: InteractiveCommen
           setComment('');
           setComments((prev: CommentProps[]) => [data, ...prev]);
         } else {
-          alert('There was an error uploading your comment.');
+          toast.error('There was an error uploading your comment.');
         }
       })
       .finally(() => setTimeout(() => setIsCommenting(false), 10000));

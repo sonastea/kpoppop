@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { createLocalLinkedUser, linkDiscord, linkedDiscord } from 'components/auth/DiscordAPI';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 type FormData = {
   username: string;
@@ -78,7 +79,7 @@ const RegisterRedirect = () => {
     const payload = { username: data?.existing, email: data?.email };
     await linkDiscord(payload).then((data) => {
       if (data.linked) setAccountCreated(true);
-      else alert('Failed to link accounts. Please try again later.');
+      else toast.error('Failed to link accounts. Please try again later.');
       setTimeout(() => {
         window.location.href = '/';
       }, 2000);

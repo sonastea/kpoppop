@@ -2,6 +2,7 @@ import UserMenu from 'components/user/UserMenu';
 import UserTooltip from 'components/user/UserTooltip';
 import { useAuth } from 'contexts/AuthContext';
 import { BaseSyntheticEvent, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
 import CommentButtons from './CommentButtons';
 import CommentModerationButtons from './CommentModerationButtons';
 import { CommentProps } from './InteractiveComments';
@@ -28,7 +29,7 @@ const Comment = (props: { props: CommentProps; memeOwnerId: number }) => {
 
   const handleEditComment = async (e: BaseSyntheticEvent) => {
     if (newComment?.length > MAX_COMMENT_CHAR_LENGTH) {
-      window.alert(`Comment exceeds maximum limit of ${MAX_COMMENT_CHAR_LENGTH} characters.`);
+      toast.error(`Comment exceeds maximum limit of ${MAX_COMMENT_CHAR_LENGTH} characters.`);
       return;
     }
 

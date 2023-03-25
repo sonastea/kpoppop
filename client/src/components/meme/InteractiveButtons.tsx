@@ -2,30 +2,24 @@ import { faComment, faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAuth } from 'contexts/AuthContext';
-import { useEffect, useState } from 'react';
-import {
-  fetchMemeTotalComments,
-  fetchMemeTotalLikes,
-  fetchMemeUserLike,
-  likeMeme,
-  unlikeMeme,
-} from './MemeAPI';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { likeMeme, unlikeMeme } from './MemeAPI';
 
 type InteractiveButtonProps = {
   memeId: number;
   memeTitle: string;
+  liked: boolean;
+  comments: number;
+  likes: number;
 };
 
 const InteractiveButtons = (props: InteractiveButtonProps) => {
   const { user } = useAuth();
-  const { memeId, memeTitle } = props;
-  const [likedState, setLiked] = useState<boolean>();
-  const [totalLikes, setLikes] = useState<number>();
-  const [totalComments, setTotalComments] = useState<number>();
-
-  const setTotalLikes = (likes: number) => {
-    setLikes(likes);
-  };
+  const { memeId, memeTitle, liked, comments, likes } = props;
+  const [likedState, setLiked] = useState<boolean>(liked);
+  const [totalLikes] = useState<number>(likes);
+  const [totalComments] = useState<number>(comments);
 
   const handleLiked = async () => {
     if (user?.id) {
@@ -37,34 +31,9 @@ const InteractiveButtons = (props: InteractiveButtonProps) => {
         setLiked(false);
       }
     } else {
-      window.alert('You must be logged in to like this meme.');
+      toast.warning('You must be logged in to like this meme.')
     }
   };
-
-  useEffect(() => {
-    const fetchLikes = async (memeId: number) => {
-      const [likes, comments] = await Promise.all([
-        fetchMemeTotalLikes(memeId),
-        fetchMemeTotalComments(memeId),
-      ]);
-      setTotalLikes(likes);
-      setTotalComments(comments);
-
-      if (user && user.id) {
-        await fetchMemeUserLike(memeId).then((response) => {
-          if (response.statusCode !== 401) {
-            setLiked(response);
-          }
-        });
-      }
-    };
-
-    try {
-      fetchLikes(memeId);
-    } catch (error: any) {
-      console.log(error.message);
-    }
-  }, [user, likedState, memeId]);
 
   return (
     <div className="py-2 md:py-4 flex flex-wrap justify-center gap-x-4">

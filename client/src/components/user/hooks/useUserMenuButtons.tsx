@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useReportCommentStore from 'hooks/useReportComment';
 import useReportUserStore from 'hooks/useReportUser';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { banUser, modUser, unbanUser, unmodUser } from '../UserAPI';
 import { UserTooltipProps as UserMenuProps } from '../UserTooltip';
 
@@ -22,28 +23,28 @@ const useUserMenuButtons = ({ comment }: UserMenuProps) => {
   const handleBanUser = async () => {
     await banUser(undefined, comment.user.id).then((data) => {
       if (data.id) setBanned(true);
-      else alert('An error occurred.');
+      else toast.error('An error occurred.');
     });
   };
 
   const handleUnbanUser = async () => {
     await unbanUser(undefined, comment.user.id).then((data) => {
       if (data.id) setBanned(false);
-      else alert('An error occurred.');
+      else toast.error('An error occurred.');
     });
   };
 
   const handleModUser = async () => {
     await modUser(undefined, comment.user.id).then((data) => {
       if (data.id) setModded(true);
-      else alert('An error occurred.');
+      else toast.error('An error occurred.');
     });
   };
 
   const handleUnmodUser = async () => {
     await unmodUser(undefined, comment.user.id).then((data) => {
       if (data.id) setModded(false);
-      else alert('An error occurred.');
+      else toast.error('An error occurred.');
     });
   };
 

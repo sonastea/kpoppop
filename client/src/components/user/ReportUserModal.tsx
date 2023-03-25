@@ -4,6 +4,7 @@ import { Dialog } from '@headlessui/react';
 import useReportUserStore from 'hooks/useReportUser';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import { reportUser } from './UserAPI';
 
 export type ReportUserInfoData = {
@@ -33,7 +34,7 @@ const ReportUserModal = (props: { user: ReportUserInfoData }) => {
     await reportUser({ id: props.user.id, username: props.user.username }, data.description)
       .then((data) => {
         if (data.statusCode === 403) {
-          alert('You must be logged in to do that!');
+          toast.error('You must be logged in to do that!');
           reportingUser();
           resetForm();
         } else {

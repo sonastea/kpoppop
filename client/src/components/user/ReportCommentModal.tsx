@@ -4,6 +4,7 @@ import { Dialog } from '@headlessui/react';
 import useReportCommentStore from 'hooks/useReportComment';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import { reportComment } from './UserAPI';
 
 type ReportCommentData = {
@@ -28,7 +29,7 @@ const ReportCommentModal = () => {
     await reportComment(commentId, data.description)
       .then((data) => {
         if (data.statusCode === 403) {
-          alert('You must be logged in to do that!');
+          toast.error('You must be logged in to do that!');
           reportingComment();
           resetForm();
         } else {
