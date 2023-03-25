@@ -10,17 +10,18 @@ import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { DiscordController } from './auth/discord.controller';
 import { DiscordAuthModule } from './auth/discord.module';
-import { BotModule } from './discord/bot.module';
 import { LocalSerializer } from './auth/serializers/local.serializer';
 import { LocalStrategy } from './auth/strategies/local.strategy';
 import { PrismaService } from './database/prisma.service';
+import { BotModule } from './discord/bot.module';
 // import { MailController } from './mail/mail.controller';
 // import { MailModule } from './mail/mail.module';
+import { LoggerModule } from './logger/my-logger.module';
 import { MemeController } from './meme/meme.controller';
 import { MemeService } from './meme/meme.service';
+import { WebSocketModule } from './sockets/websocket.module';
 import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
-import { WebSocketModule } from './sockets/websocket.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { WebSocketModule } from './sockets/websocket.module';
     BotModule,
     DiscordAuthModule,
     HttpModule,
+    LoggerModule,
     // MailModule,
     ConfigModule.forRoot({
       envFilePath: ['.env.development.local', '.env.development'],
