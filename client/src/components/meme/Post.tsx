@@ -6,7 +6,7 @@ import { DAY } from 'Global.d';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import InteractiveButtons from './InteractiveButtons';
-import InteractiveComments from './InteractiveComments';
+import InteractiveComments, { CommentProps } from './InteractiveComments';
 import { fetchMeme } from './MemeAPI';
 import PostNonexistent from './PostNonexistent';
 
@@ -19,11 +19,17 @@ type PostProps = {
   title: string;
   url: string;
   createdAt: string;
+  likedBy: { id: number }[];
+  _count: {
+    comments: number;
+    likedBy: number;
+  };
+  comments: CommentProps[];
 };
 
 const Post = () => {
   const { memeid } = useParams();
-  const [meme, setMeme] = useState<PostProps>({} as any);
+  const [meme, setMeme] = useState<PostProps>({} as PostProps);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -58,19 +64,29 @@ const Post = () => {
           </div>
           <div className="flex-1 m-2">
             <div className="flex flex-col items-end text-md md:text-xl text-once-900">
-              <a href={`/user/${meme.author.username}`}>
-                {meme.author.username}
-              </a>
-                <span className="text-xs sm:text-sm text-once-900/70">{DAY(meme.createdAt).fromNow(false)} </span>
+              <a href={`/user/${meme.author.username}`}>{meme.author.username}</a>
+              <span className="text-xs sm:text-sm text-once-900/70">
+                {DAY(meme.createdAt).fromNow(false)}{' '}
+              </span>
             </div>
             <div className="grid content-center h-3/4 text-sm md:text-xl">{meme.title}</div>
           </div>
         </div>
         <div className="border-t border-x">
-          <InteractiveButtons memeId={parseInt(memeid!, 10)} memeTitle={meme.title} />
+          <InteractiveButtons
+            memeId={parseInt(memeid!, 10)}
+            memeTitle={meme.title}
+            liked={meme.likedBy.length !== 0}
+            comments={meme._count.comments}
+            likes={meme._count.likedBy}
+          />
         </div>
         <div className="divide-y border">
-          <InteractiveComments memeId={parseInt(memeid!, 10)} ownerId={meme.author.id} />
+          <InteractiveComments
+            memeId={parseInt(memeid!, 10)}
+            ownerId={meme.author.id}
+            comments={meme.comments}
+          />
         </div>
       </div>
     </>

@@ -1,12 +1,12 @@
 import { useAuth } from 'contexts/AuthContext';
 import { API_URL } from 'Global.d';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import Comment from './Comment';
-import { fetchMemeComments } from './MemeAPI';
 
 type InteractiveCommentsProps = {
   memeId: number;
   ownerId: number;
+  comments: CommentProps[];
 };
 
 export interface IUserProps {
@@ -29,23 +29,12 @@ export type CommentProps = {
   user: IUserProps;
 };
 
-const InteractiveComments = (props: InteractiveCommentsProps) => {
-  const [comments, setComments] = useState<CommentProps[] | undefined>([]);
+const InteractiveComments = ({ memeId, ownerId, comments: c }: InteractiveCommentsProps) => {
+  const [comments, setComments] = useState<CommentProps[]>(c);
   const [isCommenting, setIsCommenting] = useState<boolean>();
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [comment, setComment] = useState<string>();
   const { user } = useAuth();
-
-  useEffect(() => {
-    const loadComments = async () => {
-      await fetchMemeComments(props.memeId)
-        .then((data) => {
-          setComments(data.comments);
-        })
-        .catch((_error) => {});
-    };
-    loadComments();
-  }, [user?.role, props.memeId]);
 
   const addComment = async (id: number) => {
     setIsCommenting(true);
@@ -59,7 +48,7 @@ const InteractiveComments = (props: InteractiveCommentsProps) => {
       .then((data) => {
         if (data.createdAt) {
           setComment('');
-          setComments((prev: any) => [data, ...prev]);
+          setComments((prev: CommentProps[]) => [data, ...prev]);
         } else {
           alert('There was an error uploading your comment.');
         }
@@ -105,7 +94,7 @@ const InteractiveComments = (props: InteractiveCommentsProps) => {
           className={`${
             isCommenting ? 'bg-once-200 cursor-not-allowed' : 'bg-once'
           } self-center p-1 rounded-md hover:bg-once-400`}
-          onClick={() => addComment(props.memeId)}
+          onClick={() => addComment(memeId)}
           disabled={isCommenting ? true : false}
         >
           Comment
@@ -114,7 +103,7 @@ const InteractiveComments = (props: InteractiveCommentsProps) => {
 
       {comments &&
         comments.map((comment: CommentProps) => {
-          return <Comment props={comment} memeOwnerId={props.ownerId} key={comment.id} />;
+          return <Comment props={comment} memeOwnerId={ownerId} key={comment.id} />;
         })}
     </>
   );

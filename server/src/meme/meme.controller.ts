@@ -135,7 +135,10 @@ export class MemeController {
 
   @Post('posts')
   @SkipThrottle()
-  async getMemes(@Body() body: { cursor: number }): Promise<any> {
+  async getMemes(
+    @Body() body: { cursor: number },
+    @Session() session?: Record<string, any>
+  ): Promise<any> {
     if (body.cursor === 0) {
       return await this.memeService.posts({
         take: 15,
@@ -152,6 +155,21 @@ export class MemeController {
           title: true,
           url: true,
           createdAt: true,
+          likedBy: {
+            where: {
+              OR: [
+                { discord: { discordId: session.passport?.user?.discordId } },
+                { id: session.passport?.user?.id },
+              ],
+            },
+            select: { id: true },
+          },
+          _count: {
+            select: {
+              comments: true,
+              likedBy: true,
+            },
+          },
         },
         where: {
           active: { equals: true },
@@ -178,6 +196,8 @@ export class MemeController {
           title: true,
           url: true,
           createdAt: true,
+          likedBy: { select: { _count: true } },
+          comments: { select: { _count: true } },
         },
         where: {
           active: { equals: true },
@@ -189,7 +209,10 @@ export class MemeController {
 
   @Get(':id')
   @SkipThrottle()
-  async getMeme(@Param('id') id: string): Promise<Meme | object> {
+  async getMeme(
+    @Param('id') id: string,
+    @Session() session?: Record<string, any>
+  ): Promise<Meme | object> {
     const meme = await this.memeService.post({
       where: {
         id: parseInt(id),
@@ -204,6 +227,41 @@ export class MemeController {
         title: true,
         url: true,
         createdAt: true,
+        likedBy: {
+          where: {
+            OR: [
+              { discord: { discordId: session.passport?.user?.discordId } },
+              { id: session.passport?.user?.id },
+            ],
+          },
+          select: { id: true },
+        },
+        _count: {
+          select: {
+            comments: true,
+            likedBy: true,
+          },
+        },
+        comments: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+          select: {
+            id: true,
+            text: true,
+            createdAt: true,
+            updatedAt: true,
+            edited: true,
+            user: {
+              select: {
+                ...UserProfileData,
+              },
+            },
+          },
+          where: {
+            active: { equals: true },
+          },
+        },
       },
     });
     if (meme === null) return {};

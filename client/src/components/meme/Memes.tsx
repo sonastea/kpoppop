@@ -19,6 +19,11 @@ type Meme = {
   title: string;
   url: string;
   createdAt: string;
+  likedBy: { id: number }[];
+  _count: {
+    comments: number;
+    likedBy: number;
+  };
 };
 
 let cursor: number = 0;
@@ -144,7 +149,13 @@ const Memes = () => {
                     <img className="w-full max-h-lg mt-2" src={meme.url} alt={meme.title} />
                   </a>
                 )}
-                <InteractiveButtons memeId={meme.id} memeTitle={title} />
+                <InteractiveButtons
+                  memeId={meme.id}
+                  memeTitle={title}
+                  liked={meme.likedBy.length !== 0}
+                  comments={meme._count.comments}
+                  likes={meme._count.likedBy}
+                />
               </div>
             );
           })}

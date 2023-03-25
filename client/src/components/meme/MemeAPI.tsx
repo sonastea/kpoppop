@@ -11,6 +11,7 @@ export const submitMeme = async (data: FormData) => {
 export const fetchMemes = async (cursor: number | undefined) => {
   return await fetch(`${API_URL}/meme/posts`, {
     method: 'POST',
+    credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ cursor }),
   }).then((response) => response.json());
@@ -19,6 +20,7 @@ export const fetchMemes = async (cursor: number | undefined) => {
 export const fetchMeme = async (id: number) => {
   return await fetch(`${API_URL}/meme/${id}`, {
     method: 'GET',
+    credentials: 'include',
   }).then((response) => response.json());
 };
 
