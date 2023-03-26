@@ -78,7 +78,7 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
   };
 
   return (
-    <Popover className="relative z-100">
+    <Popover>
       <Popover.Button
         className={`hover:underline hover:decoration-black hover:decoration-solid hover:cursor-pointer px-1 ${
           isBanned && 'decoration-ponce-500 line-through'
