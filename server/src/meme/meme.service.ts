@@ -100,9 +100,11 @@ export class MemeService {
       },
     });
     if (liked.likedBy.length >= 1) {
-      return true;
+      return { LikeMeme: true };
     } else if (liked.likedBy.length === 0) {
-      return false;
+      return { LikeMeme: false };
+    } else {
+      return { LikeMeme: { error: 'There was an error liking this.' } };
     }
   }
 
@@ -131,10 +133,12 @@ export class MemeService {
         },
       },
     });
-    if (liked.likedBy.length >= 1) {
-      return true;
-    } else if (liked.likedBy.length === 0) {
-      return false;
+    if (liked.likedBy.length === 0) {
+      return { UnlikeMeme: true };
+    } else if (liked.likedBy.length >= 1) {
+      return { UnlikeMeme: false };
+    } else {
+      return { Unlikememe: { error: 'There was an error unliking this.' } };
     }
   }
 

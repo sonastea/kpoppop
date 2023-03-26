@@ -18,20 +18,30 @@ const InteractiveButtons = (props: InteractiveButtonProps) => {
   const { user } = useAuth();
   const { memeId, memeTitle, liked, comments, likes } = props;
   const [likedState, setLiked] = useState<boolean>(liked);
-  const [totalLikes] = useState<number>(likes);
+  const [totalLikes, setTotalLikes] = useState<number>(likes);
   const [totalComments] = useState<number>(comments);
 
   const handleLiked = async () => {
     if (user?.id) {
       if (!likedState) {
-        await likeMeme(memeId);
-        setLiked(true);
+        await likeMeme(memeId).then((res) => {
+          if (res.LikeMeme === true) {
+            setTotalLikes((prev) => ++prev);
+            setLiked(true);
+          }
+          if (res.LikeMeme.error) toast.error(res.LikeMeme.error);
+        });
       } else if (likedState) {
-        await unlikeMeme(memeId);
-        setLiked(false);
+        await unlikeMeme(memeId).then((res) => {
+          if (res.UnlikeMeme === true) {
+            setTotalLikes((prev) => --prev);
+            setLiked(false);
+          }
+          if (res.UnlikeMeme.error) toast.error(res.UnlikeMeme.error);
+        });
       }
     } else {
-      toast.warning('You must be logged in to like this meme.')
+      toast.warning('You must be logged in to like this meme.');
     }
   };
 
