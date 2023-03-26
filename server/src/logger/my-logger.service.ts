@@ -5,4 +5,3 @@ export class MyLogger extends ConsoleLogger {
     super();
   }
 }
-

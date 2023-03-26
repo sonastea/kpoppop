@@ -1,4 +1,3 @@
-import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import * as cookieParser from 'cookie-parser';
 import * as dotenv from 'dotenv';
@@ -18,7 +17,7 @@ dotenv.config();
   return Number(this);
 };
 
-async function whatMode(logger: Logger) {
+async function whatMode(logger: MyLogger) {
   logger.log(`Running in ${process.env.NODE_ENV} mode on port ${process.env.PORT}`);
 }
 
@@ -73,7 +72,7 @@ async function bootstrap() {
     app.useWebSocketAdapter(redisIoAdapter);
 
     app.enableShutdownHooks();
-    await app.listen(process.env.PORT, () => whatMode(app.get(MyLogger)));
+    await app.listen(process.env.PORT, () => whatMode(logger));
   } else {
     const app = await NestFactory.create(AppModule, {
       cors: {
@@ -96,7 +95,7 @@ async function bootstrap() {
     app.useWebSocketAdapter(redisIoAdapter);
 
     app.enableShutdownHooks();
-    await app.listen(process.env.PORT, () => whatMode(app.get(MyLogger)));
+    await app.listen(process.env.PORT, () => whatMode(logger));
   }
 }
 bootstrap();
