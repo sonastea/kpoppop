@@ -97,6 +97,7 @@ const Register = () => {
               required
               className="w-full p-1 border border-gray-800 rounded focus:outline-none focus:border-once"
               type="text"
+              autoComplete="username"
               {...register('username', { required: true })}
             />
           </div>
@@ -107,6 +108,7 @@ const Register = () => {
               required
               className="w-full p-1 border border-gray-800 rounded focus:outline-none focus:border-once"
               type="email"
+              autoComplete="email"
               {...register('email', { required: true })}
             />
             <div className="mt-1 text-center">
@@ -122,6 +124,7 @@ const Register = () => {
               required
               className="w-full p-1 border border-gray-800 rounded focus:outline-none focus:border-once"
               type="password"
+              autoComplete="new-password"
               {...register('password', {
                 required: true,
                 minLength: {
@@ -145,6 +148,7 @@ const Register = () => {
               required
               className="w-full p-1 border border-gray-800 rounded focus:outline-none focus:border-once"
               type="password"
+              autoComplete="new-password2"
               {...register('password2', {
                 required: true,
                 validate: (value) => value === watch('password') || 'Passwords do not match',
