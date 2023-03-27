@@ -37,7 +37,7 @@
     "@nestjs/websockets": "^9.3.12",
     "@oauth-everything/passport-discord": "^1.0.2",
     "@prisma/client": "^4.11.0",
-    "@quixo3/prisma-session-store": "^3.1.10",
+    "@quixo3/prisma-session-store": "^3.1.11",
     "@socket.io/redis-adapter": "^8.1.0",
     "bcrypt": "^5.1.0",
     "cookie-parser": "^1.4.6",

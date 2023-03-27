@@ -12,14 +12,14 @@ import { createPrismaRedisCache } from 'prisma-redis-middleware';
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnApplicationBootstrap {
   private readonly logger = new Logger(PrismaService.name);
-  private readonly redis = new Redis();
+  private readonly redis = new Redis(process.env.PRISMA_REDIS_URL);
   private readonly cacheMiddleware: Prisma.Middleware = createPrismaRedisCache({
     storage: {
       type: 'redis',
       options: { client: this.redis, invalidation: { referencesTTL: 86400 } },
     },
     cacheTime: 86400,
-    excludeModels: ['User', 'DiscordUser'],
+    excludeModels: ['User', 'DiscordUser', 'Session'],
     excludeMethods: ['count', 'groupBy'],
     onHit: (key) => {
       this.logger.log('*HIT* ' + key);

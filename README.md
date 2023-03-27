@@ -34,6 +34,7 @@ Reference for creating [ssl certificate](https://stackoverflow.com/questions/101
         🔴 STORAGE_BUCKET       // Endpoint that images are saved with firebase storage.
         🔴 NODE_ENV             // Defaults to 'production', takes 'test' or 'development'.
         🔴 RECAPTCHA_SECRET     // Verifies invoked recaptcha response from clients.
+        🔴 PRISMA_REDIS_URL     // Prisma Caching Middleware
         🔴 DISCORDBOT_TOKEN
         🔴 DISCORDBOT_WEBHOOK
         🔴 DISCORD_CHANNEL_ID
