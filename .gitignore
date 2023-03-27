@@ -75,5 +75,5 @@ tags*
 old/
 .gitignore.bak
 
-# helpful sricipts
-**/deploy.sh
+# helpful scripts
+**/deploy_*.sh

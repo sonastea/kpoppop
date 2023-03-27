@@ -75,7 +75,7 @@ const NavBar = () => {
       {
         id: 3,
         name: 'Messages',
-        to: '/contact',
+        to: '/messages',
         className: mobileNavItemsLoggedInClassName,
       },
       {
