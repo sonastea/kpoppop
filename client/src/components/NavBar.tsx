@@ -115,8 +115,8 @@ const NavBar = () => {
   }, [location.pathname, mobileNavItemsLoggedIn, mobileNavItemsLoggedOut]);
 
   useEffect(() => {
-    if (isActiveMobileNav) document.body.classList.add('overflow-hidden');
-    else document.body.classList.remove('overflow-hidden');
+    if (isActiveMobileNav) document.body.classList.add('fixed');
+    else document.body.classList.remove('fixed');
   }, [isActiveMobileNav]);
 
   return (
@@ -186,7 +186,7 @@ const NavBar = () => {
             id="mobileNav"
             className={`${
               !isActiveMobileNav && 'translate-x-full'
-            } w-3/4 sm:w-64 overflow-auto shadow-md h-screen md:hidden rounded-l fixed overflow-y-scroll py-6 pl-6 pr-8 bg-white z-100 transform duration-300 ease-in-out right-0`}
+            } w-3/4 sm:w-64 overflow-auto shadow-md h-screen md:hidden rounded-l fixed py-6 pl-6 pr-10 bg-white z-100 transform duration-300 ease-in-out right-0`}
           >
             <a className="inline-block" aria-label="Home" href="/">
               <img
@@ -197,7 +197,7 @@ const NavBar = () => {
             </a>
             <div>
               <button
-                className="absolute right-4 top-3 px-2 py-1"
+                className="absolute right-4 top-4 px-2 py-1"
                 aria-label="Toggle mobile nav"
                 onClick={() => setMobileNav((prev) => !prev)}
               >
@@ -205,7 +205,7 @@ const NavBar = () => {
               </button>
             </div>
             <div className="w-full h-px bg-gray-200/80 mt-6 mb-4" />
-            <nav className="flex flex-col overflow-hidden">
+            <nav className="flex flex-col overflow-hidden overflow-x-auto">
               {user?.username ? (
                 <>
                   {mobileNavItemsLoggedIn.map((item) => {
@@ -225,7 +225,7 @@ const NavBar = () => {
                     );
                   })}
                   <button
-                    className="flex hover:text-once-500 hover:underline p-2"
+                    className="flex hover:underline p-2"
                     aria-label="Logout"
                     onClick={logout}
                   >
