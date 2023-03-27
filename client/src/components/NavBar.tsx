@@ -8,7 +8,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const NavBar = () => {
   const { user, logout } = useAuth();
-  let location = useLocation();
+  const location = useLocation();
   const [isActiveMobileNav, setMobileNav] = useState<boolean>(false);
   const [active, setActive] = useState<number>();
 
@@ -19,26 +19,105 @@ const NavBar = () => {
         name: 'Memes',
         to: '/memes',
         className:
-          'px-2 py-2 font-semibold text-slate-900 border-b-2 border-transparent duration-150 hover:border-once',
+          'px-2 py-2 font-semibold text-slate-900 border-b-2 duration-150 hover:border-once',
       },
       {
         id: 2,
         name: 'Contact',
         to: '/contact',
         className:
-          'px-2 py-2 font-semibold text-slate-900 border-b-2 border-transparent duration-150 hover:border-once',
+          'px-2 py-2 font-semibold text-slate-900 border-b-2 duration-150 hover:border-once',
       },
     ],
     []
   );
 
+  const mobileNavItemsLoggedOutClassName = 'hover:underline p-2';
+  const mobileNavItemsLoggedOut = useMemo(
+    () => [
+      {
+        id: 1,
+        name: 'Memes',
+        to: '/memes',
+        className: mobileNavItemsLoggedOutClassName,
+      },
+      {
+        id: 2,
+        name: 'Contact',
+        to: '/contact',
+        className: mobileNavItemsLoggedOutClassName,
+      },
+      {
+        id: 3,
+        name: 'Login',
+        to: '/login',
+        className: mobileNavItemsLoggedOutClassName,
+      },
+      {
+        id: 4,
+        name: 'Register',
+        to: '/register',
+        className: mobileNavItemsLoggedOutClassName,
+      },
+    ],
+    []
+  );
+
+  const mobileNavItemsLoggedInClassName = 'hover:underline p-2';
+  const mobileNavItemsLoggedIn = useMemo(
+    () => [
+      {
+        id: 1,
+        name: 'Memes',
+        to: '/memes',
+        className: mobileNavItemsLoggedInClassName,
+      },
+      {
+        id: 3,
+        name: 'Messages',
+        to: '/contact',
+        className: mobileNavItemsLoggedInClassName,
+      },
+      {
+        id: 4,
+        name: 'Profile',
+        to: `/user/${user?.username}`,
+        className: mobileNavItemsLoggedInClassName,
+      },
+      {
+        id: 5,
+        name: 'Settings',
+        to: '/profile/settings',
+        className: mobileNavItemsLoggedInClassName,
+      },
+      {
+        id: 2,
+        name: 'Contact',
+        to: '/contact',
+        className: mobileNavItemsLoggedInClassName,
+      },
+    ],
+    [user?.username]
+  );
+
   useEffect(() => {
-    navItems.forEach((item) => {
+    mobileNavItemsLoggedIn.forEach((item) => {
       if (location.pathname === item.to) {
         setActive(item.id);
       }
     });
-  }, [location.pathname, navItems]);
+
+    mobileNavItemsLoggedOut.forEach((item) => {
+      if (location.pathname === item.to) {
+        setActive(item.id);
+      }
+    });
+  }, [location.pathname, mobileNavItemsLoggedIn, mobileNavItemsLoggedOut]);
+
+  useEffect(() => {
+    if (isActiveMobileNav) document.body.classList.add('overflow-hidden');
+    else document.body.classList.remove('overflow-hidden');
+  }, [isActiveMobileNav]);
 
   return (
     <nav className="relative w-full shadow">
@@ -58,7 +137,9 @@ const NavBar = () => {
                 <li key={item.id}>
                   <a
                     href={`${item.to}`}
-                    className={`${active === item.id ? 'active' : 'inactive'} ${item.className}`}
+                    className={`${item.className} ${
+                      active === item.id ? 'border-once' : 'border-transparent'
+                    }`}
                     onClick={() => setActive(item.id)}
                   >
                     {item.name}
@@ -95,56 +176,83 @@ const NavBar = () => {
           </div>
 
           <div
+            className={`${
+              !isActiveMobileNav && 'translate-x-full'
+            } backdrop-brightness-50 w-screen h-screen md:hidden fixed bg-transparent z-50 transform ease-in-out right-0`}
+            onClick={() => setMobileNav((prev) => !prev)}
+          />
+
+          <div
             id="mobileNav"
             className={`${
-              !isActiveMobileNav && '-translate-x-full'
-            } w-64 flex flex-col min-h-screen md:hidden rounded absolute pr-3 bg-gray-200 z-100 transform duration-300 ease-in-out left-0`}
+              !isActiveMobileNav && 'translate-x-full'
+            } w-3/4 sm:w-64 overflow-auto shadow-md h-screen md:hidden rounded-l fixed overflow-y-scroll py-6 pl-6 pr-8 bg-white z-100 transform duration-300 ease-in-out right-0`}
           >
-            <div className="pt-8 pl-4">
-              <a className="inline-block" href="/">
-                <img
-                  src="/images/header_logo.png"
-                  alt="Kpoppop Logo"
-                  className="w-5/6 h-auto"
-                ></img>
-              </a>
+            <a className="inline-block" aria-label="Home" href="/">
+              <img
+                className="w-32 h-12 max-h-12"
+                src="/images/header_logo.png"
+                alt="Kpoppop Logo"
+              />
+            </a>
+            <div>
               <button
-                className="absolute right-4"
+                className="absolute right-4 top-3 px-2 py-1"
                 aria-label="Toggle mobile nav"
                 onClick={() => setMobileNav((prev) => !prev)}
               >
                 <FontAwesomeIcon icon={faXmark} />
               </button>
             </div>
-            <div className="pt-8 pb-48 pl-4 pr-16">
-              <div className="flex flex-col space-y-3">
-                {user?.username ? (
-                  <>
-                    <a className="hover:text-once-500" href="/memes">
-                      Memes
-                    </a>
-                    <a className="hover:text-once-500" href="/messages">
-                      Messages
-                    </a>
-                    <a className="hover:text-once-500" href={`/user/${user?.username}`}>
-                      Profile
-                    </a>
-                    <a className="hover:text-once-500" href={`/profile/settings`}>
-                      Settings
-                    </a>
-                    <button className="flex hover:text-once-500" onClick={logout}>
-                      Logout
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <a href="/memes">Memes</a>
-                    <a href="/login">Login</a>
-                    <a href="/register">Register</a>
-                  </>
-                )}
-              </div>
-            </div>
+            <div className="w-full h-px bg-gray-200/80 mt-6 mb-4" />
+            <nav className="flex flex-col overflow-hidden">
+              {user?.username ? (
+                <>
+                  {mobileNavItemsLoggedIn.map((item) => {
+                    return (
+                      <a
+                        href={`${item.to}`}
+                        className={`${
+                          active === item.id
+                            ? 'text-thrice bg-gray-100 rounded-md'
+                            : 'bg-transparent'
+                        } ${item.className}`}
+                        onClick={() => setActive(item.id)}
+                        key={item.id}
+                      >
+                        {item.name}
+                      </a>
+                    );
+                  })}
+                  <button
+                    className="flex hover:text-once-500 hover:underline p-2"
+                    aria-label="Logout"
+                    onClick={logout}
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  {mobileNavItemsLoggedOut.map((item) => {
+                    return (
+                      <a
+                        href={`${item.to}`}
+                        className={`${
+                          active === item.id
+                            ? 'text-thrice bg-gray-100 rounded-md'
+                            : 'bg-transparent'
+                        } ${item.className}`}
+                        onClick={() => setActive(item.id)}
+                        key={item.id}
+                      >
+                        {item.name}
+                      </a>
+                    );
+                  })}
+                </>
+              )}
+            </nav>
           </div>
         </div>
       </div>

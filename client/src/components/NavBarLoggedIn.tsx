@@ -1,17 +1,25 @@
 import {
-  faUser,
   faAngleDown,
   faAnglesDown,
   faArrowRightFromBracket,
   faGears,
   faMessage,
+  faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Menu, Transition } from '@headlessui/react';
 import { useAuth } from 'contexts/AuthContext';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
 
 const NavBarLoggedIn = () => {
   const { user, logout } = useAuth();
+  const location = useLocation();
+  const [path, setPath] = useState<string>(location.pathname);
+
+  useEffect(() => {
+    setPath(location.pathname);
+  }, [location.pathname]);
 
   const logoutHandler = (e: React.MouseEvent<HTMLElement>): void => {
     e.preventDefault();
@@ -45,7 +53,12 @@ const NavBarLoggedIn = () => {
                 <Menu.Item>
                   {({ active }) => (
                     <a
-                      className={`flex items-center px-4 py-2 text-sm ${active && 'bg-once-200'}`}
+                      className={`flex items-center px-4 py-2 text-sm ${active && 'bg-once-200 rounded-t-md'}
+                        ${
+                          path === `/user/${user?.username}`
+                            ? 'border-r-2 border-r-once rounded-tr-md'
+                            : 'border-none'
+                        } `}
                       href={`/user/${user?.username}`}
                     >
                       <FontAwesomeIcon viewBox="0 0 512 512" className="mr-3" icon={faUser} />
@@ -56,7 +69,9 @@ const NavBarLoggedIn = () => {
                 <Menu.Item>
                   {({ active }) => (
                     <a
-                      className={`flex items-center px-4 py-2 text-sm ${active && 'bg-once-200'}`}
+                      className={`flex items-center px-4 py-2 text-sm ${active && 'bg-once-200'} ${
+                        path === '/messages' ? 'border-r-2 border-r-once' : 'border-none'
+                      }`}
                       href={`/messages`}
                     >
                       <FontAwesomeIcon viewBox="0 0 512 512" className="mr-3" icon={faMessage} />
@@ -67,7 +82,9 @@ const NavBarLoggedIn = () => {
                 <Menu.Item>
                   {({ active }) => (
                     <a
-                      className={`flex items-center px-4 py-2 text-sm ${active && 'bg-once-200'}`}
+                      className={`flex items-center px-4 py-2 text-sm ${active && 'bg-once-200'} ${
+                        path === '/profile/settings' ? 'border-r-2 border-r-once' : 'border-none'
+                      }`}
                       href={`/profile/settings`}
                     >
                       <FontAwesomeIcon viewBox="0 0 512 512" className="mr-3" icon={faGears} />
@@ -79,7 +96,7 @@ const NavBarLoggedIn = () => {
                   {({ active }) => (
                     <button
                       className={`border-t w-full flex items-center px-4 py-2 text-sm ${
-                        active && 'bg-once-200'
+                        active && 'bg-once-200 rounded-b-md'
                       }`}
                       onClick={logoutHandler}
                     >
