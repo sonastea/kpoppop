@@ -21,7 +21,6 @@ import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express
 import { SkipThrottle, ThrottlerGuard } from '@nestjs/throttler';
 import { Role, User } from '@prisma/client';
 import { randomUUID } from 'crypto';
-import * as dotenv from 'dotenv';
 import { Request, Response } from 'express';
 import * as firebase from 'firebase-admin';
 import { Roles } from 'src/auth/decorators/roles.decorator';
@@ -34,8 +33,6 @@ import { PrismaService } from 'src/database/prisma.service';
 /* import { MailService } from 'src/mail/mail.service'; */
 import { UserService } from './user.service';
 import path = require('path');
-
-dotenv.config();
 
 type UpdateProfileData = {
   displayname: string;

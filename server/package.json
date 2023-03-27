@@ -1,7 +1,7 @@
 {
   "name": "Kpoppop_Backend",
   "private": true,
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Kpoppop Server Backend",
   "license": "MIT",
   "scripts": {
@@ -42,7 +42,6 @@
     "bcrypt": "^5.1.0",
     "cookie-parser": "^1.4.6",
     "discord.js": "^14.8.0",
-    "dotenv": "^16.0.3",
     "ejs": "^3.1.9",
     "express-session": "^1.17.3",
     "firebase-admin": "^11.5.0",

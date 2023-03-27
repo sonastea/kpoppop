@@ -1,8 +1,5 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import createPostgresSubscriber from 'pg-listen';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
 
 @Injectable()
 export class pgListenerProvider implements OnModuleInit {

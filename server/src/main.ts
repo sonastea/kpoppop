@@ -1,6 +1,5 @@
 import { NestFactory } from '@nestjs/core';
 import * as cookieParser from 'cookie-parser';
-import * as dotenv from 'dotenv';
 import * as expressSession from 'express-session';
 import * as firebase from 'firebase-admin';
 import * as fs from 'fs';
@@ -10,8 +9,6 @@ import { AppModule } from './app.module';
 import { MyLogger } from './logger/my-logger.service';
 import { RedisIoAdapter } from './sockets/redis.adapter';
 import { prismaSessionStore } from './store/prisma-session-store';
-
-dotenv.config();
 
 (BigInt.prototype as any).toJSON = function () {
   return Number(this);

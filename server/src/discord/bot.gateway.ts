@@ -2,7 +2,6 @@ import { DiscordClientProvider, On, Once } from '@discord-nestjs/core';
 import { pgListenerProvider } from '../database/pg-listener.service';
 import { Injectable, Logger } from '@nestjs/common';
 import { MemeService } from 'src/meme/meme.service';
-import * as dotenv from 'dotenv';
 import {
   Interaction,
   ActionRowBuilder,
@@ -11,8 +10,6 @@ import {
   TextChannel,
   ButtonStyle,
 } from 'discord.js';
-
-dotenv.config();
 
 @Injectable()
 export class BotGateway {
