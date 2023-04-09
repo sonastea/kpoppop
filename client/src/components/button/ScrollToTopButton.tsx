@@ -26,7 +26,7 @@ const ScrollToTopButton = () => {
   return (
     <button
       aria-label="Scroll to top"
-      className="fixed bottom-8 right-8 md:bottom-12 md:right-12 text-3xl z-50 group"
+      className="fixed bottom-4 right-4 md:bottom-8 md:right-8 text-3xl z-50 group"
       onClick={scrollToTop}
     >
       <FontAwesomeIcon

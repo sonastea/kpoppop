@@ -115,8 +115,13 @@ const NavBar = () => {
   }, [location.pathname, mobileNavItemsLoggedIn, mobileNavItemsLoggedOut]);
 
   useEffect(() => {
-    if (isActiveMobileNav) document.body.classList.add('fixed');
-    else document.body.classList.remove('fixed');
+    if (isActiveMobileNav) {
+      document.body.classList.add('fixed');
+      document.body.classList.add('w-full');
+    } else {
+      document.body.classList.remove('fixed');
+      document.body.classList.remove('w-full');
+    }
   }, [isActiveMobileNav]);
 
   return (
@@ -224,11 +229,7 @@ const NavBar = () => {
                       </a>
                     );
                   })}
-                  <button
-                    className="flex hover:underline p-2"
-                    aria-label="Logout"
-                    onClick={logout}
-                  >
+                  <button className="flex hover:underline p-2" aria-label="Logout" onClick={logout}>
                     Logout
                   </button>
                 </>
