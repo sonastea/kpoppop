@@ -146,7 +146,7 @@ const Memes = () => {
                   </video>
                 ) : (
                   <a className="contents" href={`/meme/${meme.id}/${title}`}>
-                    <img className="w-full max-h-lg mt-2" src={meme.url} alt={meme.title} />
+                    <img className="w-full max-h-64 md:max-h-lg object-scale-down md:object-contain mt-2" src={meme.url} alt={meme.title} />
                   </a>
                 )}
                 <InteractiveButtons
