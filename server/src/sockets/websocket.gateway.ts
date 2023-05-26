@@ -122,14 +122,15 @@ export class WebSocketServiceGateway
 
   @SubscribeMessage('private message')
   async private_message(@ConnectedSocket() socket: Socket, @MessageBody() data: MessagePayload) {
+    const fromSelf = data.to === socket.handshake.auth.id;
     const message: MessagePayload = {
       convid: data.convid ?? undefined,
       to: data.to,
       createdAt: new Date().toISOString(),
       content: data.content,
       from: socket.handshake.auth.id,
-      fromSelf: data.to === socket.handshake.auth.id,
-      read: false,
+      fromSelf: fromSelf,
+      read: fromSelf,
     };
     this.messageStore.saveConversationSession(socket.handshake.auth.id.toString());
     this.messageStore.saveConversationSession(data.to.toString());

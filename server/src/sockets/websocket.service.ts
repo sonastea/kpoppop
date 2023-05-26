@@ -56,6 +56,7 @@ export class WebSocketStoreService {
               content: message.content,
               recipientId: message.to,
               fromSelf: message.fromSelf,
+              read: message.read,
             },
           },
           users: {
@@ -85,6 +86,7 @@ export class WebSocketStoreService {
               content: message.content,
               recipientId: message.to,
               fromSelf: message.fromSelf,
+              read: message.read,
             },
           },
         },
@@ -191,10 +193,7 @@ export class WebSocketStoreService {
   }
 
   saveConversationSession(userID: string) {
-    this.redis
-      .multi()
-      .hset(`convosession:${userID}`, 'id', userID)
-      .exec();
+    this.redis.multi().hset(`convosession:${userID}`, 'id', userID).exec();
   }
 
   async updateMessagesRead(convid: string, recipientID: number) {
