@@ -19,7 +19,19 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnAppli
       options: { client: this.redis, invalidation: { referencesTTL: 86400 } },
     },
     cacheTime: 86400,
-    excludeModels: ['User', 'DiscordUser', 'Session'],
+    excludeModels: [
+      'User',
+      'DiscordUser',
+      'Session',
+      'Meme',
+      'Comment',
+      'SocialMedia',
+      'EmailToken',
+      'ReportComment',
+      'ReportMeme',
+      'ReportUser',
+      'Message'
+    ],
     excludeMethods: ['count', 'groupBy'],
     onHit: (key) => {
       this.logger.log('*HIT* ' + key);
