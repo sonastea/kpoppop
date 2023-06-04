@@ -38,8 +38,13 @@ export default defineConfig(() => {
       },
     },
     server: {
-      open: true,
+      hmr: {
+        host: 'localhost',
+        port: 3000,
+        protocol: 'wss',
+      },
       https: true,
+      open: true,
       port: 3000,
     },
   };

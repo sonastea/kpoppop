@@ -291,6 +291,7 @@ function handleConversations(
           : [
               ...m.conversations,
               {
+                username: m.recipient?.displayname || m.recipient?.username,
                 convid: action.message?.convid ?? null,
                 id: action.message?.to ?? 0,
                 messages: Array(1).fill(action.message),

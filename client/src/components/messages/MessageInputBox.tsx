@@ -53,6 +53,7 @@ const MessageInputBox = ({
       <div className="bg-white shadow flex rounded-lg">
         <div className="flex-1">
           <textarea
+            id='message-input'
             className="w-full block outline-none py-4 px-4 bg-transparent whitespace-nowrap overflow-hidden"
             ref={chatInput}
             placeholder="Start a new message"
