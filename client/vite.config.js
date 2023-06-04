@@ -1,9 +1,9 @@
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill';
-import basicSsl from '@vitejs/plugin-basic-ssl';
 import react from '@vitejs/plugin-react';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
 import { defineConfig } from 'vite';
+import mkcert from 'vite-plugin-mkcert';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig(() => {
@@ -28,7 +28,7 @@ export default defineConfig(() => {
         ],
       },
     },
-    plugins: [basicSsl(), react(), tsconfigPaths()],
+    plugins: [mkcert(), react(), tsconfigPaths()],
     resolve: {
       alias: {
         events: 'rollup-plugin-node-polyfills/polyfills/events',
@@ -38,11 +38,6 @@ export default defineConfig(() => {
       },
     },
     server: {
-      hmr: {
-        host: 'localhost',
-        port: 3000,
-        protocol: 'wss',
-      },
       https: true,
       open: true,
       port: 3000,
