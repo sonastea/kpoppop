@@ -45,7 +45,7 @@ export let MESSAGES_WS_URL: string;
 export let SITE_KEY: string;
 export let DAY = dayjs;
 
-PUBLIC_URL = process.env.PUBLIC_URL;
-API_URL = process.env.REACT_APP_API_URL;
-MESSAGES_WS_URL = process.env.REACT_APP_MESSAGES_WS_URL ?? 'wss://localhost:5000';
-SITE_KEY = process.env.REACT_APP_SITE_KEY!;
+PUBLIC_URL = import.meta.env.VITE_PUBLIC_URL;
+API_URL = import.meta.env.VITE_API_URL;
+MESSAGES_WS_URL = import.meta.env.VITE_MESSAGES_WS_URL ?? 'wss://localhost:5000';
+SITE_KEY = import.meta.env.VITE_SITE_KEY!;

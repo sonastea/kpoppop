@@ -54,7 +54,7 @@ const Messages = () => {
   };
 
   const sortMessages = (conversations: UserCardProps[]) => {
-    const gm: { [index: string]: MessageProps[] } | undefined = conversations
+    let gm: { [index: string]: MessageProps[] } | undefined = conversations
       .find((conv) => conv.convid === m.recipient?.convid)
       ?.messages.reduce((msgs, msg) => {
         const date = msg.createdAt.split('T')[0];
@@ -65,6 +65,20 @@ const Messages = () => {
 
         return msgs;
       }, {} as { [index: string]: MessageProps[] });
+
+    if (gm === undefined) {
+      gm = conversations
+        .find((conv) => conv.username === m.recipient?.username)
+        ?.messages.reduce((msgs, msg) => {
+          const date = msg.createdAt.split('T')[0];
+          if (!msgs[date]) {
+            msgs[date] = [];
+          }
+          msgs[date].push(msg);
+
+          return msgs;
+        }, {} as { [index: string]: MessageProps[] });
+    }
 
     if (gm === undefined) return {};
     return gm;
@@ -291,6 +305,7 @@ function handleConversations(
           : [
               ...m.conversations,
               {
+                username: m.recipient?.displayname || m.recipient?.username,
                 convid: action.message?.convid ?? null,
                 id: action.message?.to ?? 0,
                 messages: Array(1).fill(action.message),

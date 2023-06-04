@@ -1,7 +1,6 @@
 import { faSpinner, faCheck, faHourglass, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { identifyImage } from './IdentifyImage';
 import { compressImage } from './CompressImage';
 import { useState } from 'react';
 import { submitMeme } from './MemeAPI';
@@ -142,6 +141,7 @@ const UploadMeme = () => {
         return;
       }
       setDetecting(true);
+      const { identifyImage } = await import('./IdentifyImage.tsx');
       const prediction = await identifyImage(e.target.files[0]).finally(() => setDetecting(false));
       setPostable(isSFW(prediction));
     }
