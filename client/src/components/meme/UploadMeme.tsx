@@ -206,10 +206,11 @@ const UploadMeme = () => {
               <h2 className="mb-10 text-xl font-bold text-gray-900">Submit to kpoppop</h2>
 
               <div>
-                <label className="block mb-1 font-semibold text-gray-800" htmlFor="title">
+                <label className="block mb-1 font-semibold text-gray-800" htmlFor="title-input">
                   title
                 </label>
                 <input
+                  id="title-input"
                   required
                   className="w-full px-1 border appearance-none focus:outline-none label-outline"
                   type="text"
@@ -229,10 +230,11 @@ const UploadMeme = () => {
               </div>
 
               <div id="url-input-box">
-                <label className="block mb-1 font-semibold text-gray-800" htmlFor="url">
+                <label className="block mb-1 font-semibold text-gray-800" htmlFor="url-input">
                   url
                 </label>
                 <input
+                  id="url-input"
                   className="w-full px-1 border focus:outline-none focus-within:border-once"
                   type="url"
                   {...register('url')}
