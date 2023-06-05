@@ -20,7 +20,7 @@
     "jsx": "react-jsx",
 
     "baseUrl": "src",
-    "types": ["node", "vite/client"]
+    "types": ["node", "vite/client", "unplugin-fonts/client"]
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]

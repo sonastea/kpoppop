@@ -5,14 +5,24 @@ import nodePolyfills from 'rollup-plugin-polyfill-node';
 import { defineConfig } from 'vite';
 import mkcert from 'vite-plugin-mkcert';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import Unfonts from 'unplugin-fonts/vite';
 
 export default defineConfig(() => {
   return {
     build: {
       outDir: 'build',
       rollupOptions: {
+        output: {
+          manualChunks(id) {
+            const bundles = ['tfjs', 'react-router-dom', 'react-social-icons'];
+            if (bundles.some((bundle) => id.includes(bundle))) {
+              return id.toString().split('node_modules/')[1].split('/')[0].toString();
+            }
+          },
+        },
         plugins: [nodePolyfills()],
       },
+      sourcemap: true,
     },
     define: {
       'process.env': {},
@@ -28,7 +38,16 @@ export default defineConfig(() => {
         ],
       },
     },
-    plugins: [mkcert(), react(), tsconfigPaths()],
+    plugins: [
+      mkcert(),
+      react(),
+      tsconfigPaths(),
+      Unfonts({
+        fontsource: {
+          families: ['montserrat'],
+        },
+      }),
+    ],
     resolve: {
       alias: {
         events: 'rollup-plugin-node-polyfills/polyfills/events',
