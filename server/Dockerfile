@@ -28,8 +28,8 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/secrets ./secrets
 COPY --from=builder /app/firebaseCredentials.json ./
 
-RUN npm install @nestjs/core@9.3.10
-RUN npm install prisma@4.11.0 && npx prisma migrate deploy
+RUN npm install @nestjs/core@9.4.2
+RUN npm install prisma@4.15.0 && npx prisma migrate deploy
 
 EXPOSE $PORT
 
