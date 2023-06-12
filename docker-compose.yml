@@ -11,11 +11,13 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   server:
-    container_name: server
+    container_name: kpoppop_server
     image: kpoppop_backend
     env_file: ./server/.env
     build:
       context: ./server
+      args:
+        - NODE_ENV=${NODE_ENV}
     restart: unless-stopped
     ports:
       - '5000:5000'
@@ -37,16 +39,18 @@ services:
     restart: unless-stopped
 
   client:
-    container_name: client
+    container_name: kpoppop_client
     image: kpoppop_frontend
     env_file: ./client/.env
     build:
       context: ./client
+      args:
+        - NODE_ENV=${NODE_ENV}
     restart: unless-stopped
     ports:
       - '3000:3000'
+    tty: true
     volumes:
-      - .:/app
       - /app/node_modules
     depends_on:
       - server

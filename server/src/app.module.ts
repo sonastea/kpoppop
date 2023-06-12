@@ -43,7 +43,9 @@ import { UserService } from './user/user.service';
         EMAIL_CONFIRMATION_URL: Joi.string().required(),
         MAIL_USER: Joi.string().required(),
         MAIL_PASSWORD: Joi.string().required(),
-        NODE_ENV: Joi.string().valid('development', 'production', 'test').default('production'),
+        NODE_ENV: Joi.string()
+          .valid('development', 'preview', 'production', 'test')
+          .default('production'),
         SESSION_SECRET_KEY: Joi.string().required(),
         STORAGE_BUCKET: Joi.string()
           .valid('images.kpoppop.com', 'test.kpoppop.com')
@@ -51,7 +53,7 @@ import { UserService } from './user/user.service';
           .required(),
         THROTTLE_TTL: Joi.number().required(),
         THROTTLE_LIMIT: Joi.number().required(),
-        PORT: Joi.number().default(5000),
+        PORT: Joi.number().required(),
       }),
     }),
     MulterModule.registerAsync({

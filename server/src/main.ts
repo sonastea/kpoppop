@@ -35,8 +35,8 @@ async function bootstrap() {
   });
 
   const httpsOptions = {
-    key: fs.readFileSync(path.resolve('./secrets/private-key.pem')),
-    cert: fs.readFileSync(path.resolve('./secrets/public-certificate.pem')),
+    key: fs.readFileSync(path.resolve('./secrets/key.pem')),
+    cert: fs.readFileSync(path.resolve('./secrets/cert.pem')),
   };
 
   const sessionOptions = {
