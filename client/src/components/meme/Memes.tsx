@@ -1,4 +1,4 @@
-import autoAnimate from '@formkit/auto-animate';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DAY } from 'Global.d';
@@ -32,7 +32,7 @@ const Memes = () => {
   const [posts, setPosts] = useState([] as any);
   const [loading, setLoading] = useState(false);
 
-  const postsRef = useRef<HTMLDivElement>(null);
+  const [postsRef] = useAutoAnimate<HTMLUListElement>();
 
   const [title, setTitle] = useState<string>('');
   const { memeId: currentMemeId } = useRemoveMemeStore();
@@ -83,10 +83,6 @@ const Memes = () => {
     }
   });
 
-  useEffect(() => {
-    postsRef.current && autoAnimate(postsRef.current);
-  }, [postsRef]);
-
   const removeMemeFromList = (memeId: number) => {
     setPosts((posts: Meme[]) => posts.filter((m: Meme) => m.id !== memeId));
   };
@@ -101,12 +97,12 @@ const Memes = () => {
   return (
     <>
       <ConfirmationDialog title={title} updateList={removeMemeFromList} />
-      <div className="meme-container flex flex-col items-center overflow-hidden" ref={postsRef}>
+      <ul className="meme-container flex flex-col items-center overflow-hidden" ref={postsRef}>
         {posts &&
           posts.map((meme: Meme) => {
             const title = meme.title.replace(/ /g, '_');
             return (
-              <div
+              <li
                 className="w-full my-2 shadow-sm sm:max-w-2xl sm:rounded-md bg-white"
                 key={meme.id}
               >
@@ -146,7 +142,11 @@ const Memes = () => {
                   </video>
                 ) : (
                   <a className="contents" href={`/meme/${meme.id}/${title}`}>
-                    <img className="w-full max-h-64 md:max-h-lg object-scale-down md:object-contain mt-2" src={meme.url} alt={meme.title} />
+                    <img
+                      className="w-full max-h-64 md:max-h-lg object-scale-down md:object-contain mt-2"
+                      src={meme.url}
+                      alt={meme.title}
+                    />
                   </a>
                 )}
                 <InteractiveButtons
@@ -156,10 +156,10 @@ const Memes = () => {
                   comments={meme._count.comments}
                   likes={meme._count.likedBy}
                 />
-              </div>
+              </li>
             );
           })}
-      </div>
+      </ul>
 
       <div
         onScroll={() => handleScroll.current}
