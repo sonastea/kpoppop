@@ -1,15 +1,9 @@
-import { faCheck, faSpinner, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faEye, faEyeSlash, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { useAuth } from 'contexts/AuthContext';
-import { useState } from 'react';
 import DiscordLoginButton from 'components/button/DiscordLoginButton';
-import { API_URL } from 'Global.d';
-
-type LoginFormData = {
-  username: string;
-  password: string;
-};
+import { LoginFormData, User, useAuth } from 'contexts/AuthContext';
+import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 const Login = () => {
   const {
@@ -21,35 +15,35 @@ const Login = () => {
   const [loginSuccess, setLoginSuccess] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [redirecting, setRedirecting] = useState<boolean>(false);
-  const { updateUser } = useAuth();
+  const { login, updateUser } = useAuth();
 
-  const loginHandler: SubmitHandler<LoginFormData> = async (data): Promise<any> => {
-    if (!data.password || !data.username) return;
+  const loginHandler: SubmitHandler<LoginFormData> = async (data): Promise<User> => {
+    if (!data.password || !data.username) return {};
     setLoginSuccess(false);
-    await fetch(`${API_URL}/user/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify(data),
-    })
-      .then((response) => {
-        if (response.status === 401) {
-          setError('password', {
-            type: 'manual',
-            message: 'Incorrect username or password.',
-          });
-        }
-        if (response.status === 201) {
-          setLoginSuccess(true);
-          setTimeout(() => {
-            setRedirecting(true);
-          }, 500);
-          setTimeout(() => (window.location.href = '/'), 1000);
-        }
-        return response.json();
-      })
-      .then((user) => updateUser(user))
-      .catch((_error) => {});
+    try {
+      await login(data)
+        .then((response) => {
+          if (response.status === 401) {
+            setError('password', {
+              type: 'manual',
+              message: 'Incorrect username or password.',
+            });
+          }
+          if (response.status === 201) {
+            setLoginSuccess(true);
+            setTimeout(() => {
+              setRedirecting(true);
+            }, 500);
+            setTimeout(() => (window.location.href = '/'), 1000);
+          }
+          return response.json();
+        })
+        .then((user) => updateUser(user))
+        .catch((_error) => {});
+    } catch (err) {
+      throw err;
+    }
+    return {};
   };
 
   return (
@@ -100,7 +94,7 @@ const Login = () => {
 
         {errors.password?.message && <span className="text-error">{errors.password.message}</span>}
         <div className="text-center">
-          New to KPOPPOP?{' '}
+          New to kpoppop?{' '}
           <a className="hover:text-blue-500 font-semibold text-blue-700" href="/register">
             SIGNUP
           </a>

@@ -18,8 +18,14 @@ export type User = {
   photo?: string;
 };
 
+export type LoginFormData = {
+  username: string;
+  password: string;
+};
+
 export interface IAuthContext {
   user?: User;
+  login: (data: LoginFormData) => Promise<any>;
   logout: () => void;
   updateUser: (user: User) => void;
 }
@@ -55,6 +61,15 @@ export function AuthProvider({
     getCurrentUser();
   }, []);
 
+  const login = useCallback(async (data: LoginFormData) => {
+    return await fetch(`${API_URL}/user/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(data),
+    });
+  }, []);
+
   const logout = useCallback(async () => {
     await fetch(`${API_URL}/user/logout`, {
       method: 'POST',
@@ -64,6 +79,7 @@ export function AuthProvider({
         if (response.ok) {
           window.location.reload();
           localStorage.removeItem('userID');
+          localStorage.removeItem('notifiedUserToLogin');
         }
       })
       .catch((error) => console.log(error));
@@ -73,7 +89,10 @@ export function AuthProvider({
     setUser(user);
   }, []);
 
-  const memoedValues = useMemo(() => ({ user, logout, updateUser }), [user, logout, updateUser]);
+  const memoedValues = useMemo(
+    () => ({ user, login, logout, updateUser }),
+    [user, login, logout, updateUser]
+  );
 
   return (
     <AuthContext.Provider value={memoedValues}>{!loadingInitial && children}</AuthContext.Provider>

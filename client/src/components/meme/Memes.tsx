@@ -10,6 +10,8 @@ import InteractiveButtons from './InteractiveButtons';
 import { fetchMemes } from './MemeAPI';
 import MemeMenu from './MemeMenu';
 import ReportMemeModal from './ReportMemeModal';
+import LoginModal from 'components/user/LoginModal';
+import { useAuth } from 'contexts/AuthContext';
 
 type Meme = {
   author: { username: string };
@@ -29,6 +31,7 @@ type Meme = {
 let cursor: number = 0;
 
 const Memes = () => {
+  const { user } = useAuth();
   const [posts, setPosts] = useState([] as any);
   const [loading, setLoading] = useState(false);
 
@@ -96,6 +99,7 @@ const Memes = () => {
 
   return (
     <>
+      {!user && <LoginModal />}
       <ConfirmationDialog title={title} updateList={removeMemeFromList} />
       <ul className="meme-container flex flex-col items-center overflow-hidden" ref={postsRef}>
         {posts &&
