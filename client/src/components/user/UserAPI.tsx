@@ -1,4 +1,4 @@
-import { API_URL } from "Global.d";
+import { API_URL } from 'Global.d';
 
 export const fetchUser = async (user: string) => {
   return await fetch(`${API_URL}/user/${user}`, {
