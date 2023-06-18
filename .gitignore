@@ -23,6 +23,7 @@
 # env files
 *.env
 *.env.development
+*.env.production
 **/secrets/*
 
 docker-compose*.override.yml*
