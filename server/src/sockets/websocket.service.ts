@@ -3,7 +3,6 @@ import { Redis } from 'ioredis';
 import { PrismaService } from 'src/database/prisma.service';
 import { MessagePayload } from './websocket.gateway';
 
-
 const CONVERSATION_TTL = 7 * 24 * 60 * 60;
 const mapSession = (id: number) => (id ? { id } : undefined);
 
@@ -145,9 +144,9 @@ export class WebSocketStoreService {
         },
       },
     });
-    this.saveConversationSession(userID.toString());
     conversations.map((session) => {
-      session.messages.forEach((m) => {
+      session.messages.forEach((m, index) => {
+        if (index === 0) this.saveConversationSession(m.recipientId.toString());
         this.saveMessageToCache({
           convid: m.convId,
           to: m.recipientId,
