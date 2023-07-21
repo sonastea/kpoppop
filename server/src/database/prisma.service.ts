@@ -30,7 +30,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnAppli
       'ReportComment',
       'ReportMeme',
       'ReportUser',
-      'Message'
+      'Message',
     ],
     excludeMethods: ['count', 'groupBy'],
     onHit: (key) => {
@@ -53,8 +53,6 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnAppli
   }
 
   async enableShutdownHooks(app: INestApplication): Promise<void> {
-    this.$on('beforeExit', async () => {
-      await app.close();
-    });
+    app.enableShutdownHooks();
   }
 }
