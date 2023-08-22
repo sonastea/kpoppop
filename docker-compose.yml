@@ -1,7 +1,7 @@
 services:
   database:
     container_name: kpoppop_db
-    image: 'postgres:15.3'
+    image: 'postgres:15.4'
     restart: unless-stopped
     env_file:
       - database.env
@@ -31,7 +31,7 @@ services:
   redis:
     container_name: kpoppop_redis
     command: redis-server --save 20 1
-    image: 'redis:7.0'
+    image: 'redis:7.2'
     ports:
       - '127.0.0.1:6379:6379'
     volumes:
