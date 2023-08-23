@@ -25,8 +25,9 @@ Reference for creating [ssl certificate](https://stackoverflow.com/questions/101
 
 ```c
 # client/.env
-        ⭕ REACT_APP_API_URL // Endpoint that serves images.
-        🔴 SITE_KEY          // ReCAPTCHA key to invoke reCATPCHA service.
+        ⭕ VITE_API_URL         // Endpoint that serves images.
+        ⭕ VITE_MESSAGES_WS_URL // Endpoint for message websocket connection. Typically wss://{API}
+        🔴 VITE_SITE_KEY        // ReCAPTCHA key to invoke reCATPCHA service.
 
 # server/.env
         🔴 DATABASE_URL         // Connection string to reach database.
@@ -35,9 +36,16 @@ Reference for creating [ssl certificate](https://stackoverflow.com/questions/101
         🔴 NODE_ENV             // Defaults to 'production', takes 'test' or 'development'.
         🔴 RECAPTCHA_SECRET     // Verifies invoked recaptcha response from clients.
         🔴 PRISMA_REDIS_URL     // Prisma Caching Middleware
+        ⭕ REDIS_URL            // Redis Service Pub/Sub for web socket messages.
         🔴 DISCORDBOT_TOKEN
         🔴 DISCORDBOT_WEBHOOK
+        🔴 DISCORD_GUILD_ID
         🔴 DISCORD_CHANNEL_ID
+        🔴 DISCORD_CLIENT_ID
+        🔴 DISCORD_CLIENT_SECRET
+        🔴 DISCORD_CALLBACK_URL
+        🔴 THROTTLE_TTL
+        🔴 THROTTLE_LIMIT
 
 # server/firebaseCredentials.json
         // Credentials that authorize user to access the firebase storage buckets.
