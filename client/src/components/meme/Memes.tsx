@@ -12,6 +12,7 @@ import MemeMenu from './MemeMenu';
 import ReportMemeModal from './ReportMemeModal';
 import LoginModal from 'components/user/LoginModal';
 import { useAuth } from 'contexts/AuthContext';
+import MemesSkeletonLoader from './MemesSkeletonLoader';
 
 type Meme = {
   author: { username: string };
@@ -33,7 +34,7 @@ let cursor: number = 0;
 const Memes = () => {
   const { user } = useAuth();
   const [posts, setPosts] = useState([] as any);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [postsRef] = useAutoAnimate<HTMLUListElement>();
 
@@ -65,7 +66,8 @@ const Memes = () => {
             cursor = memes[memes.length - 1].id;
           }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => console.error(error))
+        .finally(() => setLoading(false));
     };
 
     loadData().catch((error) => console.error(error));
@@ -102,6 +104,7 @@ const Memes = () => {
       {!user && <LoginModal />}
       <ConfirmationDialog title={title} updateList={removeMemeFromList} />
       <ul className="meme-container flex flex-col items-center overflow-hidden" ref={postsRef}>
+        {loading && <MemesSkeletonLoader />}
         {posts &&
           posts.map((meme: Meme) => {
             const title = meme.title.replace(/ /g, '_');
@@ -138,7 +141,7 @@ const Memes = () => {
                 {meme.url.split('.')[3] === 'mp4' ? (
                   <video
                     key={meme.title}
-                    className="object-cover aspect-square w-full mx-auto md:max-h-lg md:aspect-auto"
+                    className="object-cover aspect-square w-full mx-auto md:max-h-96 md:aspect-auto"
                     controls
                     muted
                   >
@@ -147,7 +150,7 @@ const Memes = () => {
                 ) : (
                   <a className="contents" href={`/meme/${meme.id}/${title}`}>
                     <img
-                      className="w-full max-h-64 md:max-h-lg object-scale-down md:object-contain mt-2"
+                      className="w-full max-h-64 md:max-h-96 object-scale-down md:object-contain mt-2"
                       src={meme.url}
                       alt={meme.title}
                     />

@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import * as cookieParser from 'cookie-parser';
-import * as expressSession from 'express-session';
+import * as session from 'express-session';
 import * as firebase from 'firebase-admin';
 import * as fs from 'fs';
 import * as passport from 'passport';
@@ -18,7 +18,7 @@ async function whatMode(logger: MyLogger) {
   logger.log(`Running in ${process.env.NODE_ENV} mode on port ${process.env.PORT}`);
 }
 
-export const cookie: expressSession.CookieOptions = {
+export const cookie: session.CookieOptions = {
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   httpOnly: true,
   secure: true,
@@ -65,7 +65,7 @@ async function bootstrap() {
     app.useLogger(logger);
     app.use(cookieParser());
     app.use(passport.initialize());
-    app.use(expressSession(sessionOptions));
+    app.use(session(sessionOptions));
     app.useWebSocketAdapter(redisIoAdapter);
 
     app.enableShutdownHooks();
@@ -88,7 +88,7 @@ async function bootstrap() {
     app.useLogger(logger);
     app.use(cookieParser());
     app.use(passport.initialize());
-    app.use(expressSession(sessionOptions));
+    app.use(session(sessionOptions));
     app.useWebSocketAdapter(redisIoAdapter);
 
     app.enableShutdownHooks();

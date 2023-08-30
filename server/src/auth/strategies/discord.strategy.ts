@@ -4,7 +4,7 @@ import { Profile, Strategy } from '@oauth-everything/passport-discord';
 import { DiscordAuthService } from '../discord.service';
 
 @Injectable()
-export class DiscordStrategy extends PassportStrategy(Strategy) {
+export class DiscordStrategy extends PassportStrategy(Strategy, 'discord') {
   constructor(private readonly discordService: DiscordAuthService) {
     super({
       clientID: process.env.DISCORD_CLIENT_ID,
