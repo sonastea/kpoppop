@@ -20,7 +20,7 @@ import { MemeService } from './meme.service';
 import { Comment, Meme, MemeResource } from '@prisma/client';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { SessionGuard } from 'src/auth/guards/session.guard';
-import { SkipThrottle, Throttle, ThrottlerGuard } from '@nestjs/throttler';
+import { seconds, SkipThrottle, Throttle, ThrottlerGuard } from '@nestjs/throttler';
 import { PrismaService } from 'src/database/prisma.service';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
@@ -37,7 +37,10 @@ if (process.env.NODE_ENV === 'production') {
 @Controller('meme')
 @UseGuards(ThrottlerGuard)
 export class MemeController {
-  constructor(private readonly memeService: MemeService, private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly memeService: MemeService,
+    private readonly prisma: PrismaService
+  ) { }
 
   @UseGuards(SessionGuard)
   // @Throttle(300, 10)
@@ -119,7 +122,7 @@ export class MemeController {
   }
 
   @UseGuards(SessionGuard)
-  @Throttle(60, 15)
+  @Throttle({ default: { limit: 15, ttl: seconds(60) } })
   @Put('remove/:id')
   async removeMeme(@Param('id') memeId: string, @Session() session: Record<string, any>) {
     if (session.passport.user.id) {
@@ -309,7 +312,7 @@ export class MemeController {
   }
 
   @UseGuards(SessionGuard)
-  @Throttle(60, 15)
+  @Throttle({ default: { limit: 15, ttl: seconds(60) } })
   @SkipThrottle()
   @Put('like/:id')
   async likeMeme(@Param('id') id: string, @Session() session: Record<string, any>): Promise<any> {
@@ -337,7 +340,7 @@ export class MemeController {
   }
 
   @UseGuards(SessionGuard)
-  @Throttle(60, 15)
+  @Throttle({ default: { limit: 15, ttl: seconds(60) } })
   @SkipThrottle()
   @Delete('like/:id')
   async unlikeMeme(@Param('id') id: string, @Session() session: Record<string, any>): Promise<any> {
@@ -364,7 +367,7 @@ export class MemeController {
     }
   }
 
-  @Throttle(60, 15)
+  @Throttle({ default: { limit: 15, ttl: seconds(60) } })
   // @SkipThrottle()
   @Get('comment/:id')
   async getMemeComments(@Param('id') memeId: string): Promise<Comment[]> {

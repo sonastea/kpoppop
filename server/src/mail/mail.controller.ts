@@ -1,13 +1,16 @@
 import { Body, Controller, Get, HttpCode, Post, Query, Res, UseGuards } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { SkipThrottle, Throttle, ThrottlerGuard } from '@nestjs/throttler';
+import { SkipThrottle, Throttle, ThrottlerGuard, seconds } from '@nestjs/throttler';
 import { Response } from 'express';
 import { MailService } from './mail.service';
 
 @Controller('email')
 @UseGuards(ThrottlerGuard)
 export class MailController {
-  constructor(private readonly jwtService: JwtService, private readonly mailService: MailService) {}
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly mailService: MailService
+  ) { }
 
   @Get('verify?')
   @SkipThrottle()
@@ -37,7 +40,7 @@ export class MailController {
   }
 
   @Post('resend-link')
-  @Throttle(60, 3)
+  @Throttle({ default: { limit: 3, ttl: seconds(60) } })
   @HttpCode(201)
   async resend(@Res() res: Response, @Body() data: { email: string }) {
     await this.mailService.sendVerificationLink(data.email).then((data) => {
