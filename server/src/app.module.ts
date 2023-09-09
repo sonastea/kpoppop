@@ -66,10 +66,12 @@ import { UserService } from './user/user.service';
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        ttl: config.get('THROTTLE_TTL'),
-        limit: config.get('THROTTLE_LIMIT'),
-      }),
+      useFactory: (config: ConfigService) => [
+        {
+          ttl: config.get('THROTTLE_TTL'),
+          limit: config.get('THROTTLE_LIMIT'),
+        },
+      ],
     }),
     WebSocketModule,
   ],
@@ -82,4 +84,4 @@ import { UserService } from './user/user.service';
   ],
   providers: [PrismaService, MemeService, UserService, LocalStrategy, LocalSerializer],
 })
-export class AppModule {}
+export class AppModule { }

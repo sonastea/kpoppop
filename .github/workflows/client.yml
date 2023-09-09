@@ -1,0 +1,66 @@
+name: CI Client
+on:
+  push:
+    branches: ['master']
+    paths: ['client/**']
+  merge_group:
+
+  workflow_dispatch:
+
+jobs:
+  build-client:
+    runs-on: ubuntu-22.04
+    env:
+      VITE_API_URL: ${{ secrets.VITE_API_URL }}
+      VITE_MESSAGES_WS_URL: ${{ secrets.VITE_MESSAGES_WS_URL }}
+      VITE_SITE_KEY: ${{ secrets.VITE_SITE_KEY }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install node
+        uses: actions/setup-node@v3.8.1
+        with:
+          node-version: 18
+
+      - name: Cache dependencies
+        uses: actions/cache@v2.1.7
+        with:
+          path: |
+            node_modules
+            **/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install client dependencies
+        working-directory: client
+        run: pnpm install
+
+      - name: Build production client
+        working-directory: client
+        run: pnpm build
+
+      - name: Upload production client
+        uses: actions/upload-artifact@v3
+        with:
+          name: kpoppop-client-${{ github.sha }}
+          path: client/build
+
+  deploy-client:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Download production client artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: kpoppop-client-${{ github.sha }}
+
+      - name: Deploy production client to server
+        uses: burnett01/rsync-deployments@6.0.0
+        with:
+          switches: -azvrP --delete
+          path: kpoppop-client-${{ github.sha }}
+          remote_path: ${{ secrets.SSH_PATH }}
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_port: ${{ secrets.SSH_PORT }}
+          remote_user: ${{ secrets.SSH_USER }}
+          remote_key: ${{ secrets.SSH_DEPLOY_KEY }}

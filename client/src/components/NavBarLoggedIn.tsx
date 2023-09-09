@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Menu, Transition } from '@headlessui/react';
 import { useAuth } from 'contexts/AuthContext';
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router';
+import { useLocation } from 'react-router-dom';
 
 const NavBarLoggedIn = () => {
   const { user, logout } = useAuth();

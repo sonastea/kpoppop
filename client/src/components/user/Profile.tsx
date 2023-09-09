@@ -68,8 +68,8 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className="flex flex-col w-full h-full min-w-0 mb-6">
-          <div className="flex flex-wrap items-center justify-center w-full h-auto">
+        <div className="flex flex-col items-stretch w-full h-full min-w-0 mb-6">
+          <div className="flex flex-wrap justify-center w-full h-auto">
             <div className="flex justify-center order-1 w-full lg:order-2 lg:w-1/3">
               <div className="flex flex-col m-3 text-center">
                 <span className="text-xl font-bold tracking-wide">{data._count.memes}</span>

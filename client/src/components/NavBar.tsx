@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useAuth } from 'contexts/AuthContext';
-import { useLocation } from 'react-router';
+import { useLocation } from 'react-router-dom';
 import NavBarLoggedIn from './NavBarLoggedIn';
 import NavBarLoggedOut from './NavBarLoggedOut';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
