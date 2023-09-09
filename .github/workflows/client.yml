@@ -1,15 +1,13 @@
-name: CI Client
+name: Client
 on:
   push:
     branches: ['master']
-    paths: ['client/**']
-  merge_group:
-
+    paths: ['.github/workflows/client.yml', 'client/**']
   workflow_dispatch:
 
 jobs:
   build-client:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     env:
       VITE_API_URL: ${{ secrets.VITE_API_URL }}
       VITE_MESSAGES_WS_URL: ${{ secrets.VITE_MESSAGES_WS_URL }}
@@ -24,15 +22,26 @@ jobs:
         with:
           node-version: 18
 
-      - name: Cache dependencies
-        uses: actions/cache@v2.1.7
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
         with:
-          path: |
-            node_modules
-            **/node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          version: 8
+          run_install: false
 
-      - name: Install client dependencies
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
         working-directory: client
         run: pnpm install
 
@@ -47,18 +56,20 @@ jobs:
           path: client/build
 
   deploy-client:
-    runs-on: ubuntu-22.04
+    needs: build-client
+    runs-on: ubuntu-latest
     steps:
       - name: Download production client artifact
         uses: actions/download-artifact@v3
         with:
           name: kpoppop-client-${{ github.sha }}
+          path: ${{ github.workspace }}/tmp/kpoppop-client/
 
       - name: Deploy production client to server
         uses: burnett01/rsync-deployments@6.0.0
         with:
           switches: -azvrP --delete
-          path: kpoppop-client-${{ github.sha }}
+          path: tmp/kpoppop-client/
           remote_path: ${{ secrets.SSH_PATH }}
           remote_host: ${{ secrets.SSH_HOST }}
           remote_port: ${{ secrets.SSH_PORT }}
