@@ -3,7 +3,7 @@
   "version": "0.8.2",
   "private": true,
   "dependencies": {
-    "@fontsource/montserrat": "^5.0.14",
+    "@fontsource/montserrat": "^5.0.15",
     "@formkit/auto-animate": "^0.8.0",
     "@fortawesome/fontawesome-common-types": "^6.4.2",
     "@fortawesome/fontawesome-free": "^6.4.2",
@@ -37,7 +37,7 @@
     "svgo": "^3.0.2",
     "util": "^0.12.5",
     "web-vitals": "^3.5.0",
-    "zustand": "^4.4.3"
+    "zustand": "^4.4.4"
   },
   "scripts": {
     "start": "vite",

@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@fontsource/montserrat':
-    specifier: ^5.0.14
-    version: 5.0.14
+    specifier: ^5.0.15
+    version: 5.0.15
   '@formkit/auto-animate':
     specifier: ^0.8.0
     version: 0.8.0
@@ -108,8 +108,8 @@ dependencies:
     specifier: ^3.5.0
     version: 3.5.0
   zustand:
-    specifier: ^4.4.3
-    version: 4.4.3(@types/react@18.2.31)(react@18.2.0)
+    specifier: ^4.4.4
+    version: 4.4.4(@types/react@18.2.31)(react@18.2.0)
 
 devDependencies:
   '@esbuild-plugins/node-globals-polyfill':
@@ -973,8 +973,8 @@ packages:
     dev: true
     optional: true
 
-  /@fontsource/montserrat@5.0.14:
-    resolution: {integrity: sha512-iSCl6u+/JreLL4nIx3EV0plcP8j5IkLYFNydAs7prRZU5I69OP1oJ7n7HwxLm5JCxqSH8I0HIEitn6GM1vVw9g==}
+  /@fontsource/montserrat@5.0.15:
+    resolution: {integrity: sha512-ZJbsCIJp6VHL1wYQUPpyBjXMzwGdfFedrmrw4r5sFi7WrMpnfJv+el1uVO6yDPIqnVqkPvjJ+xeKgJwnj2LuQQ==}
     dev: false
 
   /@formkit/auto-animate@0.8.0:
@@ -5536,8 +5536,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /zustand@4.4.3(@types/react@18.2.31)(react@18.2.0):
-    resolution: {integrity: sha512-oRy+X3ZazZvLfmv6viIaQmtLOMeij1noakIsK/Y47PWYhT8glfXzQ4j0YcP5i0P0qI1A4rIB//SGROGyZhx91A==}
+  /zustand@4.4.4(@types/react@18.2.31)(react@18.2.0):
+    resolution: {integrity: sha512-5UTUIAiHMNf5+mFp7/AnzJXS7+XxktULFN0+D1sCiZWyX7ZG+AQpqs2qpYrynRij4QvoDdCD+U+bmg/cG3Ucxw==}
     engines: {node: '>=12.7.0'}
     peerDependencies:
       '@types/react': '>=16.8'
