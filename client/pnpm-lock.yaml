@@ -108,8 +108,8 @@ dependencies:
     specifier: ^3.5.0
     version: 3.5.0
   zustand:
-    specifier: ^4.4.5
-    version: 4.4.5(@types/react@18.2.34)(react@18.2.0)
+    specifier: ^4.4.6
+    version: 4.4.6(@types/react@18.2.34)(react@18.2.0)
 
 devDependencies:
   '@esbuild-plugins/node-globals-polyfill':
@@ -146,8 +146,8 @@ devDependencies:
     specifier: ^2.1.7
     version: 2.1.7
   '@vitejs/plugin-react':
-    specifier: ^4.1.0
-    version: 4.1.0(vite@4.5.0)
+    specifier: ^4.1.1
+    version: 4.1.1(vite@4.5.0)
   autoprefixer:
     specifier: ^10.4.16
     version: 10.4.16(postcss@8.4.31)
@@ -1862,8 +1862,8 @@ packages:
       '@types/yargs-parser': 21.0.2
     dev: true
 
-  /@vitejs/plugin-react@4.1.0(vite@4.5.0):
-    resolution: {integrity: sha512-rM0SqazU9iqPUraQ2JlIvReeaxOoRj6n+PzB1C0cBzIbd8qP336nC39/R9yPi3wVcah7E7j/kdU1uCUqMEU4OQ==}
+  /@vitejs/plugin-react@4.1.1(vite@4.5.0):
+    resolution: {integrity: sha512-Jie2HERK+uh27e+ORXXwEP5h0Y2lS9T2PRGbfebiHGlwzDO0dEnd2aNtOR/qjBlPb1YgxwAONeblL1xqLikLag==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^4.2.0
@@ -5555,8 +5555,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /zustand@4.4.5(@types/react@18.2.34)(react@18.2.0):
-    resolution: {integrity: sha512-jgIrBBLKncQW74PA2Lclct3gwD4aPughwGE4FqlXrv3rDqQox7JCn8rwUiFK6ygJcbBAvfTf8fF+ICg7HLD2FQ==}
+  /zustand@4.4.6(@types/react@18.2.34)(react@18.2.0):
+    resolution: {integrity: sha512-Rb16eW55gqL4W2XZpJh0fnrATxYEG3Apl2gfHTyDSE965x/zxslTikpNch0JgNjJA9zK6gEFW8Fl6d1rTZaqgg==}
     engines: {node: '>=12.7.0'}
     peerDependencies:
       '@types/react': '>=16.8'
