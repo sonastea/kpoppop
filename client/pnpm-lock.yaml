@@ -90,8 +90,8 @@ dependencies:
     specifier: ^6.18.0
     version: 6.18.0(react-dom@18.2.0)(react@18.2.0)
   react-social-icons:
-    specifier: ^6.4.0
-    version: 6.4.0(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^6.6.0
+    version: 6.6.0(react-dom@18.2.0)(react@18.2.0)
   react-toastify:
     specifier: ^9.1.3
     version: 9.1.3(react-dom@18.2.0)(react@18.2.0)
@@ -4615,8 +4615,8 @@ packages:
       react: 18.2.0
     dev: false
 
-  /react-social-icons@6.4.0(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-8kLSp7yWB4GjWk9mDZc+u7qAkAF5lxuWLnolwRQ7KoUgQfjnxpFcuSSyda/Klt+HkqtFMiOJ+/Qtgq73vwc6BQ==}
+  /react-social-icons@6.6.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-L5+9IkpWhKWWf9+f07kgtQwefg2fwZvaFefkfSic20k0V37Pm5xLajhJ9iys/Sx+abqtViztopOcNShK6rcY4A==}
     peerDependencies:
       react: 15.x.x || 16.x.x || 17.x.x || 18.x.x
       react-dom: 15.x.x || 16.x.x || 17.x.x || 18.x.x
