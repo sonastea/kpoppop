@@ -93,6 +93,7 @@
     "typescript": "^5.3.3"
   },
   "overrides": {
+    "reflect-metadata": "^0.1.14",
     "passport": "^0.5.3"
   },
   "jest": {
