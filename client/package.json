@@ -36,7 +36,7 @@
     "socket.io-client": "^4.7.2",
     "svgo": "^3.1.0",
     "util": "^0.12.5",
-    "web-vitals": "^3.5.0",
+    "web-vitals": "^3.5.1",
     "zustand": "^4.4.7"
   },
   "scripts": {
@@ -66,12 +66,12 @@
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "@testing-library/dom": "^9.3.3",
-    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/jest-dom": "^6.1.6",
     "@testing-library/react": "^14.1.2",
     "@testing-library/user-event": "^14.5.1",
     "@types/jest": "^29.5.11",
     "@types/lodash": "^4.14.202",
-    "@types/react": "^18.2.45",
+    "@types/react": "^18.2.46",
     "@types/react-dom": "^18.2.18",
     "@types/react-google-recaptcha": "^2.1.8",
     "@vitejs/plugin-react": "^4.2.1",
@@ -86,6 +86,6 @@
     "unplugin-fonts": "^1.1.1",
     "vite": "^5.0.10",
     "vite-plugin-mkcert": "^1.17.1",
-    "vite-tsconfig-paths": "^4.2.2"
+    "vite-tsconfig-paths": "^4.2.3"
   }
 }
