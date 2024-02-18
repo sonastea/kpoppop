@@ -22,10 +22,10 @@ type Meme = {
   title: string;
   url: string;
   createdAt: string;
-  likedBy: { id: number }[];
+  likes: { id: number }[];
   _count: {
     comments: number;
-    likedBy: number;
+    likes: number;
   };
 };
 
@@ -159,9 +159,9 @@ const Memes = () => {
                 <InteractiveButtons
                   memeId={meme.id}
                   memeTitle={title}
-                  liked={meme.likedBy.length !== 0}
+                  liked={meme.likes.length !== 0}
                   comments={meme._count.comments}
-                  likes={meme._count.likedBy}
+                  likes={meme._count.likes}
                 />
               </li>
             );
