@@ -62,7 +62,8 @@ export class BotGateway {
     // Only listen to button interactions
     if (!interaction.isButton()) return;
 
-    // Retrieve member that interacted with the button and make sure they have the appropiate permissions
+    // Retrieve member that interacted with the button and
+    // make sure they have the appropiate permissions
     const user = (interaction.channel as TextChannel).members.get(interaction.user.id);
     // Get meme id of current interaction
     const memeId = interaction.message.embeds[0].fields[1].value;
