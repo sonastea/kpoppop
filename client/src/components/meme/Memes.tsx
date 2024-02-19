@@ -110,7 +110,7 @@ const Memes = () => {
             const title = meme.title.replace(/ /g, '_');
             return (
               <li
-                className="w-full my-2 shadow-sm sm:max-w-2xl sm:rounded-md bg-white"
+                className="w-full my-2 shadow-sm sm:max-w-2xl sm:rounded-md bg-white border"
                 key={meme.id}
               >
                 <div className="flex flex-wrap overflow-auto leading-normal mx-4 mt-4 mb-2 md:text-xl author-bar">
