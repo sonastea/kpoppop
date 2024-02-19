@@ -45,9 +45,21 @@ const InteractiveButtons = (props: InteractiveButtonProps) => {
     }
   };
 
+  const shortForm = (number: number) => {
+    return Intl.NumberFormat('en-US', {
+      notation: 'compact',
+      maximumFractionDigits: 1,
+    }).format(number);
+  };
+
   return (
-    <div className="py-2 md:py-4 flex flex-wrap justify-center gap-x-4">
-      <div className="group like" onClick={handleLiked} role="button" aria-label="like">
+    <div className="py-2 md:py-4 flex flex-wrap justify-center gap-x-1">
+      <div
+        className="flex justify-center items-center group like w-20"
+        onClick={handleLiked}
+        role="button"
+        aria-label="like"
+      >
         {likedState ? (
           <FontAwesomeIcon
             className="group-hover:text-red-500/80 md:text-lg liked"
@@ -56,18 +68,22 @@ const InteractiveButtons = (props: InteractiveButtonProps) => {
         ) : (
           <FontAwesomeIcon className="group-hover:text-red-500 md:text-lg" icon={faHeart} />
         )}
-        <span className="group-hover:text-red-500 ml-1 text-gray-700">
-          {totalLikes ? `${totalLikes}` : `0`}
+        <span className="group-hover:text-red-500 ml-1 text-gray-700 overflow-hidden">
+          {totalLikes ? `${shortForm(totalLikes)}` : `0`}
         </span>
       </div>
-      <div className="group comments" role="button" aria-label="comments">
+      <div
+        className="flex justify-center items-center group comments w-20"
+        role="button"
+        aria-label="comments"
+      >
         <a href={`/meme/${memeId}/${memeTitle}`}>
           <FontAwesomeIcon
             className="group-hover:text-cyan-500 md:text-lg comments"
             icon={faComment}
           />
-          <span className="group-hover:text-cyan-500 ml-1 text-gray-700">
-            {totalComments ? `${totalComments}` : `0`}
+          <span className="group-hover:text-cyan-500 ml-1 text-gray-700 overflow-hidden">
+            {totalComments ? `${shortForm(totalComments)}` : `0`}
           </span>
         </a>
       </div>
