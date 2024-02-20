@@ -72,7 +72,7 @@ const InteractiveComments = ({ memeId, ownerId, comments: c }: InteractiveCommen
           alt="user by comment box"
         />
         <textarea
-          className="m-2 px-2 h-6 w-full max-w-2xl overflow-hidden text-center rounded-md bg-gray-100 focus:outline-none focus:border-once border"
+          className="m-2 px-2 h-6 w-full max-w-2xl overflow-hidden text-center rounded-md bg-gray-200/60 focus:outline-none focus:border-once border"
           name="comment"
           placeholder="Add comment"
           value={comment}

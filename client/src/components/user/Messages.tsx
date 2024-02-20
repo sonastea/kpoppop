@@ -185,7 +185,7 @@ const Messages = () => {
   } else {
     return (
       <div className="h-[calc(100vh-80px)]">
-        <div className="flex flex-col h-full bg-gray-100 overflow-hidden">
+        <div className="flex flex-col h-full bg-gray-200/60 overflow-hidden">
           <div className="flex heading m-4 flex-wrap">
             <h1 className="justify-center text-3xl text-gray-700 mr-4">Messages</h1>
             <div
