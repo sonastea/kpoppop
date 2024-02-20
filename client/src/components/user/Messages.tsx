@@ -56,20 +56,8 @@ const Messages = () => {
   const sortMessages = (conversations: UserCardProps[]) => {
     let gm: { [index: string]: MessageProps[] } | undefined = conversations
       .find((conv) => conv.convid === m.recipient?.convid)
-      ?.messages.reduce((msgs, msg) => {
-        const date = msg.createdAt.split('T')[0];
-        if (!msgs[date]) {
-          msgs[date] = [];
-        }
-        msgs[date].push(msg);
-
-        return msgs;
-      }, {} as { [index: string]: MessageProps[] });
-
-    if (gm === undefined) {
-      gm = conversations
-        .find((conv) => conv.username === m.recipient?.username)
-        ?.messages.reduce((msgs, msg) => {
+      ?.messages.reduce(
+        (msgs, msg) => {
           const date = msg.createdAt.split('T')[0];
           if (!msgs[date]) {
             msgs[date] = [];
@@ -77,7 +65,25 @@ const Messages = () => {
           msgs[date].push(msg);
 
           return msgs;
-        }, {} as { [index: string]: MessageProps[] });
+        },
+        {} as { [index: string]: MessageProps[] }
+      );
+
+    if (gm === undefined) {
+      gm = conversations
+        .find((conv) => conv.username === m.recipient?.username)
+        ?.messages.reduce(
+          (msgs, msg) => {
+            const date = msg.createdAt.split('T')[0];
+            if (!msgs[date]) {
+              msgs[date] = [];
+            }
+            msgs[date].push(msg);
+
+            return msgs;
+          },
+          {} as { [index: string]: MessageProps[] }
+        );
     }
 
     if (gm === undefined) return {};
