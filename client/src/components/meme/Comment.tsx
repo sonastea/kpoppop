@@ -84,12 +84,12 @@ const Comment = (props: { props: CommentProps; memeOwnerId: number }) => {
       </div>
       <div
         aria-label="edit-comment-input"
-        className="hidden rounded-md h-60 bg-gray-100 text-slate-800 text-xs sm:text-lg break-words"
+        className="hidden rounded-md h-60 bg-gray-200/60 text-slate-800 text-xs sm:text-lg break-words"
         ref={newTextRef}
       >
         <div className="rounded-md h-full flex text-center">
           <textarea
-            className="focus:outline-none focus:border-once border resize-none p-2 h-full w-full bg-gray-100 rounded-md"
+            className="focus:outline-none focus:border-once border resize-none p-2 h-full w-full bg-gray-200/60 rounded-md"
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
           />

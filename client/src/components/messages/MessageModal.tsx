@@ -19,7 +19,7 @@ const MessageModal = ({ message, latest }: { message: MessageProps; latest: bool
       <div className={`flex flex-col group max-w-[85%] text-right ${isAuthor ? 'pr-2' : 'pl-2'}`}>
         <div
           className={`inline-block rounded-xl p-2 px-3 self-start text-xs sm:text-xl text-left ${
-            isAuthor ? 'bg-once-400 rounded-br-sm self-end' : 'bg-gray-200 rounded-bl-sm'
+            isAuthor ? 'bg-once-400 rounded-br-sm self-end' : 'bg-gray-300/80 rounded-bl-sm'
           }`}
         >
           <span>{message.content}</span>

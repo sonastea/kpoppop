@@ -4,7 +4,9 @@ import createPostgresSubscriber from 'pg-listen';
 @Injectable()
 export class pgListenerProvider implements OnModuleInit {
   private readonly logger = new Logger(pgListenerProvider.name);
-  public readonly subscriber = createPostgresSubscriber({ connectionString: process.env.DATABASE_URL });
+  public readonly subscriber = createPostgresSubscriber({
+    connectionString: process.env.DATABASE_URL,
+  });
 
   private connect = async () => {
     await this.subscriber.connect();

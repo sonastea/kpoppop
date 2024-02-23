@@ -209,7 +209,7 @@ const NavBar = () => {
                 <FontAwesomeIcon icon={faXmark} />
               </button>
             </div>
-            <div className="w-full h-px bg-gray-200/80 mt-6 mb-4" />
+            <div className="divider w-full h-px bg-gray-300/80 mt-6 mb-4" />
             <nav className="flex flex-col overflow-hidden overflow-x-auto">
               {user?.username ? (
                 <>
@@ -219,7 +219,7 @@ const NavBar = () => {
                         href={`${item.to}`}
                         className={`${
                           active === item.id
-                            ? 'text-thrice bg-gray-100 rounded-md'
+                            ? 'text-thrice bg-gray-200/60 rounded-md'
                             : 'bg-transparent'
                         } ${item.className}`}
                         onClick={() => setActive(item.id)}
@@ -241,7 +241,7 @@ const NavBar = () => {
                         href={`${item.to}`}
                         className={`${
                           active === item.id
-                            ? 'text-thrice bg-gray-100 rounded-md'
+                            ? 'text-thrice bg-gray-200/60 rounded-md'
                             : 'bg-transparent'
                         } ${item.className}`}
                         onClick={() => setActive(item.id)}

@@ -56,20 +56,8 @@ const Messages = () => {
   const sortMessages = (conversations: UserCardProps[]) => {
     let gm: { [index: string]: MessageProps[] } | undefined = conversations
       .find((conv) => conv.convid === m.recipient?.convid)
-      ?.messages.reduce((msgs, msg) => {
-        const date = msg.createdAt.split('T')[0];
-        if (!msgs[date]) {
-          msgs[date] = [];
-        }
-        msgs[date].push(msg);
-
-        return msgs;
-      }, {} as { [index: string]: MessageProps[] });
-
-    if (gm === undefined) {
-      gm = conversations
-        .find((conv) => conv.username === m.recipient?.username)
-        ?.messages.reduce((msgs, msg) => {
+      ?.messages.reduce(
+        (msgs, msg) => {
           const date = msg.createdAt.split('T')[0];
           if (!msgs[date]) {
             msgs[date] = [];
@@ -77,7 +65,25 @@ const Messages = () => {
           msgs[date].push(msg);
 
           return msgs;
-        }, {} as { [index: string]: MessageProps[] });
+        },
+        {} as { [index: string]: MessageProps[] }
+      );
+
+    if (gm === undefined) {
+      gm = conversations
+        .find((conv) => conv.username === m.recipient?.username)
+        ?.messages.reduce(
+          (msgs, msg) => {
+            const date = msg.createdAt.split('T')[0];
+            if (!msgs[date]) {
+              msgs[date] = [];
+            }
+            msgs[date].push(msg);
+
+            return msgs;
+          },
+          {} as { [index: string]: MessageProps[] }
+        );
     }
 
     if (gm === undefined) return {};
@@ -185,7 +191,7 @@ const Messages = () => {
   } else {
     return (
       <div className="h-[calc(100vh-80px)]">
-        <div className="flex flex-col h-full bg-gray-100 overflow-hidden">
+        <div className="flex flex-col h-full bg-gray-200/60 overflow-hidden">
           <div className="flex heading m-4 flex-wrap">
             <h1 className="justify-center text-3xl text-gray-700 mr-4">Messages</h1>
             <div

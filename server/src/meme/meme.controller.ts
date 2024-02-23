@@ -40,7 +40,7 @@ export class MemeController {
   constructor(
     private readonly memeService: MemeService,
     private readonly prisma: PrismaService
-  ) { }
+  ) {}
 
   @UseGuards(SessionGuard)
   // @Throttle(300, 10)
@@ -158,10 +158,10 @@ export class MemeController {
           title: true,
           url: true,
           createdAt: true,
-          likedBy: {
+          likes: {
             where: {
               OR: [
-                { discord: { discordId: session.passport?.user?.discordId } },
+                { user: { discord: { discordId: session.passport?.user?.discordId } } },
                 { id: session.passport?.user?.id },
               ],
             },
@@ -170,7 +170,7 @@ export class MemeController {
           _count: {
             select: {
               comments: true,
-              likedBy: true,
+              likes: true,
             },
           },
         },
@@ -199,8 +199,12 @@ export class MemeController {
           title: true,
           url: true,
           createdAt: true,
-          likedBy: { select: { _count: true } },
-          comments: { select: { _count: true } },
+          _count: {
+            select: {
+              likes: true,
+              comments: true,
+            },
+          },
         },
         where: {
           active: { equals: true },
@@ -230,19 +234,21 @@ export class MemeController {
         title: true,
         url: true,
         createdAt: true,
-        likedBy: {
+        likes: {
           where: {
-            OR: [
-              { discord: { discordId: session.passport?.user?.discordId } },
-              { id: session.passport?.user?.id },
-            ],
+            user: {
+              OR: [
+                { discord: { discordId: session.passport?.user?.discordId } },
+                { id: session.passport?.user?.id },
+              ],
+            },
           },
           select: { id: true },
         },
         _count: {
           select: {
             comments: true,
-            likedBy: true,
+            likes: true,
           },
         },
         comments: {
@@ -279,17 +285,14 @@ export class MemeController {
 
   @Get('liked/:id')
   @SkipThrottle()
-  async getUserLike(
-    @Param('id') id: string,
-    @Session() session: Record<string, any>
-  ): Promise<any> {
+  async getUserLike(@Param('id') id: string, @Session() session: Record<string, any>) {
     if (session.passport.user.id) {
       return this.memeService.likedMeme({
         where: {
-          id: parseInt(id),
-        },
-        user: {
-          id: session.passport.user.id,
+          userId_memeId: {
+            memeId: parseInt(id),
+            userId: session.passport.user.id,
+          },
         },
       });
     } else {
@@ -303,9 +306,7 @@ export class MemeController {
       return this.memeService.likedMeme({
         where: {
           id: parseInt(id),
-        },
-        user: {
-          id: user.id,
+          userId: user.id,
         },
       });
     }

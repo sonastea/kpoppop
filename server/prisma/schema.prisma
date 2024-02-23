@@ -23,7 +23,7 @@ model User {
   status               UserStatus      @default(ACTIVE)
   refreshtoken         String?
   memes                Meme[]
-  likedMemes           Meme[]          @relation("UserLikesPost")
+  likedMemes           UserMemeLike[]
   comments             Comment[]       @relation("CommentsByUser")
   socialMedias         SocialMedia[]
   reportsList          ReportUser[]    @relation("ReportsForUser")
@@ -45,21 +45,21 @@ model DiscordUser {
 }
 
 model Meme {
-  id        Int          @id @default(autoincrement())
-  title     String       @db.VarChar(320)
+  id        Int            @id @default(autoincrement())
+  title     String         @db.VarChar(320)
   url       String?
   path      String?
   resource  MemeResource
   authorId  Int
-  active    Boolean      @default(true)
-  flagged   Boolean      @default(false)
-  createdAt DateTime     @default(now()) @db.Timestamptz()
-  updatedAt DateTime?    @updatedAt @db.Timestamptz()
-  updatedBy String?      @ignore
-  author    User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  likedBy   User[]       @relation("UserLikesPost")
-  comments  Comment[]    @relation("CommentsForMeme")
-  reports   ReportMeme[] @relation("MemeForReport")
+  active    Boolean        @default(true)
+  flagged   Boolean        @default(false)
+  createdAt DateTime       @default(now()) @db.Timestamptz()
+  updatedAt DateTime?      @updatedAt @db.Timestamptz()
+  updatedBy String?        @ignore
+  author    User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  likes     UserMemeLike[]
+  comments  Comment[]      @relation("CommentsForMeme")
+  reports   ReportMeme[]   @relation("MemeForReport")
 }
 
 model Comment {
@@ -146,6 +146,18 @@ model Message {
   recipient   User?         @relation("MessagesForUser", fields: [recipientId], references: [id])
   recipientId Int
   read        Boolean       @default(false)
+}
+
+model UserMemeLike {
+  id        Int       @id @default(autoincrement())
+  user      User      @relation(fields: [userId], references: [id])
+  meme      Meme      @relation(fields: [memeId], references: [id])
+  userId    Int
+  memeId    Int
+  createdAt DateTime  @default(now()) @db.Timestamptz()
+  updatedAt DateTime? @updatedAt @db.Timestamptz()
+
+  @@unique([userId, memeId])
 }
 
 enum Role {

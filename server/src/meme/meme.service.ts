@@ -36,9 +36,9 @@ export class MemeService {
     });
   }
 
-  async totalLikes(params: { where: Prisma.MemeWhereUniqueInput }): Promise<any> {
-    const { where } = params;
-    const likes = await this.prisma.meme.findUnique({
+  async totalLikes(params: { where: Prisma.MemeWhereUniqueInput }) {
+    const { id } = params.where;
+    /* const likes = await this.prisma.meme.findUnique({
       where,
       select: {
         _count: {
@@ -48,26 +48,23 @@ export class MemeService {
         },
       },
     });
-    return likes._count.likedBy;
-  }
-
-  async likedMeme(params: {
-    where: Prisma.MemeWhereUniqueInput;
-    user: Prisma.UserWhereUniqueInput;
-  }): Promise<any> {
-    const { where, user } = params;
-    const meme = await this.prisma.meme.findUnique({
-      where,
-      include: {
-        likedBy: {
-          where: {
-            id: user.id,
-          },
-        },
+    return likes._count.likedBy; */
+    const likes = await this.prisma.userMemeLike.count({
+      where: {
+        memeId: id,
       },
     });
 
-    if (meme.likedBy.length >= 1) {
+    return likes;
+  }
+
+  async likedMeme(params: { where: Prisma.UserMemeLikeWhereUniqueInput }) {
+    const { where } = params;
+    const meme = await this.prisma.userMemeLike.findUnique({
+      where,
+    });
+
+    if (meme.id) {
       return true;
     } else {
       return false;
@@ -77,21 +74,21 @@ export class MemeService {
   async likeMeme(params: {
     where: Prisma.MemeWhereUniqueInput;
     user: Prisma.UserWhereUniqueInput;
-  }): Promise<any> {
+  }) {
     const { where, user } = params;
     const liked = await this.prisma.meme.update({
       where,
       data: {
-        likedBy: {
-          connect: {
-            id: user.id,
+        likes: {
+          create: {
+            userId: user.id,
           },
         },
       },
       include: {
-        likedBy: {
+        likes: {
           where: {
-            id: user.id,
+            userId: user.id,
           },
           select: {
             id: true,
@@ -99,9 +96,10 @@ export class MemeService {
         },
       },
     });
-    if (liked.likedBy.length >= 1) {
+
+    if (liked.likes.length >= 1) {
       return { LikeMeme: true };
-    } else if (liked.likedBy.length === 0) {
+    } else if (liked.likes.length === 0) {
       return { LikeMeme: false };
     } else {
       return { LikeMeme: { error: 'There was an error liking this.' } };
@@ -111,38 +109,32 @@ export class MemeService {
   async unlikeMeme(params: {
     where: Prisma.MemeWhereUniqueInput;
     user: Prisma.UserWhereUniqueInput;
-  }): Promise<any> {
+  }) {
     const { where, user } = params;
-    const liked = await this.prisma.meme.update({
-      where,
-      data: {
-        likedBy: {
-          disconnect: {
-            id: user.id,
+    try {
+      const liked = await this.prisma.userMemeLike.delete({
+        where: {
+          userId_memeId: {
+            memeId: where.id,
+            userId: user.id,
           },
         },
-      },
-      include: {
-        likedBy: {
-          where: {
-            id: user.id,
-          },
-          select: {
-            id: true,
-          },
+        select: {
+          id: true,
         },
-      },
-    });
-    if (liked.likedBy.length === 0) {
-      return { UnlikeMeme: true };
-    } else if (liked.likedBy.length >= 1) {
-      return { UnlikeMeme: false };
-    } else {
+      });
+
+      if (liked.id) {
+        return { UnlikeMeme: true };
+      } else {
+        return { UnlikeMeme: false };
+      }
+    } catch (e) {
       return { Unlikememe: { error: 'There was an error unliking this.' } };
     }
   }
 
-  async createMeme(data: Prisma.MemeCreateInput, select?: Prisma.MemeSelect): Promise<any> {
+  async createMeme(data: Prisma.MemeCreateInput, select?: Prisma.MemeSelect) {
     return this.prisma.meme.create({
       data,
       select,

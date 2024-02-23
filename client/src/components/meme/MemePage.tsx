@@ -4,7 +4,7 @@ import UploadMeme from './UploadMeme';
 
 const MemePage = () => {
   return (
-    <div className="h-full bg-gray-100">
+    <div className="h-full bg-gray-200/60">
       <ScrollToTopButton />
       <UploadMeme />
       <Memes />
