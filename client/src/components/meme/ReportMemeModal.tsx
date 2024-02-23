@@ -1,7 +1,7 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dialog } from '@headlessui/react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import useReportMemeStore from './hooks/useReportMeme';
@@ -16,44 +16,59 @@ const ReportMemeModal = (props: { id: number }) => {
   const [responseMsg, setResponseMsg] = useState<string>('');
   const [reported, setReported] = useState<boolean>(false);
   const { reporting, reportingMeme } = useReportMemeStore();
+  const reportingRef = useRef(null);
   const {
     reset,
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<ReportMemeData>();
+  const watchDescription = watch('description');
 
   const handleReportComment: SubmitHandler<ReportMemeData> = async (data) => {
     setReported(true);
 
-    await reportMeme(props.id, data.description)
-      .then((data: any) => {
-        if (data.statusCode === 403) {
-          toast.error('You must be logged in to do that!');
-          reportingMeme();
-          resetForm();
-        } else {
-          setResponseMsg(data.message);
-        }
-      })
-      .finally(() => setTimeout(() => resetForm(), 10000));
+    await reportMeme(props.id, data.description).then((data: any) => {
+      if (data.statusCode === 403) {
+        toast.error('You must be logged in to do that!');
+        reportingMeme();
+        resetForm();
+      } else {
+        setResponseMsg(data.message);
+      }
+    });
   };
 
   const resetForm = () => {
-    reportingMeme();
-    setReported(false);
-    reset({ description: '' });
+    if (reported || watchDescription !== '') {
+      reportingMeme();
+      setReported(false);
+      reset({ description: '' });
+    } else {
+      reportingMeme();
+    }
   };
 
   return (
-    <Dialog open={reporting} onClose={() => reportingMeme()} className="relative z-100">
+    <Dialog
+      open={reporting}
+      onClose={() => {}}
+      className="relative z-100"
+      initialFocus={reportingRef}
+    >
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
 
-      <div className="fixed inset-0 flex items-center justify-center">
-        <Dialog.Panel className="bg-gray-200 p-6 w-full md:w-3/4 rounded-md">
+      <div
+        className="fixed inset-0 flex items-center justify-center"
+        onClick={(e) => {
+          if (e.target === e.currentTarget) resetForm();
+        }}
+      >
+        <Dialog.Panel className="bg-gray-200 p-6 w-full md:w-3/4 rounded-md" ref={reportingRef}>
           <button
-            aria-label="Report comment"
-            onClick={() => reportingMeme()}
+            aria-label="Report meme"
+            onClick={() => resetForm()}
             type="button"
             className="fixed right-6 md:right-[15%]"
           >
@@ -88,7 +103,7 @@ const ReportMemeModal = (props: { id: number }) => {
                 <button
                   className="w-full border bg-white border-once rounded-md text-once p-1 mr-1"
                   type="button"
-                  onClick={() => reportingMeme()}
+                  onClick={() => resetForm()}
                 >
                   Cancel
                 </button>
