@@ -125,7 +125,7 @@ const NavBar = () => {
   }, [isActiveMobileNav]);
 
   return (
-    <nav className="relative w-full shadow">
+    <nav className="relative w-full shadow-md">
       <div className="mx-auto md:max-w-screen-2xl">
         <div className="flex justify-between flex-wrap overflow-hidden md:overflow-visible">
           <div className="flex flex-shrink-0 space-x-2">

@@ -98,6 +98,10 @@ input:not(:focus-within) ~ label {
   opacity: 0.75;
 }
 
+.Toastify__toast-theme--light {
+  border: 1px solid #d1d5db;
+}
+
 #recaptcha {
   text-align: -webkit-center;
 }

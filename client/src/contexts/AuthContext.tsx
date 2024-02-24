@@ -8,6 +8,7 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { toast } from 'react-toastify';
 
 export type User = {
   id?: number;
@@ -55,7 +56,11 @@ export function AuthProvider({
             localStorage.setItem('userID', data.id);
           }
         })
-        .catch((_error) => {})
+        .catch((error) => {
+          if (error.message === 'Failed to fetch') {
+            toast.error('Unable to reach user session data. Please try again later.');
+          }
+        })
         .finally(() => setLoadingInitial(false));
     };
     getCurrentUser();

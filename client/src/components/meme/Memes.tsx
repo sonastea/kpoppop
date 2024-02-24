@@ -13,6 +13,7 @@ import ReportMemeModal from './ReportMemeModal';
 import LoginModal from 'components/user/LoginModal';
 import { useAuth } from 'contexts/AuthContext';
 import MemesSkeletonLoader from './MemesSkeletonLoader';
+import { toast } from 'react-toastify';
 
 type Meme = {
   author: { username: string };
@@ -66,7 +67,11 @@ const Memes = () => {
             cursor = memes[memes.length - 1].id;
           }
         })
-        .catch((error) => console.error(error))
+        .catch((error) => {
+          if (error.message === 'Failed to fetch') {
+            toast.error('Unable to fetch memes. Please try again later.');
+          }
+        })
         .finally(() => setLoading(false));
     };
 
