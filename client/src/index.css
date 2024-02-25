@@ -7,6 +7,7 @@
     font-family: 'Montserrat', system-ui, sans-serif;
     height: 100%;
   }
+
   html,
   body {
     height: 100%;
@@ -18,26 +19,27 @@
   flex-direction: column;
 }
 
-input:focus-within ~ label,
-input:not(:placeholder-shown) ~ label {
+input:focus-within~label,
+input:not(:placeholder-shown)~label {
   @apply transform scale-75 -translate-y-6;
 }
 
-input:focus-within ~ label {
+input:focus-within~label {
   @apply text-once;
+  @apply bg-slate-100;
 }
 
-input:not(:focus-within) ~ label {
+input:not(:focus-within)~label {
   @apply transform duration-300 scale-100;
 }
 
-.label-outline input:focus-within ~ label,
-.label-outline input:not(:placeholder-shown) ~ label {
+.label-outline input:focus-within~label,
+.label-outline input:not(:placeholder-shown)~label {
   @apply transform scale-75 -translate-y-6;
 }
 
-.label-outline input:focus-within ~ label,
-.label-outline input:not(:placeholder-shown) ~ label {
+.label-outline input:focus-within~label,
+.label-outline input:not(:placeholder-shown)~label {
   @apply z-0 px-1 py-0 ml-3 transform scale-75 -translate-y-3;
 }
 
@@ -103,6 +105,7 @@ input:not(:focus-within) ~ label {
 }
 
 #recaptcha {
+  text-align: -moz-center;
   text-align: -webkit-center;
 }
 
@@ -127,18 +130,18 @@ input:not(:focus-within) ~ label {
   transform: rotate(45deg);
 }
 
-div[id^='headlessui-popover-panel'][data-popper-placement^='top'] > #arrow {
+div[id^='headlessui-popover-panel'][data-popper-placement^='top']>#arrow {
   bottom: -4px;
 }
 
-div[id^='headlessui-popover-panel'][data-popper-placement^='bottom'] > #arrow {
+div[id^='headlessui-popover-panel'][data-popper-placement^='bottom']>#arrow {
   top: -4px;
 }
 
-div[id^='headlessui-popover-panel'][data-popper-placement^='left'] > #arrow {
+div[id^='headlessui-popover-panel'][data-popper-placement^='left']>#arrow {
   right: -4px;
 }
 
-div[id^='headlessui-popover-panel'][data-popper-placement^='right'] > #arrow {
+div[id^='headlessui-popover-panel'][data-popper-placement^='right']>#arrow {
   left: -4px;
 }

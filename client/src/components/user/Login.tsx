@@ -49,7 +49,7 @@ const Login = () => {
   return (
     <div className="flex mt-20 justify-center">
       <form
-        className="h-fit border p-6 my-auto shadow-md rounded-md space-y-6"
+        className="h-fit border border-gray-300 p-6 my-auto shadow-md rounded-md space-y-6 w-[25rem] max-w-[calc(-1.5em+100vw)] overflow-auto bg-slate-100"
         id="loginForm"
         onSubmit={handleSubmit(loginHandler)}
       >
@@ -57,7 +57,7 @@ const Login = () => {
 
         <DiscordLoginButton />
 
-        <div className="relative border-2 label-outline focus-within:border-once">
+        <div className="relative border-2 border-gray-300 label-outline focus-within:border-once z-10">
           <input
             required
             autoComplete="username"
@@ -66,12 +66,12 @@ const Login = () => {
             type="text"
             {...register('username')}
           />
-          <label className="absolute top-0 p-3 text-lg bg-white origin-0 -z-1 duration-300">
+          <label className="absolute top-0 p-3 text-lg origin-0 -z-1 duration-300">
             Username
           </label>
         </div>
 
-        <div className="relative border-2 label-outline focus-within:border-once">
+        <div className="relative border-2 border-gray-300 label-outline focus-within:border-once z-10">
           <input
             required
             autoComplete="current-password"
@@ -80,7 +80,7 @@ const Login = () => {
             type={showPassword ? 'text' : 'password'}
             {...register('password')}
           />
-          <label className="absolute top-0 p-3 text-lg bg-white origin-0 -z-1 duration-300">
+          <label className="absolute top-0 p-3 text-lg origin-0 -z-1 duration-300">
             Password
           </label>
 

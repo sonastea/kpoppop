@@ -87,15 +87,15 @@ const Register = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-full md:min-h-screen">
-      <div className="w-2/3 p-8 rounded shadow-md bg-opacity-95 md:max-w-lg">
+    <div className="flex justify-center mt-20">
+      <div className="m-1 sm:m-0 w-[35rem] p-8 bg-slate-100 border border-gray-300 rounded-md shadow-md bg-opacity-95 max-w-[calc(-1.5em+100vw)]">
         <form className="space-y-4" id="signupForm" onSubmit={handleSubmit(submitHandler)}>
           <h3 className="py-3 font-semibold text-center">Join kpoppop</h3>
           <div>
             <label className="block mb-2 font-bold">Username</label>
             <input
               required
-              className="w-full p-1 border border-gray-800 rounded focus:outline-none focus:border-once"
+              className="w-full p-1 border border-gray-300 rounded focus:outline-none focus:border-once"
               type="text"
               autoComplete="username"
               {...register('username', { required: true })}
@@ -106,7 +106,7 @@ const Register = () => {
             <label className="block mb-2 font-bold">Email</label>
             <input
               required
-              className="w-full p-1 border border-gray-800 rounded focus:outline-none focus:border-once"
+              className="w-full p-1 border border-gray-300 rounded focus:outline-none focus:border-once"
               type="email"
               autoComplete="email"
               {...register('email', { required: true })}
@@ -122,7 +122,7 @@ const Register = () => {
             <label className="block mb-2 font-bold">Password</label>
             <input
               required
-              className="w-full p-1 border border-gray-800 rounded focus:outline-none focus:border-once"
+              className="w-full p-1 border border-gray-300 rounded focus:outline-none focus:border-once"
               type="password"
               autoComplete="new-password"
               {...register('password', {
@@ -146,7 +146,7 @@ const Register = () => {
             </label>
             <input
               required
-              className="w-full p-1 border border-gray-800 rounded focus:outline-none focus:border-once"
+              className="w-full p-1 border border-gray-300 rounded focus:outline-none focus:border-once"
               type="password"
               autoComplete="new-password2"
               {...register('password2', {
