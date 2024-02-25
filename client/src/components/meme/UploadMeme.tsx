@@ -191,7 +191,7 @@ const UploadMeme = () => {
         >
           <div
             onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
-            className="shadow-once-400/50 border absolute inset-x-0 bg-white rounded shadow-md sm:inset-x-auto sm:w-1/2 top-10 md:top-20"
+            className="shadow-once-400/50 border border-gray-300 absolute inset-x-0 bg-white rounded shadow-md m-0.5 sm:m-0 sm:inset-x-auto sm:w-1/2 top-10 md:top-20"
           >
             <form onSubmit={handleSubmit(memeHandler)} className="p-8 space-y-5">
               <button
@@ -213,7 +213,7 @@ const UploadMeme = () => {
                 <input
                   id="title-input"
                   required
-                  className="w-full px-1 border appearance-none focus:outline-none label-outline"
+                  className="w-full px-1 border border-gray-300 appearance-none focus:outline-none focus-within:border-once label-outline"
                   type="text"
                   {...register('title', {
                     required: true,
@@ -236,7 +236,7 @@ const UploadMeme = () => {
                 </label>
                 <input
                   id="url-input"
-                  className="w-full px-1 border focus:outline-none focus-within:border-once"
+                  className="w-full px-1 border border-gray-300 focus:outline-none focus-within:border-once"
                   type="url"
                   {...register('url')}
                   onChange={handleChangeEvent}
