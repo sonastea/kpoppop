@@ -72,7 +72,7 @@ const Post = () => {
             <div className="grid content-center h-3/4 text-sm md:text-xl">{meme.title}</div>
           </div>
         </div>
-        <div className="border-t border-x">
+        <div className="border-t border-x border-gray-300">
           <InteractiveButtons
             memeId={parseInt(memeid!, 10)}
             memeTitle={meme.title}
@@ -81,7 +81,7 @@ const Post = () => {
             likes={meme._count.likes}
           />
         </div>
-        <div className="divide-y border">
+        <div className="divide-y divide-gray-300 border border-gray-300">
           <InteractiveComments
             memeId={parseInt(memeid!, 10)}
             ownerId={meme.author.id}

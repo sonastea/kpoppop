@@ -27,7 +27,7 @@ const Comment = (props: { props: CommentProps; memeOwnerId: number }) => {
     comment.user.role === 'MODERATOR' ? 'bg-blue-400' : []
   );
 
-  const handleEditComment = async (e: BaseSyntheticEvent) => {
+  const handleEditComment = async (_e: BaseSyntheticEvent) => {
     if (newComment?.length > MAX_COMMENT_CHAR_LENGTH) {
       toast.error(`Comment exceeds maximum limit of ${MAX_COMMENT_CHAR_LENGTH} characters.`);
       return;
@@ -48,8 +48,12 @@ const Comment = (props: { props: CommentProps; memeOwnerId: number }) => {
             },
           }));
         }
-        containerRef!.current!.children[3].children[1].children[1].classList.remove('text-red-500');
-        containerRef!.current!.children[3].children[1].children[1].textContent = 'Edit';
+
+        // there is surely a nicer way to do this
+        if (containerRef.current) {
+          containerRef.current.children[3].children[1].children[1].classList.remove('text-red-500');
+          containerRef.current.children[3].children[1].children[1].textContent = 'Edit';
+        }
       }
     );
   };
