@@ -1,4 +1,5 @@
-module.exports = {
+/** @type {import('tailwindcss').Config} */
+export default {
   content: [
     './src/**/*.{js,jsx,ts,tsx}',
     './public/**/*.html',
@@ -44,7 +45,7 @@ module.exports = {
         },
       },
       maxHeight: {
-        'lg': '32rem',
+        lg: '32rem',
         '2xl': '42rem',
       },
       transformOrigin: {
