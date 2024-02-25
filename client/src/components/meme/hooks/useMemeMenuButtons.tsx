@@ -10,7 +10,7 @@ const useMemeMenuButtons = (userId: number | boolean, memeId: number) => {
   const { reportingMeme } = useReportMemeStore();
   const { confirmingOpen } = useRemoveMeme();
 
-  const button_bg = 'grid grid-flow-col auto-cols-max space-x-2 p-2 py-1 hover:bg-gray-100';
+  const button_bg = 'grid grid-flow-col auto-cols-max space-x-2 p-2 py-1 hover:bg-gray-200/60';
 
   const removeMemeHandler = () => {
     confirmingOpen(memeId);
@@ -21,8 +21,7 @@ const useMemeMenuButtons = (userId: number | boolean, memeId: number) => {
     else reportingMeme(memeId);
   };
 
-  const toggleMemeHandler = async (e: any) => {
-    e.preventDefault();
+  const toggleMemeHandler = async () => {
     await toggleMeme(memeId).then((data) => toast.warning(JSON.stringify(data)));
   };
 
@@ -74,7 +73,7 @@ const useMemeMenuButtons = (userId: number | boolean, memeId: number) => {
         <div
           className={`${button_bg}`}
           role="button"
-          aria-label="remove-meme"
+          aria-label="toggle-meme"
           onClick={toggleMemeHandler}
         >
           <span className="fa-layers my-auto w-[18px]">
