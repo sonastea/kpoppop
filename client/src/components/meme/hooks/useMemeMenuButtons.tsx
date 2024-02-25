@@ -10,7 +10,7 @@ const useMemeMenuButtons = (userId: number | boolean, memeId: number) => {
   const { reportingMeme } = useReportMemeStore();
   const { confirmingOpen } = useRemoveMeme();
 
-  const button_bg = 'grid grid-flow-col auto-cols-max space-x-2 p-2 py-1 hover:bg-gray-200/60';
+  const button_bg = 'grid grid-flow-col auto-cols-max space-x-2 p-2 py-1 hover:bg-gray-200/75';
 
   const removeMemeHandler = () => {
     confirmingOpen(memeId);

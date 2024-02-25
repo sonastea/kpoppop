@@ -37,7 +37,7 @@ const MemeMenu = ({ authorId, memeId }: { authorId: number; memeId: number }) =>
           aria-label="Toggle user menu"
         >
           <FontAwesomeIcon
-            className="group-hover:bg-gray-200 group-hover:rounded-full p-1"
+            className="group-hover:bg-gray-200/75 group-hover:rounded-full p-1"
             icon={faEllipsis}
           />
         </Popover.Button>

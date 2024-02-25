@@ -14,7 +14,7 @@ const useUserMenuButtons = ({ comment }: UserMenuProps) => {
   const { reportingComment } = useReportCommentStore();
   const { reportingUser } = useReportUserStore();
 
-  const button_bg = 'grid grid-flow-col auto-cols-max gap-x-2 p-2 py-1 hover:bg-gray-200';
+  const button_bg = 'grid grid-flow-col auto-cols-max gap-x-2 p-2 py-1 hover:bg-gray-200/75';
 
   useEffect(() => {
     if (comment.user.role === 'MODERATOR' || comment.user.role === 'ADMIN') setModded(true);
@@ -60,13 +60,13 @@ const useUserMenuButtons = ({ comment }: UserMenuProps) => {
           <span>
             <FontAwesomeIcon className="text-red-500" icon={faFlag} flip="horizontal" />
           </span>
-          <span className="hover:bg-gray-200 whitespace-nowrap">Report comment</span>{' '}
+          <span className="hover:bg-gray-200/75 whitespace-nowrap">Report comment</span>{' '}
         </div>
         <div className={button_bg} role="button" aria-label="report-user" onClick={reportingUser}>
           <span>
             <FontAwesomeIcon className="text-red-500" icon={faFrown} />
           </span>
-          <span className="hover:bg-gray-200 whitespace-nowrap">
+          <span className="hover:bg-gray-200/75 whitespace-nowrap">
             Report @{comment.user.username}
           </span>
         </div>
@@ -84,7 +84,7 @@ const useUserMenuButtons = ({ comment }: UserMenuProps) => {
             <span>
               <FontAwesomeIcon className="text-red-600" icon={faBan} />
             </span>
-            <span className="hover:bg-gray-200 whitespace-nowrap">Unban</span>
+            <span className="hover:bg-gray-200/75 whitespace-nowrap">Unban</span>
           </div>
         ) : (
           <div className={button_bg} role="button" aria-label="ban-user" onClick={handleBanUser}>
