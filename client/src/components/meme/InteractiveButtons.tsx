@@ -60,17 +60,19 @@ const InteractiveButtons = (props: InteractiveButtonProps) => {
         role="button"
         aria-label="like"
       >
-        {likedState ? (
-          <FontAwesomeIcon
-            className="group-hover:text-red-500/80 md:text-lg liked"
-            icon={fasHeart}
-          />
-        ) : (
-          <FontAwesomeIcon className="group-hover:text-red-500 md:text-lg" icon={faHeart} />
-        )}
-        <span className="group-hover:text-red-500 ml-1 text-gray-700 overflow-hidden">
-          {totalLikes ? `${shortForm(totalLikes)}` : `0`}
-        </span>
+        <div>
+          {likedState ? (
+            <FontAwesomeIcon
+              className="group-hover:text-red-500/80 md:text-lg liked"
+              icon={fasHeart}
+            />
+          ) : (
+            <FontAwesomeIcon className="group-hover:text-red-500 md:text-lg" icon={faHeart} />
+          )}
+          <span className="group-hover:text-red-500 ml-1 text-gray-700 overflow-hidden">
+            {totalLikes ? `${shortForm(totalLikes)}` : `0`}
+          </span>
+        </div>
       </div>
       <div
         className="flex justify-center items-center group comments w-20"
