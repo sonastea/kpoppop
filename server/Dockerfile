@@ -1,4 +1,4 @@
-FROM node:18-alpine as builder
+FROM node:20-alpine as builder
 
 ARG NODE_ENV
 ENV PORT=${PORT:-5000}
@@ -18,7 +18,7 @@ RUN npm run build
 
 #
 
-FROM node:18-alpine
+FROM node:20-alpine
 
 ARG NODE_ENV
 ENV PORT=${PORT:-5000}
@@ -32,7 +32,7 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/secrets ./secrets
 COPY --from=builder /app/firebaseCredentials.json ./
 
-RUN npm install @nestjs/core@9.4.2
+RUN npm install @nestjs/core@10.3.3
 
 EXPOSE $PORT
 
