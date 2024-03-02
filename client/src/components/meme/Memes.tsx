@@ -125,7 +125,7 @@ const Memes = () => {
                   >
                     {meme.author.username}
                   </a>
-                  <div className="ml-2">
+                  <div className="ml-2 pr-4">
                     <span className="text-xs sm:text-sm text-gray-500">
                       {DAY(meme.createdAt).fromNow()}
                     </span>
@@ -137,7 +137,7 @@ const Memes = () => {
                 </div>
                 <div className="flex mx-4 my-2">
                   <a
-                    className="hover:underline text-slate-900 text-sm md:text-lg"
+                    className="hover:underline text-slate-900 text-sm md:text-lg pr-4 py-2"
                     href={`/meme/${meme.id}/${title}`}
                   >
                     {meme.title}
