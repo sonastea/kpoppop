@@ -133,7 +133,7 @@ const NavBar = () => {
               <img
                 src="/images/header_logo.png"
                 alt="Kpoppop Logo"
-                className="grow-0 w-auto h-10 sm:h-16"
+                className="grow-0 w-auto h-10 sm:h-16 aspect-[2/1]"
               />
             </a>
 
@@ -195,7 +195,7 @@ const NavBar = () => {
           >
             <a className="inline-block" aria-label="Home" href="/">
               <img
-                className="w-32 h-12 max-h-12"
+                className="w-32 h-12 max-h-12 aspect-[2/1]"
                 src="/images/header_logo.png"
                 alt="Kpoppop Logo"
               />
