@@ -53,14 +53,9 @@ const InteractiveButtons = (props: InteractiveButtonProps) => {
   };
 
   return (
-    <div className="py-2 md:py-4 flex flex-wrap justify-center gap-x-1">
-      <div
-        className="flex justify-center items-center group like w-20"
-        onClick={handleLiked}
-        role="button"
-        aria-label="like"
-      >
-        <div>
+    <div className="py-2 md:py-4 flex flex-wrap justify-center">
+      <div className="flex justify-center items-center w-20">
+        <div className="group like" onClick={handleLiked} role="button" aria-label="like">
           {likedState ? (
             <FontAwesomeIcon
               className="group-hover:text-red-500/80 md:text-lg liked"
@@ -74,12 +69,13 @@ const InteractiveButtons = (props: InteractiveButtonProps) => {
           </span>
         </div>
       </div>
-      <div
-        className="flex justify-center items-center group comments w-20"
-        role="button"
-        aria-label="comments"
-      >
-        <a href={`/meme/${memeId}/${memeTitle}`}>
+      <div className="flex justify-center items-center comments w-20">
+        <a
+          role="button"
+          aria-label="comments"
+          className="group comments"
+          href={`/meme/${memeId}/${memeTitle}`}
+        >
           <FontAwesomeIcon
             className="group-hover:text-cyan-500 md:text-lg comments"
             icon={faComment}
