@@ -86,7 +86,7 @@ const ReportUserModal = (props: { user: ReportUserInfoData }) => {
 
               <div className="flex justify-center">
                 <button
-                  className="w-full border bg-white border-once rounded-md text-once p-1 mr-1"
+                  className="w-full border bg-white border-once rounded-md text-once p-1 mr-1 hover:text-thrice"
                   type="button"
                   onClick={reportingUser}
                 >
