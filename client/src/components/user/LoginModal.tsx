@@ -60,7 +60,7 @@ const LoginModal = () => {
         .then((user) => updateUser(user))
         .catch((_error) => {});
     } catch (err) {
-      throw err;
+      console.error(err);
     }
     return {};
   };
