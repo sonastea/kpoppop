@@ -1,7 +1,7 @@
 import { faCheck, faEye, faEyeSlash, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DiscordLoginButton from 'components/button/DiscordLoginButton';
-import { LoginFormData, User, useAuth } from 'contexts/AuthContext';
+import { LoginFormData, useAuth } from 'contexts/AuthContext';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
@@ -17,33 +17,30 @@ const Login = () => {
   const [redirecting, setRedirecting] = useState<boolean>(false);
   const { login, updateUser } = useAuth();
 
-  const loginHandler: SubmitHandler<LoginFormData> = async (data): Promise<User> => {
-    if (!data.password || !data.username) return {};
+  const loginHandler: SubmitHandler<LoginFormData> = async (data): Promise<void> => {
+    if (!data.password || !data.username) return;
     setLoginSuccess(false);
-    try {
-      await login(data)
-        .then((response) => {
-          if (response.status === 401) {
-            setError('password', {
-              type: 'manual',
-              message: 'Incorrect username or password.',
-            });
-          }
-          if (response.status === 201) {
-            setLoginSuccess(true);
-            setTimeout(() => {
-              setRedirecting(true);
-            }, 500);
-            setTimeout(() => (window.location.href = '/'), 1000);
-          }
-          return response.json();
-        })
-        .then((user) => updateUser(user))
-        .catch((_error) => {});
-    } catch (err) {
-      throw err;
-    }
-    return {};
+    await login(data)
+      .then((response) => {
+        if (response.status === 401) {
+          setError('password', {
+            type: 'manual',
+            message: 'Incorrect username or password.',
+          });
+        }
+        if (response.status === 201) {
+          setLoginSuccess(true);
+          setTimeout(() => {
+            setRedirecting(true);
+          }, 500);
+          setTimeout(() => (window.location.href = '/'), 1000);
+        }
+        return response.json();
+      })
+      .then((user) => updateUser(user))
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -66,9 +63,7 @@ const Login = () => {
             type="text"
             {...register('username')}
           />
-          <label className="absolute top-0 p-3 text-lg origin-0 -z-1 duration-300">
-            Username
-          </label>
+          <label className="absolute top-0 p-3 text-lg origin-0 -z-1 duration-300">Username</label>
         </div>
 
         <div className="relative border-2 border-gray-300 label-outline focus-within:border-once z-10">
@@ -80,9 +75,7 @@ const Login = () => {
             type={showPassword ? 'text' : 'password'}
             {...register('password')}
           />
-          <label className="absolute top-0 p-3 text-lg origin-0 -z-1 duration-300">
-            Password
-          </label>
+          <label className="absolute top-0 p-3 text-lg origin-0 -z-1 duration-300">Password</label>
 
           <i
             className="absolute top-0 right-0 p-3 text-lg"
