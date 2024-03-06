@@ -4,5 +4,8 @@
   "endOfLine": "auto",
   "tabWidth": 2,
   "printWidth": 100,
-  "prettier.bracketSpacing": false
+  "prettier.bracketSpacing": false,
+  "plugins": ["prettier-plugin-tailwindcss", "prettier-plugin-classnames", "prettier-plugin-merge"],
+  "endingPosition": "absolute-with-indent",
+  "tailwindConfig": "./client/tailwind.config.js"
 }
