@@ -70,53 +70,57 @@ const LoginModal = () => {
   if (!notified) {
     return (
       <div
-        className={`z-50 fixed inset-0 flex justify-center items-center w-full min-h-screen backdrop-blur-sm ${hidden}`}
+        className={`fixed inset-0 z-50 flex min-h-screen w-full items-center justify-center
+        bg-black/5 backdrop-blur-sm ${hidden}`}
         onClick={toggleVisbility}
       >
         <div className="relative" onClick={(e) => e.stopPropagation()}>
           <FontAwesomeIcon
-            className="absolute top-0 right-0 hover:bg-slate-200 hover:rounded-full m-2 px-[4px] py-[2.5px] cursor-pointer"
+            className="absolute right-0 top-0 m-2 cursor-pointer px-[4px] py-[2.5px]
+              hover:rounded-full hover:bg-slate-200"
             icon={faXmark}
             onClick={toggleVisbility}
           />
           <form
-            className="border p-6 shadow-md rounded-md space-y-6 bg-white"
+            className="space-y-6 rounded-md border bg-white p-6 shadow-md"
             id="loginForm"
             onSubmit={handleSubmit(loginHandler)}
           >
-            <h3 className="py-3 font-bold text-center text-gray-900">Login to kpoppop</h3>
+            <h3 className="py-3 text-center font-bold text-gray-900">Login to kpoppop</h3>
 
             <DiscordLoginButton />
 
-            <div className="relative border-2 label-outline focus-within:border-once z-10">
+            <div className="label-outline relative z-10 border-2 focus-within:border-once">
               <input
                 required
                 autoComplete="username"
                 placeholder=" "
-                className="z-10 block w-full p-3 text-lg bg-transparent appearance-none focus:outline-none"
+                className="z-10 block w-full appearance-none bg-transparent p-3 text-lg
+                  focus:outline-none"
                 type="text"
                 {...register('username')}
               />
-              <label className="absolute top-0 p-3 text-lg bg-white origin-0 duration-300 -z-1">
+              <label className="absolute top-0 -z-1 origin-0 bg-white p-3 text-lg duration-300">
                 Username
               </label>
             </div>
 
-            <div className="relative border-2 label-outline focus-within:border-once z-10">
+            <div className="label-outline relative z-10 border-2 focus-within:border-once">
               <input
                 required
                 autoComplete="current-password"
                 placeholder=" "
-                className="block w-full p-3 text-lg bg-transparent appearance-none focus:outline-none"
+                className="block w-full appearance-none bg-transparent p-3 text-lg
+                  focus:outline-none"
                 type={showPassword ? 'text' : 'password'}
                 {...register('password')}
               />
-              <label className="absolute top-0 p-3 text-lg bg-white origin-0 duration-300 -z-1">
+              <label className="absolute top-0 -z-1 origin-0 bg-white p-3 text-lg duration-300">
                 Password
               </label>
 
               <i
-                className="absolute top-0 right-0 p-3 text-lg"
+                className="absolute right-0 top-0 p-3 text-lg"
                 onClick={() => setShowPassword((toggle) => !toggle)}
               >
                 <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
@@ -128,13 +132,16 @@ const LoginModal = () => {
             )}
             <div className="text-center">
               New to kpoppop?{' '}
-              <a className="hover:text-blue-500 font-semibold text-blue-700" href="/register">
+              <a className="font-semibold text-blue-700 hover:text-blue-500" href="/register">
                 SIGNUP
               </a>
             </div>
 
             <div className="py-3">
-              <button className="w-full p-2 overflow-hidden font-bold text-gray-900 border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400">
+              <button
+                className="duration-400 w-full overflow-hidden rounded-md border-once-400
+                  bg-once-400 p-2 font-bold text-gray-900 transition hover:bg-once"
+              >
                 {loginSuccess ? 'Login successful' : 'Login'}
                 {loginSuccess && !redirecting && (
                   <FontAwesomeIcon className="px-2" icon={faCheck} />
