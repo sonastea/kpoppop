@@ -68,7 +68,7 @@ jobs:
       - name: Deploy production client to server
         uses: burnett01/rsync-deployments@6.0.0
         with:
-          switches: -azvrP --delete
+          switches: -azvrP --delete --exclude models
           path: tmp/kpoppop-client/
           remote_path: ${{ secrets.SSH_PATH }}
           remote_host: ${{ secrets.SSH_HOST }}
