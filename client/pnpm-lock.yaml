@@ -54,8 +54,8 @@ dependencies:
     specifier: ^4.17.21
     version: 4.17.21
   nsfwjs:
-    specifier: ^3.0.0
-    version: 3.0.0(@tensorflow/tfjs@4.17.0)
+    specifier: ^4.1.0
+    version: 4.1.0(@tensorflow/tfjs@4.17.0)
   path-browserify:
     specifier: ^1.0.1
     version: 1.0.1
@@ -4305,8 +4305,8 @@ packages:
       path-key: 3.1.1
     dev: true
 
-  /nsfwjs@3.0.0(@tensorflow/tfjs@4.17.0):
-    resolution: {integrity: sha512-A7si+H96Q4gbtjjtmfcS25JrNimnJMTs2e6kveTMo0M+ZrRfjDiCV9UxpKPpXRTyoI6A7PHrUGM4S3R3PbFpEQ==}
+  /nsfwjs@4.1.0(@tensorflow/tfjs@4.17.0):
+    resolution: {integrity: sha512-2V27SoNXUJbAAi+vW8RHJbONs2AHa1odmjlRsVX2mirxR4IGt1OIzZ49IXgPVg6nktwA8Su61YEJql7VreEKyg==}
     peerDependencies:
       '@tensorflow/tfjs': ^4.0.0
     dependencies:

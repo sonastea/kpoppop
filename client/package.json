@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "version": "0.8.5",
+  "version": "0.8.6",
   "private": true,
   "scripts": {
     "start": "vite",
@@ -36,7 +36,7 @@
     "buffer": "^6.0.3",
     "dayjs": "^1.11.10",
     "lodash": "^4.17.21",
-    "nsfwjs": "^3.0.0",
+    "nsfwjs": "^4.1.0",
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
     "profane-words": "^1.5.11",

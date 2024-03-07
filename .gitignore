@@ -10,7 +10,7 @@
 *.tsbuildinfo
 
 # nsfw.js models
-*/public/model
+*/public/model*
 
 */redis_data
 
