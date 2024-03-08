@@ -38,17 +38,6 @@ export class MemeService {
 
   async totalLikes(params: { where: Prisma.MemeWhereUniqueInput }) {
     const { id } = params.where;
-    /* const likes = await this.prisma.meme.findUnique({
-      where,
-      select: {
-        _count: {
-          select: {
-            likedBy: true,
-          },
-        },
-      },
-    });
-    return likes._count.likedBy; */
     const likes = await this.prisma.userMemeLike.count({
       where: {
         memeId: id,
