@@ -43,7 +43,7 @@ const useMemeMenuButtons = (userId: number | boolean, memeId: number) => {
               flip="horizontal"
             />
           </span>
-          <span className="whitespace-nowrap">{userId ? 'Report meme' : 'Login to report'}</span>{' '}
+          <span className="whitespace-nowrap">{userId ? 'Report meme' : 'Login to report'}</span>
         </div>
       </>
     ),
@@ -59,7 +59,7 @@ const useMemeMenuButtons = (userId: number | boolean, memeId: number) => {
             <FontAwesomeIcon
               height={18}
               width={18}
-              className="text-red-500 text-lg"
+              className="text-lg text-red-500"
               icon={faXmark}
               flip="horizontal"
             />
