@@ -37,7 +37,7 @@ const MemeMenu = ({ authorId, memeId }: { authorId: number; memeId: number }) =>
           aria-label="Toggle user menu"
         >
           <FontAwesomeIcon
-            className="group-hover:bg-gray-200/75 group-hover:rounded-full p-1"
+            className="p-1 group-hover:rounded-full group-hover:bg-gray-200/75"
             icon={faEllipsis}
           />
         </Popover.Button>
@@ -55,10 +55,13 @@ const MemeMenu = ({ authorId, memeId }: { authorId: number; memeId: number }) =>
             style={styles.popper}
             {...attributes.popper}
           >
-            <div className="border bg-white shadow-sm border-gray-200 rounded-md text-sm overflow-hidden">
+            <div
+              className="overflow-hidden rounded-md border border-gray-200 bg-white text-sm
+                shadow-sm"
+            >
               {isAuthor && LoggedInMenuButtons}
-              {DefaultMenuButtons}
               {isAuthorized && !isAuthor && ModerationMenuButtons}
+              {DefaultMenuButtons}
             </div>
           </Popover.Panel>
         </Transition>
