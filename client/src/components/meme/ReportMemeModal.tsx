@@ -53,7 +53,7 @@ const ReportMemeModal = (props: { id: number }) => {
   return (
     <Dialog
       open={reporting}
-      onClose={() => {}}
+      onClose={() => reset({ description: '' })}
       className="relative z-100"
       initialFocus={reportingRef}
     >
