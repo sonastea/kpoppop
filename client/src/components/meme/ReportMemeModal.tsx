@@ -26,7 +26,7 @@ const ReportMemeModal = (props: { id: number }) => {
   } = useForm<ReportMemeData>();
   const watchDescription = watch('description');
 
-  const handleReportComment: SubmitHandler<ReportMemeData> = async (data) => {
+  const handleReportMeme: SubmitHandler<ReportMemePayload> = async (data) => {
     setReported(true);
 
     await reportMeme(props.id, data.description).then((data: any) => {
@@ -88,7 +88,7 @@ const ReportMemeModal = (props: { id: number }) => {
               </Dialog.Description>
             </>
           ) : (
-            <form className="grid gap-2" onSubmit={handleSubmit(handleReportComment)}>
+            <form className="grid gap-2" onSubmit={handleSubmit(handleReportMeme)}>
               <textarea
                 placeholder="Description of the report"
                 className="p-1 border border-once-300 rounded-md outline-none focus:border-once-500"
