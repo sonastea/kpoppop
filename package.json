@@ -5,7 +5,7 @@
     "eslint": "8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "prettier": "^3.2.5",
-    "prettier-plugin-classnames": "^0.6.1",
+    "prettier-plugin-classnames": "^0.6.2",
     "prettier-plugin-merge": "^0.6.0",
     "prettier-plugin-tailwindcss": "^0.5.12"
   }

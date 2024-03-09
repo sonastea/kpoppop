@@ -2,18 +2,18 @@ import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DAY } from 'Global.d';
+import LoginModal from 'components/user/LoginModal';
+import { useAuth } from 'contexts/AuthContext';
 import useRemoveMemeStore from 'hooks/useRemoveMeme';
 import { debounce } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
 import ConfirmationDialog from './ConfirmationDialog';
 import InteractiveButtons from './InteractiveButtons';
 import { fetchMemes } from './MemeAPI';
 import MemeMenu from './MemeMenu';
-import ReportMemeModal from './ReportMemeModal';
-import LoginModal from 'components/user/LoginModal';
-import { useAuth } from 'contexts/AuthContext';
 import MemesSkeletonLoader from './MemesSkeletonLoader';
-import { toast } from 'react-toastify';
+import ReportMemeModal from './ReportMemeModal';
 
 type Meme = {
   author: { username: string };
@@ -107,6 +107,7 @@ const Memes = () => {
   return (
     <>
       {!user && <LoginModal />}
+      <ReportMemeModal />
       <ConfirmationDialog title={title} updateList={removeMemeFromList} />
       <ul className="meme-container flex flex-col items-center overflow-hidden" ref={postsRef}>
         {loading && <MemesSkeletonLoader />}
@@ -115,10 +116,13 @@ const Memes = () => {
             const title = meme.title.replace(/ /g, '_');
             return (
               <li
-                className="w-full my-2 shadow-sm sm:max-w-2xl sm:rounded-md bg-white border"
+                className="my-2 w-full border bg-white shadow-sm sm:max-w-2xl sm:rounded-md"
                 key={meme.id}
               >
-                <div className="flex flex-wrap overflow-auto leading-normal mx-4 mt-4 mb-2 md:text-xl author-bar">
+                <div
+                  className="author-bar mx-4 mb-2 mt-4 flex flex-wrap overflow-auto leading-normal
+                    md:text-xl"
+                >
                   <a
                     className="font-bold hover:text-once-700"
                     href={`/user/${meme.author.username}`}
@@ -126,18 +130,17 @@ const Memes = () => {
                     {meme.author.username}
                   </a>
                   <div className="ml-2 pr-4">
-                    <span className="text-xs sm:text-sm text-gray-500">
+                    <span className="text-xs text-gray-500 sm:text-sm">
                       {DAY(meme.createdAt).fromNow()}
                     </span>
                   </div>
                   <div className="ml-auto">
-                    <ReportMemeModal id={meme.id} />
                     <MemeMenu authorId={meme.authorId} memeId={meme.id} />
                   </div>
                 </div>
-                <div className="flex mx-4 my-2">
+                <div className="mx-4 my-2 flex">
                   <a
-                    className="hover:underline text-slate-900 text-sm md:text-lg pr-4 py-2"
+                    className="py-2 pr-4 text-sm text-slate-900 hover:underline md:text-lg"
                     href={`/meme/${meme.id}/${title}`}
                   >
                     {meme.title}
@@ -146,7 +149,7 @@ const Memes = () => {
                 {meme.url.split('.')[3] === 'mp4' ? (
                   <video
                     key={meme.title}
-                    className="object-cover aspect-square w-full mx-auto md:max-h-96 md:aspect-auto"
+                    className="mx-auto aspect-square w-full object-cover md:aspect-auto md:max-h-96"
                     controls
                     muted
                   >
@@ -155,7 +158,8 @@ const Memes = () => {
                 ) : (
                   <a className="contents" href={`/meme/${meme.id}/${title}`}>
                     <img
-                      className="w-full max-h-64 md:max-h-96 object-scale-down md:object-contain mt-2"
+                      className="mt-2 max-h-64 w-full object-scale-down md:max-h-96
+                        md:object-contain"
                       src={meme.url}
                       alt={meme.title}
                     />
@@ -176,7 +180,7 @@ const Memes = () => {
       <div
         onScroll={() => handleScroll.current}
         id="scroll-load-div"
-        className="flex justify-center p-5 page-number"
+        className="page-number flex justify-center p-5"
       >
         {loading && <FontAwesomeIcon className="-z-1" icon={faSpinner} spin />}
       </div>

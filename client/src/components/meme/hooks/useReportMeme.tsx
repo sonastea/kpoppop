@@ -1,9 +1,16 @@
 import { create } from 'zustand';
 
-const useReportMemeStore = create((set: any) => ({
+interface ReportMemeStore {
+  memeId: number;
+  reporting: boolean;
+  reportingMeme: (memeId?: number) => void;
+};
+
+const useReportMemeStore = create<ReportMemeStore>((set) => ({
+  memeId: 0,
   reporting: false,
   reportingMeme: (memeId?: number) =>
-    set((state: { reporting: boolean; memeId: number }) => ({
+    set((state) => ({
       reporting: !state.reporting,
       memeId: memeId,
     })),

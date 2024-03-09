@@ -1,21 +1,21 @@
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dialog } from '@headlessui/react';
 import { useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import useReportMemeStore from './hooks/useReportMeme';
 import { reportMeme } from './MemeAPI';
+import useReportMemeStore from './hooks/useReportMeme';
 
-type ReportMemeData = {
-  memeId: number;
+type ReportMemePayload = {
   description: string;
 };
 
-const ReportMemeModal = (props: { id: number }) => {
+const ReportMemeModal = () => {
   const [responseMsg, setResponseMsg] = useState<string>('');
   const [reported, setReported] = useState<boolean>(false);
-  const { reporting, reportingMeme } = useReportMemeStore();
+  const [processing, setProcessing] = useState<boolean>(false);
+  const { memeId, reporting, reportingMeme } = useReportMemeStore();
   const reportingRef = useRef(null);
   const {
     reset,
@@ -23,19 +23,23 @@ const ReportMemeModal = (props: { id: number }) => {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<ReportMemeData>();
+  } = useForm<ReportMemePayload>();
   const watchDescription = watch('description');
 
-  const handleReportComment: SubmitHandler<ReportMemeData> = async (data) => {
+  const handleReportMeme: SubmitHandler<ReportMemePayload> = async (data) => {
     setReported(true);
+    setProcessing(true);
 
-    await reportMeme(props.id, data.description).then((data: any) => {
+    await reportMeme(memeId, data.description).then((data) => {
       if (data.statusCode === 403) {
         toast.error('You must be logged in to do that!');
         reportingMeme();
         resetForm();
       } else {
-        setResponseMsg(data.message);
+        setTimeout(() => {
+          setProcessing(false);
+          setResponseMsg(data.message);
+        }, 200);
       }
     });
   };
@@ -53,7 +57,7 @@ const ReportMemeModal = (props: { id: number }) => {
   return (
     <Dialog
       open={reporting}
-      onClose={() => {}}
+      onClose={() => reset({ description: '' })}
       className="relative z-100"
       initialFocus={reportingRef}
     >
@@ -65,7 +69,7 @@ const ReportMemeModal = (props: { id: number }) => {
           if (e.target === e.currentTarget) resetForm();
         }}
       >
-        <Dialog.Panel className="bg-gray-200 p-6 w-full md:w-3/4 rounded-md" ref={reportingRef}>
+        <Dialog.Panel className="w-full rounded-md bg-gray-200 p-6 md:w-3/4" ref={reportingRef}>
           <button
             aria-label="Report meme"
             onClick={() => resetForm()}
@@ -79,19 +83,29 @@ const ReportMemeModal = (props: { id: number }) => {
 
           {reported ? (
             <>
-              <p className="text-sm font-bold text-center border-b border-once-300 pb-2 mb-4">
-                {responseMsg}
-              </p>
+              <div className="flex flex-col">
+                {processing && (
+                  <div className="flex w-full items-center justify-center py-2">
+                    <FontAwesomeIcon icon={faSpinner} spin />
+                  </div>
+                )}
+                <p
+                  className="mb-4 w-full border-b border-once-300 pb-2 text-center text-sm
+                    font-bold"
+                >
+                  {responseMsg}
+                </p>
+              </div>
               <Dialog.Description className="text-center">
                 Thanks for helping and providing fellow kpoppers with a clean, fun, and safe
                 community.
               </Dialog.Description>
             </>
           ) : (
-            <form className="grid gap-2" onSubmit={handleSubmit(handleReportComment)}>
+            <form className="grid gap-2" onSubmit={handleSubmit(handleReportMeme)}>
               <textarea
                 placeholder="Description of the report"
-                className="p-1 border border-once-300 rounded-md outline-none focus:border-once-500"
+                className="rounded-md border border-once-300 p-1 outline-none focus:border-once-500"
                 {...register('description', { required: true })}
               />
 
@@ -101,14 +115,16 @@ const ReportMemeModal = (props: { id: number }) => {
 
               <div className="flex justify-center">
                 <button
-                  className="w-full border bg-white border-once rounded-md text-once p-1 mr-1 hover:text-thrice"
+                  className="mr-1 w-full rounded-md border border-once bg-white p-1 text-once
+                    hover:text-thrice"
                   type="button"
                   onClick={() => resetForm()}
                 >
                   Cancel
                 </button>
                 <button
-                  className="w-full border bg-once p-1 rounded-md text-white ml-1"
+                  className="ml-1 w-full rounded-md border-once-700/70 bg-once-700/70 p-1 text-white
+                    hover:bg-once-700"
                   type="submit"
                 >
                   Report
