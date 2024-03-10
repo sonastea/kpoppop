@@ -1,7 +1,13 @@
 import { create } from 'zustand';
 
-const useReportUserStore = create((set: any) => ({
+interface ReportUserStore {
+  reporting: boolean;
+  reportingUser: () => void;
+}
+
+const useReportUserStore = create<ReportUserStore>((set) => ({
   reporting: false,
   reportingUser: () => set((state: { reporting: boolean }) => ({ reporting: !state.reporting })),
 }));
+
 export default useReportUserStore;
