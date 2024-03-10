@@ -50,7 +50,7 @@ const ReportCommentModal = () => {
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
 
       <div className="fixed inset-0 flex items-center justify-center">
-        <Dialog.Panel className="bg-gray-200 p-6 w-full md:w-3/4 rounded-md">
+        <Dialog.Panel className="w-full rounded-md bg-gray-200 p-6 md:w-3/4">
           <button
             aria-label="Report comment"
             onClick={() => reportingComment()}
@@ -64,7 +64,7 @@ const ReportCommentModal = () => {
 
           {reported ? (
             <>
-              <p className="text-sm font-bold text-center border-b border-once-300 pb-2 mb-4">
+              <p className="mb-4 border-b border-once-300 pb-2 text-center text-sm font-bold">
                 {responseMsg}
               </p>
               <Dialog.Description className="text-center">
@@ -76,7 +76,7 @@ const ReportCommentModal = () => {
             <form className="grid gap-2" onSubmit={handleSubmit(handleReportComment)}>
               <textarea
                 placeholder="Description of the report"
-                className="p-1 border border-once-300 rounded-md outline-none focus:border-once-500"
+                className="rounded-md border border-once-300 p-1 outline-none focus:border-once-500"
                 {...register('description', { required: true })}
               />
 
@@ -86,14 +86,15 @@ const ReportCommentModal = () => {
 
               <div className="flex justify-center">
                 <button
-                  className="w-full border bg-white border-once rounded-md text-once p-1 mr-1 hover:text-thrice"
+                  className="mr-1 w-full rounded-md border border-once bg-white p-1 text-once
+                    hover:text-thrice"
                   type="button"
                   onClick={() => reportingComment()}
                 >
                   Cancel
                 </button>
                 <button
-                  className="w-full border bg-once p-1 rounded-md text-white ml-1"
+                  className="ml-1 w-full rounded-md border bg-once p-1 text-white"
                   type="submit"
                 >
                   Report

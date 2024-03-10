@@ -1,12 +1,18 @@
 import { create } from 'zustand';
 
-const useReportCommentStore = create((set: any) => ({
+interface ReportCommentStore {
+  reporting: boolean;
+  commentId: number;
+  reportingComment: (commentId?: number) => void;
+}
+
+const useReportCommentStore = create<ReportCommentStore>((set) => ({
   reporting: false,
   commentId: 0,
-  reportingComment: (commentId?: number) =>
+  reportingComment: (id?: number) =>
     set((state: { reporting: boolean; commentId: number }) => ({
       reporting: !state.reporting,
-      commentId: commentId,
+      commentId: id,
     })),
 }));
 
