@@ -10,6 +10,7 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { MyLogger } from 'src/logger/my-logger.service';
 import { WebSocketSessionInterceptor } from './websocket.interceptor';
 import { WebSocketStoreService } from './websocket.service';
 
@@ -44,13 +45,21 @@ export class WebSocketServiceGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
   private readonly logger = new Logger(WebSocketServer.name);
-  private readonly messageStore = new WebSocketStoreService();
+  private readonly messageStore = new WebSocketStoreService(new MyLogger());
 
   @WebSocketServer()
   protected server: Server;
 
   afterInit() {
     this.logger.log(`${WebSocketServer.name} is now online.`);
+
+    this.messageStore.redis.on('error', (err) => {
+      this.logger.error(err);
+    });
+
+    this.messageStore.redis.on('connect', () => {
+      this.logger.log(`${this.messageStore.redis.options.connectionName} connected.`);
+    });
   }
 
   handleConnection(client: any, ..._args: any[]) {

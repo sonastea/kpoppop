@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Redis } from 'ioredis';
 import { PrismaService } from 'src/database/prisma.service';
+import { MyLogger } from 'src/logger/my-logger.service';
 import { MessagePayload } from './websocket.gateway';
 
 const CONVERSATION_TTL = 7 * 24 * 60 * 60;
@@ -10,7 +11,15 @@ const mapSession = (id: number) => (id ? { id } : undefined);
 export class WebSocketStoreService {
   private readonly prisma: PrismaService = new PrismaService();
 
-  readonly redis = new Redis(process.env.REDIS_URL);
+  constructor(private logger: MyLogger) {
+    this.logger.setContext(WebSocketStoreService.name);
+  }
+
+  readonly redis = new Redis(process.env.REDIS_URL, {
+    connectionName: 'ws-redis',
+  }).on('error', (err) => {
+    this.logger.error(err);
+  });
 
   async getUnreadCount(convid: string, from: number) {
     return await this.prisma.message.count({

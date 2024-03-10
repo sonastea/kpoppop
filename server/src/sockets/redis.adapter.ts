@@ -23,10 +23,27 @@ export class RedisIoAdapter extends IoAdapter {
   }
 
   async connectToRedis(): Promise<void> {
-    const pubClient = createClient({ url: process.env.REDIS_URL });
-    const subClient = pubClient.duplicate();
+    const pubClient = createClient({ url: process.env.REDIS_URL, name: 'pub-redis-client' });
+    const subClient = pubClient.duplicate({ name: 'sub-redis-client' });
 
-    await Promise.all([pubClient.connect(), subClient.connect()]);
+    await Promise.all([
+      pubClient
+        .on('error', (err) => {
+          this.logger.error(`pub-redis-client Error: ${err}`);
+        })
+        .on('connect', () => {
+          this.logger.log('pub-redis-client connected.');
+        })
+        .connect(),
+      subClient
+        .on('error', (err) => {
+          this.logger.error(`sub-redis-client Error: ${err}`);
+        })
+        .on('connect', () => {
+          this.logger.log('sub-redis-client connected.');
+        })
+        .connect(),
+    ]);
 
     this.adapterConstructor = createAdapter(pubClient, subClient);
   }
