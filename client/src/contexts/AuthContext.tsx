@@ -41,7 +41,7 @@ export function AuthProvider({
   initialUser?: User;
 }): JSX.Element {
   const [user, setUser] = useState<User>(initialUser as User);
-  const [loadingInitial, setLoadingInitial] = useState<boolean>(true);
+  // const [loadingInitial, setLoadingInitial] = useState<boolean>(true);
 
   useEffect(() => {
     const getCurrentUser = async () => {
@@ -60,8 +60,7 @@ export function AuthProvider({
           if (error.message === 'Failed to fetch') {
             toast.error('Unable to reach user session data. Please try again later.');
           }
-        })
-        .finally(() => setLoadingInitial(false));
+        });
     };
     getCurrentUser();
   }, []);
@@ -100,7 +99,7 @@ export function AuthProvider({
   );
 
   return (
-    <AuthContext.Provider value={memoedValues}>{!loadingInitial && children}</AuthContext.Provider>
+    <AuthContext.Provider value={memoedValues}>{children}</AuthContext.Provider>
   );
 }
 
