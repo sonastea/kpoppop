@@ -44,41 +44,53 @@ const Login = () => {
   };
 
   return (
-    <div className="flex mt-20 justify-center">
+    <div className="mt-20 flex justify-center">
       <form
-        className="h-fit border border-gray-300 p-6 my-auto shadow-md rounded-md space-y-6 w-[25rem] max-w-[calc(-1.5em+100vw)] overflow-auto bg-slate-100"
+        className="my-auto h-fit w-[25rem] max-w-[calc(-1.5em+100vw)] space-y-6 overflow-auto
+          rounded-md border border-gray-300 bg-slate-100 p-6 shadow-md"
         id="loginForm"
         onSubmit={handleSubmit(loginHandler)}
       >
-        <h3 className="py-3 font-bold text-center text-gray-900">Login to kpoppop</h3>
+        <h3 className="py-3 text-center font-bold text-gray-900">Login to kpoppop</h3>
 
         <DiscordLoginButton />
 
-        <div className="relative border-2 border-gray-300 label-outline focus-within:border-once z-10">
+        <div
+          // workaround for prettier-plugin-classnames alternating formatting styles
+          // comment between element name and property attribute
+          className="label-outline relative z-10 border-2 border-gray-300 focus-within:border-once"
+        >
           <input
             required
             autoComplete="username"
             placeholder=" "
-            className="block w-full p-3 text-lg bg-transparent appearance-none focus:outline-none"
+            className="block w-full appearance-none bg-white p-3 text-lg focus:outline-none"
             type="text"
             {...register('username')}
           />
-          <label className="absolute top-0 p-3 text-lg origin-0 -z-1 duration-300">Username</label>
+          <label className="absolute top-0 origin-0 p-3 text-lg text-zinc-500 duration-300">
+            Username
+          </label>
         </div>
 
-        <div className="relative border-2 border-gray-300 label-outline focus-within:border-once z-10">
+        <div
+          //
+          className="label-outline relative z-10 border-2 border-gray-300 focus-within:border-once"
+        >
           <input
             required
             autoComplete="current-password"
             placeholder=" "
-            className="block w-full p-3 text-lg bg-transparent appearance-none focus:outline-none"
+            className="block w-full appearance-none bg-white p-3 text-lg focus:outline-none"
             type={showPassword ? 'text' : 'password'}
             {...register('password')}
           />
-          <label className="absolute top-0 p-3 text-lg origin-0 -z-1 duration-300">Password</label>
+          <label className="absolute top-0 origin-0 p-3 text-lg text-zinc-500 duration-300">
+            Password
+          </label>
 
           <i
-            className="absolute top-0 right-0 p-3 text-lg"
+            className="absolute right-0 top-0 p-3 text-lg"
             onClick={() => setShowPassword((toggle) => !toggle)}
           >
             <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
@@ -88,13 +100,16 @@ const Login = () => {
         {errors.password?.message && <span className="text-error">{errors.password.message}</span>}
         <div className="text-center">
           New to kpoppop?{' '}
-          <a className="hover:text-blue-500 font-semibold text-blue-700" href="/register">
+          <a className="font-semibold text-blue-700 hover:text-blue-500" href="/register">
             SIGNUP
           </a>
         </div>
 
         <div className="py-3">
-          <button className="w-full p-2 overflow-hidden font-bold text-gray-900 border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400">
+          <button
+            className="duration-400 w-full overflow-hidden rounded-md border-once-400 bg-once-400
+              p-2 font-bold text-gray-900 transition hover:bg-once"
+          >
             {loginSuccess ? 'Login successful' : 'Login'}
             {loginSuccess && !redirecting && <FontAwesomeIcon className="px-2" icon={faCheck} />}
             {redirecting && <FontAwesomeIcon className="px-2" icon={faSpinner} spin />}
