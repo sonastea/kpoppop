@@ -1,10 +1,10 @@
-import { useEffect, useMemo, useState } from 'react';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAuth } from 'contexts/AuthContext';
+import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import NavBarLoggedIn from './NavBarLoggedIn';
 import NavBarLoggedOut from './NavBarLoggedOut';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const NavBar = () => {
   const { user, logout } = useAuth();
@@ -127,17 +127,17 @@ const NavBar = () => {
   return (
     <nav className="relative w-full shadow-md">
       <div className="mx-auto md:max-w-screen-2xl">
-        <div className="flex justify-between flex-wrap overflow-hidden md:overflow-visible">
+        <div className="flex flex-wrap justify-between overflow-hidden md:overflow-visible">
           <div className="flex flex-shrink-0 space-x-2">
-            <a href="/" className="flex items-center m-2">
+            <a href="/" className="m-2 flex items-center">
               <img
                 src="/images/header_logo.png"
                 alt="Kpoppop Logo"
-                className="grow-0 w-auto h-10 sm:h-16 aspect-[2/1]"
+                className="aspect-w-2 aspect-h-1 h-10 grow-0 sm:h-16"
               />
             </a>
 
-            <ul className="items-center hidden md:flex space-x-1">
+            <ul className="hidden items-center space-x-1 md:flex">
               {navItems.map((item) => (
                 <li key={item.id}>
                   <a
@@ -156,7 +156,7 @@ const NavBar = () => {
 
           {user?.username ? <NavBarLoggedIn /> : <NavBarLoggedOut />}
 
-          <div className="flex flex-wrap items-center m-2 md:hidden">
+          <div className="m-2 flex flex-wrap items-center md:hidden">
             {user?.username && <span className="font-semibold text-once-900">{user.username}</span>}
             <button
               aria-label="Mobile menu toggle"
@@ -164,7 +164,7 @@ const NavBar = () => {
               onClick={() => setMobileNav((prev) => !prev)}
             >
               <svg
-                className={`${isActiveMobileNav && 'bg-once-200 rounded-xl'} w-8 h-8 ml-1`}
+                className={`${isActiveMobileNav && 'rounded-xl bg-once-200'} ml-1 h-8 w-8`}
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -181,21 +181,20 @@ const NavBar = () => {
           </div>
 
           <div
-            className={`${
-              !isActiveMobileNav && 'translate-x-full'
-            } backdrop-brightness-50 w-screen h-screen md:hidden fixed bg-transparent z-50 transform ease-in-out right-0`}
+            className={`${!isActiveMobileNav && 'translate-x-full'} fixed right-0 z-50 h-screen
+            w-screen transform bg-transparent backdrop-brightness-50 ease-in-out md:hidden`}
             onClick={() => setMobileNav((prev) => !prev)}
           />
 
           <div
             id="mobileNav"
-            className={`${
-              !isActiveMobileNav && 'translate-x-full'
-            } w-3/4 sm:w-64 overflow-auto shadow-md h-screen md:hidden rounded-l fixed py-6 pl-6 pr-10 bg-white z-100 transform duration-300 ease-in-out right-0`}
+            className={`${!isActiveMobileNav && 'translate-x-full'} fixed right-0 z-100 h-screen
+            w-3/4 transform overflow-auto rounded-l bg-white py-6 pl-6 pr-10 shadow-md duration-300
+            ease-in-out sm:w-64 md:hidden`}
           >
             <a className="inline-block" aria-label="Home" href="/">
               <img
-                className="w-32 h-12 max-h-12 aspect-[2/1]"
+                className="aspect-w-2 aspect-h-1 w-32 sm:w-48"
                 src="/images/header_logo.png"
                 alt="Kpoppop Logo"
               />
@@ -209,7 +208,7 @@ const NavBar = () => {
                 <FontAwesomeIcon icon={faXmark} />
               </button>
             </div>
-            <div className="divider w-full h-px bg-gray-300/80 mt-6 mb-4" />
+            <div className="divider mb-4 mt-6 h-px w-full bg-gray-300/80" />
             <nav className="flex flex-col overflow-hidden overflow-x-auto">
               {user?.username ? (
                 <>
@@ -219,7 +218,7 @@ const NavBar = () => {
                         href={`${item.to}`}
                         className={`${
                           active === item.id
-                            ? 'text-thrice bg-gray-200/60 rounded-md'
+                            ? 'rounded-md bg-gray-200/60 text-thrice'
                             : 'bg-transparent'
                         } ${item.className}`}
                         onClick={() => setActive(item.id)}
@@ -229,7 +228,7 @@ const NavBar = () => {
                       </a>
                     );
                   })}
-                  <button className="flex hover:underline p-2" aria-label="Logout" onClick={logout}>
+                  <button className="flex p-2 hover:underline" aria-label="Logout" onClick={logout}>
                     Logout
                   </button>
                 </>
@@ -241,7 +240,7 @@ const NavBar = () => {
                         href={`${item.to}`}
                         className={`${
                           active === item.id
-                            ? 'text-thrice bg-gray-200/60 rounded-md'
+                            ? 'rounded-md bg-gray-200/60 text-thrice'
                             : 'bg-transparent'
                         } ${item.className}`}
                         onClick={() => setActive(item.id)}
