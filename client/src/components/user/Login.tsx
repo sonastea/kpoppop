@@ -56,8 +56,6 @@ const Login = () => {
         <DiscordLoginButton />
 
         <div
-          // workaround for prettier-plugin-classnames alternating formatting styles
-          // comment between element name and property attribute
           className="label-outline relative z-10 border-2 border-gray-300 focus-within:border-once"
         >
           <input
@@ -68,13 +66,15 @@ const Login = () => {
             type="text"
             {...register('username')}
           />
-          <label className="absolute top-0 origin-0 p-3 text-lg text-zinc-500 duration-300">
+          <label
+            className="pointer-events-none absolute top-0 origin-0 p-3 text-lg text-zinc-500
+              duration-300"
+          >
             Username
           </label>
         </div>
 
         <div
-          //
           className="label-outline relative z-10 border-2 border-gray-300 focus-within:border-once"
         >
           <input
@@ -85,7 +85,10 @@ const Login = () => {
             type={showPassword ? 'text' : 'password'}
             {...register('password')}
           />
-          <label className="absolute top-0 origin-0 p-3 text-lg text-zinc-500 duration-300">
+          <label
+            className="pointer-events-none absolute top-0 origin-0 p-3 text-lg text-zinc-500
+              duration-300"
+          >
             Password
           </label>
 
