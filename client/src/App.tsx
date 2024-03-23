@@ -17,8 +17,10 @@ import Profile from './components/user/Profile';
 import Register from './components/user/Register';
 
 const Layout = () => {
+  const initialUser = JSON.parse(sessionStorage.getItem('current-user')!) ?? undefined;
+
   return (
-    <AuthProvider>
+    <AuthProvider initialUser={initialUser}>
       <ToastContainer
         autoClose={1000}
         bodyClassName="toastifyBody"
