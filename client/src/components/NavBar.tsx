@@ -102,13 +102,13 @@ const NavBar = () => {
 
   useEffect(() => {
     mobileNavItemsLoggedIn.forEach((item) => {
-      if (location.pathname === item.to) {
+      if (user && location.pathname === item.to) {
         setActive(item.id);
       }
     });
 
     mobileNavItemsLoggedOut.forEach((item) => {
-      if (location.pathname === item.to) {
+      if (!user && location.pathname === item.to) {
         setActive(item.id);
       }
     });
