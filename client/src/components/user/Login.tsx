@@ -53,41 +53,51 @@ const Login = () => {
       >
         <h3 className="py-3 text-center font-bold text-gray-900">Login to kpoppop</h3>
 
-        <DiscordLoginButton />
+        <div>
+          <DiscordLoginButton />
+        </div>
 
         <div
-          className="label-outline relative z-10 border-2 border-gray-300 focus-within:border-once"
+          className="label-outline relative z-10 rounded-md border-2 border-gray-300 bg-white
+            focus-within:border-once"
         >
           <input
             required
             autoComplete="username"
             placeholder=" "
-            className="block w-full appearance-none bg-white p-3 text-lg focus:outline-none"
+            className="block w-full appearance-none rounded-md bg-white p-3 text-lg
+              focus:outline-none"
             type="text"
+            id="username"
             {...register('username')}
           />
           <label
-            className="pointer-events-none absolute top-0 origin-0 p-3 text-lg text-zinc-500
-              duration-300"
+            className="pointer-events-none absolute top-0 origin-0 rounded-md p-3 text-lg
+              text-zinc-500 duration-300"
+            htmlFor="username"
           >
             Username
           </label>
         </div>
 
         <div
-          className="label-outline relative z-10 border-2 border-gray-300 focus-within:border-once"
+          className="label-outline relative z-10 rounded-md border-2 border-gray-300 bg-white
+            focus-within:border-once"
         >
           <input
             required
             autoComplete="current-password"
             placeholder=" "
-            className="block w-full appearance-none bg-white p-3 text-lg focus:outline-none"
+            className="block w-full appearance-none rounded-md bg-white p-3 text-lg
+              focus:outline-none"
             type={showPassword ? 'text' : 'password'}
+            id="password"
             {...register('password')}
           />
           <label
-            className="pointer-events-none absolute top-0 origin-0 p-3 text-lg text-zinc-500
-              duration-300"
+            className="pointer-events-none absolute top-0 origin-0 rounded-md p-3 text-lg
+              text-zinc-500 duration-300"
+            htmlFor="password"
           >
             Password
           </label>

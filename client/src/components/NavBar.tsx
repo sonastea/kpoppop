@@ -129,11 +129,11 @@ const NavBar = () => {
       <div className="mx-auto md:max-w-screen-2xl">
         <div className="flex flex-wrap justify-between overflow-hidden md:overflow-visible">
           <div className="flex flex-shrink-0 space-x-2">
-            <a href="/" className="m-2 flex items-center">
+            <a href="/" className="aspect-w-2 aspect-h-1 m-2 flex h-10 grow-0 items-center sm:h-16">
               <img
                 src="/images/header_logo.png"
                 alt="Kpoppop Logo"
-                className="aspect-w-2 aspect-h-1 h-10 grow-0 sm:h-16"
+                className="h-full w-full object-contain"
               />
             </a>
 
@@ -192,9 +192,13 @@ const NavBar = () => {
             w-3/4 transform overflow-auto rounded-l bg-white py-6 pl-6 pr-10 shadow-md duration-300
             ease-in-out sm:w-64 md:hidden`}
           >
-            <a className="inline-block" aria-label="Home" href="/">
+            <a
+              className="aspect-w-2 aspect-h-1 inline-block w-32 sm:w-48"
+              aria-label="Home"
+              href="/"
+            >
               <img
-                className="aspect-w-2 aspect-h-1 w-32 sm:w-48"
+                className="h-full w-full object-contain"
                 src="/images/header_logo.png"
                 alt="Kpoppop Logo"
               />

@@ -20,27 +20,24 @@
 }
 
 input:focus-within~label,
-input:not(:placeholder-shown)~label {
-  @apply transform scale-75 -translate-y-6;
+input:not(:placeholder-shown)~label,
+input:valid~label {
+  @apply -translate-y-6 scale-75 transform;
 }
 
 input:focus-within~label {
   @apply text-once;
-  @apply bg-slate-100;
+  background-image: linear-gradient(to bottom, #f1f5f9 50%, #fff 60%);
 }
 
-input:not(:focus-within)~label {
-  @apply transform duration-300 scale-100;
-}
-
-.label-outline input:focus-within~label,
-.label-outline input:not(:placeholder-shown)~label {
-  @apply transform scale-75 -translate-y-6;
+input:not(:focus-within):valid~label {
+  @apply scale-100 transform text-slate-700 duration-300;
+  background-image: linear-gradient(to bottom, #f1f5f9 50%, #fff 60%);
 }
 
 .label-outline input:focus-within~label,
 .label-outline input:not(:placeholder-shown)~label {
-  @apply z-0 px-1 py-0 ml-3 transform scale-75 -translate-y-3;
+  @apply ml-3 -translate-y-4 scale-75 transform px-1 py-0;
 }
 
 .liked {

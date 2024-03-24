@@ -82,7 +82,7 @@ const LoginModal = () => {
             onClick={toggleVisbility}
           />
           <form
-            className="space-y-6 rounded-md border bg-white p-6 shadow-md"
+            className="space-y-6 rounded-md border bg-slate-100 p-6 shadow-md"
             id="loginForm"
             onSubmit={handleSubmit(loginHandler)}
           >
@@ -90,32 +90,48 @@ const LoginModal = () => {
 
             <DiscordLoginButton />
 
-            <div className="label-outline relative z-10 border-2 focus-within:border-once">
+            <div
+              className="label-outline relative z-10 rounded-md border-2 bg-white
+                focus-within:border-once"
+            >
               <input
                 required
                 autoComplete="username"
                 placeholder=" "
-                className="z-10 block w-full appearance-none bg-transparent p-3 text-lg
+                className="z-10 block w-full appearance-none rounded-md bg-transparent p-3 text-lg
                   focus:outline-none"
                 type="text"
+                id="username"
                 {...register('username')}
               />
-              <label className="absolute top-0 -z-1 origin-0 bg-white p-3 text-lg duration-300">
+              <label
+                className="absolute top-0 -z-1 origin-0 rounded-md bg-white p-3 text-lg
+                  text-zinc-500 duration-300"
+                htmlFor="username"
+              >
                 Username
               </label>
             </div>
 
-            <div className="label-outline relative z-10 border-2 focus-within:border-once">
+            <div
+              className="label-outline relative z-10 rounded-md border-2 bg-white
+                focus-within:border-once"
+            >
               <input
                 required
                 autoComplete="current-password"
                 placeholder=" "
-                className="block w-full appearance-none bg-transparent p-3 text-lg
+                className="block w-full appearance-none rounded-md bg-transparent p-3 text-lg
                   focus:outline-none"
                 type={showPassword ? 'text' : 'password'}
+                id="password"
                 {...register('password')}
               />
-              <label className="absolute top-0 -z-1 origin-0 bg-white p-3 text-lg duration-300">
+              <label
+                className="absolute top-0 -z-1 origin-0 rounded-md bg-white p-3 text-lg
+                  text-zinc-500 duration-300"
+                htmlFor="password"
+              >
                 Password
               </label>
 
