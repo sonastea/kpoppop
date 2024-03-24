@@ -133,7 +133,7 @@ const NavBar = () => {
               <img
                 src="/images/header_logo.png"
                 alt="Kpoppop Logo"
-                className="h-full w-full object-contain"
+                className="h-full w-auto object-contain"
               />
             </a>
 
