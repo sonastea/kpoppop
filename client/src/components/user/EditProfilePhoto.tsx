@@ -1,4 +1,4 @@
-import { faRotateLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useCallback, useEffect, useState } from 'react';
 import Cropper, { Area, Point } from 'react-easy-crop';
@@ -11,9 +11,9 @@ const EditProfilePhoto = ({
   editting,
 }: {
   image_src: string;
-  setCroppedUrl: Function;
-  setPhoto: Function;
-  editting: Function;
+  setCroppedUrl: React.Dispatch<React.SetStateAction<RequestInfo | URL | null>>;
+  setPhoto: React.Dispatch<React.SetStateAction<FileList | null | undefined>>;
+  editting: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -29,26 +29,26 @@ const EditProfilePhoto = ({
     window.localStorage.setItem('croppedArea', JSON.stringify(_croppedArea));
   }, []);
 
-  const toggleEditting = useCallback(() => {
-    editting(false);
+  const cancelEditting = useCallback(() => {
     document.body.classList.remove('overflow-hidden');
-    setPhoto(undefined);
-  }, [editting, setPhoto]);
+    editting(false);
+    setCroppedUrl(null);
+    setPhoto(null);
+  }, [editting, setCroppedUrl, setPhoto]);
 
   const showCroppedImage = useCallback(async () => {
     try {
       const croppedImage = await getCroppedImg(image_src, croppedAreaPixels);
       setCroppedUrl(croppedImage);
-      toggleEditting();
     } catch (e) {
-      toggleEditting();
       console.error(e);
     }
-  }, [croppedAreaPixels, image_src, setCroppedUrl, toggleEditting]);
+    editting(false);
+  }, [croppedAreaPixels, image_src, setCroppedUrl]);
 
   return (
-    <div className="absolute inset-0 z-40 backdrop-blur-md bg-white-100/30">
-      <div className="relative z-40 m-auto top-1/4 h-56 w-56">
+    <div className="absolute inset-0 z-40 bg-zinc-300/30 backdrop-blur-md">
+      <div className="relative top-1/4 z-40 m-auto h-56 w-56">
         <Cropper
           image={image_src}
           aspect={1 / 1}
@@ -61,15 +61,19 @@ const EditProfilePhoto = ({
           onZoomChange={setZoom}
         />
         <div
-          className="absolute justify-center z-40 hover:text-once-500 left-0 -top-1/4 text-once-900 p-1"
+          className="absolute -top-1/4 left-0 z-40 justify-center p-1 text-gray-800"
           role="button"
-          onClick={toggleEditting}
+          onClick={cancelEditting}
           aria-label="Back to profile settings"
         >
-          <FontAwesomeIcon className="cursor-pointer" icon={faRotateLeft} />
+          <FontAwesomeIcon
+            className="cursor-pointer p-1 hover:rounded-full hover:bg-gray-700/20"
+            icon={faArrowLeft}
+          />
         </div>
         <button
-          className="absolute p-1 z-40 text-md border md:text-xl shadow-sm shadow-once-500/50 rounded-md border-once-700 bg-once-500 text-once-100 hover:bg-once-600 right-0 -top-1/4"
+          className="text-md absolute -top-1/4 right-0 z-40 rounded-md bg-once-200 p-1 text-once-800
+            shadow-sm shadow-once-400 hover:bg-once-300 md:text-xl"
           onClick={() => showCroppedImage()}
           type="button"
         >
@@ -81,7 +85,8 @@ const EditProfilePhoto = ({
           max={3}
           step={0.1}
           value={zoom}
-          className="absolute z-40 w-full h-2 bg-slate-400 rounded-lg appearance-none cursor-pointer -bottom-4 text-once"
+          className="absolute -bottom-4 z-40 h-2 w-full cursor-pointer appearance-none rounded-lg
+            bg-slate-400 text-once"
           aria-labelledby="zoom"
           onChange={(e) => setZoom(Number(e.target.value))}
         />
