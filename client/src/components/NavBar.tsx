@@ -222,7 +222,7 @@ const NavBar = () => {
                         href={`${item.to}`}
                         className={`${
                           active === item.id
-                            ? 'rounded-md bg-gray-200/60 text-thrice'
+                            ? 'rounded-md bg-slate-200/80 text-thrice font-semibold'
                             : 'bg-transparent'
                         } ${item.className}`}
                         onClick={() => setActive(item.id)}
