@@ -60,11 +60,18 @@ const Profile = () => {
               href={`${data?.banner ? data?.banner : '/images/default_banner_white_1920x320.png'}`}
             >
               <picture>
-                <source media="(max-width: 639px)" srcSet={`${data?.banner}?tr=w-448`} />
+                <source
+                  media="(max-width: 639px)"
+                  srcSet={
+                    data?.banner
+                      ? `${data.banner}?tr=w-448`
+                      : '/images/default_banner_white_1920x320.png'
+                  }
+                />
                 <img
                   className="h-full w-full object-cover"
                   src={`${
-                    data?.banner ? data?.banner : '/images/default_banner_white_1920x320.png'
+                    data?.banner ? data.banner : '/images/default_banner_white_1920x320.png'
                   }`}
                   alt="profile-banner"
                 />
@@ -89,7 +96,14 @@ const Profile = () => {
               <div className="relative max-w-[50px] sm:max-w-[75px] md:max-w-[100px]">
                 <a className="rounded-full" href={data.photo && `${data.photo}`}>
                   <picture>
-                    <source media="(max-width: 639px)" srcSet={`${data.photo}?tr=w-72,h-72`} />
+                    <source
+                      media="(max-width: 639px)"
+                      srcSet={
+                        data.photo
+                          ? `${data.photo}?tr=w-72,h-72`
+                          : '/images/default_photo_white_200x200.png'
+                      }
+                    />
                     <img
                       className="mt-[-50%] aspect-square rounded-full border border-black bg-white"
                       src={

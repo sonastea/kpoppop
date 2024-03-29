@@ -69,7 +69,12 @@ const InteractiveComments = ({ memeId, ownerId, comments: c }: InteractiveCommen
         className="flex flex-wrap items-center justify-center space-x-2 space-y-2 overflow-auto p-1"
       >
         <picture>
-          <source media="(max-width: 639px)" srcSet={`${user?.photo}?tr=w-72`} />
+          <source
+            media="(max-width: 639px)"
+            srcSet={
+              user?.photo ? `${user.photo}?tr=w-72` : '/images/default_photo_white_200x200.png'
+            }
+          />
           <img
             className="h-12 max-h-12 w-12 max-w-12 rounded-full"
             alt="user by comment box"

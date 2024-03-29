@@ -62,7 +62,14 @@ const Comment = (props: { props: CommentProps; memeOwnerId: number }) => {
     <div className="comment-container p-2" ref={containerRef}>
       <div className="mb-1 flex flex-wrap gap-x-2 font-bold">
         <picture>
-          <source media="(max-width: 639px)" srcSet={`${comment.user.photo}?tr=w-72`} />
+          <source
+            media="(max-width: 639px)"
+            srcSet={
+              comment.user.photo
+                ? `${comment.user.photo}?tr=w-72`
+                : '/images/default_photo_white_200x200.png'
+            }
+          />
           <img
             className="h-12 w-12 rounded-full"
             src={
