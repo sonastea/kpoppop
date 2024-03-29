@@ -124,7 +124,9 @@ const Login = () => {
               p-2 font-bold text-gray-900 transition hover:bg-once"
           >
             {loginSuccess ? 'Login successful' : 'Login'}
-            {loginSuccess && !redirecting && <FontAwesomeIcon className="px-2" icon={faCheck} />}
+            {loginSuccess && !redirecting && (
+              <FontAwesomeIcon className="px-2 text-green-800" icon={faCheck} />
+            )}
             {redirecting && <FontAwesomeIcon className="px-2" icon={faSpinner} spin />}
           </button>
         </div>

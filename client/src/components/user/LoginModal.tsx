@@ -160,7 +160,7 @@ const LoginModal = () => {
               >
                 {loginSuccess ? 'Login successful' : 'Login'}
                 {loginSuccess && !redirecting && (
-                  <FontAwesomeIcon className="px-2" icon={faCheck} />
+                  <FontAwesomeIcon className="px-2 text-green-800" icon={faCheck} />
                 )}
                 {redirecting && <FontAwesomeIcon className="px-2" icon={faSpinner} spin />}
               </button>
