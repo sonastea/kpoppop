@@ -12,6 +12,11 @@ const NavBar = () => {
   const [isActiveMobileNav, setMobileNav] = useState<boolean>(false);
   const [active, setActive] = useState<number>();
 
+  const setNavItem = (id: number) => {
+    setActive(id);
+    setMobileNav(false);
+  };
+
   const navItems = useMemo(
     () => [
       {
@@ -149,7 +154,7 @@ const NavBar = () => {
                     className={`${item.className} ${
                       active === item.id ? 'border-once' : 'border-transparent'
                     }`}
-                    onClick={() => setActive(item.id)}
+                    onClick={() => setNavItem(item.id)}
                   >
                     {item.name}
                   </Link>
@@ -229,7 +234,7 @@ const NavBar = () => {
                             ? 'rounded-md bg-slate-200/80 font-semibold text-thrice'
                             : 'bg-transparent'
                         } ${item.className}`}
-                        onClick={() => setActive(item.id)}
+                        onClick={() => setNavItem(item.id)}
                         key={item.id}
                       >
                         {item.name}
@@ -251,7 +256,7 @@ const NavBar = () => {
                             ? 'rounded-md bg-gray-200/60 text-thrice'
                             : 'bg-transparent'
                         } ${item.className}`}
-                        onClick={() => setActive(item.id)}
+                        onClick={() => setNavItem(item.id)}
                         key={item.id}
                       >
                         {item.name}
