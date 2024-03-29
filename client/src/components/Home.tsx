@@ -1,10 +1,16 @@
 import { useAuth } from 'contexts/AuthContext';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
 
-  if (user || !user) window.location.href = '/memes';
+  useEffect(() => {
+    if (user || !user) navigate('/memes');
+  }, [user]);
 
-  return <></>;
+  return null;
 };
+
 export default Home;

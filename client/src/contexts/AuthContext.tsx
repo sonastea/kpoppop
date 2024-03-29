@@ -41,7 +41,7 @@ type AuthAction = {
   payload: User;
 };
 
-const authReducer = (state: User, action: AuthAction) => {
+const authReducer = (state: User | undefined, action: AuthAction) => {
   switch (action.type) {
     case ActionType.LOGOUT:
       window.location.reload();
@@ -73,7 +73,7 @@ const AuthProviderComponent = ({
   initialUser,
 }: {
   children: ReactNode;
-  initialUser: User;
+  initialUser: User | undefined;
 }): JSX.Element => {
   const [user, dispatch] = useReducer(authReducer, initialUser);
 
@@ -108,22 +108,26 @@ const AuthProviderComponent = ({
 
   useEffect(() => {
     const getCurrentUser = async () => {
-      await fetch(`${API_URL}/auth/session`, {
-        method: 'GET',
-        credentials: 'include',
-      })
-        .then((response) => response.json())
-        .then((data) => {
+      try {
+        const response = await fetch(`${API_URL}/auth/session`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+
+        if (response.ok) {
+          const data = await response.json();
           if (data.id || data.discordId) {
             updateUser(data);
             localStorage.setItem('userID', data.id);
           }
-        })
-        .catch((error) => {
-          if (error.message === 'Failed to fetch') {
-            toast.error('Unable to reach user session data. Please try again later.');
-          }
-        });
+        } else {
+          throw new Error('Failed to fetch');
+        }
+      } catch (error: unknown) {
+        if (error instanceof Error && error.message === 'Failed to fetch') {
+          toast.error('Unable to reach user session data. Please try again later.');
+        }
+      }
     };
     getCurrentUser();
   }, []);

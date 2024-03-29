@@ -30,9 +30,8 @@ type Meme = {
   };
 };
 
-let cursor: number = 0;
-
 const Memes = () => {
+  const [cursor, setCursor] = useState(0);
   const { user } = useAuth();
   const [posts, setPosts] = useState([] as any);
   const [loading, setLoading] = useState(true);
@@ -48,7 +47,7 @@ const Memes = () => {
       .then((memes) => {
         if (memes.length !== 0) {
           setPosts((prev: Meme[]) => [...prev, ...memes]);
-          cursor = memes[memes.length - 1].id;
+          setCursor(memes[memes.length - 1].id);
         } else {
           window.removeEventListener('scroll', handleScroll.current);
         }
@@ -64,7 +63,7 @@ const Memes = () => {
         .then((memes) => {
           if (memes.length !== 0) {
             setPosts(memes);
-            cursor = memes[memes.length - 1].id;
+            setCursor(memes[memes.length - 1].id);
           }
         })
         .catch((error) => {

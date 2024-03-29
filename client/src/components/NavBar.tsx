@@ -2,7 +2,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAuth } from 'contexts/AuthContext';
 import { useEffect, useMemo, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import NavBarLoggedIn from './NavBarLoggedIn';
 import NavBarLoggedOut from './NavBarLoggedOut';
 
@@ -129,26 +129,30 @@ const NavBar = () => {
       <div className="mx-auto md:max-w-screen-2xl">
         <div className="flex flex-wrap justify-between overflow-hidden md:overflow-visible">
           <div className="flex flex-shrink-0 space-x-2">
-            <a href="/" className="aspect-w-2 aspect-h-1 m-2 flex h-10 grow-0 items-center sm:h-16">
+            <Link
+              aria-label="Home"
+              to="/"
+              className="aspect-w-2 aspect-h-1 m-2 flex h-10 grow-0 items-center sm:h-16"
+            >
               <img
                 src="/images/header_logo.png"
                 alt="Kpoppop Logo"
                 className="h-full w-auto object-contain"
               />
-            </a>
+            </Link>
 
             <ul className="hidden items-center space-x-1 md:flex">
               {navItems.map((item) => (
                 <li key={item.id}>
-                  <a
-                    href={`${item.to}`}
+                  <Link
+                    to={`${item.to}`}
                     className={`${item.className} ${
                       active === item.id ? 'border-once' : 'border-transparent'
                     }`}
                     onClick={() => setActive(item.id)}
                   >
                     {item.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -192,17 +196,17 @@ const NavBar = () => {
             w-3/4 transform overflow-auto rounded-l bg-white py-6 pl-6 pr-10 shadow-md duration-300
             ease-in-out sm:w-64 md:hidden`}
           >
-            <a
+            <Link
               className="aspect-w-2 aspect-h-1 inline-block w-32 sm:w-48"
               aria-label="Home"
-              href="/"
+              to="/"
             >
               <img
                 className="h-full w-full object-contain"
                 src="/images/header_logo.png"
                 alt="Kpoppop Logo"
               />
-            </a>
+            </Link>
             <div>
               <button
                 className="absolute right-4 top-4 px-2 py-1"
@@ -218,18 +222,18 @@ const NavBar = () => {
                 <>
                   {mobileNavItemsLoggedIn.map((item) => {
                     return (
-                      <a
-                        href={`${item.to}`}
+                      <Link
+                        to={`${item.to}`}
                         className={`${
                           active === item.id
-                            ? 'rounded-md bg-slate-200/80 text-thrice font-semibold'
+                            ? 'rounded-md bg-slate-200/80 font-semibold text-thrice'
                             : 'bg-transparent'
                         } ${item.className}`}
                         onClick={() => setActive(item.id)}
                         key={item.id}
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     );
                   })}
                   <button className="flex p-2 hover:underline" aria-label="Logout" onClick={logout}>
@@ -240,8 +244,8 @@ const NavBar = () => {
                 <>
                   {mobileNavItemsLoggedOut.map((item) => {
                     return (
-                      <a
-                        href={`${item.to}`}
+                      <Link
+                        to={`${item.to}`}
                         className={`${
                           active === item.id
                             ? 'rounded-md bg-gray-200/60 text-thrice'
@@ -251,7 +255,7 @@ const NavBar = () => {
                         key={item.id}
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     );
                   })}
                 </>
