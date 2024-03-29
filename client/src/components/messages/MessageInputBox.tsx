@@ -16,7 +16,7 @@ const MessageInputBox = ({
 }: {
   recipient: UserCardProps;
   message: string | null;
-  setMessage: Function;
+  setMessage: React.Dispatch<React.SetStateAction<string | null>>;
 }) => {
   const chatInput = useRef<HTMLTextAreaElement | null>(null);
   const ws = MessagesSocket((socket) => socket.ws);
@@ -49,12 +49,13 @@ const MessageInputBox = ({
   };
 
   return (
-    <div className="z-10 p-4 border border-slate-300">
-      <div className="bg-white shadow flex rounded-lg">
+    <div className="z-10 border border-slate-300 p-4">
+      <div className="flex rounded-lg bg-white shadow">
         <div className="flex-1">
           <textarea
-            id='message-input'
-            className="w-full block outline-none py-4 px-4 bg-transparent whitespace-nowrap overflow-hidden"
+            id="message-input"
+            className="block w-full overflow-hidden whitespace-nowrap bg-transparent px-4 py-4
+              outline-none"
             ref={chatInput}
             placeholder="Start a new message"
             style={{ resize: 'none' }}
@@ -64,10 +65,10 @@ const MessageInputBox = ({
             onKeyDown={(e) => handleSendMessage(e)}
           />
         </div>
-        <div className="p-2 flex content-center items-center">
+        <div className="flex content-center items-center p-2">
           <div className="flex-1">
             <button
-              className="hover:bg-once-200/75 hover:rounded-full w-10 h-10 rounded-full inline-block"
+              className="inline-block h-10 w-10 rounded-full hover:rounded-full hover:bg-once-200/75"
               onClick={handleClickSendMessage}
             >
               <span className="inline-block align-text-bottom">

@@ -7,7 +7,7 @@ import MessagesSocket from 'components/messages/socket';
 import UserCard, { UserCardProps } from 'components/messages/UserCard';
 import UserCardSkeletonLoader from 'components/messages/UserCardSkeletonLoader';
 import { useAuth } from 'contexts/AuthContext';
-import { useEffect, useReducer, useRef, useState } from 'react';
+import { BaseSyntheticEvent, useEffect, useReducer, useRef, useState } from 'react';
 import { Socket } from 'socket.io-client';
 
 export type MessageProps = {
@@ -191,9 +191,9 @@ const Messages = () => {
   } else {
     return (
       <div className="h-[calc(100vh-80px)]">
-        <div className="flex flex-col h-full bg-gray-200/60 overflow-hidden">
-          <div className="flex heading m-4 flex-wrap">
-            <h1 className="justify-center text-3xl text-gray-700 mr-4">Messages</h1>
+        <div className="flex h-full flex-col overflow-hidden bg-gray-200/60">
+          <div className="heading m-4 flex flex-wrap">
+            <h1 className="mr-4 justify-center text-3xl text-gray-700">Messages</h1>
             <div
               className="justify-center hover:text-once-500"
               role="button"
@@ -209,13 +209,12 @@ const Messages = () => {
           </div>
 
           {draft && <NewConversation setDrafting={setDrafting} setRecipient={setRecipient} />}
-          <div className="flex md:mx-2 min-h-0">
+          <div className="flex min-h-0 md:mx-2">
             <div
-              className={`${
-                m.recipient ? 'hidden md:flex w-1/3' : 'flex w-full md:w-1/3'
-              } flex-col`}
+              className={`${m.recipient ? 'hidden w-1/3 md:flex' : 'flex w-full md:w-1/3'}
+              flex-col`}
             >
-              <ul className="w-full min-h-0 overflow-auto conversations-scroll-bar">
+              <ul className="conversations-scroll-bar min-h-0 w-full overflow-auto">
                 {m.conversations.map((user: UserCardProps) => {
                   return (
                     <UserCard
@@ -229,22 +228,45 @@ const Messages = () => {
               </ul>
             </div>
             {m.recipient && (
-              <div className="message-container flex flex-1 flex-col w-full md:relative md:mx-2">
-                <div className="message-header border-b border-b-slate-300 flex flex-col items-center z-10 backdrop-blur-sm">
-                  <div className="w-12 h-12 mr-2 flex align-center">
+              <div className="message-container flex w-full flex-1 flex-col md:relative md:mx-2">
+                <div
+                  className="message-header z-10 flex flex-col items-center border-b
+                    border-b-slate-300 backdrop-blur-sm"
+                >
+                  <div className="align-center mr-2 flex h-12 w-12">
                     <a href={`/user/${m.recipient.username}`}>
-                      <img
-                        className="w-12 h-12 rounded-full"
-                        src={m.recipient?.photo || '/images/default_photo_white_200x200.png'}
-                        alt={`${m.recipient.username} profile`}
-                      />
+                      <picture>
+                        <source
+                          media="(max-width: 639px)"
+                          srcSet={
+                            m.recipient.photo
+                              ? `${m.recipient.photo}?tr=w-72,h-72`
+                              : '/images/default_photo_white_200x200.png'
+                          }
+                        />
+                        <img
+                          className="h-12 w-12 rounded-full"
+                          src={
+                            m.recipient?.photo
+                              ? `${m.recipient?.photo}?tr=w-150,h-150`
+                              : '/images/default_photo_white_200x200.png'
+                          }
+                          alt={`${m.recipient?.username} profile`}
+                          onError={(e: BaseSyntheticEvent) => {
+                            e.currentTarget.src = '/images/default_photo_white_200x200.png';
+                          }}
+                        />
+                      </picture>
                     </a>
                   </div>
                   <a className="hover:underline" href={`/user/${m.recipient.username}`}>
-                    <h2 className="text-xl py-1 font-bold">{m.recipient.username}</h2>
+                    <h2 className="py-1 text-xl font-bold">{m.recipient.username}</h2>
                   </a>
                 </div>
-                <ul className="message-window break-all overflow-auto w-full h-screen messages-scroll-bar md:border-x border-x-slate-300 py-1">
+                <ul
+                  className="message-window messages-scroll-bar h-screen w-full overflow-auto
+                    break-all border-x-slate-300 py-1 md:border-x"
+                >
                   <MessagesList messages={sortMessages(m?.conversations)} />
                   <div ref={scrollBottomRef} />
                 </ul>

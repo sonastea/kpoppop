@@ -59,26 +59,33 @@ const Comment = (props: { props: CommentProps; memeOwnerId: number }) => {
   };
 
   return (
-    <div className="p-2 comment-container" ref={containerRef}>
-      <div className="font-bold gap-x-2 flex flex-wrap mb-1">
-        <img
-          className="w-12 h-12 rounded-full"
-          src={comment.user.photo ? comment.user.photo : '/images/default_photo_white_200x200.png'}
-          alt={`${comment.user.username} profile`}
-        />
-        <span className={user_bg.join(' ')}>
+    <div className="comment-container p-2" ref={containerRef}>
+      <div className="mb-1 flex flex-wrap gap-x-2 font-bold">
+        <picture>
+          <source media="(max-width: 639px)" srcSet={`${comment.user.photo}?tr=w-72`} />
+          <img
+            className="h-12 w-12 rounded-full"
+            src={
+              comment.user.photo
+                ? `${comment.user.photo}?tr=w-100`
+                : '/images/default_photo_white_200x200.png'
+            }
+            alt={`${comment.user.username} profile`}
+          />
+        </picture>
+        <span className={user_bg.join('')}>
           <UserTooltip comment={comment} />
         </span>
         <span className="ml-auto">
           <UserMenu comment={comment} />
         </span>
       </div>
-      <div className="text-slate-800 text-sm sm:text-lg break-words">
+      <div className="break-words text-sm text-slate-800 sm:text-lg">
         <p className="whitespace-pre-wrap" ref={textRef}>
           {comment.text}
         </p>
         {comment.edited && (
-          <p className="text-xs text-right text-gray-400/90">
+          <p className="text-right text-xs text-gray-400/90">
             Edited{' '}
             {`${new Date(comment.updatedAt).toLocaleTimeString()} ${new Date(
               comment.updatedAt
@@ -88,12 +95,14 @@ const Comment = (props: { props: CommentProps; memeOwnerId: number }) => {
       </div>
       <div
         aria-label="edit-comment-input"
-        className="hidden rounded-md h-60 bg-gray-200/60 text-slate-800 text-xs sm:text-lg break-words"
+        className="hidden h-60 break-words rounded-md bg-gray-200/60 text-xs text-slate-800
+          sm:text-lg"
         ref={newTextRef}
       >
-        <div className="rounded-md h-full flex text-center">
+        <div className="flex h-full rounded-md text-center">
           <textarea
-            className="focus:outline-none focus:border-once border resize-none p-2 h-full w-full bg-gray-200/60 rounded-md"
+            className="h-full w-full resize-none rounded-md border bg-gray-200/60 p-2
+              focus:border-once focus:outline-none"
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
           />
@@ -103,7 +112,7 @@ const Comment = (props: { props: CommentProps; memeOwnerId: number }) => {
             </p>
             <button
               type="button"
-              className="m-1 self-end p-1 bg-once rounded-md h-min"
+              className="m-1 h-min self-end rounded-md bg-once p-1"
               onClick={(e: BaseSyntheticEvent) => handleEditComment(e)}
             >
               Save

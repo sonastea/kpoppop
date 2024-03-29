@@ -26,13 +26,7 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { UserProfileData } from 'src/user/user.service';
 
-let baseUrl: string = null;
-
-if (process.env.NODE_ENV === 'production') {
-  baseUrl = 'https://images.kpoppop.com/';
-} else {
-  baseUrl = 'https://test.kpoppop.com/';
-}
+const photoBaseUrl = 'https://ik.imagekit.io/qxhlbjhesx/';
 
 @Controller('meme')
 @UseGuards(ThrottlerGuard)
@@ -87,7 +81,7 @@ export class MemeController {
     if (file) {
       const uuid = randomUUID();
       const fileName = uuid + path.extname(file.originalname);
-      const url = baseUrl + fileName;
+      const url = photoBaseUrl + fileName;
 
       firebase
         .storage()

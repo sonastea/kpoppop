@@ -65,26 +65,32 @@ const InteractiveComments = ({ memeId, ownerId, comments: c }: InteractiveCommen
 
   return (
     <>
-      <form className="space-y-2 space-x-2 flex-wrap items-center p-1 flex justify-center overflow-auto">
-        <img
-          className="rounded-full w-12 h-12 max-w-12 max-h-12"
-          src={user && user?.photo ? user.photo : '/images/default_photo_white_200x200.png'}
-          alt="user by comment box"
-        />
+      <form
+        className="flex flex-wrap items-center justify-center space-x-2 space-y-2 overflow-auto p-1"
+      >
+        <picture>
+          <source media="(max-width: 639px)" srcSet={`${user?.photo}?tr=w-72`} />
+          <img
+            className="h-12 max-h-12 w-12 max-w-12 rounded-full"
+            alt="user by comment box"
+            src={user?.photo ? `${user.photo}?tr=w-100` : '/images/default_photo_white_200x200.png'}
+          />
+        </picture>
         <textarea
-          className="m-2 px-2 h-6 w-full max-w-2xl overflow-hidden text-center rounded-md bg-gray-200/60 focus:outline-none focus:border-once border"
+          className="m-2 h-6 w-full max-w-2xl overflow-hidden rounded-md border bg-gray-200/60 px-2
+            text-center focus:border-once focus:outline-none"
           name="comment"
           placeholder="Add comment"
           value={comment}
           ref={textAreaRef}
           onChange={(e) => addCommentEventHandler(e)}
         />
-        <div className="flex-shrink text-sm w-6">
+        <div className="w-6 flex-shrink text-sm">
           <span
             className={`${
               textAreaRef.current &&
               textAreaRef.current.value.length > 640 &&
-              'text-error font-bold'
+              'font-bold text-error'
             }`}
           >
             {textAreaRef.current?.value.length}
@@ -92,9 +98,8 @@ const InteractiveComments = ({ memeId, ownerId, comments: c }: InteractiveCommen
         </div>
         <button
           type="button"
-          className={`${
-            isCommenting ? 'bg-once-200 cursor-not-allowed' : 'bg-once'
-          } self-center p-1 rounded-md hover:bg-once-400`}
+          className={`${isCommenting ? 'cursor-not-allowed bg-once-200' : 'bg-once'} self-center
+          rounded-md p-1 hover:bg-once-400`}
           onClick={() => addComment(memeId)}
           disabled={isCommenting ? true : false}
         >

@@ -59,11 +59,16 @@ const Profile = () => {
               className="banner-anchor"
               href={`${data?.banner ? data?.banner : '/images/default_banner_white_1920x320.png'}`}
             >
-              <img
-                className="h-full w-full object-cover"
-                src={`${data?.banner ? data?.banner : '/images/default_banner_white_1920x320.png'}`}
-                alt="profile-banner"
-              />
+              <picture>
+                <source media="(max-width: 639px)" srcSet={`${data?.banner}?tr=w-448`} />
+                <img
+                  className="h-full w-full object-cover"
+                  src={`${
+                    data?.banner ? data?.banner : '/images/default_banner_white_1920x320.png'
+                  }`}
+                  alt="profile-banner"
+                />
+              </picture>
             </a>
           </div>
         </div>
@@ -83,18 +88,29 @@ const Profile = () => {
             <div className="flex w-full justify-center lg:order-2 lg:w-1/4">
               <div className="relative max-w-[50px] sm:max-w-[75px] md:max-w-[100px]">
                 <a className="rounded-full" href={data.photo && `${data.photo}`}>
-                  <img
-                    className="mt-[-50%] aspect-square rounded-full border border-black bg-white"
-                    src={data.photo ? `${data.photo}` : '/images/default_photo_white_200x200.png'}
-                    alt="profile"
-                    onError={(e: BaseSyntheticEvent) => {
-                      e.currentTarget.src = '/images/default_photo_white_200x200.png';
-                    }}
-                  />
+                  <picture>
+                    <source media="(max-width: 639px)" srcSet={`${data.photo}?tr=w-72,h-72`} />
+                    <img
+                      className="mt-[-50%] aspect-square rounded-full border border-black bg-white"
+                      src={
+                        data.photo
+                          ? `${data.photo}?tr=w-144,h-144`
+                          : '/images/default_photo_white_200x200.png'
+                      }
+                      alt="profile"
+                      onError={(e: BaseSyntheticEvent) => {
+                        e.currentTarget.src = '/images/default_photo_white_200x200.png';
+                      }}
+                    />
+                  </picture>
                 </a>
                 {username === user?.username && (
                   <div className="absolute right-[-15px] top-0 text-xs md:text-sm">
-                    <a href="/profile/settings" className="w-full text-gray-500 hover:text-once">
+                    <a
+                      aria-label="Profile settings"
+                      href="/profile/settings"
+                      className="w-full text-gray-500 hover:text-once"
+                    >
                       <FontAwesomeIcon icon={faGear} className="hover:animate-spin-slow" />
                     </a>
                   </div>
@@ -135,11 +151,7 @@ const Profile = () => {
                       <source src={meme.url} type="video/mp4" />
                     </video>
                   ) : (
-                    <img
-                      className="w-full rounded-lg object-cover"
-                      src={meme.url}
-                      alt={meme.title}
-                    />
+                    <img className="w-full rounded-lg object-cover" src={meme.url} alt="" />
                   )}
                   {meme.title}
                 </a>
