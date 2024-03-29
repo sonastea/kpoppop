@@ -51,7 +51,7 @@ const Post = () => {
     <>
       <ReportCommentModal />
       <ReportUserModal user={{ id: meme.author.id, username: meme.author.username }} />
-      <div className="shadow-sm mb-2">
+      <div className="shadow-sm mb-2 md:w-3/5 md:mx-auto">
         <div className="flex flex-col md:flex-row md:flex-wrap overflow-auto border-x">
           <div className="m-2 w-64 md:w-80 2xl:w-96 max-w-3xl self-center">
             {meme.url.split('.')[3] === 'mp4' ? (
