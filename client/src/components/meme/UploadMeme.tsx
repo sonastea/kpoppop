@@ -46,7 +46,7 @@ const UploadMeme = () => {
     const formData = new FormData();
     if (files && files.length > 0) {
       let compressed;
-      if (files[0].type === 'video/quicktime' || 'video/mp4') {
+      if (files[0].type === 'video/quicktime' || files[0].type === 'video/mp4') {
         compressed = files[0];
       } else {
         compressed = await compressImage(files[0]);
@@ -179,7 +179,8 @@ const UploadMeme = () => {
       <button
         onClick={() => setOpen((open) => !open)}
         type="button"
-        className="z-10 p-2 m-4 whitespace-pre overflow-hidden font-semibold text-gray-900 border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
+        className="duration-400 z-10 m-4 overflow-hidden whitespace-pre rounded-md border-once-400
+          bg-once-400 p-2 font-semibold text-gray-900 transition hover:bg-once"
       >
         Submit a post
       </button>
@@ -187,33 +188,35 @@ const UploadMeme = () => {
       {open && (
         <div
           onClick={() => setOpen((open) => !open)}
-          className="z-10 fixed inset-0 flex justify-center w-full min-h-screen backdrop-blur"
+          className="fixed inset-0 z-10 flex min-h-screen w-full justify-center backdrop-blur"
         >
           <div
             onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
-            className="shadow-once-400/50 border border-gray-300 absolute inset-x-0 bg-white rounded shadow-md m-0.5 sm:m-0 sm:inset-x-auto sm:w-1/2 top-10 md:top-20"
+            className="absolute inset-x-0 top-10 m-0.5 rounded border border-gray-300 bg-white
+              shadow-md shadow-once-400/50 sm:inset-x-auto sm:m-0 sm:w-1/2 md:top-20"
           >
-            <form onSubmit={handleSubmit(memeHandler)} className="p-8 space-y-5">
+            <form onSubmit={handleSubmit(memeHandler)} className="space-y-5 p-8">
               <button
                 onClick={() => {
                   setFiles(null);
                   setOpen((open) => !open);
                 }}
                 type="button"
-                className="absolute top-0 p-2 right-2"
+                className="absolute right-2 top-0 p-2"
               >
                 <FontAwesomeIcon icon={faXmark} />
               </button>
               <h2 className="mb-10 text-xl font-bold text-gray-900">Submit to kpoppop</h2>
 
               <div>
-                <label className="block mb-1 font-semibold text-gray-800" htmlFor="title-input">
+                <label className="mb-1 block font-semibold text-gray-800" htmlFor="title-input">
                   title
                 </label>
                 <input
                   id="title-input"
                   required
-                  className="w-full px-1 border border-gray-300 appearance-none focus:outline-none focus-within:border-once label-outline"
+                  className="label-outline w-full appearance-none border border-gray-300 px-1
+                    focus-within:border-once focus:outline-none"
                   type="text"
                   {...register('title', {
                     required: true,
@@ -231,12 +234,13 @@ const UploadMeme = () => {
               </div>
 
               <div id="url-input-box">
-                <label className="block mb-1 font-semibold text-gray-800" htmlFor="url-input">
+                <label className="mb-1 block font-semibold text-gray-800" htmlFor="url-input">
                   url
                 </label>
                 <input
                   id="url-input"
-                  className="w-full px-1 border border-gray-300 focus:outline-none focus-within:border-once"
+                  className="w-full border border-gray-300 px-1 focus-within:border-once
+                    focus:outline-none"
                   type="url"
                   {...register('url')}
                   onChange={handleChangeEvent}
@@ -256,7 +260,7 @@ const UploadMeme = () => {
 
               <div className="relative">
                 {detecting && (
-                  <div className="absolute top-2 right-1/2 text-white mix-blend-difference">
+                  <div className="absolute right-1/2 top-2 text-white mix-blend-difference">
                     <FontAwesomeIcon className="fa-beat-fade" size="xl" icon={faHourglass} />
                   </div>
                 )}
@@ -270,7 +274,7 @@ const UploadMeme = () => {
                         return (
                           <video
                             key={file.name}
-                            className="h-56 sm:h-64 md:h-96 m-auto aspect-video"
+                            className="m-auto aspect-video h-56 sm:h-64 md:h-96"
                             controls
                           >
                             <source src={URL.createObjectURL(file)} type="video/mp4" />
@@ -280,7 +284,7 @@ const UploadMeme = () => {
                       default:
                         return (
                           <img
-                            className="flex-initial max-h-96 mx-auto my-1"
+                            className="mx-auto my-1 max-h-96 flex-initial"
                             key={file.name}
                             src={URL.createObjectURL(file)}
                             alt={file.name}
@@ -292,7 +296,7 @@ const UploadMeme = () => {
 
               {previewURL && (
                 <img
-                  className="flex-initial max-h-96 mx-auto my-1"
+                  className="mx-auto my-1 max-h-96 flex-initial"
                   src={previewURL}
                   alt="previewURL thumbnail"
                 />
@@ -301,7 +305,8 @@ const UploadMeme = () => {
               <div className="flex justify-center">
                 <button
                   type="submit"
-                  className="z-10 p-2 font-semibold text-gray-900 border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
+                  className="duration-400 z-10 rounded-md border-once-400 bg-once-400 p-2
+                    font-semibold text-gray-900 transition hover:bg-once"
                 >
                   Post
                   {isUploading && <FontAwesomeIcon className="ml-2" icon={faSpinner} spin />}
