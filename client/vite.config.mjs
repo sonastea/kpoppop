@@ -2,10 +2,10 @@ import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfil
 import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill';
 import react from '@vitejs/plugin-react';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
-import { defineConfig } from 'vite';
+import Unfonts from 'unplugin-fonts/vite';
+import { defineConfig, splitVendorChunkPlugin } from 'vite';
 import mkcert from 'vite-plugin-mkcert';
 import tsconfigPaths from 'vite-tsconfig-paths';
-import Unfonts from 'unplugin-fonts/vite';
 
 export default defineConfig(() => {
   return {
@@ -14,9 +14,14 @@ export default defineConfig(() => {
       rollupOptions: {
         output: {
           manualChunks(id) {
-            const bundles = ['tfjs', 'react-router-dom', 'react-social-icons'];
-            if (bundles.some((bundle) => id.includes(bundle))) {
-              return id.toString().split('node_modules/')[1].split('/')[0].toString();
+            if (id.indexOf('node_modules') !== -1) {
+              const basic = id.toString().split('node_modules/')[1];
+              const sub1 = basic.split('/')[0];
+              if (sub1 !== '.pnpm') {
+                return sub1.toString();
+              }
+              const name2 = basic.split('/')[1];
+              return name2.split('@')[name2[0] === '@' ? 1 : 0].toString();
             }
           },
         },
@@ -41,6 +46,7 @@ export default defineConfig(() => {
     plugins: [
       mkcert(),
       react(),
+      splitVendorChunkPlugin(),
       tsconfigPaths(),
       Unfonts({
         fontsource: {
