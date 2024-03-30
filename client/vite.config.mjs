@@ -3,7 +3,7 @@ import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfil
 import react from '@vitejs/plugin-react';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
 import Unfonts from 'unplugin-fonts/vite';
-import { defineConfig, splitVendorChunkPlugin } from 'vite';
+import { defineConfig } from 'vite';
 import mkcert from 'vite-plugin-mkcert';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
@@ -46,7 +46,6 @@ export default defineConfig(() => {
     plugins: [
       mkcert(),
       react(),
-      splitVendorChunkPlugin(),
       tsconfigPaths(),
       Unfonts({
         fontsource: {
