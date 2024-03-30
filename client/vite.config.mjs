@@ -22,13 +22,13 @@ export default defineConfig(() => {
                 '@tensorflow+tfjs-backend': 'tensorflow_tfjs_backend',
                 '@tensorflow+tfjs-core': 'tensorflow_tfjs_core',
                 '@tensorflow+tfjs': 'tensorflow_tfjs',
+                'react': 'react',
               };
               for (const prefix in chunkNames) {
                 if (name2.startsWith(prefix)) {
                   return chunkNames[prefix];
                 }
               }
-              return name2.split('@')[name2[0] === '@' ? 1 : 0].toString();
             }
           },
         },
