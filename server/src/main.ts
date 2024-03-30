@@ -9,6 +9,7 @@ import { AppModule } from './app.module';
 import { MyLogger } from './logger/my-logger.service';
 import { RedisIoAdapter } from './sockets/redis.adapter';
 import { prismaSessionStore } from './store/prisma-session-store';
+import * as compression from 'compression';
 
 (BigInt.prototype as any).toJSON = function () {
   return Number(this);
@@ -63,6 +64,7 @@ async function bootstrap() {
 
     app.setGlobalPrefix('api');
     app.useLogger(logger);
+    app.use(compression());
     app.use(cookieParser());
     app.use(passport.initialize());
     app.use(session(sessionOptions));
@@ -86,6 +88,7 @@ async function bootstrap() {
 
     app.setGlobalPrefix('api');
     app.useLogger(logger);
+    app.use(compression());
     app.use(cookieParser());
     app.use(passport.initialize());
     app.use(session(sessionOptions));
