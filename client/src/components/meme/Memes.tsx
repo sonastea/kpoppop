@@ -7,16 +7,15 @@ import { useAuth } from 'contexts/AuthContext';
 import useRemoveMemeStore from 'hooks/useRemoveMeme';
 import { debounce } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
-import { LazyLoadComponent } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import { toast } from 'react-toastify';
 import ConfirmationDialog from './ConfirmationDialog';
 import InteractiveButtons from './InteractiveButtons';
 import { fetchMemes } from './MemeAPI';
+import MemeLazyImage from './MemeLazyImage';
 import MemeMenu from './MemeMenu';
 import MemesSkeletonLoader from './MemesSkeletonLoader';
 import ReportMemeModal from './ReportMemeModal';
-import MemeLazyImage from './MemeLazyImage';
 
 type Meme = {
   author: { username: string };
@@ -149,16 +148,14 @@ const Memes = () => {
                   </a>
                 </div>
                 <div className="inline-flex w-full">
-                  <LazyLoadComponent>
-                    <MemeLazyImage
-                      key={meme.id}
-                      id={meme.id}
-                      src={meme.url}
-                      title={meme.title}
-                      alt={meme.title}
-                      lazy={index > 2}
-                    />
-                  </LazyLoadComponent>
+                  <MemeLazyImage
+                    key={meme.id}
+                    id={meme.id}
+                    src={meme.url}
+                    title={meme.title}
+                    alt={meme.title}
+                    visibleByDefault={index < 2}
+                  />
                 </div>
                 <InteractiveButtons
                   memeId={meme.id}

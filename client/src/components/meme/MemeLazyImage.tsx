@@ -5,10 +5,19 @@ type MemeLazyImageProps = {
   src: string;
   title: string;
   alt: string;
-  lazy: boolean;
+  visibleByDefault: boolean;
 };
 
-const MemeLazyImage: React.FC<MemeLazyImageProps> = ({ id, src, title, alt, lazy }) => {
+const PlaceHolder = () => {
+  return (
+    <div
+      className="mt-2 flex h-96 max-h-64 items-center justify-center rounded bg-gray-200
+        object-scale-down md:max-h-96 md:object-contain"
+    />
+  );
+};
+
+const MemeLazyImage: React.FC<MemeLazyImageProps> = ({ id, src, title, alt, visibleByDefault }) => {
   const isVideo = src.split('.')[3] === 'mp4';
 
   if (isVideo) {
@@ -38,7 +47,8 @@ const MemeLazyImage: React.FC<MemeLazyImageProps> = ({ id, src, title, alt, lazy
             md:object-contain"
           src={src}
           alt={alt}
-          visibleByDefault={!lazy}
+          visibleByDefault={visibleByDefault}
+          placeholder={<PlaceHolder />}
         />
       </picture>
     </a>
