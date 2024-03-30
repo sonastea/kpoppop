@@ -16,11 +16,16 @@ import Login from './components/user/Login';
 import Profile from './components/user/Profile';
 import Register from './components/user/Register';
 
+const preconnectApi =
+  process.env.NODE_ENV === 'production' ? 'https://api.kpoppop.com' : 'https://localhost:5000';
+
 const Layout = () => {
   const initialUser = JSON.parse(sessionStorage.getItem('current-user')!) ?? undefined;
 
   return (
     <AuthProvider initialUser={initialUser}>
+      <link rel="preconnect" href="https://ik.imagekit.io" />
+      <link rel="preconnect" href={preconnectApi} />
       <ToastContainer
         autoClose={1000}
         bodyClassName="toastifyBody"

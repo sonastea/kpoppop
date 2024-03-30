@@ -7,6 +7,8 @@ import { useAuth } from 'contexts/AuthContext';
 import useRemoveMemeStore from 'hooks/useRemoveMeme';
 import { debounce } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
+import { LazyLoadComponent } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 import { toast } from 'react-toastify';
 import ConfirmationDialog from './ConfirmationDialog';
 import InteractiveButtons from './InteractiveButtons';
@@ -14,6 +16,7 @@ import { fetchMemes } from './MemeAPI';
 import MemeMenu from './MemeMenu';
 import MemesSkeletonLoader from './MemesSkeletonLoader';
 import ReportMemeModal from './ReportMemeModal';
+import MemeLazyImage from './MemeLazyImage';
 
 type Meme = {
   author: { username: string };
@@ -111,7 +114,7 @@ const Memes = () => {
       <ul className="meme-container flex flex-col items-center overflow-hidden" ref={postsRef}>
         {loading && <MemesSkeletonLoader />}
         {posts &&
-          posts.map((meme: Meme) => {
+          posts.map((meme: Meme, index: number) => {
             const title = meme.title.replace(/ /g, '_');
             return (
               <li
@@ -145,29 +148,18 @@ const Memes = () => {
                     {meme.title}
                   </a>
                 </div>
-                {meme.url.split('.')[3] === 'mp4' ? (
-                  <video
-                    key={meme.title}
-                    className="mx-auto aspect-square w-full object-cover md:aspect-auto md:max-h-96"
-                    controls
-                    muted
-                  >
-                    <source src={meme.url} type="video/mp4" />
-                  </video>
-                ) : (
-                  <a className="contents" href={`/meme/${meme.id}/${title}`}>
-                    <picture>
-                      <source media="(max-width: 639px)" srcSet={`${meme.url}?tr=w-336`} />
-                      <source media="(min-width: 640px)" srcSet={`${meme.url}?tr=w-672`} />
-                      <img
-                        className="mt-2 max-h-64 w-full object-scale-down md:max-h-96
-                          md:object-contain"
-                        src={meme.url}
-                        alt={meme.title}
-                      />
-                    </picture>
-                  </a>
-                )}
+                <div className="inline-flex w-full">
+                  <LazyLoadComponent>
+                    <MemeLazyImage
+                      key={meme.id}
+                      id={meme.id}
+                      src={meme.url}
+                      title={meme.title}
+                      alt={meme.title}
+                      lazy={index > 2}
+                    />
+                  </LazyLoadComponent>
+                </div>
                 <InteractiveButtons
                   memeId={meme.id}
                   memeTitle={title}
