@@ -2,20 +2,21 @@ import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DAY } from 'Global.d';
-import LoginModal from 'components/user/LoginModal';
 import { useAuth } from 'contexts/AuthContext';
 import useRemoveMemeStore from 'hooks/useRemoveMeme';
 import { debounce } from 'lodash';
-import { useEffect, useRef, useState } from 'react';
+import { lazy, useEffect, useRef, useState } from 'react';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import { toast } from 'react-toastify';
-import ConfirmationDialog from './ConfirmationDialog';
 import InteractiveButtons from './InteractiveButtons';
 import { fetchMemes } from './MemeAPI';
 import MemeLazyImage from './MemeLazyImage';
 import MemeMenu from './MemeMenu';
 import MemesSkeletonLoader from './MemesSkeletonLoader';
-import ReportMemeModal from './ReportMemeModal';
+
+const ConfirmationDialog = lazy(() => import('./ConfirmationDialog'));
+const LoginModal = lazy(() => import('../user/LoginModal'));
+const ReportMemeModal = lazy(() => import('./ReportMemeModal'));
 
 type Meme = {
   author: { username: string };

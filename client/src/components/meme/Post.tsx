@@ -1,14 +1,15 @@
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import ReportCommentModal from 'components/user/ReportCommentModal';
-import ReportUserModal from 'components/user/ReportUserModal';
 import { DAY } from 'Global.d';
-import { useEffect, useState } from 'react';
+import { lazy, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import InteractiveButtons from './InteractiveButtons';
-import InteractiveComments, { CommentProps } from './InteractiveComments';
+import InteractiveComments, { type CommentProps } from './InteractiveComments';
 import { fetchMeme } from './MemeAPI';
 import PostNonexistent from './PostNonexistent';
+
+const ReportCommentModal = lazy(() => import('components/user/ReportCommentModal'));
+const ReportUserModal = lazy(() => import('components/user/ReportUserModal'));
 
 type PostProps = {
   author: {
@@ -51,28 +52,28 @@ const Post = () => {
     <>
       <ReportCommentModal />
       <ReportUserModal user={{ id: meme.author.id, username: meme.author.username }} />
-      <div className="shadow-sm mb-2 md:w-3/5 md:mx-auto">
-        <div className="flex flex-col md:flex-row md:flex-wrap overflow-auto border-x">
-          <div className="m-2 w-64 md:w-80 2xl:w-96 max-w-3xl self-center">
+      <div className="mb-2 shadow-sm md:mx-auto md:w-3/5">
+        <div className="flex flex-col overflow-auto border-x md:flex-row md:flex-wrap">
+          <div className="m-2 w-64 max-w-3xl self-center md:w-80 2xl:w-96">
             {meme.url.split('.')[3] === 'mp4' ? (
               <video key={meme.title} className="object-fit max-h-lg w-auto" controls muted>
                 <source src={meme.url} type="video/mp4" />
               </video>
             ) : (
-              <img className="object-fill w-full" src={meme.url} alt={meme.title} />
+              <img className="w-full object-fill" src={meme.url} alt={meme.title} />
             )}
           </div>
-          <div className="flex-1 m-2">
-            <div className="flex flex-col items-end text-md md:text-xl text-once-900">
+          <div className="m-2 flex-1">
+            <div className="text-md flex flex-col items-end text-once-900 md:text-xl">
               <a href={`/user/${meme.author.username}`}>{meme.author.username}</a>
-              <span className="text-xs sm:text-sm text-once-900/70">
+              <span className="text-xs text-once-900/70 sm:text-sm">
                 {DAY(meme.createdAt).fromNow(false)}{' '}
               </span>
             </div>
-            <div className="grid content-center h-3/4 text-sm md:text-xl">{meme.title}</div>
+            <div className="grid h-3/4 content-center text-sm md:text-xl">{meme.title}</div>
           </div>
         </div>
-        <div className="border-t border-x border-gray-300">
+        <div className="border-x border-t border-gray-300">
           <InteractiveButtons
             memeId={parseInt(memeid!, 10)}
             memeTitle={meme.title}

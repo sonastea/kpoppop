@@ -5,9 +5,9 @@ interface RemoveMemeState {
   memeId: number;
   remove: boolean;
   confirmingOpen: (memeId: number) => void;
-  confirmingCloseNo: Function;
-  confirmingCloseYes: Function;
-  resetMeme: Function;
+  confirmingCloseNo: (memeId: number) => void;
+  confirmingCloseYes: (memeId: number) => void;
+  resetMeme: () => void;
 }
 
 const useRemoveMemeStore = create<RemoveMemeState>()((set) => ({
