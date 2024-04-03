@@ -94,7 +94,8 @@ const ReportCommentModal = () => {
                   Cancel
                 </button>
                 <button
-                  className="ml-1 w-full rounded-md border bg-once p-1 text-white"
+                  className="ml-1 w-full rounded-md border-once-700/70 bg-once-700/70 p-1 text-white
+                    hover:bg-once-700"
                   type="submit"
                 >
                   Report
