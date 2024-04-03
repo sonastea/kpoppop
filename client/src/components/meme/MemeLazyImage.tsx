@@ -38,7 +38,7 @@ const MemeLazyImage: React.FC<MemeLazyImageProps> = ({ id, src, title, alt, visi
 
   return (
     <a className="contents" href={`/meme/${id}/${title}`} aria-label={title}>
-      <picture className="mx-auto">
+      <picture className="inline-block">
         <source media="(max-width: 639px)" srcSet={`${src}?tr=w-336`} />
         <source media="(min-width: 640px)" srcSet={`${src}?tr=w-672`} />
         <LazyLoadImage

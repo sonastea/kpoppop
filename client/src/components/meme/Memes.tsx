@@ -147,7 +147,7 @@ const Memes = () => {
                     {meme.title}
                   </a>
                 </div>
-                <div className="inline-flex w-full">
+                <div className="inline-flex w-full content-center justify-center">
                   <MemeLazyImage
                     key={meme.id}
                     id={meme.id}
