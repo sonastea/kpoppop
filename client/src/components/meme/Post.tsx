@@ -7,6 +7,7 @@ import InteractiveButtons from './InteractiveButtons';
 import InteractiveComments, { type CommentProps } from './InteractiveComments';
 import { fetchMeme } from './MemeAPI';
 import PostNonexistent from './PostNonexistent';
+import MemeLazyImage from './MemeLazyImage';
 
 const ReportCommentModal = lazy(() => import('components/user/ReportCommentModal'));
 const ReportUserModal = lazy(() => import('components/user/ReportUserModal'));
@@ -44,29 +45,40 @@ const Post = () => {
     loadMeme(parseInt(memeid!));
   }, [setMeme, memeid]);
 
-  if (loading) return <FontAwesomeIcon id="scroll-load-div" icon={faSpinner} spin />;
+  if (loading)
+    return (
+      <div className="align-center flex h-16 items-center justify-center">
+        <FontAwesomeIcon icon={faSpinner} spin />
+      </div>
+    );
 
-  return Object.keys(meme).length === 0 ? (
-    <PostNonexistent message={'Post does not exist'} />
-  ) : (
+  if (!meme) {
+    return <PostNonexistent message={'Post does not exist'} />;
+  }
+
+  return (
     <>
       <ReportCommentModal />
       <ReportUserModal user={{ id: meme.author.id, username: meme.author.username }} />
       <div className="mb-2 shadow-sm md:mx-auto md:w-3/5">
         <div className="flex flex-col overflow-auto border-x md:flex-row md:flex-wrap">
           <div className="m-2 w-64 max-w-3xl self-center md:w-80 2xl:w-96">
-            {meme.url.split('.')[3] === 'mp4' ? (
-              <video key={meme.title} className="object-fit max-h-lg w-auto" controls muted>
-                <source src={meme.url} type="video/mp4" />
-              </video>
-            ) : (
-              <img className="w-full object-fill" src={meme.url} alt={meme.title} />
-            )}
+            <MemeLazyImage
+              key={meme.id}
+              id={meme.id}
+              src={meme.url}
+              title={meme.title}
+              alt={meme.title}
+              visibleByDefault={true}
+            />
           </div>
           <div className="m-2 flex-1">
-            <div className="text-md flex flex-col items-end text-once-900 md:text-xl">
+            <div
+              className="text-md flex flex-col items-end hover:text-once-800
+                md:text-xl"
+            >
               <a href={`/user/${meme.author.username}`}>{meme.author.username}</a>
-              <span className="text-xs text-once-900/70 sm:text-sm">
+              <span className="text-xs text-slate-500 sm:text-sm">
                 {DAY(meme.createdAt).fromNow(false)}{' '}
               </span>
             </div>

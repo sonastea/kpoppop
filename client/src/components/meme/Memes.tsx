@@ -126,7 +126,7 @@ const Memes = () => {
                     md:text-xl"
                 >
                   <a
-                    className="font-bold hover:text-once-700"
+                    className="font-bold hover:text-once-800"
                     href={`/user/${meme.author.username}`}
                   >
                     {meme.author.username}
