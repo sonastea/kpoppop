@@ -121,12 +121,10 @@ const Memes = () => {
                 className="my-2 w-full border bg-white shadow-sm sm:max-w-2xl sm:rounded-md"
                 key={meme.id}
               >
-                <div
-                  className="author-bar mx-4 mb-2 mt-4 flex flex-wrap overflow-auto leading-normal
-                    md:text-xl"
-                >
+                <div className="author-bar mx-4 mb-2 mt-4 flex flex-wrap leading-normal md:text-xl">
                   <a
-                    className="font-bold hover:text-once-800"
+                    className="px-1 font-bold hover:text-once-800
+                      focus-visible:outline-offset-[-1px]"
                     href={`/user/${meme.author.username}`}
                   >
                     {meme.author.username}
@@ -142,7 +140,8 @@ const Memes = () => {
                 </div>
                 <div className="mx-4 my-2 flex">
                   <a
-                    className="py-2 pr-4 text-sm text-slate-900 hover:underline md:text-lg"
+                    className="my-2 text-sm text-slate-900 outline-offset-4 hover:underline
+                      md:text-lg"
                     href={`/meme/${meme.id}/${title}`}
                   >
                     {meme.title}

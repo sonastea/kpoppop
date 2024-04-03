@@ -53,34 +53,48 @@ const InteractiveButtons = (props: InteractiveButtonProps) => {
   };
 
   return (
-    <div className="py-2 md:py-4 flex flex-wrap justify-center">
-      <div className="flex justify-center items-center w-20">
-        <div className="group like" onClick={handleLiked} role="button" aria-label="like">
+    <div className="flex flex-wrap justify-center py-2 md:py-4">
+      <div className="flex w-20 items-center justify-center">
+        <div
+          className="like group p-0.5 focus-visible:bg-red-500/40 focus-visible:outline-1"
+          role="button"
+          aria-label="like"
+          onClick={handleLiked}
+          onKeyDown={(e) => {
+            if (e.code === 'Space' || e.code === 'Enter') {
+              handleLiked();
+            }
+          }}
+          tabIndex={0}
+        >
           {likedState ? (
             <FontAwesomeIcon
-              className="group-hover:text-red-500/80 md:text-lg liked"
+              className="liked group-hover:text-red-500/80 group-focus-visible:text-red-500/80
+                md:text-lg"
               icon={fasHeart}
             />
           ) : (
             <FontAwesomeIcon className="group-hover:text-red-500 md:text-lg" icon={faHeart} />
           )}
-          <span className="group-hover:text-red-500 ml-1 text-gray-700 overflow-hidden">
+          <span className="ml-1 overflow-hidden text-gray-700 group-hover:text-red-500">
             {totalLikes ? `${shortForm(totalLikes)}` : `0`}
           </span>
         </div>
       </div>
-      <div className="flex justify-center items-center comments w-20">
+      <div
+        className="comments flex w-20 items-center justify-center"
+      >
         <a
           role="button"
           aria-label="comments"
-          className="group comments"
+          className="comments group p-0.5 focus-visible:bg-cyan-500/40"
           href={`/meme/${memeId}/${memeTitle}`}
         >
           <FontAwesomeIcon
-            className="group-hover:text-cyan-500 md:text-lg comments"
+            className="comments group-hover:text-cyan-500 md:text-lg"
             icon={faComment}
           />
-          <span className="group-hover:text-cyan-500 ml-1 text-gray-700 overflow-hidden">
+          <span className="ml-1 overflow-hidden text-gray-700 group-hover:text-cyan-500">
             {totalComments ? `${shortForm(totalComments)}` : `0`}
           </span>
         </a>

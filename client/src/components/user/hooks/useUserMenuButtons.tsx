@@ -66,7 +66,7 @@ const useUserMenuButtons = ({ comment }: UserMenuProps) => {
           <span>
             <FontAwesomeIcon className="text-red-500" icon={faFlag} flip="horizontal" />
           </span>
-          <span className="whitespace-nowrap hover:bg-gray-200/75">Report comment</span>{' '}
+          <span className="whitespace-nowrap hover:bg-gray-200/75">Report comment</span>
         </div>
         <div
           className={button_bg}
