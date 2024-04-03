@@ -22,12 +22,13 @@ const CommentModerationButtons = (props: { commentId: number }) => {
 
   if (isAuthorized) {
     return (
-      <div className="p-1 flex flex-wrap justify-center overflow-auto">
+      <div className="flex flex-wrap justify-center overflow-auto p-1">
         <div
-          className="flex hover:text-red-500 space-x-1 mx-2"
+          className="mx-2 flex space-x-1 hover:text-red-500 focus-visible:outline-offset-2"
           role="button"
           aria-label="remove-comment"
           onClick={handleRemoveComment}
+          tabIndex={0}
         >
           <FontAwesomeIcon
             className={`${!isActive && 'text-red-500'} my-auto text-sm`}
