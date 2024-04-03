@@ -28,7 +28,12 @@ const UserMenu = ({ comment }: UserMenuProps) => {
   return (
     <>
       <Popover>
-        <Popover.Button ref={setReferenceElement} aria-label="Toggle user menu">
+        <Popover.Button
+          className="rounded-full px-1 hover:bg-slate-200 focus-visible:bg-slate-200
+            focus-visible:outline-offset-2"
+          ref={setReferenceElement}
+          aria-label="User menu"
+        >
           <FontAwesomeIcon icon={faEllipsis} />
         </Popover.Button>
         <Transition
@@ -45,7 +50,10 @@ const UserMenu = ({ comment }: UserMenuProps) => {
             style={styles.popper}
             {...attributes.popper}
           >
-            <div className="border bg-white shadow-sm border-gray-200 rounded-md text-sm overflow-hidden">
+            <div
+              className="overflow-hidden rounded-md border border-gray-200 bg-white text-sm
+                shadow-sm"
+            >
               {DefaultMenuButtons}
               {isAuthorized && user?.id !== comment.user.id && ModerationMenuButtons}
             </div>

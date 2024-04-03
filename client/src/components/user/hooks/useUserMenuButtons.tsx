@@ -14,7 +14,9 @@ const useUserMenuButtons = ({ comment }: UserMenuProps) => {
   const { reportingComment } = useReportCommentStore();
   const { reportingUser } = useReportUserStore();
 
-  const button_bg = 'grid grid-flow-col auto-cols-max gap-x-2 p-2 py-1 hover:bg-gray-200/75';
+  const button_bg =
+    'grid grid-flow-col auto-cols-max gap-x-2 p-2 py-1 hover:bg-gray-200/75 \
+    focus-visible:outline-offset-[-1.5px] outline-slate-800';
 
   useEffect(() => {
     if (comment.user.role === 'MODERATOR' || comment.user.role === 'ADMIN') setModded(true);
@@ -56,17 +58,30 @@ const useUserMenuButtons = ({ comment }: UserMenuProps) => {
           role="button"
           aria-label="report-comment"
           onClick={() => reportingComment(comment.id)}
+          onKeyDown={(e) => {
+            if (e.code === 'Space') reportingComment(comment.id);
+          }}
+          tabIndex={0}
         >
           <span>
             <FontAwesomeIcon className="text-red-500" icon={faFlag} flip="horizontal" />
           </span>
-          <span className="hover:bg-gray-200/75 whitespace-nowrap">Report comment</span>{' '}
+          <span className="whitespace-nowrap hover:bg-gray-200/75">Report comment</span>
         </div>
-        <div className={button_bg} role="button" aria-label="report-user" onClick={reportingUser}>
+        <div
+          className={button_bg}
+          role="button"
+          aria-label="report-user"
+          onClick={reportingUser}
+          onKeyDown={(e) => {
+            if (e.code === 'Space') reportingUser();
+          }}
+          tabIndex={0}
+        >
           <span>
             <FontAwesomeIcon className="text-red-500" icon={faFrown} />
           </span>
-          <span className="hover:bg-gray-200/75 whitespace-nowrap">
+          <span className="whitespace-nowrap hover:bg-gray-200/75">
             Report @{comment.user.username}
           </span>
         </div>
@@ -80,14 +95,27 @@ const useUserMenuButtons = ({ comment }: UserMenuProps) => {
             role="button"
             aria-label="unban-user"
             onClick={handleUnbanUser}
+            onKeyDown={(e) => {
+              if (e.code === 'Space') handleUnbanUser();
+            }}
+            tabIndex={0}
           >
             <span>
               <FontAwesomeIcon className="text-red-600" icon={faBan} />
             </span>
-            <span className="hover:bg-gray-200/75 whitespace-nowrap">Unban</span>
+            <span className="whitespace-nowrap hover:bg-gray-200/75">Unban</span>
           </div>
         ) : (
-          <div className={button_bg} role="button" aria-label="ban-user" onClick={handleBanUser}>
+          <div
+            className={button_bg}
+            role="button"
+            aria-label="ban-user"
+            onClick={handleBanUser}
+            onKeyDown={(e) => {
+              if (e.code === 'Space') handleBanUser();
+            }}
+            tabIndex={0}
+          >
             <span>
               <FontAwesomeIcon className="text-red-500" icon={faBan} />
             </span>
@@ -100,6 +128,10 @@ const useUserMenuButtons = ({ comment }: UserMenuProps) => {
             role="button"
             aria-label="unmod-user"
             onClick={handleUnmodUser}
+            onKeyDown={(e) => {
+              if (e.code === 'Space') handleUnmodUser();
+            }}
+            tabIndex={0}
           >
             <span className="fa-layers my-auto">
               <FontAwesomeIcon className="text-red-600" icon={faBan} />
@@ -108,7 +140,16 @@ const useUserMenuButtons = ({ comment }: UserMenuProps) => {
             <span className="whitespace-nowrap">Unmod</span>
           </div>
         ) : (
-          <div className={button_bg} role="button" aria-label="mod-user" onClick={handleModUser}>
+          <div
+            className={button_bg}
+            role="button"
+            aria-label="mod-user"
+            onClick={handleModUser}
+            onKeyDown={(e) => {
+              if (e.code === 'Space') handleModUser();
+            }}
+            tabIndex={0}
+          >
             <span>
               <FontAwesomeIcon className="text-once-500" icon={faGavel} />
             </span>

@@ -33,6 +33,7 @@ const CommentButtons = (props: { commentId: number; containerRef: RefObject<HTML
         role="button"
         aria-label="delete-comment"
         onClick={handleDeleteComment}
+        tabIndex={0}
       >
         <FontAwesomeIcon className="my-auto text-sm" icon={faTrashCan} />
         <div className="my-auto whitespace-nowrap">Delete</div>
@@ -42,6 +43,7 @@ const CommentButtons = (props: { commentId: number; containerRef: RefObject<HTML
         role="button"
         aria-label="edit-comment"
         onClick={(e: BaseSyntheticEvent) => toggleEditCommentState(e)}
+        tabIndex={0}
       >
         <FontAwesomeIcon className="my-auto text-sm" icon={faEdit} />
         <div className="my-auto whitespace-nowrap">Edit</div>

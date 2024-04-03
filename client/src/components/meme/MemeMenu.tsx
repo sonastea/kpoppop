@@ -32,12 +32,14 @@ const MemeMenu = ({ authorId, memeId }: { authorId: number; memeId: number }) =>
     <>
       <Popover>
         <Popover.Button
-          className="-p-2 group outline-none"
+          className="group rounded-full outline-none"
           ref={setReferenceElement}
-          aria-label="Toggle user menu"
+          aria-label="Meme menu"
         >
           <FontAwesomeIcon
-            className="p-1 group-hover:rounded-full group-hover:bg-gray-200/75"
+            className="rounded-full p-1 group-hover:rounded-full group-hover:bg-slate-200
+              group-focus-visible:rounded-full group-focus-visible:bg-slate-200
+              group-focus-visible:outline"
             icon={faEllipsis}
           />
         </Popover.Button>

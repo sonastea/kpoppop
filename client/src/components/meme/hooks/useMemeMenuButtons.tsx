@@ -10,7 +10,9 @@ const useMemeMenuButtons = (userId: number | boolean, memeId: number) => {
   const { reportingMeme } = useReportMemeStore();
   const { confirmingOpen } = useRemoveMeme();
 
-  const button_bg = 'grid grid-flow-col auto-cols-max space-x-2 p-2 py-1 hover:bg-gray-200/75';
+  const button_bg =
+    'grid grid-flow-col auto-cols-max gap-x-2 p-2 py-1 hover:bg-gray-200/75 \
+    focus-visible:outline-offset-[-1.5px] outline-slate-800';
 
   const removeMemeHandler = () => {
     confirmingOpen(memeId);
@@ -33,6 +35,10 @@ const useMemeMenuButtons = (userId: number | boolean, memeId: number) => {
           role="button"
           aria-label="report-meme"
           onClick={() => reportMemeHandler()}
+          onKeyDown={(e) => {
+            if (e.code === 'Space') reportMemeHandler();
+          }}
+          tabIndex={0}
         >
           <span>
             <FontAwesomeIcon
@@ -54,6 +60,10 @@ const useMemeMenuButtons = (userId: number | boolean, memeId: number) => {
           role="button"
           aria-label="remove-meme"
           onClick={removeMemeHandler}
+          onKeyDown={(e) => {
+            if (e.code === 'Space') removeMemeHandler();
+          }}
+          tabIndex={0}
         >
           <span>
             <FontAwesomeIcon
@@ -64,7 +74,7 @@ const useMemeMenuButtons = (userId: number | boolean, memeId: number) => {
               flip="horizontal"
             />
           </span>
-          <span className="whitespace-nowrap">{'Remove meme'}</span>
+          <span className="whitespace-nowrap">Remove meme</span>
         </div>
       </>
     ),
@@ -75,6 +85,10 @@ const useMemeMenuButtons = (userId: number | boolean, memeId: number) => {
           role="button"
           aria-label="toggle-meme"
           onClick={toggleMemeHandler}
+          onKeyDown={(e) => {
+            if (e.code === 'Space') toggleMemeHandler();
+          }}
+          tabIndex={0}
         >
           <span className="fa-layers my-auto w-[18px]">
             <FontAwesomeIcon height={18} className="text-red-600" icon={faBan} />
