@@ -71,7 +71,7 @@ const LoginModal = () => {
     return (
       <div
         className={`fixed inset-0 z-50 flex min-h-screen w-full items-center justify-center
-        bg-black/5 backdrop-blur-sm ${hidden}`}
+        bg-black/10 backdrop-blur-sm ${hidden}`}
         onClick={toggleVisbility}
       >
         <div className="relative" onClick={(e) => e.stopPropagation()}>
