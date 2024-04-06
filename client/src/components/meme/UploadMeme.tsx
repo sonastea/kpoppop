@@ -99,17 +99,11 @@ const UploadMeme = () => {
     switch (prediction.className) {
       case 'Porn':
       case 'Hentai':
-        if (prediction.probability > 0.8) {
+      case 'Sexy':
+        if (prediction.probability > 0.50) {
           setFlagged(true);
           return false;
-        } else if (prediction.probability > 0.5) {
-          setFlagged(true);
-          return true;
-        } else {
-          return true;
-        }
-      case 'Sexy':
-        if (prediction.probability > 0.5) {
+        } else if (prediction.probability > 0.25) {
           setFlagged(true);
           return true;
         } else {
