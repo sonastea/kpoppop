@@ -60,6 +60,8 @@ const UploadMeme = () => {
     formData.append('url', data.url!);
     formData.append('flagged', JSON.stringify(flagged));
 
+    if (!postable) toast.error('This content has been flagged as potentially explicit.');
+
     if (postable) {
       setUploading(true);
       setUploadFinished(false);
@@ -98,17 +100,19 @@ const UploadMeme = () => {
   const isSFW = (prediction: PredictionType) => {
     switch (prediction.className) {
       case 'Porn':
-      case 'Hentai':
-      case 'Sexy':
-        if (prediction.probability > 0.50) {
+        if (prediction.probability > 0.5) {
           setFlagged(true);
           return false;
         } else if (prediction.probability > 0.25) {
           setFlagged(true);
-          return true;
-        } else {
-          return true;
         }
+        return true;
+      case 'Hentai':
+      case 'Sexy':
+        if (prediction.probability > 0.25) {
+          setFlagged(true);
+        }
+        return true;
       default:
         return true;
     }
