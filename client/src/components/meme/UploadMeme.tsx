@@ -68,11 +68,20 @@ const UploadMeme = () => {
       submitMeme(formData)
         .then((response) => {
           if (response.status === 400) {
-            toast.error('Upload failed.');
             setTimeout(() => {
+              toast.error('Upload failed.');
               setUploadFinished(false);
               setUploading(false);
             }, 500);
+          }
+          if (response.status === 422) {
+            return response.json().then((data) => {
+              setTimeout(() => {
+                toast.error(data.message);
+                setUploadFinished(false);
+                setUploading(false);
+              }, 500);
+            });
           }
           if (response.status >= 401 && response.status < 600) {
             toast.error('You must be logged in to submit a meme.');
@@ -83,6 +92,7 @@ const UploadMeme = () => {
           }
           if (response.status === 201) {
             setTimeout(() => {
+              toast.success('Successfully uploaded meme.')
               setUploadFinished(true);
               setUploading(false);
               window.location.reload();
