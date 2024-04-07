@@ -12,7 +12,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import path = require('path');
+import * as path from 'path';
 import { randomUUID } from 'crypto';
 import * as firebase from 'firebase-admin';
 import { Response } from 'express';
@@ -25,6 +25,8 @@ import { PrismaService } from 'src/database/prisma.service';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { UserProfileData } from 'src/user/user.service';
+import { FileNsfwDetector, MulterFileExt } from './pipes/file-nsfw-detector';
+import { FileSizeExtValidator } from './pipes/file-size-ext';
 
 const photoBaseUrl = 'https://ik.imagekit.io/qxhlbjhesx/';
 
@@ -42,7 +44,7 @@ export class MemeController {
   @UseInterceptors(FileInterceptor('file'))
   @Post('submit')
   async createMeme(
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile(new FileSizeExtValidator(), new FileNsfwDetector()) file: MulterFileExt,
     @Body() body: { title: string; url?: string; files?: FileList; flagged: boolean },
     @Session() session: Record<string, any>,
     @Res() res: Response
@@ -110,9 +112,9 @@ export class MemeController {
 
     if (meme) {
       return res.status(201).json(meme);
-    } else {
-      return res.status(502);
     }
+
+    return res.status(502);
   }
 
   @UseGuards(SessionGuard)
