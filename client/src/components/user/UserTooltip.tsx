@@ -80,9 +80,8 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
   return (
     <Popover>
       <Popover.Button
-        className={`hover:underline hover:decoration-black hover:decoration-solid hover:cursor-pointer px-1 ${
-          isBanned && 'decoration-ponce-500 line-through'
-        }`}
+        className={`px-1 hover:cursor-pointer hover:underline hover:decoration-black
+        hover:decoration-solid ${isBanned && 'line-through decoration-ponce-500'}`}
         ref={setReferenceElement}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -102,34 +101,35 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
         onMouseLeave={() => setIsShowing(false)}
       >
         <Popover.Panel
-          className="w-fit border border-slate-300 bg-gray-200 rounded-md shadow-md"
+          className="w-fit rounded-md border border-slate-300 bg-gray-200 shadow-md"
           ref={setPopperElement}
           style={styles.popper}
           {...attributes.popper}
         >
-          <div className="w-[75vw] md:w-[35vw] tooltip-contents divide-y divide-slate-300">
-            <div className="tooltip-contents p-2 flex flex-wrap gap-2">
+          <div className="tooltip-contents w-[75vw] divide-y divide-slate-300 md:w-[35vw]">
+            <div className="tooltip-contents flex flex-wrap gap-2 p-2">
               <a className="tooltip-image" href={comment.user.photo && comment.user.photo}>
-                <img
-                  className="w-16 h-16 rounded-full"
-                  src={
-                    comment.user.photo
-                      ? comment.user.photo
-                      : '/images/default_photo_white_200x200.png'
-                  }
-                  alt={`${comment.user.username} profile`}
-                />
+                <picture>
+                  <img
+                    className="h-16 w-16 rounded-full"
+                    src={
+                      comment.user.photo
+                        ? `${comment.user.photo}?tr=w-72,h-72`
+                        : '/images/default_photo_white_200x200.png'
+                    }
+                    alt={`${comment.user.username} profile pic`}
+                  />
+                </picture>
               </a>
               <div
-                className={`${
-                  !isShowing && 'duration-150 scale-75 transform'
-                } grid grow content-between`}
+                className={`${!isShowing && 'scale-75 transform duration-150'} grid grow
+                content-between`}
               >
                 <Badges user={commentUser} />
                 <div className="flex flex-wrap justify-between text-xs">
                   <a
                     className={`${
-                      !isShowing ? 'duration-150 scale-75 transform' : 'hover:underline'
+                      !isShowing ? 'scale-75 transform duration-150' : 'hover:underline'
                     } text-once-900`}
                     href={`/user/${comment.user.username}`}
                   >
@@ -141,9 +141,9 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
                 </div>
               </div>
             </div>
-            <div className="p-1 flex flex-wrap justify-evenly">
+            <div className="flex flex-wrap justify-evenly p-1">
               <div
-                className="flex flex-wrap space-x-1 mx-2"
+                className="mx-2 flex flex-wrap space-x-1"
                 role="button"
                 aria-label="report-user"
                 onClick={() => reportingComment(comment.id)}
@@ -151,7 +151,7 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
                 <span>
                   <FontAwesomeIcon className="text-red-500" icon={faFlag} transform="flip" />
                 </span>
-                <span className="text-black hover:text-red-500 whitespace-nowrap">Report</span>
+                <span className="whitespace-nowrap text-black hover:text-red-500">Report</span>
               </div>
               {isAuthorized && user?.id !== comment.user.id && ModerationButtons}
             </div>
