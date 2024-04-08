@@ -1,15 +1,15 @@
 import { DiscordClientProvider, On, Once } from '@discord-nestjs/core';
-import { pgListenerProvider } from '../database/pg-listener.service';
 import { Injectable, Logger } from '@nestjs/common';
-import { MemeService } from 'src/meme/meme.service';
 import {
-  Interaction,
   ActionRowBuilder,
   ButtonBuilder,
-  EmbedBuilder,
-  TextChannel,
   ButtonStyle,
+  EmbedBuilder,
+  Interaction,
+  TextChannel,
 } from 'discord.js';
+import { MemeService } from 'src/meme/meme.service';
+import { pgListenerProvider } from '../database/pg-listener.service';
 
 @Injectable()
 export class BotGateway {
@@ -21,7 +21,7 @@ export class BotGateway {
     private readonly memeService: MemeService
   ) {
     this.listener.subscriber.notifications.on('new_meme', (payload) => {
-      console.log(payload);
+      this.logger.log('new meme: ', payload);
 
       const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
         new ButtonBuilder()
