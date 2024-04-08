@@ -46,6 +46,8 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
     ],
   });
 
+  let touchTimer: NodeJS.Timeout | undefined;
+
   useEffect(() => {
     if (isBanned) {
       setCommentUser((prev) => ({
@@ -64,17 +66,31 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
     if (user?.role === 'MODERATOR' || user?.role === 'ADMIN') setAuthorized(true);
   }, [user?.role]);
 
+  const handleReport = () => {
+    reportingComment(comment.id);
+  };
+
   const handleMouseEnter = () => {
     setDelayHandler(
       window.setTimeout(() => {
         setIsShowing(true);
-      }, 500)
+      }, 300)
     );
   };
 
   const handleMouseLeave = () => {
     clearTimeout(delayHandler);
     setIsShowing(false);
+  };
+
+  const handleTouchStart = () => {
+    touchTimer = setTimeout(() => {
+      setIsShowing(true);
+    }, 300);
+  };
+
+  const handleTouchEnd = () => {
+    clearTimeout(touchTimer);
   };
 
   return (
@@ -86,6 +102,8 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onMouseDown={() => (window.location.href = `/user/${comment.user.username}`)}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
       >
         {comment.user.displayname ? comment.user.displayname : comment.user.username}
       </Popover.Button>
@@ -146,7 +164,7 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
                 className="mx-2 flex flex-wrap space-x-1"
                 role="button"
                 aria-label="report-user"
-                onClick={() => reportingComment(comment.id)}
+                onClick={handleReport}
               >
                 <span>
                   <FontAwesomeIcon className="text-red-500" icon={faFlag} transform="flip" />
