@@ -100,7 +100,7 @@ export class WebSocketServiceGateway
     }
 
     await Promise.all(
-      sessions.map(async (session: { id: string }) => {
+      sessions.map(async (session) => {
         const recipientID = parseInt(session.id[0], 10);
         if (messagesPerUser.get(recipientID) === undefined) return;
 

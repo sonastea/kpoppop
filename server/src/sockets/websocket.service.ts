@@ -7,6 +7,10 @@ import { MessagePayload } from './websocket.gateway';
 const CONVERSATION_TTL = 7 * 24 * 60 * 60;
 const mapSession = (id: number) => (id ? { id } : undefined);
 
+type Key = string;
+type RedisScanResult = [string, Key[]];
+type RedisMultiResult = [Error | null, number];
+
 @Injectable()
 export class WebSocketStoreService {
   private readonly prisma: PrismaService = new PrismaService();
@@ -215,32 +219,28 @@ export class WebSocketStoreService {
   }
 
   async getAllConversationSessions() {
-    const keys = new Set();
-    let nextIndex = 0;
+    const keys = new Set<Key>();
+    let cursor = '0';
 
     do {
-      const [nextIndexAsStr, results] = await this.redis.scan(
-        nextIndex,
+      const [nextCursor, results]: RedisScanResult = await this.redis.scan(
+        cursor,
         'MATCH',
         'convosession:*',
         'COUNT',
         '100'
       );
 
-      nextIndex = parseInt(nextIndexAsStr, 10);
+      cursor = nextCursor;
       results.forEach((k) => keys.add(k));
-    } while (nextIndex !== 0);
-    const commands = [];
-    keys.forEach((key) => {
-      commands.push(['hmget', key, 'id']);
-    });
-    return this.redis
-      .multi(commands)
-      .exec()
-      .then((results: any) => {
-        return results
-          .map(([err, session]) => (err ? undefined : mapSession(session)))
-          .filter((v: { id: string[] }) => !!v);
-      });
+    } while (cursor !== '0');
+
+    const commands = Array.from(keys).map((key) => ['hmget', key, 'id']);
+
+    const results = await this.redis.multi(commands).exec();
+
+    return results
+      .map(([err, session]: RedisMultiResult) => (err ? undefined : mapSession(session)))
+      .filter((v) => !!v) as { id: number }[];
   }
 }
