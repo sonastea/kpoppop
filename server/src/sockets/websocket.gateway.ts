@@ -29,6 +29,8 @@ export type MessagePayload = {
   content: string;
   from: number;
   fromSelf: boolean;
+  fromUser?: string;
+  fromPhoto?: string;
   read: boolean;
 };
 
@@ -100,7 +102,7 @@ export class WebSocketServiceGateway
     }
 
     await Promise.all(
-      sessions.map(async (session: { id: string }) => {
+      sessions.map(async (session) => {
         const recipientID = parseInt(session.id[0], 10);
         if (messagesPerUser.get(recipientID) === undefined) return;
 
@@ -139,6 +141,8 @@ export class WebSocketServiceGateway
       content: data.content,
       from: socket.handshake.auth.id,
       fromSelf: fromSelf,
+      fromUser: null,
+      fromPhoto: null,
       read: fromSelf,
     };
     this.messageStore.saveConversationSession(socket.handshake.auth.id.toString());
