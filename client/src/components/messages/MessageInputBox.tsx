@@ -53,6 +53,7 @@ const MessageInputBox = ({
       <div className="flex rounded-lg bg-white shadow">
         <div className="flex-1">
           <textarea
+            autoFocus={true}
             id="message-input"
             className="block w-full overflow-hidden whitespace-nowrap bg-transparent px-4 py-4
               outline-none"
@@ -68,7 +69,8 @@ const MessageInputBox = ({
         <div className="flex content-center items-center p-2">
           <div className="flex-1">
             <button
-              className="inline-block h-10 w-10 rounded-full hover:rounded-full hover:bg-once-200/75"
+              className={`inline-block h-10 w-10 rounded-full hover:rounded-full
+                hover:bg-once-200/75`}
               onClick={handleClickSendMessage}
             >
               <span className="inline-block align-text-bottom">
