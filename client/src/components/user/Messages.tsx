@@ -40,7 +40,7 @@ const getMessageHeaderName = (recipient: UserCardProps) => {
   } else {
     return username;
   }
-}
+};
 
 const Messages = () => {
   const [loading, setLoading] = useState(true);
@@ -390,11 +390,9 @@ function handleConversations(
           unread: fromSelfToSelf ? 0 : 1,
         };
 
-        const updatedConvs = [newConversation, ...m.conversations];
-
         return {
           recipient,
-          conversations: updatedConvs,
+          conversations: [newConversation, ...m.conversations],
         };
       }
 
