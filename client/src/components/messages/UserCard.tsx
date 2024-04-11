@@ -9,7 +9,7 @@ export type UserCardProps = {
   id: number;
   messages: MessageProps[];
   photo?: string;
-  status?: string;
+  status: string;
   username?: string;
   unread: number;
 };
@@ -121,7 +121,7 @@ const UserCard = ({
         </div>
         <div className="mx-2 flex w-full min-w-0">
           <div className="flex h-6 min-w-0 flex-auto">
-            <span className="h-6 truncate text-gray-500">
+            <span className="h-6 truncate text-gray-500 whitespace-pre">
               {user?.messages?.slice(-1)[0]?.content || ''}
             </span>
           </div>

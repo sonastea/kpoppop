@@ -11,7 +11,7 @@ import { BaseSyntheticEvent, useEffect, useReducer, useRef, useState } from 'rea
 import { Socket } from 'socket.io-client';
 
 export type MessageProps = {
-  convid?: string | null;
+  convid: string | null;
   to: number;
   createdAt: string;
   content: string;
@@ -355,6 +355,7 @@ function handleConversations(
         convid: action.message?.convid ?? null,
         id: action.message?.to ?? 0,
         messages: action.message ? [action.message] : [],
+        status: 'ACTIVE',
         unread: 0,
       };
 
@@ -365,33 +366,32 @@ function handleConversations(
     }
 
     case MessageAction.FROM_USER: {
-      let recipient: UserCardProps | null = m.recipient;
-      if (m.recipient && action.message && action.message.convid) {
-        recipient = {
-          ...m.recipient,
-          convid: action.message.convid,
-        };
-      }
-
       const existingConvIndex = m.conversations.findIndex(
         (conv) => conv.convid === action.message?.convid
       );
 
       if (existingConvIndex === -1 || !action.message) {
-        const fromSelfToSelf = action.message?.to === m.recipient?.id;
+        const recipientConvidExists = m.recipient?.convid;
+        const recipientMatchesMessage = action.message?.to === m.recipient?.id;
+        const recipientExists = m.recipient && action.message && action.message.convid;
+
+        if (!recipientConvidExists && recipientMatchesMessage && recipientExists) {
+          m.recipient!.convid = action.message!.convid;
+        }
 
         const newConversation: UserCardProps = {
           displayname: action.message?.fromUser,
           convid: action.message?.convid ?? null,
           id: action.message?.to ?? 0,
           messages: action.message ? [action.message] : [],
-          photo: fromSelfToSelf ? m.recipient?.photo : action.message?.fromPhoto,
-          username: fromSelfToSelf ? m.recipient?.username : action.message?.fromUser,
-          unread: fromSelfToSelf ? 0 : 1,
+          photo: action.message?.fromPhoto,
+          status: 'ACTIVE',
+          username: action.message?.fromUser,
+          unread: 1,
         };
 
         return {
-          recipient,
+          recipient: m.recipient,
           conversations: [newConversation, ...m.conversations],
         };
       }

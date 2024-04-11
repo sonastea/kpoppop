@@ -14,7 +14,7 @@ const MessageWeekModal = ({ message, latest }: { message: MessageProps; latest: 
 
   return (
     <li
-      className={`${message ? 'pb-3' : 'pb-1.5'} flex break-normal ${
+      className={`${message ? 'pb-3' : 'pb-1.5'} flex break-normal whitespace-pre ${
         isAuthor ? 'flex-row-reverse' : 'flex-row'
       }`}
     >

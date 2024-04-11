@@ -13,7 +13,7 @@ const MessageDayModal = ({ message, latest }: { message: MessageProps; latest: b
 
   return (
     <li
-      className={`${latest ? 'pb-3' : 'pb-1.5'} flex break-normal ${isAuthor ? 'flex-row-reverse' : 'flex-row'}`}
+      className={`${latest ? 'pb-3' : 'pb-1.5'} flex break-normal whitespace-pre ${isAuthor ? 'flex-row-reverse' : 'flex-row'}`}
     >
       <div className={`flex flex-col group max-w-[85%] text-right ${isAuthor ? 'pr-2' : 'pl-2'}`}>
         <div
