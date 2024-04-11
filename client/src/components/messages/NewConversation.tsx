@@ -3,13 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { debounce as throttle } from 'lodash';
 import { useEffect, useState } from 'react';
 import { findUserIfExists } from './MessagesAPI';
+import { UserCardProps } from './UserCard';
 
 const NewConversation = ({
   setDrafting,
   setRecipient,
 }: {
-  setDrafting: Function;
-  setRecipient: Function;
+  setDrafting: React.Dispatch<React.SetStateAction<boolean>>;
+  setRecipient: (u: UserCardProps | null) => void;
 }) => {
   const [newMessage, setNewMessage] = useState<boolean>(true);
   const [error, setError] = useState<string>();
@@ -34,12 +35,13 @@ const NewConversation = ({
   useEffect(() => {}, [newMessage]);
 
   return (
-    <div className="flex flex-col p-2 mx-2 md:mx-0">
+    <div className="mx-2 flex flex-col p-2 md:mx-0">
       <div className="flex w-full md:w-1/3">
         <div className="flex w-full">
           <div className="relative w-full">
             <input
-              className="block w-full text-center text-xl py-1 font-bold border border-slate-400 focus-visible:outline-none focus-visible:border-once-400"
+              className="block w-full border border-slate-400 py-1 text-center text-xl font-bold
+                focus-visible:border-once-400 focus-visible:outline-none"
               placeholder="Send to username"
               value={username}
               onChange={(e) => {
@@ -52,7 +54,8 @@ const NewConversation = ({
             />
             <button
               type="button"
-              className="absolute top-1.5 right-0 group hover:bg-once-500/10 hover:rounded-full w-6 h-6"
+              className="group absolute right-0 top-1.5 h-6 w-6 hover:rounded-full
+                hover:bg-once-500/10"
               onClick={() => {
                 findUser();
               }}

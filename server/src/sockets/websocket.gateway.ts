@@ -29,6 +29,8 @@ export type MessagePayload = {
   content: string;
   from: number;
   fromSelf: boolean;
+  fromUser?: string;
+  fromPhoto?: string;
   read: boolean;
 };
 
@@ -139,6 +141,8 @@ export class WebSocketServiceGateway
       content: data.content,
       from: socket.handshake.auth.id,
       fromSelf: fromSelf,
+      fromUser: null,
+      fromPhoto: null,
       read: fromSelf,
     };
     this.messageStore.saveConversationSession(socket.handshake.auth.id.toString());

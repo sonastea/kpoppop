@@ -17,9 +17,10 @@ export type MessageProps = {
   content: string;
   from: number;
   fromSelf?: boolean;
+  fromPhoto: string;
+  fromUser: string;
   read?: boolean;
   unread?: number;
-  fromUser?: string;
 };
 
 enum MessageAction {
@@ -27,7 +28,18 @@ enum MessageAction {
   SET_RECIPIENT = 'SET_RECIPIENT',
   FROM_SELF = 'FROM_SELF',
   FROM_USER = 'FROM_USER',
-  UPDATE_READ_MESSAGES = 'UPDATE_READ_MESSAGES',
+  MARK_READ_MESSAGES = 'MARK_READ_MESSAGES',
+}
+
+const getMessageHeaderName = (recipient: UserCardProps) => {
+  const displayName = recipient?.displayname;
+  const username = recipient?.username;
+
+  if (displayName) {
+    return `${displayName} (${username})`;
+  } else {
+    return username;
+  }
 }
 
 const Messages = () => {
@@ -157,7 +169,7 @@ const Messages = () => {
 
       ws.on('read message', (message: MessageProps) => {
         setConversations({
-          type: MessageAction.UPDATE_READ_MESSAGES,
+          type: MessageAction.MARK_READ_MESSAGES,
           message: message,
         });
       });
@@ -211,8 +223,8 @@ const Messages = () => {
           {draft && <NewConversation setDrafting={setDrafting} setRecipient={setRecipient} />}
           <div className="flex min-h-0 md:mx-2">
             <div
-              className={`${m.recipient ? 'hidden w-1/3 md:flex' : 'flex w-full md:w-1/3'}
-              flex-col`}
+              // eslint-disable-next-line max-len
+              className={`${m.recipient ? 'hidden w-1/3 md:flex' : 'flex w-full md:w-1/3'} flex-col`}
             >
               <ul className="conversations-scroll-bar min-h-0 w-full overflow-auto">
                 {m.conversations.map((user: UserCardProps) => {
@@ -221,7 +233,7 @@ const Messages = () => {
                       convid={user.convid ?? ''}
                       user={user}
                       setRecipient={setRecipient}
-                      key={user.id}
+                      key={user.convid}
                     />
                   );
                 })}
@@ -260,7 +272,12 @@ const Messages = () => {
                     </a>
                   </div>
                   <a className="hover:underline" href={`/user/${m.recipient.username}`}>
-                    <h2 className="py-1 text-xl font-bold">{m.recipient.username}</h2>
+                    <h2
+                      className="py-1 text-xl font-bold"
+                      title={getMessageHeaderName(m.recipient)}
+                    >
+                      {m.recipient.displayname ?? m.recipient.username}
+                    </h2>
                   </a>
                 </div>
                 <ul
@@ -316,30 +333,34 @@ function handleConversations(
     }
 
     case MessageAction.FROM_SELF: {
+      const existingConversation = m.conversations.find((conv) => conv.id === action.message?.to);
+
+      if (existingConversation && action.message) {
+        existingConversation.convid = action.message?.convid ?? existingConversation.convid;
+        existingConversation.messages.push(action.message);
+        existingConversation.unread = 0;
+
+        const updatedConversations = m.conversations.filter(
+          (conv) => conv.id !== action.message?.to
+        );
+
+        return {
+          recipient: m.recipient,
+          conversations: [existingConversation, ...updatedConversations],
+        };
+      }
+
+      const newConversation: UserCardProps = {
+        ...m.recipient,
+        convid: action.message?.convid ?? null,
+        id: action.message?.to ?? 0,
+        messages: action.message ? [action.message] : [],
+        unread: 0,
+      };
+
       return {
         recipient: m.recipient,
-        conversations: m.conversations.some((conv) => conv.id === action.message?.to)
-          ? m.conversations.map((conv) => {
-              if (conv.id === action.message?.to && action.message.convid) {
-                return {
-                  ...conv,
-                  convid: action.message.convid,
-                  messages: [...conv.messages, action.message],
-                  unread: 0,
-                };
-              }
-              return { ...conv };
-            })
-          : [
-              ...m.conversations,
-              {
-                username: m.recipient?.displayname || m.recipient?.username,
-                convid: action.message?.convid ?? null,
-                id: action.message?.to ?? 0,
-                messages: Array(1).fill(action.message),
-                unread: 0,
-              },
-            ],
+        conversations: [newConversation, ...m.conversations],
       };
     }
 
@@ -348,68 +369,63 @@ function handleConversations(
       if (m.recipient && action.message && action.message.convid) {
         recipient = {
           ...m.recipient,
-          convid: action.message.convid ?? null,
+          convid: action.message.convid,
         };
       }
 
-      const conversationNotFound = !m.conversations.some(
+      const existingConvIndex = m.conversations.findIndex(
         (conv) => conv.convid === action.message?.convid
       );
-      const fromSelfToUser = conversationNotFound && m.recipient?.id === action.message?.to;
-      if (conversationNotFound) {
+
+      if (existingConvIndex === -1 || !action.message) {
+        const fromSelfToSelf = action.message?.to === m.recipient?.id;
+
+        const newConversation: UserCardProps = {
+          displayname: action.message?.fromUser,
+          convid: action.message?.convid ?? null,
+          id: action.message?.to ?? 0,
+          messages: action.message ? [action.message] : [],
+          photo: fromSelfToSelf ? m.recipient?.photo : action.message?.fromPhoto,
+          username: fromSelfToSelf ? m.recipient?.username : action.message?.fromUser,
+          unread: fromSelfToSelf ? 0 : 1,
+        };
+
+        const updatedConvs = [newConversation, ...m.conversations];
+
         return {
-          recipient: recipient,
-          conversations: [
-            {
-              ...(fromSelfToUser ? m.recipient : recipient),
-              convid: action.message?.convid ?? null,
-              id: action.message?.to ?? 0,
-              messages: action.message ? [action.message] : [],
-              username: fromSelfToUser ? m.recipient?.username : action.message?.fromUser,
-              unread: fromSelfToUser ? 0 : 1,
-            },
-            ...m.conversations,
-          ],
+          recipient,
+          conversations: updatedConvs,
         };
       }
 
-      const updatedConv = m.conversations.find((conv) => conv.convid === action.message?.convid);
-      if (updatedConv === undefined || !action.message) return m;
+      const conversation = m.conversations[existingConvIndex];
+      const matchRecipient = conversation.id === (action.message?.from && m.recipient?.id);
 
-      const matchRecipient = updatedConv.id === (action.message?.from && m.recipient?.id);
-      if (matchRecipient) {
+      if (conversation.id === (action.message?.from && m.recipient?.id)) {
         const messagePayload: MessagePayload = {
-          convid: updatedConv.convid,
-          to: updatedConv.id,
+          convid: conversation.convid,
+          to: conversation.id,
           content: null,
           read: true,
         };
         action.ws?.emit('read message', messagePayload);
       }
 
-      updatedConv.messages = [
-        ...updatedConv.messages,
-        {
-          ...action.message,
-          unread: matchRecipient ? updatedConv.unread : ++updatedConv.unread,
-        },
-      ];
-
-      const conversations = m.conversations.filter((conv) => {
-        if (conv.convid !== action.message?.convid) {
-          return { ...conv };
-        }
-        return false;
+      conversation.messages.push({
+        ...action.message,
+        unread: matchRecipient ? conversation.unread : ++conversation.unread,
       });
-      conversations.unshift(updatedConv);
+
+      const updatedConversations = m.conversations.filter((_, i) => i !== existingConvIndex);
+      updatedConversations.unshift(conversation);
 
       return {
-        recipient: recipient,
-        conversations: conversations,
+        recipient: m.recipient,
+        conversations: updatedConversations,
       };
     }
 
-    case MessageAction.UPDATE_READ_MESSAGES: {
+    case MessageAction.MARK_READ_MESSAGES: {
       return {
         ...m,
         conversations: m.conversations.map((conv) => {

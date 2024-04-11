@@ -78,13 +78,17 @@ export class WebSocketStoreService {
         },
         include: {
           messages: { take: -1 },
-          users: { where: { id: message.from }, select: { username: true } },
+          users: {
+            where: { id: message.from },
+            select: { displayname: true, photo: true, username: true },
+          },
         },
       });
       const convidMsg = {
         ...message,
         convid: conv.convid,
-        fromUser: conv.users[0].username,
+        fromPhoto: conv.users[0].photo,
+        fromUser: conv.users[0].displayname ?? conv.users[0].username,
       };
       this.saveMessageToCache(convidMsg);
       return convidMsg;
