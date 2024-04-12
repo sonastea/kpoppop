@@ -50,6 +50,7 @@ const Message = ({ daysFromNow, message, latest, showDate }: MessageModalProps) 
       className={`${latest ? 'pb-2' : 'pb-1'} group flex whitespace-break-spaces ${
         isAuthor ? 'flex-row-reverse' : 'flex-row'
       }`}
+      style={{ wordBreak: 'break-word' }}
     >
       <div className={`flex max-w-[85%] flex-col text-right ${isAuthor ? 'pr-2' : 'pl-2'}`}>
         <div
