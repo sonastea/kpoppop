@@ -66,7 +66,7 @@ jobs:
           path: ${{ github.workspace }}/tmp/kpoppop-client/
 
       - name: Deploy production client to server
-        uses: burnett01/rsync-deployments@6.0.0
+        uses: burnett01/rsync-deployments@7.0.1
         with:
           switches: -azvrP --delete --exclude models
           path: tmp/kpoppop-client/
