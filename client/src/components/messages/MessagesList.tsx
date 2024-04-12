@@ -1,10 +1,15 @@
 import { MessageProps } from 'components/user/Messages';
-import MessageDayModal from './MessageDayModal';
-import MessageModal from './MessageModal';
-import MessageWeekModal from './MessageWeekModal';
+import Message from './Message';
 
 type MessageListProps = {
   [key: string]: MessageProps[];
+};
+
+export type MessageModalProps = {
+  daysFromNow: number;
+  message: MessageProps;
+  latest: boolean;
+  showDate: boolean;
 };
 
 const DAY = 86400000;
@@ -17,14 +22,18 @@ const MessagesList = ({ messages }: { messages: MessageListProps }) => {
           (Date.parse(new Date().toISOString().split('T')[0]) - Date.parse(date)) / DAY;
 
         return msgs.map((message, index) => {
-          const latest = index === 0 || messages[date].length === index + 1;
-          if (daysFromNow === 0) {
-            return <MessageModal message={message} latest={latest} key={date + index} />;
-          } else if (daysFromNow < 7) {
-            return <MessageDayModal message={message} latest={latest} key={date + index} />;
-          } else {
-            return <MessageWeekModal message={message} latest={latest} key={date + index} />;
-          }
+          const latest = index === msgs.length - 1;
+          const showDate = latest && daysFromNow === 0;
+
+          return (
+            <Message
+              daysFromNow={daysFromNow}
+              message={message}
+              latest={latest}
+              key={date + index}
+              showDate={showDate}
+            />
+          );
         });
       })}
     </>
