@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { MessageModalProps } from './MessagesList';
 
-const Message = ({ daysFromNow, message, latest, showDate }: MessageModalProps) => {
+const Message = ({ daysFromNow, message, mostRecent, showDate }: MessageModalProps) => {
   const id = localStorage.getItem('userID');
   const userID = id && parseInt(id);
   const [date, setDate] = useState<string>();
@@ -32,22 +32,21 @@ const Message = ({ daysFromNow, message, latest, showDate }: MessageModalProps) 
     } else {
       setDate(
         new Date(message.createdAt).toLocaleTimeString([], {
+          year: 'numeric',
           month: 'short',
           day: 'numeric',
-          weekday: 'short',
           hour: 'numeric',
           minute: '2-digit',
         })
       );
-      setLatestDate(date);
     }
-  }, [daysFromNow, message.createdAt]);
+  }, [daysFromNow, mostRecent, message.createdAt]);
 
   const isAuthor = message.from === userID && !message.fromSelf;
 
   return (
     <li
-      className={`${latest ? 'pb-2' : 'pb-1'} group flex whitespace-break-spaces ${
+      className={`${mostRecent ? 'pb-2' : 'pb-1'} group flex whitespace-break-spaces ${
         isAuthor ? 'flex-row-reverse' : 'flex-row'
       }`}
       style={{ wordBreak: 'break-word' }}
@@ -60,17 +59,17 @@ const Message = ({ daysFromNow, message, latest, showDate }: MessageModalProps) 
         >
           <p>{message.content}</p>
         </div>
-        {latest && (
+        {mostRecent && (
           <div
             className={`message-time-stamp mx-1 flex-1 content-center text-xs sm:text-sm ${
               isAuthor ? 'text-end' : 'text-start'
             }`}
           >
-            <small className="text-gray-500">{latest ? latestDate : latestDate}</small>
+            <small className="text-gray-500">{latestDate ?? date}</small>
           </div>
         )}
       </div>
-      {!showDate && !latest && (
+      {!showDate && !mostRecent && (
         <div
           className={`message-time-stamp mx-3 flex-1 content-center text-xs sm:text-sm ${
             isAuthor ? 'text-start' : 'text-end'
