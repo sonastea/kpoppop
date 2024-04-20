@@ -1,3 +1,4 @@
+import ErrorPage from 'components/ErrorPage';
 import LoadingUI from 'components/LoadingUI';
 import { AuthProvider } from 'contexts/AuthContext';
 import { Suspense, lazy } from 'react';
@@ -49,6 +50,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
+    ErrorBoundary: ErrorPage,
     children: [
       { index: true, Component: MemePage },
       { path: 'memes', Component: MemePage },
