@@ -61,5 +61,18 @@ export default {
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      const newUtilities = {
+        '.h-screen-mobile': {
+          height: 'calc(100vh - 56px)',
+        },
+        '.h-screen-larger': {
+          height: 'calc(100vh - 80px)',
+        },
+      };
+
+      addUtilities(newUtilities, ['responsive', 'hover']);
+    },
+  ],
 };

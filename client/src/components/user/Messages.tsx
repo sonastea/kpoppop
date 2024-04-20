@@ -202,7 +202,7 @@ const Messages = () => {
     return <UserCardSkeletonLoader />;
   } else {
     return (
-      <div className="h-[calc(100vh-56px)] sm:h-[calc(100vh-80px)]">
+      <div className="h-screen-mobile sm:h-screen-larger">
         <div className="flex h-full flex-col overflow-hidden bg-gray-200/60">
           <div className="heading m-4 flex flex-wrap">
             <h1 className="mr-4 justify-center text-3xl text-gray-700">Messages</h1>
