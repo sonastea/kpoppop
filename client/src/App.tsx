@@ -1,20 +1,22 @@
-import AdminPanel from 'components/admin/AdminPanel';
-import ContactUs from 'components/ContactUs';
-import MemePage from 'components/meme/MemePage';
-import EditProfile from 'components/user/EditProfile';
-import Messages from 'components/user/Messages';
-import RegisterRedirect from 'components/user/RegisterRedirect';
-import VerifyEmail from 'components/user/VerifyEmail';
+import LoadingUI from 'components/LoadingUI';
 import { AuthProvider } from 'contexts/AuthContext';
-import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
+import { Suspense, lazy } from 'react';
+import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Home from './components/Home';
-import Post from './components/meme/Post';
 import NavBar from './components/NavBar';
-import Login from './components/user/Login';
-import Profile from './components/user/Profile';
-import Register from './components/user/Register';
+
+const MemePage = lazy(() => import('components/meme/MemePage'));
+const Post = lazy(() => import('components/meme/Post'));
+const ContactUs = lazy(() => import('components/ContactUs'));
+const Login = lazy(() => import('./components/user/Login'));
+const Register = lazy(() => import('./components/user/Register'));
+const RegisterRedirect = lazy(() => import('./components/user/RegisterRedirect'));
+const VerifyEmail = lazy(() => import('./components/user/VerifyEmail'));
+const Profile = lazy(() => import('./components/user/Profile'));
+const Messages = lazy(() => import('./components/user/Messages'));
+const EditProfile = lazy(() => import('./components/user/EditProfile'));
+const AdminPanel = lazy(() => import('components/admin/AdminPanel'));
 
 const preconnectApi =
   process.env.NODE_ENV === 'production' ? 'https://api.kpoppop.com' : 'https://localhost:5000';
@@ -35,17 +37,20 @@ const Layout = () => {
         position="top-right"
         limit={3}
       />
-      <NavBar />
-      <Outlet />
+      <Suspense fallback={<LoadingUI />}>
+        <NavBar />
+        <Outlet />
+      </Suspense>
     </AuthProvider>
   );
 };
 
 const router = createBrowserRouter([
   {
-    path: '*',
+    path: '/',
+    element: <Layout />,
     children: [
-      { index: true, Component: Home },
+      { index: true, Component: MemePage },
       { path: 'memes', Component: MemePage },
       { path: 'meme/:memeid/', Component: Post },
       { path: 'meme/:memeid/:title', Component: Post },
@@ -59,7 +64,6 @@ const router = createBrowserRouter([
       { path: 'profile/settings', Component: EditProfile },
       { path: 'employees-only-do-not-enter', Component: AdminPanel },
     ],
-    Component: Layout,
   },
 ]);
 
