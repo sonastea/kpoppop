@@ -44,6 +44,29 @@ const Memes = () => {
   const [title, setTitle] = useState<string>('');
   const { memeId: currentMemeId } = useRemoveMemeStore();
 
+  useEffect(() => {
+    const preloadFirstMemes = async () => {
+      const firstMemes = posts.slice(0, 3);
+      const urlsToPreload = firstMemes.map((meme: Meme) => meme.url);
+      await Promise.all(
+        urlsToPreload.map((url: string) => {
+          return new Promise((resolve, reject) => {
+            const image = new Image();
+            image.onload = resolve;
+            image.onerror = reject;
+            image.src = url;
+          });
+        })
+      );
+    };
+
+    if (posts.length > 0) {
+      preloadFirstMemes().catch(() => {
+        toast.error('Unable to fetch memes. Please try again later.');
+      });
+    }
+  }, [posts]);
+
   const loadMorePosts = async () => {
     setLoading(false);
     await fetchMemes(cursor)
