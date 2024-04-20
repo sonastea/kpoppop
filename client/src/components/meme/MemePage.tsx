@@ -1,6 +1,8 @@
-import ScrollToTopButton from 'components/button/ScrollToTopButton';
-import Memes from './Memes';
-import UploadMeme from './UploadMeme';
+import { lazy } from 'react';
+
+const ScrollToTopButton = lazy(() => import('components/button/ScrollToTopButton'));
+const Memes= lazy(() => import('./Memes'));
+const UploadMeme= lazy(() => import('./UploadMeme'));
 
 const MemePage = () => {
   return (

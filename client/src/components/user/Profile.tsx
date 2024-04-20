@@ -175,7 +175,9 @@ const Profile = () => {
         </div>
       </div>
     );
-  } else {
+  }
+
+  if (!loading && data) {
     return <NoProfile message={data?.errors?.User ?? 'User does not exist.'} />;
   }
 };

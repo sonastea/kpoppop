@@ -12,6 +12,11 @@ const NavBar = () => {
   const [isActiveMobileNav, setMobileNav] = useState<boolean>(false);
   const [active, setActive] = useState<number>();
 
+  useEffect(() => {
+    const img = new Image();
+    img.src = '/images/header_logo.png';
+  }, []);
+
   const setNavItem = (id: number) => {
     setActive(id);
     setMobileNav(false);
@@ -21,17 +26,17 @@ const NavBar = () => {
     () => [
       {
         id: 1,
-        name: 'Memes',
-        to: '/memes',
+        name: 'Home',
+        to: '/',
         className:
-          'px-2 py-2 font-semibold text-slate-900 border-b-2 duration-150 hover:border-once',
+          'p-2 font-semibold text-slate-900 border-b-2 duration-150 hover:border-once',
       },
       {
         id: 2,
         name: 'Contact',
         to: '/contact',
         className:
-          'px-2 py-2 font-semibold text-slate-900 border-b-2 duration-150 hover:border-once',
+          'p-2 font-semibold text-slate-900 border-b-2 duration-150 hover:border-once',
       },
     ],
     []
@@ -42,8 +47,8 @@ const NavBar = () => {
     () => [
       {
         id: 1,
-        name: 'Memes',
-        to: '/memes',
+        name: 'Home',
+        to: '/',
         className: mobileNavItemsLoggedOutClassName,
       },
       {
@@ -73,8 +78,8 @@ const NavBar = () => {
     () => [
       {
         id: 1,
-        name: 'Memes',
-        to: '/memes',
+        name: 'Home',
+        to: '/',
         className: mobileNavItemsLoggedInClassName,
       },
       {
@@ -136,8 +141,10 @@ const NavBar = () => {
           <div className="flex flex-shrink-0 space-x-2">
             <Link
               aria-label="Home"
-              to="/"
               className="aspect-w-2 aspect-h-1 m-2 flex h-10 grow-0 items-center sm:h-16"
+              reloadDocument
+              to="/"
+              onClick={() => setNavItem(1)}
             >
               <img
                 src="/images/header_logo.png"
@@ -236,6 +243,7 @@ const NavBar = () => {
                         } ${item.className}`}
                         onClick={() => setNavItem(item.id)}
                         key={item.id}
+                        reloadDocument={item.to === '/'}
                       >
                         {item.name}
                       </Link>
@@ -258,6 +266,7 @@ const NavBar = () => {
                         } ${item.className}`}
                         onClick={() => setNavItem(item.id)}
                         key={item.id}
+                        reloadDocument={item.to === '/'}
                       >
                         {item.name}
                       </Link>
