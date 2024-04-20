@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const NavBar = () => {
@@ -34,15 +34,6 @@ const NavBar = () => {
                 </Link>
               </li>
             </ul>
-          </div>
-
-          <div className="hidden animate-pulse items-center space-x-2 md:flex">
-            <Link className={className} to="">
-              Login
-            </Link>
-            <Link className={className} to="">
-              Register
-            </Link>
           </div>
 
           <div className="m-2 flex flex-wrap items-center md:hidden">
