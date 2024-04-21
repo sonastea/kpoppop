@@ -11,7 +11,7 @@ type MemeLazyImageProps = {
 const PlaceHolder = () => {
   return (
     <div
-      className="mt-2 flex h-96 max-h-64 items-center justify-center rounded bg-gray-200
+      className="mt-2 flex h-96 max-h-64 w-full items-center justify-center rounded bg-gray-200
         object-scale-down md:max-h-96 md:object-contain"
     />
   );
