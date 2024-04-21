@@ -12,11 +12,6 @@ const NavBar = () => {
   const [isActiveMobileNav, setMobileNav] = useState<boolean>(false);
   const [active, setActive] = useState<number>();
 
-  useEffect(() => {
-    const img = new Image();
-    img.src = '/images/header_logo.png';
-  }, []);
-
   const setNavItem = (id: number) => {
     setActive(id);
     setMobileNav(false);
@@ -28,15 +23,13 @@ const NavBar = () => {
         id: 1,
         name: 'Home',
         to: '/',
-        className:
-          'p-2 font-semibold text-slate-900 border-b-2 duration-150 hover:border-once',
+        className: 'p-2 font-semibold text-slate-900 border-b-2 duration-150 hover:border-once',
       },
       {
         id: 2,
         name: 'Contact',
         to: '/contact',
-        className:
-          'p-2 font-semibold text-slate-900 border-b-2 duration-150 hover:border-once',
+        className: 'p-2 font-semibold text-slate-900 border-b-2 duration-150 hover:border-once',
       },
     ],
     []
