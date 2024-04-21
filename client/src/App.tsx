@@ -70,7 +70,13 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <RouterProvider
+      router={router}
+      fallbackElement={<LoadingUI />}
+      future={{ v7_startTransition: true }}
+    />
+  );
 };
 
 export default App;
