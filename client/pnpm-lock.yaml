@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@fontsource/montserrat':
-        specifier: ^5.0.17
-        version: 5.0.17
+        specifier: ^5.0.18
+        version: 5.0.18
       '@formkit/auto-animate':
         specifier: ^0.8.2
         version: 0.8.2
@@ -49,7 +49,7 @@ importers:
         version: 4.17.21
       nsfwjs:
         specifier: ^4.1.0
-        version: 4.1.0(@tensorflow/tfjs@4.17.0(seedrandom@3.0.5))
+        version: 4.1.0(@tensorflow/tfjs@4.18.0(seedrandom@3.0.5))
       profane-words:
         specifier: ^1.5.11
         version: 1.5.11
@@ -128,7 +128,7 @@ importers:
         version: 5.3.3
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.2.9(@types/node@20.12.2))
+        version: 4.2.1(vite@5.2.10(@types/node@20.12.2))
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.19(postcss@8.4.38)
@@ -152,16 +152,16 @@ importers:
         version: 5.4.5
       unplugin-fonts:
         specifier: ^1.1.1
-        version: 1.1.1(vite@5.2.9(@types/node@20.12.2))
+        version: 1.1.1(vite@5.2.10(@types/node@20.12.2))
       vite:
-        specifier: ^5.2.9
-        version: 5.2.9(@types/node@20.12.2)
+        specifier: ^5.2.10
+        version: 5.2.10(@types/node@20.12.2)
       vite-plugin-mkcert:
         specifier: ^1.17.5
-        version: 1.17.5(vite@5.2.9(@types/node@20.12.2))
+        version: 1.17.5(vite@5.2.10(@types/node@20.12.2))
       vite-tsconfig-paths:
         specifier: ^4.3.2
-        version: 4.3.2(typescript@5.4.5)(vite@5.2.9(@types/node@20.12.2))
+        version: 4.3.2(typescript@5.4.5)(vite@5.2.10(@types/node@20.12.2))
 
 packages:
 
@@ -501,8 +501,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@fontsource/montserrat@5.0.17':
-    resolution: {integrity: sha512-3V3F8GqeN8wawLmAkAfTCYsBYRKu+JLm6ivWWX/v0dCYYPcwtQX0h5Z8j68N1YumuT75MqrghqU42w9DnFHojQ==}
+  '@fontsource/montserrat@5.0.18':
+    resolution: {integrity: sha512-85JBs2rCdFK/VBdSb401e2lXk5gynVo2zi3Rh2Guem4WNtT2q52+V90o3KzjmajY3TPJvCZA/kI7R05ev7148g==}
 
   '@formkit/auto-animate@0.8.2':
     resolution: {integrity: sha512-SwPWfeRa5veb1hOIBMdzI+73te5puUBHmqqaF1Bu7FjvxlYSz/kJcZKSa9Cg60zL0uRNeJL2SbRxV6Jp6Q1nFQ==}
@@ -715,83 +715,83 @@ packages:
     resolution: {integrity: sha512-Oy8rmScVrVxWZVOpEF57ovlnhpZ8CCPlnIIumVcV9nFdiSIrus99+Lw78ekXyGvVDlIsFJbSfmSovJUhCWYV3w==}
     engines: {node: '>=14.0.0'}
 
-  '@rollup/rollup-android-arm-eabi@4.14.3':
-    resolution: {integrity: sha512-X9alQ3XM6I9IlSlmC8ddAvMSyG1WuHk5oUnXGw+yUBs3BFoTizmG1La/Gr8fVJvDWAq+zlYTZ9DBgrlKRVY06g==}
+  '@rollup/rollup-android-arm-eabi@4.16.0':
+    resolution: {integrity: sha512-4fDVBAfWYlw2CtYgHEWarAYSozTx5OYLsSM/cdGW7H51FwI10DaGnjKgdqWyWXY/VjugelzriCiKf1UdM20Bxg==}
     cpu: [arm]
     os: [android]
 
-  '@rollup/rollup-android-arm64@4.14.3':
-    resolution: {integrity: sha512-eQK5JIi+POhFpzk+LnjKIy4Ks+pwJ+NXmPxOCSvOKSNRPONzKuUvWE+P9JxGZVxrtzm6BAYMaL50FFuPe0oWMQ==}
+  '@rollup/rollup-android-arm64@4.16.0':
+    resolution: {integrity: sha512-JltUBgsKgN108NO4/hj0B/dJYNrqqmdRCtUet5tFDi/w+0tvQP0FToyWBV4HKBcSX4cvFChrCyt5Rh4FX6M6QQ==}
     cpu: [arm64]
     os: [android]
 
-  '@rollup/rollup-darwin-arm64@4.14.3':
-    resolution: {integrity: sha512-Od4vE6f6CTT53yM1jgcLqNfItTsLt5zE46fdPaEmeFHvPs5SjZYlLpHrSiHEKR1+HdRfxuzXHjDOIxQyC3ptBA==}
+  '@rollup/rollup-darwin-arm64@4.16.0':
+    resolution: {integrity: sha512-UwF7tkWf0roggMRv7Vrkof7VgX9tEZIc4vbaQl0/HNX3loWlcum+0ODp1Qsd8s7XvQGT+Zboxx1qxav3vq8YDw==}
     cpu: [arm64]
     os: [darwin]
 
-  '@rollup/rollup-darwin-x64@4.14.3':
-    resolution: {integrity: sha512-0IMAO21axJeNIrvS9lSe/PGthc8ZUS+zC53O0VhF5gMxfmcKAP4ESkKOCwEi6u2asUrt4mQv2rjY8QseIEb1aw==}
+  '@rollup/rollup-darwin-x64@4.16.0':
+    resolution: {integrity: sha512-RIY42wn6+Yb0qD29T7Dvm9/AhxrkGDf7X5dgI6rUFXR19+vCLh3u45yLcKOayu2ZQEba9rf/+BX3EggVwckiIw==}
     cpu: [x64]
     os: [darwin]
 
-  '@rollup/rollup-linux-arm-gnueabihf@4.14.3':
-    resolution: {integrity: sha512-ge2DC7tHRHa3caVEoSbPRJpq7azhG+xYsd6u2MEnJ6XzPSzQsTKyXvh6iWjXRf7Rt9ykIUWHtl0Uz3T6yXPpKw==}
+  '@rollup/rollup-linux-arm-gnueabihf@4.16.0':
+    resolution: {integrity: sha512-r2TGCIKzqk8VwjOvW7sveledh6aPao131ejUfZNIyFlWBCruF4HOu51KtLArDa7LL6qKd0vkgxGX3/2NmYpWig==}
     cpu: [arm]
     os: [linux]
 
-  '@rollup/rollup-linux-arm-musleabihf@4.14.3':
-    resolution: {integrity: sha512-ljcuiDI4V3ySuc7eSk4lQ9wU8J8r8KrOUvB2U+TtK0TiW6OFDmJ+DdIjjwZHIw9CNxzbmXY39wwpzYuFDwNXuw==}
+  '@rollup/rollup-linux-arm-musleabihf@4.16.0':
+    resolution: {integrity: sha512-/QwaDp0RXQTtm25wQFSl02zEm9oveRXr9qAHbdxWCm9YG9dR8esqpyqzS/3GgHDm7jHktPNz9gTENfoUKRCcXQ==}
     cpu: [arm]
     os: [linux]
 
-  '@rollup/rollup-linux-arm64-gnu@4.14.3':
-    resolution: {integrity: sha512-Eci2us9VTHm1eSyn5/eEpaC7eP/mp5n46gTRB3Aar3BgSvDQGJZuicyq6TsH4HngNBgVqC5sDYxOzTExSU+NjA==}
+  '@rollup/rollup-linux-arm64-gnu@4.16.0':
+    resolution: {integrity: sha512-iypHsz7YEfoyNL0iHbQ7B7pY6hpymvvMgFXXaMd5+WCtvJ9zqWPZKFmo78UeWzWNmTP9JtPiNIQt6efRxx/MNA==}
     cpu: [arm64]
     os: [linux]
 
-  '@rollup/rollup-linux-arm64-musl@4.14.3':
-    resolution: {integrity: sha512-UrBoMLCq4E92/LCqlh+blpqMz5h1tJttPIniwUgOFJyjWI1qrtrDhhpHPuFxULlUmjFHfloWdixtDhSxJt5iKw==}
+  '@rollup/rollup-linux-arm64-musl@4.16.0':
+    resolution: {integrity: sha512-7UpYcO0uVeomnoL5MpQhrS0FT7xZUJrEXtKVLmps5bRA7x5AiA1PDuPnMbxcOBWjIM2HHIG1t3ndnRTVMIbk5A==}
     cpu: [arm64]
     os: [linux]
 
-  '@rollup/rollup-linux-powerpc64le-gnu@4.14.3':
-    resolution: {integrity: sha512-5aRjvsS8q1nWN8AoRfrq5+9IflC3P1leMoy4r2WjXyFqf3qcqsxRCfxtZIV58tCxd+Yv7WELPcO9mY9aeQyAmw==}
+  '@rollup/rollup-linux-powerpc64le-gnu@4.16.0':
+    resolution: {integrity: sha512-FSuFy4/hOQy0lH135ifnElP/6dKoHcZGHovsaRY0jrfNRR2yjMnVYaqNHKGKy0b/1I8DkD/JtclgJfq7SPti1w==}
     cpu: [ppc64]
     os: [linux]
 
-  '@rollup/rollup-linux-riscv64-gnu@4.14.3':
-    resolution: {integrity: sha512-sk/Qh1j2/RJSX7FhEpJn8n0ndxy/uf0kI/9Zc4b1ELhqULVdTfN6HL31CDaTChiBAOgLcsJ1sgVZjWv8XNEsAQ==}
+  '@rollup/rollup-linux-riscv64-gnu@4.16.0':
+    resolution: {integrity: sha512-qxAB8MiHuDI8jU0D+WI9Gym3fvUJHA/AjKRXxbEH921SB3AeKQStq1FKFA59dAoqqCArjJ1voXM/gMvgEc1q4Q==}
     cpu: [riscv64]
     os: [linux]
 
-  '@rollup/rollup-linux-s390x-gnu@4.14.3':
-    resolution: {integrity: sha512-jOO/PEaDitOmY9TgkxF/TQIjXySQe5KVYB57H/8LRP/ux0ZoO8cSHCX17asMSv3ruwslXW/TLBcxyaUzGRHcqg==}
+  '@rollup/rollup-linux-s390x-gnu@4.16.0':
+    resolution: {integrity: sha512-j/9yBgWFlNFBfG/S1M2zkBNLeLkNVG59T5c4tlmlrxU+XITWJ3aMVWdpcZ/+mu7auGZftAXueAgAE9mb4lAlag==}
     cpu: [s390x]
     os: [linux]
 
-  '@rollup/rollup-linux-x64-gnu@4.14.3':
-    resolution: {integrity: sha512-8ybV4Xjy59xLMyWo3GCfEGqtKV5M5gCSrZlxkPGvEPCGDLNla7v48S662HSGwRd6/2cSneMQWiv+QzcttLrrOA==}
+  '@rollup/rollup-linux-x64-gnu@4.16.0':
+    resolution: {integrity: sha512-SjsBA1a9wrEleNneGEsR40HdxKdwCatyHC547o/XINqwPW4cqTYiNy/lL1WTJYWU/KgWIb8HH4SgmFStbWoBzw==}
     cpu: [x64]
     os: [linux]
 
-  '@rollup/rollup-linux-x64-musl@4.14.3':
-    resolution: {integrity: sha512-s+xf1I46trOY10OqAtZ5Rm6lzHre/UiLA1J2uOhCFXWkbZrJRkYBPO6FhvGfHmdtQ3Bx793MNa7LvoWFAm93bg==}
+  '@rollup/rollup-linux-x64-musl@4.16.0':
+    resolution: {integrity: sha512-YKCs7ghJZ5po6/qgfONiXyFKOKcTK4Kerzk/Kc89QK0JT94Qg4NurL+3Y3rZh5am2tu1OlvHPpBHQNBE8cFgJQ==}
     cpu: [x64]
     os: [linux]
 
-  '@rollup/rollup-win32-arm64-msvc@4.14.3':
-    resolution: {integrity: sha512-+4h2WrGOYsOumDQ5S2sYNyhVfrue+9tc9XcLWLh+Kw3UOxAvrfOrSMFon60KspcDdytkNDh7K2Vs6eMaYImAZg==}
+  '@rollup/rollup-win32-arm64-msvc@4.16.0':
+    resolution: {integrity: sha512-+wtkF+z2nw0ZwwHji01wOW0loxFl24lBNxPtVAXtnPPDL9Ew0EhiCMOegXe/EAH3Zlr8Iw9tyPJXB3DltQLEyw==}
     cpu: [arm64]
     os: [win32]
 
-  '@rollup/rollup-win32-ia32-msvc@4.14.3':
-    resolution: {integrity: sha512-T1l7y/bCeL/kUwh9OD4PQT4aM7Bq43vX05htPJJ46RTI4r5KNt6qJRzAfNfM+OYMNEVBWQzR2Gyk+FXLZfogGw==}
+  '@rollup/rollup-win32-ia32-msvc@4.16.0':
+    resolution: {integrity: sha512-7qLyKTL7Lf2g0B8bduETVAEI3WVUVwBRVcECojVevPNVAmi19IW1P2X+uMSwhmWNy36Q/qEvxXsfts1I8wpawg==}
     cpu: [ia32]
     os: [win32]
 
-  '@rollup/rollup-win32-x64-msvc@4.14.3':
-    resolution: {integrity: sha512-/BypzV0H1y1HzgYpxqRaXGBRqfodgoBBCcsrujT6QRcakDQdfU+Lq9PENPh5jB4I44YWq+0C2eHsHya+nZY1sA==}
+  '@rollup/rollup-win32-x64-msvc@4.16.0':
+    resolution: {integrity: sha512-tkfxXt+7c3Ecgn7ln9NJPdBM+QKwQdmFFpgAP+FYhAuRS5y3tY8xeza82gFjbPpytkHmaQnVdMtuzbToCz2tuw==}
     cpu: [x64]
     os: [win32]
 
@@ -820,40 +820,40 @@ packages:
   '@tanstack/virtual-core@3.3.0':
     resolution: {integrity: sha512-A0004OAa1FcUkPHeeGoKgBrAgjH+uHdDPrw1L7RpkwnODYqRvoilqsHPs8cyTjMg1byZBbiNpQAq2TlFLIaQag==}
 
-  '@tensorflow/tfjs-backend-cpu@4.17.0':
-    resolution: {integrity: sha512-2VSCHnX9qhYTjw9HiVwTBSnRVlntKXeBlK7aSVsmZfHGwWE2faErTtO7bWmqNqw0U7gyznJbVAjlow/p+0RNGw==}
+  '@tensorflow/tfjs-backend-cpu@4.18.0':
+    resolution: {integrity: sha512-zk6NyGGsv0mCDnc5xWxLB5Zi8GaHVI2gg7KC0FSw/r5wW9SfA3ZIqUHVZhbIVhNqZSWy6L/+EIJa7l6q1XCkrg==}
     engines: {yarn: '>= 1.3.2'}
     peerDependencies:
-      '@tensorflow/tfjs-core': 4.17.0
+      '@tensorflow/tfjs-core': 4.18.0
 
-  '@tensorflow/tfjs-backend-webgl@4.17.0':
-    resolution: {integrity: sha512-CC5GsGECCd7eYAUaKq0XJ48FjEZdgXZWPxgUYx4djvfUx5fQPp35hCSP9w/k463jllBMbjl2tKRg8u7Ia/LYzg==}
+  '@tensorflow/tfjs-backend-webgl@4.18.0':
+    resolution: {integrity: sha512-ZLQ8MnWnIttMDqHepEzPL0Y4HkTePl8+AaYm9AcNnDUK7VF2jn+BXcTHCUOGfiwKu/OMwRc6osDrjxr0cCqNrA==}
     engines: {yarn: '>= 1.3.2'}
     peerDependencies:
-      '@tensorflow/tfjs-core': 4.17.0
+      '@tensorflow/tfjs-core': 4.18.0
 
-  '@tensorflow/tfjs-converter@4.17.0':
-    resolution: {integrity: sha512-qFxIjPfomCuTrYxsFjtKbi3QfdmTTCWo+RvqD64oCMS0sjp7sUDNhJyKDoLx6LZhXlwXpHIVDJctLMRMwet0Zw==}
+  '@tensorflow/tfjs-converter@4.18.0':
+    resolution: {integrity: sha512-b7utNMvmI986OPaQvDyHoiHKiIyip7ubSjG4KzTcFOWEKTsirtHxRp/6QKY/XSuH3AJK9Switu1/B5QC7xR2Zg==}
     peerDependencies:
-      '@tensorflow/tfjs-core': 4.17.0
+      '@tensorflow/tfjs-core': 4.18.0
 
-  '@tensorflow/tfjs-core@4.17.0':
-    resolution: {integrity: sha512-v9Q5430EnRpyhWNd9LVgXadciKvxLiq+sTrLKRowh26BHyAsams4tZIgX3lFKjB7b90p+FYifVMcqLTTHgjGpQ==}
+  '@tensorflow/tfjs-core@4.18.0':
+    resolution: {integrity: sha512-wjyq+F8AZJjhtr5xUBAON4VrNBXr9Poows/LnRh1K7wS+w41sCk0EQfeo6NfgUZXbHE/jgcqU6+fZDUKt3qRrg==}
     engines: {yarn: '>= 1.3.2'}
 
-  '@tensorflow/tfjs-data@4.17.0':
-    resolution: {integrity: sha512-aPKrDFip+gXicWOFALeNT7KKQjRXFkHd/hNe/zs4mCFcIN00hy1PkZ6xkYsgrsdLDQMBSGeS4B4ZM0k5Cs88QA==}
+  '@tensorflow/tfjs-data@4.18.0':
+    resolution: {integrity: sha512-JGfEwq8a0nEXwwU04/PW7O6kZ3FdqAd6ofMboM9qwGTv47QdeO/G1657sy4N21Q/qiz5qFDbGLhim3Nq9gZm9g==}
     peerDependencies:
-      '@tensorflow/tfjs-core': 4.17.0
+      '@tensorflow/tfjs-core': 4.18.0
       seedrandom: ^3.0.5
 
-  '@tensorflow/tfjs-layers@4.17.0':
-    resolution: {integrity: sha512-DEE0zRKvf3LJ0EcvG5XouJYOgFGWYAneZ0K1d23969z7LfSyqVmBdLC6BTwdLKuJk3ouUJIKXU1TcpFmjDuh7g==}
+  '@tensorflow/tfjs-layers@4.18.0':
+    resolution: {integrity: sha512-9AyxUdvjMDbDOkNzdkMRToJZF/le5ia8X3lVfGRGxzsuyoWDBGlV9V1ICufD+Z8sODXVyu+cgE8kAMtVK4aHFA==}
     peerDependencies:
-      '@tensorflow/tfjs-core': 4.17.0
+      '@tensorflow/tfjs-core': 4.18.0
 
-  '@tensorflow/tfjs@4.17.0':
-    resolution: {integrity: sha512-yXRBhpM3frlNA/YaPp6HNk9EfIi8han5RYeQA3R8OCa0Od+AfoG1PUmlxV8fE2wCorlGVyHsgpiJ6M9YZPB56w==}
+  '@tensorflow/tfjs@4.18.0':
+    resolution: {integrity: sha512-MjA2M91wSkTkpFSuyQAuZm+DT9Y7DFu3rsTaO1BjCbf1S7o8DgJPKMmh6hk6uEn6/SBBbZVXPu+ZTQ/SyrP2Pw==}
     hasBin: true
 
   '@testing-library/dom@10.0.0':
@@ -2179,8 +2179,8 @@ packages:
     resolution: {integrity: sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
 
-  rollup@4.14.3:
-    resolution: {integrity: sha512-ag5tTQKYsj1bhrFC9+OEWqb5O6VYgtQDO9hPDBMmIbePwhfSr+ExlcU741t8Dhw5DkPCQf6noz0jb36D6W9/hw==}
+  rollup@4.16.0:
+    resolution: {integrity: sha512-joxy/Hd4Ee289394//Q1aoebcxXyHasDieCTk8YtP4G4al4TUlx85EnuCLrfrdtLzrna9kNjH++Sx063wxSgmA==}
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
 
@@ -2441,8 +2441,8 @@ packages:
       vite:
         optional: true
 
-  vite@5.2.9:
-    resolution: {integrity: sha512-uOQWfuZBlc6Y3W/DTuQ1Sr+oIXWvqljLvS881SVmAj00d5RdgShLcuXWxseWPd4HXwiYBFW/vXHfKFeqj9uQnw==}
+  vite@5.2.10:
+    resolution: {integrity: sha512-PAzgUZbP7msvQvqdSD+ErD5qGnSFiGOoWmV5yAKUEI0kdhjbH6nMWVyZQC/hSc4aXwc0oJ9aEdIiF9Oje0JFCw==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -2872,7 +2872,7 @@ snapshots:
   '@esbuild/win32-x64@0.20.2':
     optional: true
 
-  '@fontsource/montserrat@5.0.17': {}
+  '@fontsource/montserrat@5.0.18': {}
 
   '@formkit/auto-animate@0.8.2': {}
 
@@ -3189,52 +3189,52 @@ snapshots:
 
   '@remix-run/router@1.15.3': {}
 
-  '@rollup/rollup-android-arm-eabi@4.14.3':
+  '@rollup/rollup-android-arm-eabi@4.16.0':
     optional: true
 
-  '@rollup/rollup-android-arm64@4.14.3':
+  '@rollup/rollup-android-arm64@4.16.0':
     optional: true
 
-  '@rollup/rollup-darwin-arm64@4.14.3':
+  '@rollup/rollup-darwin-arm64@4.16.0':
     optional: true
 
-  '@rollup/rollup-darwin-x64@4.14.3':
+  '@rollup/rollup-darwin-x64@4.16.0':
     optional: true
 
-  '@rollup/rollup-linux-arm-gnueabihf@4.14.3':
+  '@rollup/rollup-linux-arm-gnueabihf@4.16.0':
     optional: true
 
-  '@rollup/rollup-linux-arm-musleabihf@4.14.3':
+  '@rollup/rollup-linux-arm-musleabihf@4.16.0':
     optional: true
 
-  '@rollup/rollup-linux-arm64-gnu@4.14.3':
+  '@rollup/rollup-linux-arm64-gnu@4.16.0':
     optional: true
 
-  '@rollup/rollup-linux-arm64-musl@4.14.3':
+  '@rollup/rollup-linux-arm64-musl@4.16.0':
     optional: true
 
-  '@rollup/rollup-linux-powerpc64le-gnu@4.14.3':
+  '@rollup/rollup-linux-powerpc64le-gnu@4.16.0':
     optional: true
 
-  '@rollup/rollup-linux-riscv64-gnu@4.14.3':
+  '@rollup/rollup-linux-riscv64-gnu@4.16.0':
     optional: true
 
-  '@rollup/rollup-linux-s390x-gnu@4.14.3':
+  '@rollup/rollup-linux-s390x-gnu@4.16.0':
     optional: true
 
-  '@rollup/rollup-linux-x64-gnu@4.14.3':
+  '@rollup/rollup-linux-x64-gnu@4.16.0':
     optional: true
 
-  '@rollup/rollup-linux-x64-musl@4.14.3':
+  '@rollup/rollup-linux-x64-musl@4.16.0':
     optional: true
 
-  '@rollup/rollup-win32-arm64-msvc@4.14.3':
+  '@rollup/rollup-win32-arm64-msvc@4.16.0':
     optional: true
 
-  '@rollup/rollup-win32-ia32-msvc@4.14.3':
+  '@rollup/rollup-win32-ia32-msvc@4.16.0':
     optional: true
 
-  '@rollup/rollup-win32-x64-msvc@4.14.3':
+  '@rollup/rollup-win32-x64-msvc@4.16.0':
     optional: true
 
   '@sinclair/typebox@0.27.8': {}
@@ -3259,25 +3259,25 @@ snapshots:
 
   '@tanstack/virtual-core@3.3.0': {}
 
-  '@tensorflow/tfjs-backend-cpu@4.17.0(@tensorflow/tfjs-core@4.17.0)':
+  '@tensorflow/tfjs-backend-cpu@4.18.0(@tensorflow/tfjs-core@4.18.0)':
     dependencies:
-      '@tensorflow/tfjs-core': 4.17.0
+      '@tensorflow/tfjs-core': 4.18.0
       '@types/seedrandom': 2.4.34
       seedrandom: 3.0.5
 
-  '@tensorflow/tfjs-backend-webgl@4.17.0(@tensorflow/tfjs-core@4.17.0)':
+  '@tensorflow/tfjs-backend-webgl@4.18.0(@tensorflow/tfjs-core@4.18.0)':
     dependencies:
-      '@tensorflow/tfjs-backend-cpu': 4.17.0(@tensorflow/tfjs-core@4.17.0)
-      '@tensorflow/tfjs-core': 4.17.0
+      '@tensorflow/tfjs-backend-cpu': 4.18.0(@tensorflow/tfjs-core@4.18.0)
+      '@tensorflow/tfjs-core': 4.18.0
       '@types/offscreencanvas': 2019.3.0
       '@types/seedrandom': 2.4.34
       seedrandom: 3.0.5
 
-  '@tensorflow/tfjs-converter@4.17.0(@tensorflow/tfjs-core@4.17.0)':
+  '@tensorflow/tfjs-converter@4.18.0(@tensorflow/tfjs-core@4.18.0)':
     dependencies:
-      '@tensorflow/tfjs-core': 4.17.0
+      '@tensorflow/tfjs-core': 4.18.0
 
-  '@tensorflow/tfjs-core@4.17.0':
+  '@tensorflow/tfjs-core@4.18.0':
     dependencies:
       '@types/long': 4.0.2
       '@types/offscreencanvas': 2019.7.3
@@ -3289,9 +3289,9 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@tensorflow/tfjs-data@4.17.0(@tensorflow/tfjs-core@4.17.0)(seedrandom@3.0.5)':
+  '@tensorflow/tfjs-data@4.18.0(@tensorflow/tfjs-core@4.18.0)(seedrandom@3.0.5)':
     dependencies:
-      '@tensorflow/tfjs-core': 4.17.0
+      '@tensorflow/tfjs-core': 4.18.0
       '@types/node-fetch': 2.6.11
       node-fetch: 2.6.13
       seedrandom: 3.0.5
@@ -3299,18 +3299,18 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@tensorflow/tfjs-layers@4.17.0(@tensorflow/tfjs-core@4.17.0)':
+  '@tensorflow/tfjs-layers@4.18.0(@tensorflow/tfjs-core@4.18.0)':
     dependencies:
-      '@tensorflow/tfjs-core': 4.17.0
+      '@tensorflow/tfjs-core': 4.18.0
 
-  '@tensorflow/tfjs@4.17.0(seedrandom@3.0.5)':
+  '@tensorflow/tfjs@4.18.0(seedrandom@3.0.5)':
     dependencies:
-      '@tensorflow/tfjs-backend-cpu': 4.17.0(@tensorflow/tfjs-core@4.17.0)
-      '@tensorflow/tfjs-backend-webgl': 4.17.0(@tensorflow/tfjs-core@4.17.0)
-      '@tensorflow/tfjs-converter': 4.17.0(@tensorflow/tfjs-core@4.17.0)
-      '@tensorflow/tfjs-core': 4.17.0
-      '@tensorflow/tfjs-data': 4.17.0(@tensorflow/tfjs-core@4.17.0)(seedrandom@3.0.5)
-      '@tensorflow/tfjs-layers': 4.17.0(@tensorflow/tfjs-core@4.17.0)
+      '@tensorflow/tfjs-backend-cpu': 4.18.0(@tensorflow/tfjs-core@4.18.0)
+      '@tensorflow/tfjs-backend-webgl': 4.18.0(@tensorflow/tfjs-core@4.18.0)
+      '@tensorflow/tfjs-converter': 4.18.0(@tensorflow/tfjs-core@4.18.0)
+      '@tensorflow/tfjs-core': 4.18.0
+      '@tensorflow/tfjs-data': 4.18.0(@tensorflow/tfjs-core@4.18.0)(seedrandom@3.0.5)
+      '@tensorflow/tfjs-layers': 4.18.0(@tensorflow/tfjs-core@4.18.0)
       argparse: 1.0.10
       chalk: 4.1.2
       core-js: 3.29.1
@@ -3466,14 +3466,14 @@ snapshots:
     dependencies:
       '@types/yargs-parser': 21.0.3
 
-  '@vitejs/plugin-react@4.2.1(vite@5.2.9(@types/node@20.12.2))':
+  '@vitejs/plugin-react@4.2.1(vite@5.2.10(@types/node@20.12.2))':
     dependencies:
       '@babel/core': 7.24.3
       '@babel/plugin-transform-react-jsx-self': 7.24.1(@babel/core@7.24.3)
       '@babel/plugin-transform-react-jsx-source': 7.24.1(@babel/core@7.24.3)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.0
-      vite: 5.2.9(@types/node@20.12.2)
+      vite: 5.2.10(@types/node@20.12.2)
     transitivePeerDependencies:
       - supports-color
 
@@ -4503,9 +4503,9 @@ snapshots:
     dependencies:
       path-key: 3.1.1
 
-  nsfwjs@4.1.0(@tensorflow/tfjs@4.17.0(seedrandom@3.0.5)):
+  nsfwjs@4.1.0(@tensorflow/tfjs@4.18.0(seedrandom@3.0.5)):
     dependencies:
-      '@tensorflow/tfjs': 4.17.0(seedrandom@3.0.5)
+      '@tensorflow/tfjs': 4.18.0(seedrandom@3.0.5)
 
   object-assign@4.1.1: {}
 
@@ -4793,26 +4793,26 @@ snapshots:
 
   reusify@1.0.4: {}
 
-  rollup@4.14.3:
+  rollup@4.16.0:
     dependencies:
       '@types/estree': 1.0.5
     optionalDependencies:
-      '@rollup/rollup-android-arm-eabi': 4.14.3
-      '@rollup/rollup-android-arm64': 4.14.3
-      '@rollup/rollup-darwin-arm64': 4.14.3
-      '@rollup/rollup-darwin-x64': 4.14.3
-      '@rollup/rollup-linux-arm-gnueabihf': 4.14.3
-      '@rollup/rollup-linux-arm-musleabihf': 4.14.3
-      '@rollup/rollup-linux-arm64-gnu': 4.14.3
-      '@rollup/rollup-linux-arm64-musl': 4.14.3
-      '@rollup/rollup-linux-powerpc64le-gnu': 4.14.3
-      '@rollup/rollup-linux-riscv64-gnu': 4.14.3
-      '@rollup/rollup-linux-s390x-gnu': 4.14.3
-      '@rollup/rollup-linux-x64-gnu': 4.14.3
-      '@rollup/rollup-linux-x64-musl': 4.14.3
-      '@rollup/rollup-win32-arm64-msvc': 4.14.3
-      '@rollup/rollup-win32-ia32-msvc': 4.14.3
-      '@rollup/rollup-win32-x64-msvc': 4.14.3
+      '@rollup/rollup-android-arm-eabi': 4.16.0
+      '@rollup/rollup-android-arm64': 4.16.0
+      '@rollup/rollup-darwin-arm64': 4.16.0
+      '@rollup/rollup-darwin-x64': 4.16.0
+      '@rollup/rollup-linux-arm-gnueabihf': 4.16.0
+      '@rollup/rollup-linux-arm-musleabihf': 4.16.0
+      '@rollup/rollup-linux-arm64-gnu': 4.16.0
+      '@rollup/rollup-linux-arm64-musl': 4.16.0
+      '@rollup/rollup-linux-powerpc64le-gnu': 4.16.0
+      '@rollup/rollup-linux-riscv64-gnu': 4.16.0
+      '@rollup/rollup-linux-s390x-gnu': 4.16.0
+      '@rollup/rollup-linux-x64-gnu': 4.16.0
+      '@rollup/rollup-linux-x64-musl': 4.16.0
+      '@rollup/rollup-win32-arm64-msvc': 4.16.0
+      '@rollup/rollup-win32-ia32-msvc': 4.16.0
+      '@rollup/rollup-win32-x64-msvc': 4.16.0
       fsevents: 2.3.3
 
   run-parallel@1.2.0:
@@ -5020,11 +5020,11 @@ snapshots:
 
   universalify@2.0.1: {}
 
-  unplugin-fonts@1.1.1(vite@5.2.9(@types/node@20.12.2)):
+  unplugin-fonts@1.1.1(vite@5.2.10(@types/node@20.12.2)):
     dependencies:
       fast-glob: 3.3.2
       unplugin: 1.10.1
-      vite: 5.2.9(@types/node@20.12.2)
+      vite: 5.2.10(@types/node@20.12.2)
 
   unplugin@1.10.1:
     dependencies:
@@ -5053,32 +5053,32 @@ snapshots:
       '@types/istanbul-lib-coverage': 2.0.6
       convert-source-map: 2.0.0
 
-  vite-plugin-mkcert@1.17.5(vite@5.2.9(@types/node@20.12.2)):
+  vite-plugin-mkcert@1.17.5(vite@5.2.10(@types/node@20.12.2)):
     dependencies:
       '@octokit/rest': 20.0.2
       axios: 1.6.8(debug@4.3.4)
       debug: 4.3.4
       picocolors: 1.0.0
-      vite: 5.2.9(@types/node@20.12.2)
+      vite: 5.2.10(@types/node@20.12.2)
     transitivePeerDependencies:
       - supports-color
 
-  vite-tsconfig-paths@4.3.2(typescript@5.4.5)(vite@5.2.9(@types/node@20.12.2)):
+  vite-tsconfig-paths@4.3.2(typescript@5.4.5)(vite@5.2.10(@types/node@20.12.2)):
     dependencies:
       debug: 4.3.4
       globrex: 0.1.2
       tsconfck: 3.0.3(typescript@5.4.5)
     optionalDependencies:
-      vite: 5.2.9(@types/node@20.12.2)
+      vite: 5.2.10(@types/node@20.12.2)
     transitivePeerDependencies:
       - supports-color
       - typescript
 
-  vite@5.2.9(@types/node@20.12.2):
+  vite@5.2.10(@types/node@20.12.2):
     dependencies:
       esbuild: 0.20.2
       postcss: 8.4.38
-      rollup: 4.14.3
+      rollup: 4.16.0
     optionalDependencies:
       '@types/node': 20.12.2
       fsevents: 2.3.3
