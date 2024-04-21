@@ -93,7 +93,7 @@ const Profile = () => {
               </div>
             </div>
             <div className="flex w-full justify-center lg:order-2 lg:w-1/4">
-              <div className="relative max-w-[50px] sm:max-w-[75px] md:max-w-[100px]">
+              <div className="relative max-w-[96px] sm:max-w-[152px]">
                 <a className="rounded-full" href={data.photo && `${data.photo}`}>
                   <picture>
                     <source

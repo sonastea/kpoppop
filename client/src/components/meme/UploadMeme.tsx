@@ -92,7 +92,7 @@ const UploadMeme = () => {
           }
           if (response.status === 201) {
             setTimeout(() => {
-              toast.success('Successfully uploaded meme.')
+              toast.success('Successfully uploaded meme.');
               setUploadFinished(true);
               setUploading(false);
               window.location.reload();
