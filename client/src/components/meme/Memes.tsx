@@ -5,17 +5,17 @@ import { DAY } from 'Global.d';
 import { useAuth } from 'contexts/AuthContext';
 import useRemoveMemeStore from 'hooks/useRemoveMeme';
 import { debounce } from 'lodash';
-import { lazy, useEffect, useRef, useState } from 'react';
+import { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import { toast } from 'react-toastify';
-import InteractiveButtons from './InteractiveButtons';
 import { fetchMemes } from './MemeAPI';
 import MemeLazyImage from './MemeLazyImage';
-import MemeMenu from './MemeMenu';
 import MemesSkeletonLoader from './MemesSkeletonLoader';
 
 const ConfirmationDialog = lazy(() => import('./ConfirmationDialog'));
+const InteractiveButtons = lazy(() => import('./InteractiveButtons'));
 const LoginModal = lazy(() => import('../user/LoginModal'));
+const MemeMenu = lazy(() => import('./MemeMenu'));
 const ReportMemeModal = lazy(() => import('./ReportMemeModal'));
 
 type Meme = {
@@ -47,7 +47,18 @@ const Memes = () => {
   useEffect(() => {
     const preloadFirstMemes = async () => {
       const firstMemes = posts.slice(0, 3);
-      const urlsToPreload = firstMemes.map((meme: Meme) => meme.url);
+      const urlsToPreload = firstMemes.map((meme: Meme) => {
+        let baseSrc = meme.url;
+        if (!baseSrc.endsWith('.mp4')) {
+          if (window.matchMedia('(max-width: 639px)').matches) {
+            baseSrc += '?tr=w-336';
+          } else if (window.matchMedia('(min-width: 640px)').matches) {
+            baseSrc += '?tr=w-672';
+          }
+        }
+        return baseSrc;
+      });
+
       await Promise.all(
         urlsToPreload.map((url: string) => {
           return new Promise((resolve, reject) => {
@@ -131,9 +142,11 @@ const Memes = () => {
 
   return (
     <>
-      {!user && <LoginModal />}
-      <ReportMemeModal />
-      <ConfirmationDialog title={title} updateList={removeMemeFromList} />
+      <Suspense>
+        {!user && <LoginModal />}
+        <ReportMemeModal />
+        <ConfirmationDialog title={title} updateList={removeMemeFromList} />
+      </Suspense>
       <ul className="meme-container flex flex-col items-center overflow-hidden" ref={postsRef}>
         {loading && <MemesSkeletonLoader />}
         {posts &&
