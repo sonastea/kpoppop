@@ -18,11 +18,14 @@ export default defineConfig(() => {
                 return sub1.toString();
               }
               const name2 = basic.split('/')[1];
+              if (name2.includes('react-router-dom')) {
+                return 'react-router-dom';
+              }
               const chunkNames = {
                 '@tensorflow+tfjs-backend': 'tensorflow_tfjs_backend',
                 '@tensorflow+tfjs-core': 'tensorflow_tfjs_core',
                 '@tensorflow+tfjs': 'tensorflow_tfjs',
-                react: 'react',
+                'react-router': 'react-router',
               };
               for (const prefix in chunkNames) {
                 if (name2.startsWith(prefix)) {
