@@ -19,7 +19,7 @@ import {
 } from '@nestjs/common';
 import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { SkipThrottle, ThrottlerGuard } from '@nestjs/throttler';
-import { Role, User } from '@prisma/client';
+import { Prisma, Role, User } from '@prisma/client';
 import { randomUUID } from 'crypto';
 import { Request, Response } from 'express';
 import * as firebase from 'firebase-admin';
@@ -31,6 +31,7 @@ import { SessionGuard } from 'src/auth/guards/session.guard';
 import { LocalSerializer } from 'src/auth/serializers/local.serializer';
 import { PrismaService } from 'src/database/prisma.service';
 /* import { MailService } from 'src/mail/mail.service'; */
+import * as cookieParser from 'cookie-parser';
 import { UserService } from './user.service';
 import path = require('path');
 
@@ -100,16 +101,30 @@ export class UserController {
   @UseGuards(SessionGuard)
   @HttpCode(205)
   @Post('logout')
-  async logout(@Res() res: Response): Promise<any> {
-    res
-      .clearCookie('connect.sid', {
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-        httpOnly: true,
-        secure: true,
-        domain: process.env.NODE_ENV === 'production' ? '.kpoppop.com' : null,
-        sameSite: process.env.NODE_ENV === 'production' ? 'lax' : 'none',
-      })
-      .end();
+  async logout(@Req() req: Request, @Res() res: Response): Promise<any> {
+    let deleted: Prisma.SessionCreateInput;
+    const sid = cookieParser.signedCookie(
+      req.cookies['connect.sid'],
+      process.env.SESSION_SECRET_KEY
+    );
+
+    if (sid) {
+      deleted = await this.prisma.session.delete({ where: { sid } });
+    }
+
+    res.clearCookie('connect.sid', {
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      httpOnly: true,
+      secure: true,
+      domain: process.env.NODE_ENV === 'production' ? '.kpoppop.com' : null,
+      sameSite: process.env.NODE_ENV === 'production' ? 'lax' : 'none',
+    });
+
+    if (deleted.sid === sid) {
+      return res.send('Logout successfull.');
+    }
+
+    return res.status(404).send('Session not found.');
   }
 
   @UseGuards(SessionGuard)

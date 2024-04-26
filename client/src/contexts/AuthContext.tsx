@@ -95,6 +95,11 @@ const AuthProviderComponent = ({
         if (response.ok) {
           dispatch({ type: ActionType.LOGOUT, payload: {} });
         }
+        return response.text();
+      })
+      .then((statusText: string) => {
+        console.warn(statusText);
+        dispatch({ type: ActionType.LOGOUT, payload: {} });
       })
       .catch((error) => console.log(error));
   }, [dispatch]);
