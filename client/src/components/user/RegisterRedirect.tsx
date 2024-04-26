@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { createLocalLinkedUser, linkDiscord, linkedDiscord } from 'components/auth/DiscordAPI';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 type FormData = {
@@ -27,6 +28,7 @@ const RegisterRedirect = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [linkExisting, setLinkExisting] = useState<boolean>();
   const [linked, setLinked] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const {
     formState: { errors },
@@ -43,7 +45,7 @@ const RegisterRedirect = () => {
           if (data.linked) {
             setLinked(true);
             setTimeout(() => {
-              window.location.href = '/';
+              navigate('/');
             }, 1000);
           }
           setData(data);
@@ -89,30 +91,32 @@ const RegisterRedirect = () => {
   const InitialPrompt = () => {
     if (linkExisting === undefined && !linked) {
       return (
-        <div className="flex items-center justify-center mt-20">
-          <div className="p-8 border rounded shadow-md bg-opacity-95 md:max-w-lg border-once-200">
+        <div className="mt-20 flex items-center justify-center">
+          <div className="rounded border border-once-200 bg-opacity-95 p-8 shadow-md md:max-w-lg">
             <form className="space-y-4" id="signupForm" onSubmit={handleSubmit(submitHandler)}>
               {data?.existing && (
                 <>
-                  <h3 className="py-3 font-bold text-center">
+                  <h3 className="py-3 text-center font-bold">
                     {`Found existing account with email ${data.email}`}
                   </h3>
                   <div className="space-y-3">
                     <button
-                      className="w-full px-2 py-2 overflow-hidden font-bold border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
+                      className="duration-400 w-full overflow-hidden rounded-md border-once-400
+                        bg-once-400 px-2 py-2 font-bold transition hover:bg-once"
                       type="button"
                       onClick={() => setLinkExisting(true)}
                     >
                       Link account <span className="underline">{data?.existing}</span>{' '}
                       {` to ${data?.SocialType}`}
                     </button>
-                    <h3 className="font-bold text-center">or</h3>
+                    <h3 className="text-center font-bold">or</h3>
                   </div>
                 </>
               )}
 
               <button
-                className="w-full px-2 py-2 overflow-hidden font-bold border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
+                className="duration-400 w-full overflow-hidden rounded-md border-once-400
+                  bg-once-400 px-2 py-2 font-bold transition hover:bg-once"
                 type="button"
                 onClick={() => setLinkExisting(false)}
               >
@@ -130,38 +134,41 @@ const RegisterRedirect = () => {
   const LinkAccount = () => {
     if (linkExisting) {
       return (
-        <div className="flex items-center justify-center mt-20">
-          <div className="p-8 border rounded shadow-md bg-opacity-95 md:max-w-lg border-once-200">
+        <div className="mt-20 flex items-center justify-center">
+          <div className="rounded border border-once-200 bg-opacity-95 p-8 shadow-md md:max-w-lg">
             <form className="space-y-4" id="signupForm">
-              <h3 className="py-3 font-bold text-center whitespace-nowrap">
+              <h3 className="whitespace-nowrap py-3 text-center font-bold">
                 {`Link account to ${data?.SocialType}?`}
               </h3>
               <div>
-                <label className="block mb-2 font-bold ">Username</label>
+                <label className="mb-2 block font-bold ">Username</label>
                 <input
                   required
                   disabled
-                  className="cursor-not-allowed w-full p-1 border border-gray-800 rounded focus:outline-none focus:border-once"
+                  className="w-full cursor-not-allowed rounded border border-gray-800 p-1
+                    focus:border-once focus:outline-none"
                   type="text"
                   placeholder={data?.existing}
                 />
               </div>
 
               <div>
-                <label className="block mb-2 font-bold ">Email</label>
+                <label className="mb-2 block font-bold ">Email</label>
                 <input
                   required
                   disabled
-                  className="cursor-not-allowed w-full p-1 border border-gray-800 rounded focus:outline-none focus:border-once"
+                  className="w-full cursor-not-allowed rounded border border-gray-800 p-1
+                    focus:border-once focus:outline-none"
                   type="email"
                   {...register('email', { required: true })}
                   placeholder={data?.email}
                 />
               </div>
 
-              <div className="flex py-3 space-x-3">
+              <div className="flex space-x-3 py-3">
                 <button
-                  className="w-1/2 px-2 py-2 overflow-hidden font-bold border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
+                  className="duration-400 w-1/2 overflow-hidden rounded-md border-once-400
+                    bg-once-400 px-2 py-2 font-bold transition hover:bg-once"
                   type="button"
                   disabled={isSubmitting}
                   onClick={() => linkAccountToDiscord()}
@@ -169,7 +176,8 @@ const RegisterRedirect = () => {
                   Yes
                 </button>
                 <button
-                  className="w-1/2 px-2 py-2 overflow-hidden font-bold border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
+                  className="duration-400 w-1/2 overflow-hidden rounded-md border-once-400
+                    bg-once-400 px-2 py-2 font-bold transition hover:bg-once"
                   type="button"
                   disabled={isSubmitting}
                   onClick={() => window.location.reload()}
@@ -197,25 +205,27 @@ const RegisterRedirect = () => {
   const CreateAccount = () => {
     if (!linkExisting && linkExisting !== undefined) {
       return (
-        <div className="flex items-center justify-center mt-20">
-          <div className="p-8 border rounded shadow-md md:max-w-lg">
+        <div className="mt-20 flex items-center justify-center">
+          <div className="rounded border p-8 shadow-md md:max-w-lg">
             <form className="space-y-4" onSubmit={handleSubmit(submitHandler)}>
-              <h3 className="py-3 font-semibold text-center">Create new kpoppop account</h3>
+              <h3 className="py-3 text-center font-semibold">Create new kpoppop account</h3>
               <div>
-                <label className="block mb-2 font-bold ">Username</label>
+                <label className="mb-2 block font-bold ">Username</label>
                 <input
                   required
-                  className="w-full p-1 border border-gray-800 rounded focus:outline-none focus:border-once"
+                  className="w-full rounded border border-gray-800 p-1 focus:border-once
+                    focus:outline-none"
                   type="text"
                   {...register('username', { required: true })}
                 />
               </div>
 
               <div>
-                <label className="block mb-2 font-bold ">Email</label>
+                <label className="mb-2 block font-bold ">Email</label>
                 <input
                   required
-                  className="w-full p-1 border border-gray-800 rounded focus:outline-none focus:border-once"
+                  className="w-full rounded border border-gray-800 p-1 focus:border-once
+                    focus:outline-none"
                   type="email"
                   {...register('email', { required: true })}
                 />
@@ -227,7 +237,8 @@ const RegisterRedirect = () => {
               </div>
               <div className="flex justify-center py-3">
                 <button
-                  className="cursor-pointer w-full px-2 py-2 overflow-hidden font-semibold border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400"
+                  className="duration-400 w-full cursor-pointer overflow-hidden rounded-md
+                    border-once-400 bg-once-400 px-2 py-2 font-semibold transition hover:bg-once"
                   type="submit"
                 >
                   Link to discord
@@ -254,7 +265,7 @@ const RegisterRedirect = () => {
     return (
       <>
         {linked && (
-          <div className="text-center mt-20 text-xl text-once font-bold">
+          <div className="mt-20 text-center text-xl font-bold text-once">
             Found linked account, redirecting...
             <FontAwesomeIcon className="ml-2" icon={faSpinner} spin />
           </div>
