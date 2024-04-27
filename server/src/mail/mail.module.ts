@@ -1,4 +1,4 @@
-import { MailerModule } from '@nestjs-modules/mailer';
+/* import { MailerModule } from '@nestjs-modules/mailer';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
@@ -36,4 +36,5 @@ import { MailService } from './mail.service';
   providers: [MailService, PrismaService],
   exports: [MailService, JwtModule],
 })
-export class MailModule {}
+
+export class MailModule {} */
