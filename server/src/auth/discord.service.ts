@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '@oauth-everything/passport-discord';
+import { DiscordUser as User } from 'passport-discord-auth';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/database/prisma.service';
 

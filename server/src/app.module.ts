@@ -84,4 +84,4 @@ import { UserService } from './user/user.service';
   ],
   providers: [PrismaService, MemeService, UserService, LocalStrategy, LocalSerializer],
 })
-export class AppModule { }
+export class AppModule {}

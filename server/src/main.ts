@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import * as compression from 'compression';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
 import * as firebase from 'firebase-admin';
@@ -9,7 +10,6 @@ import { AppModule } from './app.module';
 import { MyLogger } from './logger/my-logger.service';
 import { RedisIoAdapter } from './sockets/redis.adapter';
 import { prismaSessionStore } from './store/prisma-session-store';
-import * as compression from 'compression';
 
 (BigInt.prototype as any).toJSON = function () {
   return Number(this);
@@ -27,6 +27,13 @@ export const cookie: session.CookieOptions = {
   sameSite: process.env.NODE_ENV === 'production' ? 'lax' : 'none',
 };
 
+const sessionOpts: session.SessionOptions = {
+  resave: false,
+  saveUninitialized: false,
+  store: prismaSessionStore,
+  secret: process.env.SESSION_SECRET_KEY,
+};
+
 async function bootstrap() {
   // Firebase Initialization
   const serviceAccount = require('../firebaseCredentials.json');
@@ -42,10 +49,7 @@ async function bootstrap() {
 
   const sessionOptions = {
     cookie,
-    resave: false,
-    saveUninitialized: false,
-    store: prismaSessionStore,
-    secret: process.env.SESSION_SECRET_KEY,
+    ...sessionOpts,
   };
 
   if (process.env.NODE_ENV === 'production') {
