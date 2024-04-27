@@ -41,7 +41,7 @@ const RegisterRedirect = () => {
     const linked = async () => {
       await linkedDiscord()
         .then((data) => {
-          if (data.statusCode === 403) window.location.href = '/';
+          if (data.statusCode === 403) navigate('/');
           if (data.linked) {
             setLinked(true);
             setTimeout(() => {
@@ -62,7 +62,7 @@ const RegisterRedirect = () => {
       if (data.userId) {
         setAccountCreated(true);
         setTimeout(() => {
-          window.location.href = '/';
+          navigate('/');
         }, 2000);
       }
       if (data.errors) {
@@ -83,7 +83,7 @@ const RegisterRedirect = () => {
       if (data.linked) setAccountCreated(true);
       else toast.error('Failed to link accounts. Please try again later.');
       setTimeout(() => {
-        window.location.href = '/';
+        navigate('/');
       }, 2000);
     });
   };
