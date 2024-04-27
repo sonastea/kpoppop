@@ -1,16 +1,14 @@
-/* eslint-disable max-len */
-/* eslint-disable @typescript-eslint/no-empty-function */
-import { MailerService } from '@nestjs-modules/mailer';
+/* import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/database/prisma.service';
-import ejs = require('ejs');
+import * as ejs from 'ejs';
 
 @Injectable()
 export class MailService {
   constructor(
-    private readonly mailerService: MailerService,
+    // private readonly mailerService: MailerService,
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
     private readonly prisma: PrismaService
@@ -72,4 +70,4 @@ export class MailService {
       text,
     });
   }
-}
+} */
