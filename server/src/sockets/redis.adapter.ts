@@ -51,7 +51,8 @@ export class RedisIoAdapter extends IoAdapter {
   createIOServer(port: number, options?: ServerOptions) {
     options.allowRequest = async (request, allowFunction) => {
       if (!request.headers.cookie) return;
-      const unparsed_sid = request.headers.cookie.match('(^| )connect.sid=([^;]+)')[2];
+      const cookie = request.headers.cookie.match('(^| )connect.sid=([^;]+)');
+      const unparsed_sid = cookie ? cookie[2] : null;
       if (unparsed_sid) {
         const sid = cookieParser.signedCookie(
           decodeURIComponent(unparsed_sid),
