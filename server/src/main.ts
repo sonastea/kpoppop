@@ -1,7 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import * as compression from 'compression';
 import * as cookieParser from 'cookie-parser';
-import * as session from 'express-session';
+import type { CookieOptions, SessionOptions } from 'express-session';
+import * as expressSession from 'express-session';
 import * as firebase from 'firebase-admin';
 import * as fs from 'fs';
 import * as passport from 'passport';
@@ -19,7 +20,7 @@ async function whatMode(logger: MyLogger) {
   logger.log(`Running in ${process.env.NODE_ENV} mode on port ${process.env.PORT}`);
 }
 
-export const cookie: session.CookieOptions = {
+export const cookie: CookieOptions = {
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   httpOnly: true,
   secure: true,
@@ -27,7 +28,7 @@ export const cookie: session.CookieOptions = {
   sameSite: process.env.NODE_ENV === 'production' ? 'lax' : 'none',
 };
 
-const sessionOpts: session.SessionOptions = {
+const sessionOpts: SessionOptions = {
   resave: false,
   saveUninitialized: false,
   store: prismaSessionStore,
@@ -71,7 +72,7 @@ async function bootstrap() {
     app.use(compression());
     app.use(cookieParser());
     app.use(passport.initialize());
-    app.use(session(sessionOptions));
+    app.use(expressSession(sessionOptions));
     app.useWebSocketAdapter(redisIoAdapter);
 
     app.enableShutdownHooks();
@@ -95,7 +96,7 @@ async function bootstrap() {
     app.use(compression());
     app.use(cookieParser());
     app.use(passport.initialize());
-    app.use(session(sessionOptions));
+    app.use(expressSession(sessionOptions));
     app.useWebSocketAdapter(redisIoAdapter);
 
     app.enableShutdownHooks();
