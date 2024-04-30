@@ -32,23 +32,38 @@ const MemeLazyImage: React.FC<MemeLazyImageProps> = ({ id, src, title, alt, visi
 
   if (isVideo) {
     return (
-      <video
-        key={title}
-        className="mx-4 aspect-square w-full rounded-md object-cover sm:aspect-auto sm:max-h-96"
-        autoPlay
-        controls
-        muted
-        loop
-        src={src}
-      >
-        <source src={src} type="video/mp4" />
-      </video>
+      <button className="mx-4 w-full" onClick={() => toggleMediaLightBox()} aria-label={alt}>
+        <MediaLightbox
+          open={openLightbox}
+          setOpen={toggleMediaLightBox}
+          src={src}
+          alt={alt}
+          isVideo={true}
+        />
+        <video
+          key={title}
+          className="aspect-square w-full rounded-md object-cover sm:aspect-auto sm:max-h-96"
+          autoPlay
+          controls
+          muted
+          loop
+          src={src}
+        >
+          <source src={src} type="video/mp4" />
+        </video>
+      </button>
     );
   }
 
   return (
     <button className="mx-4 w-full" onClick={() => toggleMediaLightBox()} aria-label={alt}>
-      <MediaLightbox open={openLightbox} setOpen={toggleMediaLightBox} src={src} alt={alt} />
+      <MediaLightbox
+        open={openLightbox}
+        setOpen={toggleMediaLightBox}
+        src={src}
+        alt={alt}
+        isVideo={false}
+      />
       <picture className="grid w-full" data-image-id={id}>
         <source media="(max-width: 639px)" srcSet={src336} />
         <source media="(min-width: 640px)" srcSet={src640} />
