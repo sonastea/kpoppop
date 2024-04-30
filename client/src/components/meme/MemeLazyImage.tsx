@@ -12,7 +12,7 @@ const PlaceHolder = () => {
   return (
     <div
       className="mt-2 flex h-96 max-h-64 w-full items-center justify-center rounded bg-gray-200
-        object-scale-down md:max-h-96 md:object-contain"
+        object-cover md:max-h-96 md:object-contain"
     />
   );
 };
@@ -24,7 +24,7 @@ const MemeLazyImage: React.FC<MemeLazyImageProps> = ({ id, src, title, alt, visi
     return (
       <video
         key={title}
-        className="mx-auto aspect-square w-full object-cover md:aspect-auto md:max-h-96"
+        className="mx-4 aspect-square w-full rounded-md object-cover md:aspect-auto md:max-h-96"
         autoPlay
         controls
         muted
@@ -38,13 +38,13 @@ const MemeLazyImage: React.FC<MemeLazyImageProps> = ({ id, src, title, alt, visi
 
   return (
     <a className="contents" href={`/meme/${id}/${title}`} aria-label={title}>
-      <picture className="inline-block">
+      <picture className="mx-4 grid w-full">
         <source media="(max-width: 639px)" srcSet={`${src}?tr=w-336`} />
-        <source media="(min-width: 640px)" srcSet={`${src}?tr=w-672`} />
+        <source media="(min-width: 640px)" srcSet={`${src}?tr=w-640`} />
         <LazyLoadImage
           effect="blur"
-          className="mt-2 h-64 max-h-64 w-[336px] object-scale-down md:h-96 md:max-h-96 md:w-[672px]
-            md:object-contain"
+          className="mt-2 flex h-64 max-h-64 w-full rounded-md object-cover md:h-96 md:max-h-96
+            md:w-[672px]"
           src={src}
           alt={alt}
           visibleByDefault={visibleByDefault}
