@@ -43,11 +43,13 @@ const UploadMeme = () => {
     'video/mp4',
   ];
 
+  const TypeSkipCompress = ['video/quicktime', 'video/mp4', 'image/gif'];
+
   const memeHandler: SubmitHandler<MemeFormData> = async (data) => {
     const formData = new FormData();
     if (files && files.length > 0) {
       let compressed;
-      if (files[0].type === 'video/quicktime' || files[0].type === 'video/mp4') {
+      if (TypeSkipCompress.includes(files[0].type)) {
         compressed = files[0];
       } else {
         compressed = await compressImage(files[0]);
