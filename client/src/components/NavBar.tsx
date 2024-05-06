@@ -190,16 +190,17 @@ const NavBar = () => {
           </div>
 
           <div
-            className={`${!isActiveMobileNav && 'translate-x-full'} fixed right-0 z-50 h-screen
-            w-screen transform bg-transparent backdrop-brightness-50 ease-in-out md:hidden`}
+            className={`${isActiveMobileNav ? 'flex' : 'hidden'} fixed z-50 h-screen w-screen
+            bg-transparent backdrop-brightness-50 duration-150 md:hidden`}
             onClick={() => setMobileNav((prev) => !prev)}
+            aria-label="Toggle mobile nav"
           />
 
           <div
             id="mobileNav"
-            className={`${!isActiveMobileNav && 'translate-x-full'} fixed right-0 z-100 h-screen
-            w-3/4 transform overflow-auto rounded-l bg-white py-6 pl-6 pr-10 shadow-md duration-300
-            ease-in-out sm:w-64 md:hidden`}
+            className={`${!isActiveMobileNav && 'translate-x-full duration-100'} fixed right-0 z-100
+            h-screen w-3/4 transform overflow-auto rounded-l bg-white py-6 pl-6 pr-10 shadow-md
+            duration-300 ease-in-out sm:w-64 md:hidden`}
           >
             <Link
               className="aspect-w-2 aspect-h-1 inline-block w-32 sm:w-48"
@@ -214,7 +215,7 @@ const NavBar = () => {
             </Link>
             <div>
               <button
-                className="absolute right-4 top-4 px-2 py-1"
+                className="absolute right-4 top-4 px-2.5 py-2"
                 aria-label="Toggle mobile nav"
                 onClick={() => setMobileNav((prev) => !prev)}
               >
