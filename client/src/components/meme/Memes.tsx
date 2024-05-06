@@ -17,6 +17,7 @@ const InteractiveButtons = lazy(() => import('./InteractiveButtons'));
 const LoginModal = lazy(() => import('../user/LoginModal'));
 const MemeMenu = lazy(() => import('./MemeMenu'));
 const ReportMemeModal = lazy(() => import('./ReportMemeModal'));
+const UploadMeme = lazy(() => import('./UploadMeme'));
 
 type Meme = {
   author: { username: string };
@@ -149,6 +150,7 @@ const Memes = () => {
       </Suspense>
       <ul className="meme-container flex flex-col items-center overflow-hidden" ref={postsRef}>
         {loading && <MemesSkeletonLoader />}
+        <UploadMeme />
         {posts &&
           posts.map((meme: Meme, index: number) => {
             const title = meme.title.replace(/ /g, '_');
