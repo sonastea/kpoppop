@@ -40,7 +40,9 @@ const Layout = () => {
       />
       <Suspense fallback={<LoadingUI />}>
         <NavBar />
-        <Outlet />
+        <div className="mt-nav-mobile sm:mt-nav-larger">
+          <Outlet />
+        </div>
       </Suspense>
     </AuthProvider>
   );

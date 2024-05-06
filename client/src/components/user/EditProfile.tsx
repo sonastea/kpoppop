@@ -294,7 +294,9 @@ const EditProfile = () => {
       <div className="mx-auto mt-4 flex h-3/5 w-full max-w-screen-lg justify-center pb-40">
         <div className="w-full sm:w-3/4">
           <form className="edit-socials">
-            <h2 className="m-1 border-b border-slate-300 pb-3 text-2xl font-bold md:m-0 md:text-3xl">
+            <h2
+              className={'m-1 border-b border-slate-300 pb-3 text-2xl font-bold md:m-0 md:text-3xl'}
+            >
               Social Links
               <p className="text-sm font-normal text-slate-500">
                 Add up to 6 social media links to display on your profile.

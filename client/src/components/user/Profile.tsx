@@ -52,126 +52,128 @@ const Profile = () => {
 
   if (!loading && data && !data?.errors?.User) {
     return (
-      <div className="mx-auto h-auto w-full max-w-screen-2xl">
-        <div className="mx-auto flex h-auto max-h-[192px] min-h-[192px] justify-center">
-          <div className="w-full bg-cover bg-center">
-            <a
-              className="banner-anchor"
-              href={`${data?.banner ? data?.banner : '/images/default_banner_white_1920x320.png'}`}
-            >
-              <picture>
-                <source
-                  media="(max-width: 639px)"
-                  srcSet={
-                    data?.banner
-                      ? `${data.banner}?tr=w-448`
-                      : '/images/default_banner_white_1920x320.png'
-                  }
-                />
-                <img
-                  className="h-full w-full object-cover"
-                  src={`${
-                    data?.banner ? data.banner : '/images/default_banner_white_1920x320.png'
-                  }`}
-                  alt="profile-banner"
-                />
-              </picture>
-            </a>
+      <div className="mt-nav-mobile md:mt-nav-larger">
+        <div className="mx-auto h-auto w-full max-w-screen-2xl">
+          <div className="mx-auto flex h-auto max-h-[192px] min-h-[192px] justify-center">
+            <div className="w-full bg-cover bg-center">
+              <a
+                className="banner-anchor"
+                href={`${data?.banner ? data?.banner : '/images/default_banner_white_1920x320.png'}`}
+              >
+                <picture>
+                  <source
+                    media="(max-width: 639px)"
+                    srcSet={
+                      data?.banner
+                        ? `${data.banner}?tr=w-448`
+                        : '/images/default_banner_white_1920x320.png'
+                    }
+                  />
+                  <img
+                    className="h-full w-full object-cover"
+                    src={`${
+                      data?.banner ? data.banner : '/images/default_banner_white_1920x320.png'
+                    }`}
+                    alt="profile-banner"
+                  />
+                </picture>
+              </a>
+            </div>
           </div>
-        </div>
 
-        <div className="mb-6 flex h-full w-full min-w-0 flex-col items-stretch">
-          <div className="flex h-auto w-full flex-wrap justify-center">
-            <div className="order-1 flex w-full justify-center lg:order-2 lg:w-1/3">
-              <div className="m-3 flex flex-col text-center">
-                <span className="text-xl font-bold tracking-wide">{data._count.memes}</span>
-                <span className="text-sm text-gray-600">Posts</span>
+          <div className="mb-6 flex h-full w-full min-w-0 flex-col items-stretch">
+            <div className="flex h-auto w-full flex-wrap justify-center">
+              <div className="order-1 flex w-full justify-center lg:order-2 lg:w-1/3">
+                <div className="m-3 flex flex-col text-center">
+                  <span className="text-xl font-bold tracking-wide">{data._count.memes}</span>
+                  <span className="text-sm text-gray-600">Posts</span>
+                </div>
+                <div className="m-3 flex flex-col text-center">
+                  <span className="text-xl font-bold tracking-wide">{data._count.likedMemes}</span>
+                  <span className="text-sm text-gray-600">Likes</span>
+                </div>
               </div>
-              <div className="m-3 flex flex-col text-center">
-                <span className="text-xl font-bold tracking-wide">{data._count.likedMemes}</span>
-                <span className="text-sm text-gray-600">Likes</span>
-              </div>
-            </div>
-            <div className="flex w-full justify-center lg:order-2 lg:w-1/4">
-              <div className="relative max-w-[96px] sm:max-w-[152px]">
-                <a className="rounded-full" href={data.photo && `${data.photo}`}>
-                  <picture>
-                    <source
-                      media="(max-width: 639px)"
-                      srcSet={
-                        data.photo
-                          ? `${data.photo}?tr=w-72,h-72`
-                          : '/images/default_photo_white_200x200.png'
-                      }
-                    />
-                    <img
-                      className="mt-[-50%] aspect-square rounded-full border border-black bg-white"
-                      src={
-                        data.photo
-                          ? `${data.photo}?tr=w-144,h-144`
-                          : '/images/default_photo_white_200x200.png'
-                      }
-                      alt="profile"
-                      onError={(e: BaseSyntheticEvent) => {
-                        e.currentTarget.src = '/images/default_photo_white_200x200.png';
-                      }}
-                    />
-                  </picture>
-                </a>
-                {username === user?.username && (
-                  <div className="absolute right-[-15px] top-0 text-xs md:text-sm">
-                    <a
-                      aria-label="Profile settings"
-                      href="/profile/settings"
-                      className="w-full text-gray-500 hover:text-once"
-                    >
-                      <FontAwesomeIcon icon={faGear} className="hover:animate-spin-slow" />
-                    </a>
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="w-full lg:order-3 lg:w-1/3">
-              <SocialMedias socialMedias={data?.socialMedias} />
-            </div>
-          </div>
-          <div className="fit-content mx-auto">
-            <h3
-              onClick={() => toggleDisplayName()}
-              className="text-3xl leading-normal lg:m-6 lg:text-4xl"
-            >
-              {showDisplayName ? (
-                <>
-                  {data?.displayname ?? ''}
-                  <span className="text-thrice"> *</span>
-                </>
-              ) : (
-                data?.username
-              )}
-            </h3>
-          </div>
-        </div>
-        <div
-          className="w-full columns-3 gap-3 space-y-6 p-3 text-center text-xs md:columns-4
-            md:text-lg"
-        >
-          {data?.memes?.map((meme: Post) => {
-            const title = meme.title.replace(/ /g, '_');
-            return (
-              <div key={meme.id} className="inline-flex text-center font-semibold">
-                <a className="w-full xl:w-2/3" href={`/meme/${meme.id}/${title}`}>
-                  {meme.url.split('.')[3] === 'mp4' ? (
-                    <video key={meme.title} className="w-full rounded-lg" controls muted>
-                      <source src={meme.url} type="video/mp4" />
-                    </video>
-                  ) : (
-                    <img className="w-full rounded-lg object-cover" src={meme.url} alt="" />
+              <div className="flex w-full justify-center lg:order-2 lg:w-1/4">
+                <div className="relative max-w-[96px] sm:max-w-[152px]">
+                  <a className="rounded-full" href={data.photo && `${data.photo}`}>
+                    <picture>
+                      <source
+                        media="(max-width: 639px)"
+                        srcSet={
+                          data.photo
+                            ? `${data.photo}?tr=w-72,h-72`
+                            : '/images/default_photo_white_200x200.png'
+                        }
+                      />
+                      <img
+                        className="mt-[-50%] aspect-square rounded-full border border-black bg-white"
+                        src={
+                          data.photo
+                            ? `${data.photo}?tr=w-144,h-144`
+                            : '/images/default_photo_white_200x200.png'
+                        }
+                        alt="profile"
+                        onError={(e: BaseSyntheticEvent) => {
+                          e.currentTarget.src = '/images/default_photo_white_200x200.png';
+                        }}
+                      />
+                    </picture>
+                  </a>
+                  {username === user?.username && (
+                    <div className="absolute right-[-15px] top-0 text-xs md:text-sm">
+                      <a
+                        aria-label="Profile settings"
+                        href="/profile/settings"
+                        className="w-full text-gray-500 hover:text-once"
+                      >
+                        <FontAwesomeIcon icon={faGear} className="hover:animate-spin-slow" />
+                      </a>
+                    </div>
                   )}
-                  {meme.title}
-                </a>
+                </div>
               </div>
-            );
-          })}
+              <div className="w-full lg:order-3 lg:w-1/3">
+                <SocialMedias socialMedias={data?.socialMedias} />
+              </div>
+            </div>
+            <div className="fit-content mx-auto">
+              <h3
+                onClick={() => toggleDisplayName()}
+                className="text-3xl leading-normal lg:m-6 lg:text-4xl"
+              >
+                {showDisplayName ? (
+                  <>
+                    {data?.displayname ?? ''}
+                    <span className="text-thrice"> *</span>
+                  </>
+                ) : (
+                  data?.username
+                )}
+              </h3>
+            </div>
+          </div>
+          <div
+            className="w-full columns-3 gap-3 space-y-6 p-3 text-center text-xs md:columns-4
+              md:text-lg"
+          >
+            {data?.memes?.map((meme: Post) => {
+              const title = meme.title.replace(/ /g, '_');
+              return (
+                <div key={meme.id} className="inline-flex text-center font-semibold">
+                  <a className="w-full xl:w-2/3" href={`/meme/${meme.id}/${title}`}>
+                    {meme.url.split('.')[3] === 'mp4' ? (
+                      <video key={meme.title} className="w-full rounded-lg" controls muted>
+                        <source src={meme.url} type="video/mp4" />
+                      </video>
+                    ) : (
+                      <img className="w-full rounded-lg object-cover" src={meme.url} alt="" />
+                    )}
+                    {meme.title}
+                  </a>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     );
