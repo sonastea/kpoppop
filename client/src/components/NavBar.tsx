@@ -3,11 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAuth } from 'contexts/AuthContext';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import NavBarLoggedIn from './NavBarLoggedIn';
 import NavBarLoggedOut from './NavBarLoggedOut';
+import useUploadMeme from './meme/hooks/useUploadMeme';
 
 const NavBar = () => {
   const { user, logout } = useAuth();
+  const { setShowUploadMeme } = useUploadMeme();
   const location = useLocation();
   const [isActiveMobileNav, setMobileNav] = useState<boolean>(false);
   const [active, setActive] = useState<number>();
@@ -15,6 +18,18 @@ const NavBar = () => {
   const setNavItem = (id: number) => {
     setActive(id);
     setMobileNav(false);
+  };
+
+  const toggleUploadMemeModal = () => {
+    if (!user) {
+      toast.error('You must be logged in to upload.');
+      return;
+    }
+
+    if (location.pathname === '/' || location.pathname === '/memes') {
+      setShowUploadMeme();
+      setMobileNav(false);
+    }
   };
 
   const navItems = useMemo(
@@ -29,6 +44,12 @@ const NavBar = () => {
         id: 2,
         name: 'Contact',
         to: '/contact',
+        className: 'p-2 font-semibold text-slate-900 border-b-2 duration-150 hover:border-once',
+      },
+      {
+        id: 3,
+        name: 'Upload',
+        to: 'button',
         className: 'p-2 font-semibold text-slate-900 border-b-2 duration-150 hover:border-once',
       },
     ],
@@ -128,7 +149,7 @@ const NavBar = () => {
   }, [isActiveMobileNav]);
 
   return (
-    <nav className="relative w-full shadow-md">
+    <nav className="fixed z-10 w-full bg-white shadow-md">
       <div className="mx-auto md:max-w-screen-2xl">
         <div className="flex flex-wrap justify-between overflow-hidden md:overflow-visible">
           <div className="flex flex-shrink-0 space-x-2">
@@ -147,19 +168,43 @@ const NavBar = () => {
             </Link>
 
             <ul className="hidden items-center space-x-1 md:flex">
-              {navItems.map((item) => (
-                <li key={item.id}>
-                  <Link
-                    to={`${item.to}`}
-                    className={`${item.className} ${
-                      active === item.id ? 'border-once' : 'border-transparent'
-                    }`}
-                    onClick={() => setNavItem(item.id)}
-                  >
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
+              {navItems.map((item) => {
+                if (item.to === 'button') {
+                  return (
+                    <li key={item.id}>
+                      <Link
+                        role="button"
+                        className={`${
+                          location.pathname !== ('/' || '/memes') &&
+                          'cursor-not-allowed border-none text-slate-900/50'
+                        } ${item.className}
+                        border-transparent`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          toggleUploadMemeModal();
+                        }}
+                        to=" "
+                      >
+                        {item.name}
+                      </Link>
+                    </li>
+                  );
+                }
+
+                return (
+                  <li key={item.id}>
+                    <Link
+                      to={`${item.to}`}
+                      className={`${item.className} ${
+                        active === item.id ? 'border-once' : 'border-transparent'
+                      }`}
+                      onClick={() => setNavItem(item.id)}
+                    >
+                      {item.name}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
@@ -243,6 +288,13 @@ const NavBar = () => {
                       </Link>
                     );
                   })}
+                  <button
+                    className="flex p-2 hover:underline"
+                    aria-label="Upload"
+                    onClick={() => toggleUploadMemeModal()}
+                  >
+                    Upload
+                  </button>
                   <button className="flex p-2 hover:underline" aria-label="Logout" onClick={logout}>
                     Logout
                   </button>

@@ -1,11 +1,12 @@
-import { faSpinner, faCheck, faHourglass, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faHourglass, faSpinner, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { compressImage } from './CompressImage';
 import { useState } from 'react';
-import { submitMeme } from './MemeAPI';
-import { profanityFilter } from 'utils/profanity-filter';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { profanityFilter } from 'utils/profanity-filter';
+import { compressImage } from './CompressImage';
+import { submitMeme } from './MemeAPI';
+import useUploadMemeStore from './hooks/useUploadMeme.tsx';
 
 export type PredictionType = {
   className: string;
@@ -19,7 +20,6 @@ export type MemeFormData = {
 };
 
 const UploadMeme = () => {
-  const [open, setOpen] = useState<boolean>(false);
   const [isUploading, setUploading] = useState<boolean>(false);
   const [uploadFinished, setUploadFinished] = useState<boolean>(false);
   const [files, setFiles] = useState<FileList | null>();
@@ -27,6 +27,7 @@ const UploadMeme = () => {
   const [postable, setPostable] = useState<boolean>(false);
   const [flagged, setFlagged] = useState<boolean>(false);
   const [detecting, setDetecting] = useState<boolean>(false);
+  const { showUploadMeme, setShowUploadMeme } = useUploadMemeStore();
   const {
     formState: { errors },
     register,
@@ -42,16 +43,18 @@ const UploadMeme = () => {
     'video/mp4',
   ];
 
+  const TypeSkipCompress = ['video/quicktime', 'video/mp4', 'image/gif'];
+
   const memeHandler: SubmitHandler<MemeFormData> = async (data) => {
     const formData = new FormData();
     if (files && files.length > 0) {
-      let compressed;
-      if (files[0].type === 'video/quicktime' || files[0].type === 'video/mp4') {
+      let compressed: File;
+      if (TypeSkipCompress.includes(files[0].type)) {
         compressed = files[0];
       } else {
         compressed = await compressImage(files[0]);
       }
-      formData.append('file', compressed as File);
+      formData.append('file', compressed);
     } else {
       formData.append('file', files?.[0] as File);
     }
@@ -184,18 +187,18 @@ const UploadMeme = () => {
 
   return (
     <div className="flex justify-center">
-      <button
-        onClick={() => setOpen((open) => !open)}
+      {/* <button
+        onClick={() => setShowUploadMeme()}
         type="button"
         className="duration-400 z-10 m-4 overflow-hidden whitespace-pre rounded-md border-once-400
           bg-once-400 p-2 font-semibold text-gray-900 transition hover:bg-once"
       >
         Submit a post
-      </button>
+      </button> */}
 
-      {open && (
+      {showUploadMeme && (
         <div
-          onClick={() => setOpen((open) => !open)}
+          onClick={() => setShowUploadMeme()}
           className="fixed inset-0 z-10 flex min-h-screen w-full justify-center backdrop-blur"
         >
           <div
@@ -207,7 +210,7 @@ const UploadMeme = () => {
               <button
                 onClick={() => {
                   setFiles(null);
-                  setOpen((open) => !open);
+                  setShowUploadMeme();
                 }}
                 type="button"
                 className="absolute right-2 top-0 p-2"

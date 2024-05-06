@@ -73,10 +73,7 @@ const Post = () => {
             />
           </div>
           <div className="m-2 flex-1">
-            <div
-              className="text-md flex flex-col items-end hover:text-once-800
-                md:text-xl"
-            >
+            <div className="text-md flex flex-col items-end hover:text-once-800 md:text-xl">
               <a href={`/user/${meme.author.username}`}>{meme.author.username}</a>
               <span className="text-xs text-slate-500 sm:text-sm">
                 {DAY(meme.createdAt).fromNow(false)}{' '}

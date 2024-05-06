@@ -6,12 +6,17 @@ const options = {
   useWebWorker: true,
 };
 
-export const compressImage = async (image: File): Promise<File | undefined> => {
+export const compressImage = async (image: File): Promise<File> => {
   try {
     const compressed = await imageCompression(image, options);
+    const file = new File([compressed], image.name, {
+      lastModified: image.lastModified,
+      type: image.type,
+    });
 
-    return compressed;
+    return file;
   } catch (error) {
     toast.error('There was a problem while compressing your image.');
+    return image;
   }
 };

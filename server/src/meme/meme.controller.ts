@@ -77,7 +77,8 @@ export class MemeController {
       data.flagged = true;
       data.active = false;
     } else {
-      data.flagged = false;
+      data.flagged = file.flagged;
+      data.active = file.active;
     }
 
     if (file) {

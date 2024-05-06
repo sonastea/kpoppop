@@ -44,6 +44,10 @@ export default {
           DEFAULT: '#860038',
         },
       },
+      margin: {
+        'nav-mobile': '56px',
+        'nav-larger': '80px',
+      },
       maxHeight: {
         lg: '32rem',
         '2xl': '42rem',

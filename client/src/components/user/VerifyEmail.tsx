@@ -68,24 +68,28 @@ const VerifyEmail = () => {
   const resendVerify = () => {
     return (
       <>
-        <div className="flex mt-20 justify-center">
+        <div className="mt-20 flex justify-center">
           <form
-            className="h-full border p-6 my-auto shadow-md rounded-md space-y-6"
+            className="my-auto h-full space-y-6 rounded-md border p-6 shadow-md"
             id="email-verify-form"
             onSubmit={handleSubmit(resendHandler)}
           >
-            <div className="flex justify-center w-full h-auto">
+            <div className="flex h-auto w-full justify-center">
               <FontAwesomeIcon className="h-12 md:h-24" icon={faEnvelope} />
             </div>
-            <h3 className="whitespace-pre-line text-md md:text-2xl font-bold text-center text-gray-900">
+            <h3
+              className={`text-md whitespace-pre-line text-center font-bold text-gray-900
+                md:text-2xl`}
+            >
               {verifyError}
             </h3>
 
-            <div className="grid relative border-2 label-outline focus-within:border-once">
+            <div className="label-outline relative grid border-2 focus-within:border-once">
               <input
                 required
                 placeholder=" "
-                className="place-self-center block w-full p-3 text-lg bg-transparent appearance-none focus:outline-none"
+                className="block w-full appearance-none place-self-center bg-transparent p-3 text-lg
+                  focus:outline-none"
                 type="email"
                 {...register('email', {
                   pattern: {
@@ -96,25 +100,29 @@ const VerifyEmail = () => {
                   },
                 })}
               />
-              <label className="text-black/50 absolute top-0 p-3 text-lg bg-white origin-0 -z-1 duration-300">
+              <label
+                className="absolute top-0 -z-1 origin-0 bg-white p-3 text-lg text-black/50
+                  duration-300"
+              >
                 Email
               </label>
             </div>
 
             {errors.email?.message && <span className="text-error">{errors.email.message}</span>}
 
-            <div className="py-3 grid">
+            <div className="grid py-3">
               <button
-                className={`${isResend && 'cursor-not-allowed'
-                  } place-self-center p-2 overflow-hidden font-bold text-gray-900 border-once-400 rounded-md bg-once-400 hover:bg-once disabled:hover:bg-once-400 transition duration-400`}
+                className={`${isResend && 'cursor-not-allowed'} duration-400 place-self-center
+                overflow-hidden rounded-md border-once-400 bg-once-400 p-2 font-bold text-gray-900
+                transition hover:bg-once disabled:hover:bg-once-400`}
                 disabled={isResend && true}
               >
                 Resend verification link
                 {isFailResend === true && (
-                  <FontAwesomeIcon className="text-red-600 pl-2" icon={faX} />
+                  <FontAwesomeIcon className="pl-2 text-red-600" icon={faX} />
                 )}
                 {isFailResend === false && (
-                  <FontAwesomeIcon className="text-green-600 pl-2" icon={faCheck} />
+                  <FontAwesomeIcon className="pl-2 text-green-600" icon={faCheck} />
                 )}
               </button>
             </div>
@@ -126,16 +134,22 @@ const VerifyEmail = () => {
 
   const successfulVerify = () => {
     return (
-      <div className="flex flex-col justify-center p-6 space-y-6 mt-20 border shadow-md rounded-md w-fit mx-auto">
+      <div
+        className="mx-auto mt-20 flex w-fit flex-col justify-center space-y-6 rounded-md border p-6
+          shadow-md"
+      >
         <div>
-          <h3 className="text-lg md:text-3xl py-3 font-bold text-center text-gray-900">
+          <h3 className="py-3 text-center text-lg font-bold text-gray-900 md:text-3xl">
             <FontAwesomeIcon className="pr-2 text-green-600" icon={faCheck} />
             Congratulations. Your email is now verified!
           </h3>
         </div>
 
         <a href="/login" className="place-self-center">
-          <button className="place-self-center p-2 overflow-hidden font-bold text-gray-900 border-once-400 rounded-md bg-once-400 hover:bg-once transition duration-400">
+          <button
+            className="duration-400 place-self-center overflow-hidden rounded-md border-once-400
+              bg-once-400 p-2 font-bold text-gray-900 transition hover:bg-once"
+          >
             Return to login
           </button>
         </a>
@@ -146,7 +160,7 @@ const VerifyEmail = () => {
   return (
     <>
       {loading && (
-        <div className="h-96 flex items-end justify-center">
+        <div className="flex h-96 items-end justify-center">
           <FontAwesomeIcon className="text-6xl" icon={faSpinner} spin />
         </div>
       )}
