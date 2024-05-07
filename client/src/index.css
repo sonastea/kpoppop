@@ -6,6 +6,8 @@
   html {
     font-family: 'Montserrat', system-ui, sans-serif;
     height: 100%;
+    overflow: visible !important;
+    padding-right: 0px !important;
   }
 
   html,
