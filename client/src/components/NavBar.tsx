@@ -260,11 +260,11 @@ const NavBar = () => {
             </Link>
             <div>
               <button
-                className="absolute right-4 top-4 px-2.5 py-2"
+                className="absolute right-3 sm:right-4 top-4 sm:top-7"
                 aria-label="Toggle mobile nav"
                 onClick={() => setMobileNav((prev) => !prev)}
               >
-                <FontAwesomeIcon icon={faXmark} />
+                <FontAwesomeIcon className="text-2xl" icon={faXmark} />
               </button>
             </div>
             <div className="divider mb-4 mt-6 h-px w-full bg-gray-300/80" />
