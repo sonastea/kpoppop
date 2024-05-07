@@ -1,6 +1,6 @@
 import { faFlag } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Popover, Transition } from '@headlessui/react';
+import { Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react';
 import { CommentProps, IUserProps } from 'components/meme/InteractiveComments';
 import { useAuth } from 'contexts/AuthContext';
 import useReportCommentStore from 'hooks/useReportComment';
@@ -95,7 +95,7 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
 
   return (
     <Popover>
-      <Popover.Button
+      <PopoverButton
         className={`px-1 hover:cursor-pointer hover:underline hover:decoration-black
         hover:decoration-solid ${isBanned && 'line-through decoration-ponce-500'}`}
         ref={setReferenceElement}
@@ -106,7 +106,7 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
         onTouchEnd={handleTouchEnd}
       >
         {comment.user.displayname ? comment.user.displayname : comment.user.username}
-      </Popover.Button>
+      </PopoverButton>
       <Transition
         show={isShowing}
         enter="transition-opacity duration-75 "
@@ -115,14 +115,14 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
         leave="transition-opacity duration-150"
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
-        onMouseEnter={() => setIsShowing(true)}
-        onMouseLeave={() => setIsShowing(false)}
       >
-        <Popover.Panel
+        <PopoverPanel
           className="w-fit rounded-md border border-slate-300 bg-gray-200 shadow-md"
           ref={setPopperElement}
           style={styles.popper}
           {...attributes.popper}
+          onMouseEnter={() => setIsShowing(true)}
+          onMouseLeave={() => setIsShowing(false)}
         >
           <div className="tooltip-contents w-[75vw] divide-y divide-slate-300 md:w-[35vw]">
             <div className="tooltip-contents flex flex-wrap gap-2 p-2">
@@ -175,7 +175,7 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
             </div>
           </div>
           <div id="arrow" ref={setArrowElement} style={styles.arrow} />
-        </Popover.Panel>
+        </PopoverPanel>
       </Transition>
     </Popover>
   );

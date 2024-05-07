@@ -1,6 +1,6 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Dialog } from '@headlessui/react';
+import { Description, Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 import useReportUserStore from 'hooks/useReportUser';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -55,11 +55,11 @@ const ReportUserModal = (props: { user: ReportUserInfoData }) => {
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
 
       <div className="fixed inset-0 flex items-center justify-center">
-        <Dialog.Panel className="w-full rounded-md bg-gray-200 p-6 md:w-3/4">
+        <DialogPanel className="w-full rounded-md bg-gray-200 p-6 md:w-3/4">
           <button onClick={reportingUser} type="button" className="fixed right-6 md:right-[15%]">
             <FontAwesomeIcon icon={faXmark} />
           </button>
-          <Dialog.Title className="text-2xl">Report user</Dialog.Title>
+          <DialogTitle className="text-2xl">Report user</DialogTitle>
           <div className="p-4" />
 
           {reported ? (
@@ -67,10 +67,10 @@ const ReportUserModal = (props: { user: ReportUserInfoData }) => {
               <p className="mb-4 border-b border-once-300 pb-2 text-center text-sm font-bold">
                 {responseMsg}
               </p>
-              <Dialog.Description className="text-center">
+              <Description className="text-center">
                 Thanks for helping and providing fellow kpoppers with a clean, fun, and safe
                 community.
-              </Dialog.Description>
+              </Description>
             </>
           ) : (
             <form className="grid gap-2" onSubmit={handleSubmit(handleReportUser)}>
@@ -103,7 +103,7 @@ const ReportUserModal = (props: { user: ReportUserInfoData }) => {
               </div>
             </form>
           )}
-        </Dialog.Panel>
+        </DialogPanel>
       </div>
     </Dialog>
   );

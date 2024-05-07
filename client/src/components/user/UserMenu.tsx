@@ -1,6 +1,6 @@
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Popover, Transition } from '@headlessui/react';
+import { Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react';
 import { useAuth } from 'contexts/AuthContext';
 import { useEffect, useState } from 'react';
 import { usePopper } from 'react-popper';
@@ -28,14 +28,14 @@ const UserMenu = ({ comment }: UserMenuProps) => {
   return (
     <>
       <Popover>
-        <Popover.Button
+        <PopoverButton
           className="rounded-full px-1 hover:bg-slate-200 focus-visible:bg-slate-200
             focus-visible:outline-offset-2"
           ref={setReferenceElement}
           aria-label="User menu"
         >
           <FontAwesomeIcon icon={faEllipsis} />
-        </Popover.Button>
+        </PopoverButton>
         <Transition
           enter="transition-opacity duration-150 ease-in-out"
           enterFrom="opacity-0"
@@ -44,7 +44,7 @@ const UserMenu = ({ comment }: UserMenuProps) => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <Popover.Panel
+          <PopoverPanel
             className="absolute z-100"
             ref={setPopperElement}
             style={styles.popper}
@@ -57,7 +57,7 @@ const UserMenu = ({ comment }: UserMenuProps) => {
               {DefaultMenuButtons}
               {isAuthorized && user?.id !== comment.user.id && ModerationMenuButtons}
             </div>
-          </Popover.Panel>
+          </PopoverPanel>
         </Transition>
       </Popover>
     </>

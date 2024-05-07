@@ -1,6 +1,6 @@
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Popover, Transition } from '@headlessui/react';
+import { Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react';
 import { useAuth } from 'contexts/AuthContext';
 import { useEffect, useState } from 'react';
 import { usePopper } from 'react-popper';
@@ -31,7 +31,7 @@ const MemeMenu = ({ authorId, memeId }: { authorId: number; memeId: number }) =>
   return (
     <>
       <Popover>
-        <Popover.Button
+        <PopoverButton
           className="group rounded-full outline-none"
           ref={setReferenceElement}
           aria-label="Meme menu"
@@ -42,7 +42,7 @@ const MemeMenu = ({ authorId, memeId }: { authorId: number; memeId: number }) =>
               group-focus-visible:outline"
             icon={faEllipsis}
           />
-        </Popover.Button>
+        </PopoverButton>
         <Transition
           enter="transition-opacity duration-150 ease-in-out"
           enterFrom="opacity-0"
@@ -51,7 +51,7 @@ const MemeMenu = ({ authorId, memeId }: { authorId: number; memeId: number }) =>
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <Popover.Panel
+          <PopoverPanel
             className="absolute z-100"
             ref={setPopperElement}
             style={styles.popper}
@@ -65,7 +65,7 @@ const MemeMenu = ({ authorId, memeId }: { authorId: number; memeId: number }) =>
               {isAuthorized && !isAuthor && ModerationMenuButtons}
               {DefaultMenuButtons}
             </div>
-          </Popover.Panel>
+          </PopoverPanel>
         </Transition>
       </Popover>
     </>
