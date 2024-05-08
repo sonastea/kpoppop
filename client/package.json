@@ -20,6 +20,7 @@
     ]
   },
   "dependencies": {
+    "@floating-ui/react": "^0.26.13",
     "@fontsource/montserrat": "^5.0.18",
     "@formkit/auto-animate": "^0.8.2",
     "@fortawesome/fontawesome-common-types": "^6.5.2",
@@ -42,7 +43,6 @@
     "react-google-recaptcha": "^3.1.0",
     "react-hook-form": "^7.51.4",
     "react-lazy-load-image-component": "^1.6.0",
-    "react-popper": "^2.3.0",
     "react-router-dom": "^6.23.0",
     "react-social-icons": "^6.16.0",
     "react-toastify": "^10.0.5",
