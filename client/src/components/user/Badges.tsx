@@ -26,6 +26,8 @@ const RoleTooltip = ({ children, tooltipText }: IRoleTooltipProps) => {
       onTouchStart={handleLongPressStart}
       onTouchEnd={handleLongPressEnd}
       onTouchCancel={handleLongPressEnd}
+      onMouseOver={handleLongPressStart}
+      onMouseLeave={handleLongPressEnd}
     >
       {children}
       {showTooltip && (
