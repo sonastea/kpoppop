@@ -74,7 +74,7 @@ const useMemeMenuButtons = (userId: number | boolean, memeId: number) => {
               flip="horizontal"
             />
           </span>
-          <span className="whitespace-nowrap">Remove meme</span>
+          <span className="whitespace-nowrap">Remove</span>
         </div>
       </>
     ),
@@ -94,7 +94,7 @@ const useMemeMenuButtons = (userId: number | boolean, memeId: number) => {
             <FontAwesomeIcon height={18} className="text-red-600" icon={faBan} />
             <FontAwesomeIcon height={18} size="xs" icon={faGavel} />
           </span>
-          <span className="whitespace-nowrap">Toggle meme</span>
+          <span className="whitespace-nowrap">Toggle active</span>
         </div>
       </>
     ),

@@ -98,7 +98,7 @@ const InteractiveComments = ({ memeId, ownerId, comments: c }: InteractiveCommen
               'font-bold text-error'
             }`}
           >
-            {textAreaRef.current?.value.length}
+            {textAreaRef.current?.value.length ?? 0}
           </span>
         </div>
         <button

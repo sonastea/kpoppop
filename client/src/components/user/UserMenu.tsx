@@ -73,7 +73,7 @@ const UserMenu = ({ comment }: UserMenuProps) => {
       </button>
       {isMounted && (
         <div style={transitionStyles}>
-          <div className="" ref={refs.setFloating} style={floatingStyles} {...getFloatingProps()}>
+          <div ref={refs.setFloating} style={floatingStyles} {...getFloatingProps()}>
             <div
               className="overflow-hidden rounded-md border border-gray-200 bg-white text-sm
                 shadow-sm"
