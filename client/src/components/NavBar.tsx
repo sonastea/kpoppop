@@ -141,10 +141,8 @@ const NavBar = () => {
   useEffect(() => {
     if (isActiveMobileNav) {
       document.body.classList.add('fixed');
-      document.body.classList.add('w-full');
     } else {
       document.body.classList.remove('fixed');
-      document.body.classList.remove('w-full');
     }
   }, [isActiveMobileNav]);
 
@@ -260,7 +258,7 @@ const NavBar = () => {
             </Link>
             <div>
               <button
-                className="absolute right-3 sm:right-4 top-4 sm:top-7"
+                className="absolute right-4 top-4 sm:right-6 sm:top-7"
                 aria-label="Toggle mobile nav"
                 onClick={() => setMobileNav((prev) => !prev)}
               >
