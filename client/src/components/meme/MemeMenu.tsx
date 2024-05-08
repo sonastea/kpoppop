@@ -34,7 +34,7 @@ const MemeMenu = ({ authorId, memeId }: { authorId: number; memeId: number }) =>
         return -rects.reference.height / 2 - rects.floating.height / 2;
       }),
       flip(),
-      shift(),
+      shift({ padding: 4 }),
     ],
   });
 
