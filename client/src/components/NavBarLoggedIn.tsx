@@ -7,7 +7,7 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Menu, Transition } from '@headlessui/react';
+import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react';
 import { useAuth } from 'contexts/AuthContext';
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
@@ -30,7 +30,7 @@ const NavBarLoggedIn = () => {
     <Menu as="div" className="relative hidden md:block">
       {({ open }) => (
         <>
-          <Menu.Button
+          <MenuButton
             className="inline-flex h-full items-center p-2 font-semibold text-once-900
               hover:bg-once-200"
           >
@@ -40,10 +40,9 @@ const NavBarLoggedIn = () => {
             ) : (
               <FontAwesomeIcon className="ml-2 text-slate-700" icon={faAngleDown} />
             )}
-          </Menu.Button>
+          </MenuButton>
           {open && (
             <Transition
-              className="absolute right-0 z-50 mr-2 mt-2 w-40"
               show={open}
               enter="transition duration-100 ease-out"
               enterFrom="transform scale-95 opacity-0"
@@ -52,15 +51,15 @@ const NavBarLoggedIn = () => {
               leaveFrom="transform scale-900 opacity-100"
               leaveTo="transform scale-95 opacity-0"
             >
-              <Menu.Items
-                className="origin-top-right rounded-md border bg-white shadow ring-opacity-5
-                  focus:outline-none"
+              <MenuItems
+                className="absolute right-0 z-50 m-2 w-40 rounded-md border bg-white shadow-md
+                  ring-opacity-5 focus:outline-none"
               >
-                <Menu.Item>
-                  {({ active }) => (
+                <MenuItem>
+                  {({ focus }) => (
                     <Link
                       className={`flex items-center px-4 py-2 text-sm ${
-                        active && 'rounded-t-md bg-once-200'
+                        focus && 'rounded-t-md bg-once-200'
                       } ${
                         path === `/user/${user?.username}`
                           ? 'rounded-tr-md border-r-2 border-r-once'
@@ -72,11 +71,11 @@ const NavBarLoggedIn = () => {
                       Profile
                     </Link>
                   )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
+                </MenuItem>
+                <MenuItem>
+                  {({ focus }) => (
                     <Link
-                      className={`flex items-center px-4 py-2 text-sm ${active && 'bg-once-200'} ${
+                      className={`flex items-center px-4 py-2 text-sm ${focus && 'bg-once-200'} ${
                         path === '/messages' ? 'border-r-2 border-r-once' : 'border-none'
                       }`}
                       to={`/messages`}
@@ -85,11 +84,11 @@ const NavBarLoggedIn = () => {
                       Messages
                     </Link>
                   )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
+                </MenuItem>
+                <MenuItem>
+                  {({ focus }) => (
                     <Link
-                      className={`flex items-center px-4 py-2 text-sm ${active && 'bg-once-200'} ${
+                      className={`flex items-center px-4 py-2 text-sm ${focus && 'bg-once-200'} ${
                         path === '/profile/settings' ? 'border-r-2 border-r-once' : 'border-none'
                       }`}
                       to={`/profile/settings`}
@@ -98,12 +97,12 @@ const NavBarLoggedIn = () => {
                       Settings
                     </Link>
                   )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
+                </MenuItem>
+                <MenuItem>
+                  {({ focus }) => (
                     <button
                       className={`flex w-full items-center border-t px-4 py-2 text-sm ${
-                        active && 'rounded-b-md bg-once-200'
+                        focus && 'rounded-b-md bg-once-200'
                       }`}
                       onClick={logoutHandler}
                     >
@@ -115,8 +114,8 @@ const NavBarLoggedIn = () => {
                       Logout
                     </button>
                   )}
-                </Menu.Item>
-              </Menu.Items>
+                </MenuItem>
+              </MenuItems>
             </Transition>
           )}
         </>

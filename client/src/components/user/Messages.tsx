@@ -202,101 +202,98 @@ const Messages = () => {
     return <UserCardSkeletonLoader />;
   } else {
     return (
-      <div className="mt-nav-mobile md:mt-nav-larger">
-        <div className="h-screen-mobile sm:h-screen-larger">
-          <div className="flex h-full flex-col overflow-hidden bg-gray-200/60">
-            <div className="heading m-4 flex flex-wrap">
-              <h1 className="mr-4 justify-center text-3xl text-gray-700">Messages</h1>
-              <div
-                className="justify-center hover:text-once-500"
-                role="button"
-                onClick={() => (m.recipient ? setRecipient(null) : goBackToConversations())}
-                aria-label={hasRecipient ? 'Back to conversations' : 'New conversation'}
-              >
-                {hasRecipient ? (
-                  <FontAwesomeIcon className="cursor-pointer" icon={faRotateLeft} />
-                ) : (
-                  <FontAwesomeIcon className="cursor-pointer" icon={faCirclePlus} />
-                )}
-              </div>
-            </div>
-
-            {draft && <NewConversation setDrafting={setDrafting} setRecipient={setRecipient} />}
-            <div className="flex min-h-0 md:mx-2">
-              <div
-                // eslint-disable-next-line max-len
-                className={`${m.recipient ? 'hidden w-1/3 md:flex' : 'flex w-full md:w-1/3'}
-                flex-col`}
-              >
-                <ul className="conversations-scroll-bar min-h-0 w-full overflow-auto">
-                  {m.conversations.map((user: UserCardProps) => {
-                    return (
-                      <UserCard
-                        convid={user.convid ?? ''}
-                        user={user}
-                        setRecipient={setRecipient}
-                        key={user.convid}
-                      />
-                    );
-                  })}
-                </ul>
-              </div>
-              {m.recipient && (
-                <div className="message-container flex w-full flex-1 flex-col md:relative md:mx-2">
-                  <div
-                    className="message-header z-10 flex flex-col items-center border-b
-                      border-b-slate-300 backdrop-blur-sm"
-                  >
-                    <div className="align-center mr-2 flex h-12 w-12">
-                      <a href={`/user/${m.recipient.username}`}>
-                        <picture>
-                          <source
-                            media="(max-width: 639px)"
-                            srcSet={
-                              m.recipient.photo
-                                ? `${m.recipient.photo}?tr=w-72,h-72`
-                                : '/images/default_photo_white_200x200.png'
-                            }
-                          />
-                          <img
-                            className="h-12 w-12 rounded-full"
-                            src={
-                              m.recipient?.photo
-                                ? `${m.recipient?.photo}?tr=w-150,h-150`
-                                : '/images/default_photo_white_200x200.png'
-                            }
-                            alt={`${m.recipient?.username} profile`}
-                            onError={(e: BaseSyntheticEvent) => {
-                              e.currentTarget.src = '/images/default_photo_white_200x200.png';
-                            }}
-                          />
-                        </picture>
-                      </a>
-                    </div>
-                    <a className="hover:underline" href={`/user/${m.recipient.username}`}>
-                      <h2
-                        className="py-1 text-xl font-bold"
-                        title={getMessageHeaderName(m.recipient)}
-                      >
-                        {m.recipient.displayname ?? m.recipient.username}
-                      </h2>
-                    </a>
-                  </div>
-                  <ul
-                    className="message-window messages-scroll-bar h-screen w-full overflow-auto
-                      break-all border-x-slate-300 py-1 md:border-x"
-                  >
-                    <MessagesList messages={sortMessages(m?.conversations)} />
-                    <div ref={scrollBottomRef} />
-                  </ul>
-                  <MessageInputBox
-                    recipient={m.recipient}
-                    message={message}
-                    setMessage={setMessage}
-                  />
-                </div>
+      <div className="h-screen-mobile sm:h-screen-larger">
+        <div className="flex h-full flex-col overflow-hidden bg-gray-200/60">
+          <div className="heading m-4 flex flex-wrap">
+            <h1 className="mr-4 justify-center text-3xl text-gray-700">Messages</h1>
+            <div
+              className="justify-center hover:text-once-500"
+              role="button"
+              onClick={() => (m.recipient ? setRecipient(null) : goBackToConversations())}
+              aria-label={hasRecipient ? 'Back to conversations' : 'New conversation'}
+            >
+              {hasRecipient ? (
+                <FontAwesomeIcon className="cursor-pointer" icon={faRotateLeft} />
+              ) : (
+                <FontAwesomeIcon className="cursor-pointer" icon={faCirclePlus} />
               )}
             </div>
+          </div>
+
+          {draft && <NewConversation setDrafting={setDrafting} setRecipient={setRecipient} />}
+          <div className="flex min-h-0 md:mx-2">
+            <div
+              // eslint-disable-next-line max-len
+              className={`${m.recipient ? 'hidden w-1/3 md:flex' : 'flex w-full md:w-1/3'} flex-col`}
+            >
+              <ul className="conversations-scroll-bar min-h-0 w-full overflow-auto">
+                {m.conversations.map((user: UserCardProps) => {
+                  return (
+                    <UserCard
+                      convid={user.convid ?? ''}
+                      user={user}
+                      setRecipient={setRecipient}
+                      key={user.convid}
+                    />
+                  );
+                })}
+              </ul>
+            </div>
+            {m.recipient && (
+              <div className="message-container flex w-full flex-1 flex-col md:relative md:mx-2">
+                <div
+                  className="message-header z-10 flex flex-col items-center border-b
+                    border-b-slate-300 backdrop-blur-sm"
+                >
+                  <div className="align-center mr-2 flex h-12 w-12">
+                    <a href={`/user/${m.recipient.username}`}>
+                      <picture>
+                        <source
+                          media="(max-width: 639px)"
+                          srcSet={
+                            m.recipient.photo
+                              ? `${m.recipient.photo}?tr=w-72,h-72`
+                              : '/images/default_photo_white_200x200.png'
+                          }
+                        />
+                        <img
+                          className="h-12 w-12 rounded-full"
+                          src={
+                            m.recipient?.photo
+                              ? `${m.recipient?.photo}?tr=w-150,h-150`
+                              : '/images/default_photo_white_200x200.png'
+                          }
+                          alt={`${m.recipient?.username} profile`}
+                          onError={(e: BaseSyntheticEvent) => {
+                            e.currentTarget.src = '/images/default_photo_white_200x200.png';
+                          }}
+                        />
+                      </picture>
+                    </a>
+                  </div>
+                  <a className="hover:underline" href={`/user/${m.recipient.username}`}>
+                    <h2
+                      className="py-1 text-xl font-bold"
+                      title={getMessageHeaderName(m.recipient)}
+                    >
+                      {m.recipient.displayname ?? m.recipient.username}
+                    </h2>
+                  </a>
+                </div>
+                <ul
+                  className="message-window messages-scroll-bar h-screen w-full overflow-auto
+                    break-all border-x-slate-300 py-1 md:border-x"
+                >
+                  <MessagesList messages={sortMessages(m?.conversations)} />
+                  <div ref={scrollBottomRef} />
+                </ul>
+                <MessageInputBox
+                  recipient={m.recipient}
+                  message={message}
+                  setMessage={setMessage}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -19,13 +19,15 @@ const Comment = (props: { props: CommentProps; memeOwnerId: number }) => {
   const { user } = useAuth();
   const isAuthor = comment.user.id === user?.id;
 
-  const user_bg = ['self-center', 'rounded-md', 'ml-2'].concat(
-    comment.user.id === props.memeOwnerId && comment.user.role !== 'ADMIN'
-      ? 'text-white bg-once-900'
-      : [],
-    comment.user.role === 'ADMIN' ? 'bg-once-500' : [],
-    comment.user.role === 'MODERATOR' ? 'bg-blue-400' : []
-  );
+  const user_bg = ['self-center', 'rounded-md', 'ml-2']
+    .concat(
+      comment.user.id === props.memeOwnerId && comment.user.role !== 'ADMIN'
+        ? ['text-white', 'bg-once-900']
+        : [],
+      comment.user.role === 'ADMIN' ? ['bg-once-500'] : [],
+      comment.user.role === 'MODERATOR' ? ['bg-blue-400'] : []
+    )
+    .join(' ');
 
   const handleEditComment = async (_e: BaseSyntheticEvent) => {
     if (newComment?.length > MAX_COMMENT_CHAR_LENGTH) {
@@ -80,7 +82,7 @@ const Comment = (props: { props: CommentProps; memeOwnerId: number }) => {
             alt={`${comment.user.username} profile`}
           />
         </picture>
-        <span className={user_bg.join('')}>
+        <span className={user_bg}>
           <UserTooltip comment={comment} />
         </span>
         <span className="ml-auto">

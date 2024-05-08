@@ -1,6 +1,6 @@
 import { faSpinner, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Dialog } from '@headlessui/react';
+import { Description, Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 import { useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -69,7 +69,7 @@ const ReportMemeModal = () => {
           if (e.target === e.currentTarget) resetForm();
         }}
       >
-        <Dialog.Panel className="w-full rounded-md bg-gray-200 p-6 md:w-3/4" ref={reportingRef}>
+        <DialogPanel className="w-full rounded-md bg-gray-200 p-6 md:w-3/4" ref={reportingRef}>
           <button
             aria-label="Report meme"
             onClick={() => resetForm()}
@@ -78,7 +78,7 @@ const ReportMemeModal = () => {
           >
             <FontAwesomeIcon icon={faXmark} />
           </button>
-          <Dialog.Title className="text-2xl">Report meme</Dialog.Title>
+          <DialogTitle className="text-2xl">Report meme</DialogTitle>
           <div className="p-4" />
 
           {reported ? (
@@ -96,10 +96,10 @@ const ReportMemeModal = () => {
                   {responseMsg}
                 </p>
               </div>
-              <Dialog.Description className="text-center">
+              <Description className="text-center">
                 Thanks for helping and providing fellow kpoppers with a clean, fun, and safe
                 community.
-              </Dialog.Description>
+              </Description>
             </>
           ) : (
             <form className="grid gap-2" onSubmit={handleSubmit(handleReportMeme)}>
@@ -132,7 +132,7 @@ const ReportMemeModal = () => {
               </div>
             </form>
           )}
-        </Dialog.Panel>
+        </DialogPanel>
       </div>
     </Dialog>
   );

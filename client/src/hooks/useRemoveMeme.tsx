@@ -5,8 +5,8 @@ interface RemoveMemeState {
   memeId: number;
   remove: boolean;
   confirmingOpen: (memeId: number) => void;
-  confirmingCloseNo: (memeId: number) => void;
-  confirmingCloseYes: (memeId: number) => void;
+  confirmingCloseNo: () => void;
+  confirmingCloseYes: () => void;
   resetMeme: () => void;
 }
 

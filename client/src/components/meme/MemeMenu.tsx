@@ -1,61 +1,90 @@
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Popover, Transition } from '@headlessui/react';
 import { useAuth } from 'contexts/AuthContext';
 import { useEffect, useState } from 'react';
-import { usePopper } from 'react-popper';
 import useMemeMenuButtons from './hooks/useMemeMenuButtons';
+import {
+  autoUpdate,
+  flip,
+  offset,
+  shift,
+  useClick,
+  useDismiss,
+  useFloating,
+  useInteractions,
+  useTransitionStyles,
+} from '@floating-ui/react';
 
 const MemeMenu = ({ authorId, memeId }: { authorId: number; memeId: number }) => {
+  const [isAuthorized, setAuthorized] = useState<boolean>(false);
+  const [open, setOpen] = useState(false);
   const { user } = useAuth();
+  const isAuthor = user?.id === authorId;
   const { DefaultMenuButtons, LoggedInMenuButtons, ModerationMenuButtons } = useMemeMenuButtons(
     user?.id ?? false,
     memeId
   );
-  const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
-  const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
-  const { styles, attributes } = usePopper(referenceElement, popperElement);
-  const [isAuthorized, setAuthorized] = useState<boolean>(false);
-  const isAuthor = user?.id === authorId;
+
+  const { context, refs, floatingStyles } = useFloating({
+    open: open,
+    onOpenChange: setOpen,
+    whileElementsMounted: autoUpdate,
+    middleware: [
+      offset(({ rects }) => {
+        return -rects.reference.height / 2 - rects.floating.height / 2;
+      }),
+      flip(),
+      shift(),
+    ],
+  });
+
+  const { isMounted, styles: transitionStyles } = useTransitionStyles(context, {
+    initial: {
+      opacity: 0,
+    },
+    close: {
+      opacity: 0,
+    },
+    open: {
+      opacity: 1,
+    },
+    duration: {
+      open: 150,
+      close: 100,
+    },
+  });
+
+  const dismiss = useDismiss(context);
+  const click = useClick(context);
+  const { getReferenceProps, getFloatingProps } = useInteractions([click, dismiss]);
 
   useEffect(() => {
     if (user?.role === 'MODERATOR' || user?.role === 'ADMIN') setAuthorized(true);
   }, [user?.role]);
 
-  styles.popper = {
-    ...styles.popper,
-    position: 'absolute',
-    inset: '-30px auto auto -20px',
-  };
-
   return (
-    <>
-      <Popover>
-        <Popover.Button
-          className="group rounded-full outline-none"
-          ref={setReferenceElement}
-          aria-label="Meme menu"
-        >
-          <FontAwesomeIcon
-            className="rounded-full p-1 group-hover:rounded-full group-hover:bg-slate-200
-              group-focus-visible:rounded-full group-focus-visible:bg-slate-200
-              group-focus-visible:outline"
-            icon={faEllipsis}
-          />
-        </Popover.Button>
-        <Transition
-          enter="transition-opacity duration-150 ease-in-out"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="transition-opacity duration-100 ease-in-out"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <Popover.Panel
+    <div>
+      <button
+        className="group rounded-full outline-none"
+        ref={refs.setReference}
+        aria-label="Meme menu"
+        role="button"
+        {...getReferenceProps()}
+      >
+        <FontAwesomeIcon
+          className="rounded-full p-1 group-hover:rounded-full group-hover:bg-slate-200
+            group-focus-visible:rounded-full group-focus-visible:bg-slate-200
+            group-focus-visible:outline"
+          icon={faEllipsis}
+        />
+      </button>
+      {isMounted && (
+        <div style={transitionStyles}>
+          <div
             className="absolute z-100"
-            ref={setPopperElement}
-            style={styles.popper}
-            {...attributes.popper}
+            ref={refs.setFloating}
+            style={floatingStyles}
+            {...getFloatingProps()}
           >
             <div
               className="overflow-hidden rounded-md border border-gray-200 bg-white text-sm
@@ -65,10 +94,10 @@ const MemeMenu = ({ authorId, memeId }: { authorId: number; memeId: number }) =>
               {isAuthorized && !isAuthor && ModerationMenuButtons}
               {DefaultMenuButtons}
             </div>
-          </Popover.Panel>
-        </Transition>
-      </Popover>
-    </>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
