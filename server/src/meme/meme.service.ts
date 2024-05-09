@@ -22,7 +22,7 @@ export class MemeService {
     take?: number;
     cursor?: Prisma.MemeWhereUniqueInput;
     where?: Prisma.MemeWhereInput;
-    orderBy?: Prisma.MemeOrderByWithRelationInput;
+    orderBy?: Prisma.MemeOrderByWithRelationInput | Prisma.MemeOrderByWithRelationInput[];
     select?: Prisma.MemeSelect;
   }): Promise<Prisma.MemeScalarWhereInput[]> {
     const { skip, take, cursor, where, orderBy, select } = params;

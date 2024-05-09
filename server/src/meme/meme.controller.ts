@@ -17,7 +17,7 @@ import { randomUUID } from 'crypto';
 import * as firebase from 'firebase-admin';
 import { Response } from 'express';
 import { MemeService } from './meme.service';
-import { Comment, Meme, MemeResource } from '@prisma/client';
+import { Comment, Meme, MemeResource, Prisma } from '@prisma/client';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { SessionGuard } from 'src/auth/guards/session.guard';
 import { seconds, SkipThrottle, Throttle, ThrottlerGuard } from '@nestjs/throttler';
@@ -27,6 +27,7 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { UserProfileData } from 'src/user/user.service';
 import { FileNsfwDetector, MulterFileExt } from './pipes/file-nsfw-detector';
 import { FileSizeExtValidator } from './pipes/file-size-ext';
+import { DefaultArgs } from '@prisma/client/runtime/library';
 
 const photoBaseUrl = 'https://ik.imagekit.io/qxhlbjhesx/';
 
@@ -139,74 +140,61 @@ export class MemeController {
     @Body() body: { cursor: number },
     @Session() session?: Record<string, any>
   ): Promise<any> {
+    let likes: Prisma.Meme$likesArgs<DefaultArgs> = { where: { userId: -1 } };
+
+    if (session.passport?.user) {
+      likes = {
+        where: {
+          OR: [
+            { user: { discord: { discordId: session.passport?.user?.discordId } } },
+            { userId: session.passport?.user?.id },
+          ],
+        },
+        select: {
+          userId: true,
+        },
+      };
+    }
+
+    const queryOptions: Prisma.MemeFindManyArgs = {
+      orderBy: {
+        id: 'desc',
+      },
+      select: {
+        author: {
+          select: { username: true },
+        },
+        active: true,
+        authorId: true,
+        id: true,
+        title: true,
+        url: true,
+        createdAt: true,
+        likes,
+        _count: {
+          select: {
+            comments: true,
+            likes: true,
+          },
+        },
+      },
+      where: {
+        active: { equals: true },
+        flagged: { equals: false },
+      },
+    };
+
     if (body.cursor === 0) {
       return await this.memeService.posts({
         take: 15,
-        orderBy: {
-          id: 'desc',
-        },
-        select: {
-          author: {
-            select: { username: true },
-          },
-          active: true,
-          authorId: true,
-          id: true,
-          title: true,
-          url: true,
-          createdAt: true,
-          likes: {
-            where: {
-              OR: [
-                { user: { discord: { discordId: session.passport?.user?.discordId } } },
-                { id: session.passport?.user?.id },
-              ],
-            },
-            select: { id: true },
-          },
-          _count: {
-            select: {
-              comments: true,
-              likes: true,
-            },
-          },
-        },
-        where: {
-          active: { equals: true },
-          flagged: { equals: false },
-        },
+        ...queryOptions,
       });
     } else {
       return await this.memeService.posts({
-        cursor: {
-          id: body.cursor,
-        },
+        cursor: { id: body.cursor },
         skip: 1,
         take: 7,
-        orderBy: {
-          id: 'desc',
-        },
-        select: {
-          author: {
-            select: { username: true },
-          },
-          active: true,
-          authorId: true,
-          id: true,
-          title: true,
-          url: true,
-          createdAt: true,
-          _count: {
-            select: {
-              likes: true,
-              comments: true,
-            },
-          },
-        },
-        where: {
-          active: { equals: true },
-          flagged: { equals: false },
-        },
+        ...queryOptions,
       });
     }
   }

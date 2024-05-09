@@ -198,7 +198,7 @@ const Memes = () => {
                 <InteractiveButtons
                   memeId={meme.id}
                   memeTitle={title}
-                  liked={meme.likes.length !== 0}
+                  liked={meme.likes.length > 0}
                   comments={meme._count.comments}
                   likes={meme._count.likes}
                 />
