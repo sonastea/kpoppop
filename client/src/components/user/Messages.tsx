@@ -199,7 +199,22 @@ const Messages = () => {
   }, [m.conversations]);
 
   if (loading) {
-    return <UserCardSkeletonLoader />;
+    return (
+      <div className="h-screen-mobile sm:h-screen-larger">
+        <div
+          className="flex h-full animate-pulse flex-col overflow-hidden bg-gray-200/60
+            transition-transform duration-300"
+        >
+          <div className="heading m-4 flex flex-wrap">
+            <h1 className="mr-4 justify-center text-3xl text-gray-500">Messages</h1>
+            <div className="justify-center transition-transform" aria-hidden="true">
+              <FontAwesomeIcon className="cursor-pointer text-gray-500" icon={faCirclePlus} />
+            </div>
+          </div>
+          <UserCardSkeletonLoader />
+        </div>
+      </div>
+    );
   } else {
     return (
       <div className="h-screen-mobile sm:h-screen-larger">
