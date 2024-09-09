@@ -12,7 +12,6 @@ services:
 
   server:
     container_name: kpoppop_server
-    image: kpoppop_backend
     env_file: ./server/.env
     environment:
       - REDIS_URL=${REDIS_URL:-redis://redis:6379}
@@ -53,7 +52,6 @@ services:
 
   client:
     container_name: kpoppop_client
-    image: kpoppop_frontend
     env_file: ./client/.env
     environment:
       - NODE_ENV=${NODE_ENV:-development}
@@ -67,6 +65,7 @@ services:
     tty: true
     volumes:
       - ./client:/app
+      - $HOME/.vite-plugin-mkcert:/root/.vite-plugin-mkcert
       - /app/node_modules
     depends_on:
       - server

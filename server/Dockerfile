@@ -1,4 +1,4 @@
-FROM node:20-alpine as builder
+FROM node:20-alpine
 
 ARG NODE_ENV
 ENV PORT=${PORT:-5000}
