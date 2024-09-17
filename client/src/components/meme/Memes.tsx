@@ -148,9 +148,9 @@ const Memes = () => {
         <ReportMemeModal />
         <ConfirmationDialog title={title} updateList={removeMemeFromList} />
       </Suspense>
+      <UploadMeme />
       <ul className="meme-container flex flex-col items-center overflow-hidden" ref={postsRef}>
         {loading && <MemesSkeletonLoader />}
-        <UploadMeme />
         {posts &&
           posts.map((meme: Meme, index: number) => {
             const title = meme.title.replace(/ /g, '_');
