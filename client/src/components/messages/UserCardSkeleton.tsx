@@ -1,8 +1,8 @@
 const UserCardSkeleton = () => {
   return (
     <li
-      className="mx-2 mb-4 flex transform animate-pulse overflow-auto rounded bg-white p-4 shadow-md
-        shadow-gray-300 transition-transform duration-300 hover:scale-95"
+      className="mx-2 mb-4 flex transform animate-pulse overflow-auto rounded border bg-white p-4
+        shadow-sm transition-transform duration-300 hover:scale-95 md:mx-0"
     >
       <div className="flex">
         <div className="relative h-12 w-12">
