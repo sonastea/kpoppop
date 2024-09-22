@@ -9,7 +9,6 @@ import * as passport from 'passport';
 import * as path from 'path';
 import { AppModule } from './app.module';
 import { MyLogger } from './logger/my-logger.service';
-import { RedisIoAdapter } from './sockets/redis.adapter';
 import { prismaSessionStore } from './store/prisma-session-store';
 
 (BigInt.prototype as any).toJSON = function () {
@@ -62,9 +61,6 @@ async function bootstrap() {
       httpsOptions,
       bufferLogs: true,
     });
-    const redisIoAdapter = new RedisIoAdapter(app);
-    await redisIoAdapter.connectToRedis();
-
     const logger = app.get(MyLogger);
 
     app.setGlobalPrefix('api');
@@ -73,7 +69,6 @@ async function bootstrap() {
     app.use(cookieParser());
     app.use(passport.initialize());
     app.use(expressSession(sessionOptions));
-    app.useWebSocketAdapter(redisIoAdapter);
 
     app.enableShutdownHooks();
     await app.listen(process.env.PORT, () => whatMode(logger));
@@ -86,9 +81,6 @@ async function bootstrap() {
       httpsOptions,
       bufferLogs: true,
     });
-    const redisIoAdapter = new RedisIoAdapter(app);
-    await redisIoAdapter.connectToRedis();
-
     const logger = app.get(MyLogger);
 
     app.setGlobalPrefix('api');
@@ -97,7 +89,6 @@ async function bootstrap() {
     app.use(cookieParser());
     app.use(passport.initialize());
     app.use(expressSession(sessionOptions));
-    app.useWebSocketAdapter(redisIoAdapter);
 
     app.enableShutdownHooks();
     await app.listen(process.env.PORT, () => whatMode(logger));

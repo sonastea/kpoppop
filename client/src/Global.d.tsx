@@ -48,5 +48,5 @@ export let DAY = dayjs;
 
 PUBLIC_URL = import.meta.env.VITE_PUBLIC_URL;
 API_URL = import.meta.env.VITE_API_URL;
-MESSAGES_WS_URL = import.meta.env.VITE_MESSAGES_WS_URL ?? 'wss://localhost:5000';
+MESSAGES_WS_URL = import.meta.env.VITE_MESSAGES_WS_URL ?? 'wss://localhost:8080';
 SITE_KEY = import.meta.env.VITE_SITE_KEY!;

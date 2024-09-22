@@ -1,29 +1,23 @@
 import { MESSAGES_WS_URL } from 'Global.d';
-import { io, Socket } from 'socket.io-client';
 import { create } from 'zustand';
 
 type MessagesSocketType = {
-  ws: Socket | null;
-  connect: (id: number | undefined) => void;
+  ws: WebSocket | null;
+  connect: () => void;
   close: () => void;
 };
 
 const MessagesSocket = create<MessagesSocketType>((set) => ({
   ws: null,
-  connect: (id: number | undefined) =>
-    set({
-      ws: io(`${MESSAGES_WS_URL}`, {
-        reconnectionAttempts: 3,
-        reconnectionDelay: 5000,
-        withCredentials: true,
-        auth: { id: id ?? 0 },
-        transports: ['websocket'],
-      }),
+  connect: () =>
+    set(() => {
+      return { ws: new WebSocket(`${MESSAGES_WS_URL}`) };
     }),
   close: () =>
-    set((state) => ({
-      ws: state.ws?.close(),
-    })),
+    set((state) => {
+      state.ws?.close();
+      return { ws: null };
+    }),
 }));
 
 export default MessagesSocket;

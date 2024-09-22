@@ -1,4 +1,4 @@
-import { INestApplicationContext, Logger } from '@nestjs/common';
+/* import { INestApplicationContext, Logger } from '@nestjs/common';
 import { IoAdapter } from '@nestjs/platform-socket.io';
 import { PrismaSessionStore } from '@quixo3/prisma-session-store';
 import { createAdapter } from '@socket.io/redis-adapter';
@@ -81,4 +81,4 @@ export class RedisIoAdapter extends IoAdapter {
     server.adapter(this.adapterConstructor);
     return server;
   }
-}
+} */

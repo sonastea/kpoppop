@@ -8,7 +8,6 @@ import UserCard, { UserCardProps } from 'components/messages/UserCard';
 import UserCardSkeletonLoader from 'components/messages/UserCardSkeletonLoader';
 import { useAuth } from 'contexts/AuthContext';
 import { BaseSyntheticEvent, useEffect, useReducer, useRef, useState } from 'react';
-import { Socket } from 'socket.io-client';
 
 export type MessageProps = {
   convid: string | null;
@@ -20,6 +19,7 @@ export type MessageProps = {
   fromPhoto: string;
   fromUser: string;
   read?: boolean;
+  type: MessageType;
   unread?: number;
 };
 
@@ -29,6 +29,11 @@ enum MessageAction {
   FROM_SELF = 'FROM_SELF',
   FROM_USER = 'FROM_USER',
   MARK_READ_MESSAGES = 'MARK_READ_MESSAGES',
+}
+
+enum MessageType {
+  CONNECT = 'connect',
+  CONVERSATIONS = 'conversations',
 }
 
 const getMessageHeaderName = (recipient: UserCardProps) => {
@@ -111,6 +116,11 @@ const Messages = () => {
   };
 
   const sortConversations = (conversations: UserCardProps[]) => {
+    if (!conversations) {
+      setLoading(false);
+      return;
+    }
+
     conversations.sort((a, b) => {
       if (
         a.messages[a.messages.length - 1].createdAt > b.messages[b.messages.length - 1].createdAt
@@ -129,13 +139,33 @@ const Messages = () => {
 
   useEffect(() => {
     if (ws) {
-      ws.on('connect', () => {
+      ws.onopen = () => {
+        ws.send('user connected');
+      };
+      ws.onmessage = (event) => {
+        const msg = JSON.parse(event.data);
+
+        switch (msg.event) {
+          case MessageType.CONNECT:
+            console.log(msg.content);
+            break;
+
+          case MessageType.CONVERSATIONS:
+            sortConversations(msg.content);
+            setConversations({
+              type: MessageAction.SET_INITIAL_CONVERSATIONS,
+              conversations: msg.content,
+            });
+            break;
+        }
+      };
+      /* ws.onmessage('connect', () => {
         ws.emit('user connected', (response: string) =>
           console.log('Connected to kpoppop messages websocket.', response)
         );
-      });
+      }); */
 
-      ws.on('connect_error', (err) => {
+      /* ws.on('connect_error', (err) => {
         console.warn(err.message);
         setLoading(false);
       });
@@ -172,13 +202,13 @@ const Messages = () => {
           type: MessageAction.MARK_READ_MESSAGES,
           message: message,
         });
-      });
+      }); */
     }
   }, [ws]);
 
   useEffect(() => {
-    connectToMessages(user?.id);
-  }, [connectToMessages, user?.id]);
+    connectToMessages();
+  }, [connectToMessages]);
 
   useEffect(() => {
     return () => {
@@ -323,7 +353,7 @@ type ConversationsActionType = {
   conversations?: UserCardProps[];
   message?: MessageProps;
   recipient?: UserCardProps | null;
-  ws?: Socket;
+  ws?: WebSocket;
 };
 
 type MessagesProps = {
@@ -421,7 +451,8 @@ function handleConversations(
           content: null,
           read: true,
         };
-        action.ws?.emit('read message', messagePayload);
+        // action.ws?.emit();
+        action.ws?.send(JSON.stringify(messagePayload));
       }
 
       conversation.messages.push({
