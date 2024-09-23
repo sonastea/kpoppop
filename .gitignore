@@ -29,6 +29,10 @@
 
 docker-compose*.override.yml*
 
+# sensitive credentials and certs
+/nginx/cert.pem
+/nginx/key.pem
+
 # profiling files
 chrome-profiler-events*.json
 
