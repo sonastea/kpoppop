@@ -1,4 +1,4 @@
-import { MessageProps } from 'components/user/Messages';
+import { MessageProps, MessageType } from 'components/user/Messages';
 import { BaseSyntheticEvent, useEffect, useReducer } from 'react';
 import { MessagePayload } from './MessageInputBox';
 import MessagesSocket from './socket';
@@ -71,7 +71,7 @@ const UserCard = ({
     if (user) {
       setRecipient(user);
     }
-    ws?.emit('read message', messagePayload);
+    ws?.send(JSON.stringify({ Event: MessageType.MARK_AS_READ, Content: messagePayload }));
   };
 
   return (
@@ -121,7 +121,7 @@ const UserCard = ({
         </div>
         <div className="mx-2 flex w-full min-w-0">
           <div className="flex h-6 min-w-0 flex-auto">
-            <span className="h-6 truncate text-gray-500 whitespace-pre">
+            <span className="h-6 truncate whitespace-pre text-gray-500">
               {user?.messages?.slice(-1)[0]?.content || ''}
             </span>
           </div>

@@ -31,9 +31,10 @@ enum MessageAction {
   MARK_READ_MESSAGES = 'MARK_READ_MESSAGES',
 }
 
-enum MessageType {
-  CONNECT = 'connect',
-  CONVERSATIONS = 'conversations',
+export enum MessageType {
+  CONNECT = 'CONNECT',
+  CONVERSATIONS = 'CONVERSATIONS',
+  MARK_AS_READ = 'MARK_AS_READ',
 }
 
 const getMessageHeaderName = (recipient: UserCardProps) => {
@@ -140,23 +141,33 @@ const Messages = () => {
   useEffect(() => {
     if (ws) {
       ws.onopen = () => {
-        ws.send('user connected');
+        ws.send(`{"event": "${MessageType.CONNECT}", "content": "ping"}`);
+        ws.send(`{"event": "${MessageType.CONVERSATIONS}", "content": ""}`);
       };
       ws.onmessage = (event) => {
         const msg = JSON.parse(event.data);
 
         switch (msg.event) {
           case MessageType.CONNECT:
-            console.log(msg.content);
+            console.log('connect: ', msg.content);
             break;
 
-          case MessageType.CONVERSATIONS:
-            sortConversations(msg.content);
+          case MessageType.CONVERSATIONS: {
+            const data = JSON.parse(msg.content);
+            sortConversations(data[1]);
             setConversations({
               type: MessageAction.SET_INITIAL_CONVERSATIONS,
-              conversations: msg.content,
+              conversations: data[1],
             });
             break;
+          }
+
+          /* case MessageType.MARK_AS_READ:
+            setConversations({
+              type: MessageAction.MARK_READ_MESSAGES,
+              message: msg.content,
+            });
+            break; */
         }
       };
       /* ws.onmessage('connect', () => {
@@ -451,7 +462,6 @@ function handleConversations(
           content: null,
           read: true,
         };
-        // action.ws?.emit();
         action.ws?.send(JSON.stringify(messagePayload));
       }
 
