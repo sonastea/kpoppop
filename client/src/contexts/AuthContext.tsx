@@ -132,6 +132,9 @@ const AuthProviderComponent = ({
         if (error instanceof Error && error.message === 'Failed to fetch') {
           toast.error('Unable to reach user session data. Please try again later.');
         }
+        if (error instanceof TypeError && error.message === 'Load failed') {
+          toast.error('Servers are down. Please try again later.');
+        }
       }
     };
     getCurrentUser();
