@@ -76,8 +76,8 @@ const UserCard = ({
 
   return (
     <li
-      className="mx-2 mb-4 flex transform cursor-pointer rounded border bg-white p-4 shadow-sm
-        transition-transform duration-300 hover:scale-95 md:mx-0"
+      className="mx-2 mb-4 flex transform cursor-pointer overflow-x-auto rounded border bg-white p-4
+        shadow-sm transition-transform duration-300 hover:scale-95 md:mx-0"
       onClick={updateReadStatus}
     >
       <div className="shrink-0">
