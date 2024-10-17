@@ -55,6 +55,8 @@ const Messages = () => {
 
   const connectToMessages = MessagesSocket((socket) => socket.connect);
   const disconnectFromMessages = MessagesSocket((prev) => prev.close);
+  const reconnectToMessages = MessagesSocket((socket) => socket.reconnect);
+  const resetReconnectAttempts = MessagesSocket((socket) => socket.resetAttempts);
   const [m, setConversations] = useReducer(handleConversations, {
     recipient: null,
     conversations: [] as UserCardProps[],
@@ -141,6 +143,7 @@ const Messages = () => {
   useEffect(() => {
     if (ws) {
       ws.onopen = () => {
+        resetReconnectAttempts();
         ws.send(`{"event": "${MessageType.CONNECT}", "content": "ping"}`);
         ws.send(`{"event": "${MessageType.CONVERSATIONS}", "content": ""}`);
       };
@@ -162,14 +165,29 @@ const Messages = () => {
             break;
           }
 
-          /* case MessageType.MARK_AS_READ:
+          case MessageType.MARK_AS_READ:
             setConversations({
               type: MessageAction.MARK_READ_MESSAGES,
-              message: msg.content,
+              message: JSON.parse(msg.content),
             });
-            break; */
+            break;
         }
       };
+
+      ws.onclose = (event) => {
+        console.log('WebSocket close: ', event);
+        if (event.code !== 1000) {
+          setLoading(true);
+          reconnectToMessages();
+        }
+      };
+
+      ws.onerror = (event) => {
+        console.log('WebSocket error: ', event);
+        setLoading(true);
+        reconnectToMessages();
+      };
+
       /* ws.onmessage('connect', () => {
         ws.emit('user connected', (response: string) =>
           console.log('Connected to kpoppop messages websocket.', response)
@@ -215,17 +233,15 @@ const Messages = () => {
         });
       }); */
     }
-  }, [ws]);
+  }, [ws, reconnectToMessages, resetReconnectAttempts]);
 
   useEffect(() => {
     connectToMessages();
-  }, [connectToMessages]);
 
-  useEffect(() => {
     return () => {
       disconnectFromMessages();
     };
-  }, [disconnectFromMessages]);
+  }, [connectToMessages, disconnectFromMessages]);
 
   useEffect(() => {
     if (scrollBottomRef.current) {

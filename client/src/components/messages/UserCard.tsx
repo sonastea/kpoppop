@@ -71,7 +71,7 @@ const UserCard = ({
     if (user) {
       setRecipient(user);
     }
-    ws?.send(JSON.stringify({ Event: MessageType.MARK_AS_READ, Content: messagePayload }));
+    ws?.send(JSON.stringify({ event: MessageType.MARK_AS_READ, content: messagePayload }));
   };
 
   return (
