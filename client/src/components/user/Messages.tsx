@@ -125,17 +125,10 @@ const Messages = () => {
     }
 
     conversations.sort((a, b) => {
-      if (
-        a.messages[a.messages.length - 1].createdAt > b.messages[b.messages.length - 1].createdAt
-      ) {
-        return -1;
-      }
-      if (
-        a.messages[a.messages.length - 1].createdAt < b.messages[b.messages.length - 1].createdAt
-      ) {
-        return 1;
-      }
-      return 0;
+      const lastMessageA = new Date(a.messages[a.messages.length - 1].createdAt).getTime();
+      const lastMessageB = new Date(b.messages[b.messages.length - 1].createdAt).getTime();
+
+      return lastMessageB - lastMessageA;
     });
     setLoading(false);
   };
