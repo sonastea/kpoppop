@@ -5,7 +5,8 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "postinstall": "pnpm install --filter ./src/proto"
   },
   "browserslist": {
     "production": [

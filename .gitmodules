@@ -1,0 +1,3 @@
+[submodule "client/src/proto"]
+	path = client/src/proto
+	url = https://github.com/sonastea/kpoppop-grpc.git

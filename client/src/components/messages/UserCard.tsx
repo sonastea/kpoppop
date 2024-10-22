@@ -1,18 +1,11 @@
-import { MessageProps, MessageType } from 'components/user/Messages';
+import { MessageProps } from 'components/user/Messages';
 import { BaseSyntheticEvent, useEffect, useReducer } from 'react';
-import { MessagePayload } from './MessageInputBox';
 import MessagesSocket from './socket';
+import { Conversation, EventMessage, EventType } from 'proto/ipc/ts/messages';
 
-export type UserCardProps = {
-  convid: string | null;
-  displayname?: string | null;
-  id: number;
+export interface UserCardProps extends Conversation {
   messages: MessageProps[];
-  photo?: string;
-  status: string;
-  username?: string;
-  unread: number;
-};
+}
 
 type UserCardState = {
   user: UserCardProps;
@@ -62,16 +55,18 @@ const UserCard = ({
   }, [user]);
 
   const updateReadStatus = () => {
-    const messagePayload: MessagePayload = {
-      convid: convid,
-      to: user.id,
-      content: null,
-      read: true,
-    };
     if (user) {
       setRecipient(user);
     }
-    ws?.send(JSON.stringify({ event: MessageType.MARK_AS_READ, content: messagePayload }));
+    const message = EventMessage.create({
+      event: EventType.MARK_AS_READ,
+      reqRead: {
+        convid: convid,
+        to: user.id,
+      },
+    });
+    const encoded = EventMessage.encode(message).finish();
+    ws?.send(encoded);
   };
 
   return (

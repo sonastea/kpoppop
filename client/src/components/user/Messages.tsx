@@ -7,21 +7,15 @@ import MessagesSocket from 'components/messages/socket';
 import UserCard, { UserCardProps } from 'components/messages/UserCard';
 import UserCardSkeletonLoader from 'components/messages/UserCardSkeletonLoader';
 import { useAuth } from 'contexts/AuthContext';
+import { Conversation, EventMessage, EventType, Message } from 'proto/ipc/ts/messages';
 import { BaseSyntheticEvent, useEffect, useReducer, useRef, useState } from 'react';
 
-export type MessageProps = {
-  convid: string | null;
-  to: number;
-  createdAt: string;
-  content: string;
-  from: number;
-  fromSelf?: boolean;
+export interface MessageProps extends Message {
   fromPhoto: string;
   fromUser: string;
-  read?: boolean;
   type: MessageType;
   unread?: number;
-};
+}
 
 enum MessageAction {
   SET_INITIAL_CONVERSATIONS = 'SET_INITIAL_CONVERSATIONS',
@@ -118,51 +112,83 @@ const Messages = () => {
     });
   };
 
-  const sortConversations = (conversations: UserCardProps[]) => {
+  const sortConversations = (conversations: UserCardProps[] | Conversation[]) => {
     if (!conversations) {
       setLoading(false);
       return;
     }
 
     conversations.sort((a, b) => {
-      const lastMessageA = new Date(a.messages[a.messages.length - 1].createdAt).getTime();
-      const lastMessageB = new Date(b.messages[b.messages.length - 1].createdAt).getTime();
+      const lastMessageA = new Date(a.messages[a.messages.length - 1].createdAt!).getTime();
+      const lastMessageB = new Date(b.messages[b.messages.length - 1].createdAt!).getTime();
 
       return lastMessageB - lastMessageA;
     });
     setLoading(false);
   };
 
+  const sendEventMessage = (ws: WebSocket, event_type: EventType, content: any) => {
+    let message: EventMessage | undefined;
+
+    switch (event_type) {
+      case EventType.CONNECT:
+        message = EventMessage.create({ event: event_type });
+        break;
+      case EventType.CONVERSATIONS:
+        message = EventMessage.create({ event: event_type });
+        break;
+      case EventType.MARK_AS_READ:
+        break;
+      case EventType.UNKNOWN_TYPE:
+      case EventType.UNRECOGNIZED:
+        console.warn('Unknown or unrecognized event type:', event_type);
+        return;
+      default:
+        console.log(content);
+        console.error('Unsupported event type:', event_type);
+        return;
+    }
+
+    if (message) {
+      const encoded = EventMessage.encode(message).finish();
+      ws.send(encoded);
+    }
+  };
+
   useEffect(() => {
     if (ws) {
       ws.onopen = () => {
         resetReconnectAttempts();
-        ws.send(`{"event": "${MessageType.CONNECT}", "content": "ping"}`);
-        ws.send(`{"event": "${MessageType.CONVERSATIONS}", "content": ""}`);
+        sendEventMessage(ws, EventType.CONNECT, undefined);
+        sendEventMessage(ws, EventType.CONVERSATIONS, undefined);
       };
       ws.onmessage = (event) => {
-        const msg = JSON.parse(event.data);
+        const binaryData = new Uint8Array(event.data);
+        const msg = EventMessage.decode(binaryData);
 
         switch (msg.event) {
-          case MessageType.CONNECT:
-            console.log('connect: ', msg.content);
+          case EventType.CONNECT:
             break;
 
-          case MessageType.CONVERSATIONS: {
-            const data = JSON.parse(msg.content);
-            sortConversations(data[1]);
-            setConversations({
-              type: MessageAction.SET_INITIAL_CONVERSATIONS,
-              conversations: data[1],
-            });
+          case EventType.CONVERSATIONS: {
+            if (msg.respConvos) {
+              sortConversations(msg.respConvos.conversations);
+              setConversations({
+                type: MessageAction.SET_INITIAL_CONVERSATIONS,
+                conversations: msg.respConvos.conversations as UserCardProps[],
+              });
+            }
             break;
           }
 
-          case MessageType.MARK_AS_READ:
-            setConversations({
-              type: MessageAction.MARK_READ_MESSAGES,
-              message: JSON.parse(msg.content),
-            });
+          case EventType.MARK_AS_READ:
+            if (msg.respRead) {
+              console.log('respRead');
+              setConversations({
+                type: MessageAction.MARK_READ_MESSAGES,
+                message: msg.respRead as MessageProps,
+              });
+            }
             break;
         }
       };
@@ -181,26 +207,11 @@ const Messages = () => {
         reconnectToMessages();
       };
 
-      /* ws.onmessage('connect', () => {
-        ws.emit('user connected', (response: string) =>
-          console.log('Connected to kpoppop messages websocket.', response)
-        );
-      }); */
+      if (scrollBottomRef.current) {
+        scrollBottomRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
 
-      /* ws.on('connect_error', (err) => {
-        console.warn(err.message);
-        setLoading(false);
-      });
-
-      ws.on('conversations', (conversations: UserCardProps[]) => {
-        sortConversations(conversations);
-        setConversations({
-          type: MessageAction.SET_INITIAL_CONVERSATIONS,
-          conversations: conversations,
-        });
-      });
-
-      ws.on('private message', (message: MessageProps) => {
+      /* ws.on('private message', (message: MessageProps) => {
         if (message.fromSelf) {
           setConversations({
             type: MessageAction.FROM_SELF,
@@ -214,16 +225,6 @@ const Messages = () => {
           });
         }
 
-        if (scrollBottomRef.current) {
-          scrollBottomRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
-      });
-
-      ws.on('read message', (message: MessageProps) => {
-        setConversations({
-          type: MessageAction.MARK_READ_MESSAGES,
-          message: message,
-        });
       }); */
     }
   }, [ws, reconnectToMessages, resetReconnectAttempts]);
@@ -349,7 +350,7 @@ const Messages = () => {
                   className="message-window messages-scroll-bar h-screen w-full overflow-auto
                     break-all border-x-slate-300 py-1 md:border-x"
                 >
-                  <MessagesList messages={sortMessages(m?.conversations)} />
+                  <MessagesList messages={sortMessages(m?.conversations as UserCardProps[])} />
                   <div ref={scrollBottomRef} />
                 </ul>
                 <MessageInputBox
@@ -417,7 +418,9 @@ function handleConversations(
 
       const newConversation: UserCardProps = {
         ...m.recipient,
-        convid: action.message?.convid ?? null,
+        username: m.recipient?.username ?? '',
+        displayname: m.recipient?.displayname ?? '',
+        convid: action.message?.convid ?? '',
         id: action.message?.to ?? 0,
         messages: action.message ? [action.message] : [],
         status: 'ACTIVE',
@@ -445,13 +448,13 @@ function handleConversations(
         }
 
         const newConversation: UserCardProps = {
-          displayname: action.message?.fromUser,
-          convid: action.message?.convid ?? null,
+          displayname: action.message?.fromUser ?? '',
+          convid: action.message?.convid ?? '',
           id: action.message?.to ?? 0,
           messages: action.message ? [action.message] : [],
           photo: action.message?.fromPhoto,
           status: 'ACTIVE',
-          username: action.message?.fromUser,
+          username: action.message?.fromUser ?? '',
           unread: 1,
         };
 

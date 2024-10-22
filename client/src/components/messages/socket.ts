@@ -22,7 +22,9 @@ const MessagesSocket = create<MessagesSocketType>((set, get) => ({
 
   connect: () =>
     set(() => {
-      return { ws: new WebSocket(`${MESSAGES_WS_URL}`) };
+      const ws = new WebSocket(`${MESSAGES_WS_URL}`);
+      ws.binaryType = 'arraybuffer';
+      return { ws: ws };
     }),
 
   close: () =>
