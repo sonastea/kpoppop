@@ -1,6 +1,6 @@
 import { faCirclePlus, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import MessageInputBox, { MessagePayload } from 'components/messages/MessageInputBox';
+import MessageInputBox from 'components/messages/MessageInputBox';
 import MessagesList from 'components/messages/MessagesList';
 import NewConversation from 'components/messages/NewConversation';
 import MessagesSocket from 'components/messages/socket';
@@ -31,6 +31,17 @@ export enum MessageType {
   MARK_AS_READ = 'MARK_AS_READ',
 }
 
+// Try/catch needed to decode protobuf message, so this just swallows the error and does nothing.
+export const noop = (_e: unknown) => {};
+const decodeMessage = (decoder: any, data: Uint8Array) => {
+  try {
+    return decoder.decode(data);
+  } catch (e) {
+    noop(e);
+    return null;
+  }
+};
+
 const getMessageHeaderName = (recipient: UserCardProps) => {
   const displayName = recipient?.displayname;
   const username = recipient?.username;
@@ -58,7 +69,7 @@ const Messages = () => {
 
   const ws = MessagesSocket((socket) => socket.ws);
   const [draft, setDrafting] = useState<boolean>(false);
-  const [message, setMessage] = useState<string | null>('');
+  const [message, setMessage] = useState<string | undefined>('');
   const scrollBottomRef = useRef<HTMLDivElement | null>(null);
 
   const hasRecipient = draft || m.recipient;
@@ -162,70 +173,68 @@ const Messages = () => {
         sendEventMessage(ws, EventType.CONNECT, undefined);
         sendEventMessage(ws, EventType.CONVERSATIONS, undefined);
       };
+
       ws.onmessage = (event) => {
         const binaryData = new Uint8Array(event.data);
-        const msg = EventMessage.decode(binaryData);
+        const msg = decodeMessage(EventMessage, binaryData);
 
-        switch (msg.event) {
-          case EventType.CONNECT:
-            break;
+        if (msg) {
+          switch (msg?.event) {
+            case EventType.CONNECT:
+              break;
 
-          case EventType.CONVERSATIONS: {
-            if (msg.respConvos) {
-              sortConversations(msg.respConvos.conversations);
-              setConversations({
-                type: MessageAction.SET_INITIAL_CONVERSATIONS,
-                conversations: msg.respConvos.conversations as UserCardProps[],
-              });
+            case EventType.CONVERSATIONS: {
+              if (msg.respConvos) {
+                sortConversations(msg.respConvos.conversations);
+                setConversations({
+                  type: MessageAction.SET_INITIAL_CONVERSATIONS,
+                  conversations: msg.respConvos.conversations as UserCardProps[],
+                });
+              }
+              break;
             }
-            break;
+
+            case EventType.MARK_AS_READ: {
+              if (msg.respRead) {
+                setConversations({
+                  type: MessageAction.MARK_READ_MESSAGES,
+                  message: msg.respRead as MessageProps,
+                });
+              }
+              break;
+            }
+
+            default:
+              break;
           }
+        } else {
+          const m = decodeMessage(Message, binaryData);
+          const actionType = m.fromSelf ? MessageAction.FROM_SELF : MessageAction.FROM_USER;
 
-          case EventType.MARK_AS_READ:
-            if (msg.respRead) {
-              console.log('respRead');
-              setConversations({
-                type: MessageAction.MARK_READ_MESSAGES,
-                message: msg.respRead as MessageProps,
-              });
-            }
-            break;
+          setConversations({
+            type: actionType,
+            message: m as MessageProps,
+            ...(actionType === MessageAction.FROM_USER && { ws }),
+          });
         }
-      };
 
-      ws.onclose = (event) => {
-        console.log('WebSocket close: ', event);
-        if (event.code !== 1000) {
+        ws.onclose = (event) => {
+          if (event.code !== 1000) {
+            setLoading(true);
+            reconnectToMessages();
+          }
+        };
+
+        ws.onerror = (event) => {
+          console.error('WebSocket error: ', event);
           setLoading(true);
           reconnectToMessages();
+        };
+
+        if (scrollBottomRef.current) {
+          scrollBottomRef.current.scrollIntoView({ behavior: 'smooth' });
         }
       };
-
-      ws.onerror = (event) => {
-        console.log('WebSocket error: ', event);
-        setLoading(true);
-        reconnectToMessages();
-      };
-
-      if (scrollBottomRef.current) {
-        scrollBottomRef.current.scrollIntoView({ behavior: 'smooth' });
-      }
-
-      /* ws.on('private message', (message: MessageProps) => {
-        if (message.fromSelf) {
-          setConversations({
-            type: MessageAction.FROM_SELF,
-            message: message,
-          });
-        } else {
-          setConversations({
-            type: MessageAction.FROM_USER,
-            message: message,
-            ws: ws,
-          });
-        }
-
-      }); */
     }
   }, [ws, reconnectToMessages, resetReconnectAttempts]);
 
@@ -468,10 +477,10 @@ function handleConversations(
       const matchRecipient = conversation.id === (action.message?.from && m.recipient?.id);
 
       if (conversation.id === (action.message?.from && m.recipient?.id)) {
-        const messagePayload: MessagePayload = {
+        const messagePayload: Partial<Message> = {
           convid: conversation.convid,
           to: conversation.id,
-          content: null,
+          content: undefined,
           read: true,
         };
         action.ws?.send(JSON.stringify(messagePayload));
