@@ -7,7 +7,13 @@ import MessagesSocket from 'components/messages/socket';
 import UserCard, { UserCardProps } from 'components/messages/UserCard';
 import UserCardSkeletonLoader from 'components/messages/UserCardSkeletonLoader';
 import { useAuth } from 'contexts/AuthContext';
-import { Conversation, EventMessage, EventType, Message } from 'proto/ipc/ts/messages';
+import {
+  ContentMarkAsRead,
+  Conversation,
+  EventMessage,
+  EventType,
+  Message,
+} from 'proto/ipc/ts/messages';
 import { BaseSyntheticEvent, useEffect, useReducer, useRef, useState } from 'react';
 
 export interface MessageProps extends Message {
@@ -50,6 +56,38 @@ const getMessageHeaderName = (recipient: UserCardProps) => {
     return `${displayName} (${username})`;
   } else {
     return username;
+  }
+};
+
+const sendEventMessage = (
+  ws: WebSocket,
+  event_type: EventType,
+  content: ContentMarkAsRead | undefined
+) => {
+  let message: EventMessage | undefined;
+
+  switch (event_type) {
+    case EventType.CONNECT:
+      message = EventMessage.create({ event: event_type });
+      break;
+    case EventType.CONVERSATIONS:
+      message = EventMessage.create({ event: event_type });
+      break;
+    case EventType.MARK_AS_READ:
+      message = EventMessage.create({ event: event_type, reqRead: content });
+      break;
+    case EventType.UNKNOWN_TYPE:
+    case EventType.UNRECOGNIZED:
+      console.warn('Unknown or unrecognized event type:', event_type);
+      return;
+    default:
+      console.error('Unsupported event type:', event_type);
+      return;
+  }
+
+  if (message) {
+    const encoded = EventMessage.encode(message).finish();
+    ws.send(encoded);
   }
 };
 
@@ -138,34 +176,6 @@ const Messages = () => {
     setLoading(false);
   };
 
-  const sendEventMessage = (ws: WebSocket, event_type: EventType, content: any) => {
-    let message: EventMessage | undefined;
-
-    switch (event_type) {
-      case EventType.CONNECT:
-        message = EventMessage.create({ event: event_type });
-        break;
-      case EventType.CONVERSATIONS:
-        message = EventMessage.create({ event: event_type });
-        break;
-      case EventType.MARK_AS_READ:
-        break;
-      case EventType.UNKNOWN_TYPE:
-      case EventType.UNRECOGNIZED:
-        console.warn('Unknown or unrecognized event type:', event_type);
-        return;
-      default:
-        console.log(content);
-        console.error('Unsupported event type:', event_type);
-        return;
-    }
-
-    if (message) {
-      const encoded = EventMessage.encode(message).finish();
-      ws.send(encoded);
-    }
-  };
-
   useEffect(() => {
     if (ws) {
       ws.onopen = () => {
@@ -203,9 +213,6 @@ const Messages = () => {
               }
               break;
             }
-
-            default:
-              break;
           }
         } else {
           const m = decodeMessage(Message, binaryData);
@@ -476,14 +483,12 @@ function handleConversations(
       const conversation = m.conversations[existingConvIndex];
       const matchRecipient = conversation.id === (action.message?.from && m.recipient?.id);
 
-      if (conversation.id === (action.message?.from && m.recipient?.id)) {
-        const messagePayload: Partial<Message> = {
+      if (conversation.id === (action.message?.from && m.recipient?.id) && action.ws) {
+        const messagePayload: ContentMarkAsRead = {
           convid: conversation.convid,
           to: conversation.id,
-          content: undefined,
-          read: true,
         };
-        action.ws?.send(JSON.stringify(messagePayload));
+        sendEventMessage(action.ws, EventType.MARK_AS_READ, messagePayload);
       }
 
       conversation.messages.push({
