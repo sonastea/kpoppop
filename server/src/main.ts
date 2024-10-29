@@ -34,64 +34,65 @@ const sessionOpts: SessionOptions = {
   secret: process.env.SESSION_SECRET_KEY,
 };
 
+const httpsOptions = {
+  key: fs.readFileSync(path.resolve('./secrets/key.pem')),
+  cert: fs.readFileSync(path.resolve('./secrets/cert.pem')),
+};
+
+const sessionOptions = {
+  cookie,
+  ...sessionOpts,
+};
+
+async function configureApp(options: {
+  cors: { origin: boolean | (string | RegExp)[]; credentials: boolean };
+}) {
+  const app = await NestFactory.create(AppModule, {
+    cors: options.cors,
+    httpsOptions: httpsOptions,
+    bufferLogs: true,
+  });
+
+  const logger = app.get(MyLogger);
+
+  app.setGlobalPrefix('api', { exclude: ['/'] });
+  app.useLogger(logger);
+  app.use(compression());
+  app.use(cookieParser());
+  app.use(passport.initialize());
+  app.use(expressSession(sessionOptions));
+  app.enableShutdownHooks();
+
+  return app;
+}
+
 async function bootstrap() {
   // Firebase Initialization
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const serviceAccount = require('../firebaseCredentials.json');
   firebase.initializeApp({
     credential: firebase.credential.cert(serviceAccount),
     storageBucket: `gs://${process.env.STORAGE_BUCKET}/`,
   });
 
-  const httpsOptions = {
-    key: fs.readFileSync(path.resolve('./secrets/key.pem')),
-    cert: fs.readFileSync(path.resolve('./secrets/cert.pem')),
-  };
-
-  const sessionOptions = {
-    cookie,
-    ...sessionOpts,
-  };
-
   if (process.env.NODE_ENV === 'production') {
-    const app = await NestFactory.create(AppModule, {
+    const app = await configureApp({
       cors: {
         origin: ['https://kpoppop.com', /\.kpoppop\.com$/],
         credentials: true,
       },
-      httpsOptions,
-      bufferLogs: true,
     });
-    const logger = app.get(MyLogger);
 
-    app.setGlobalPrefix('api');
-    app.useLogger(logger);
-    app.use(compression());
-    app.use(cookieParser());
-    app.use(passport.initialize());
-    app.use(expressSession(sessionOptions));
-
-    app.enableShutdownHooks();
-    await app.listen(process.env.PORT, () => whatMode(logger));
+    await app.listen(process.env.PORT, () => whatMode(app.get(MyLogger)));
   } else {
-    const app = await NestFactory.create(AppModule, {
+    const app = await configureApp({
       cors: {
         origin: true,
         credentials: true,
       },
-      httpsOptions,
-      bufferLogs: true,
     });
-    const logger = app.get(MyLogger);
 
-    app.setGlobalPrefix('api');
-    app.useLogger(logger);
-    app.use(compression());
-    app.use(cookieParser());
-    app.use(passport.initialize());
-    app.use(expressSession(sessionOptions));
-
-    app.enableShutdownHooks();
-    await app.listen(process.env.PORT, () => whatMode(logger));
+    await app.listen(process.env.PORT, () => whatMode(app.get(MyLogger)));
   }
 }
 bootstrap();
