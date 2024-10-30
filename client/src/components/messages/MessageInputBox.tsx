@@ -29,7 +29,6 @@ const MessageInputBox = ({
         fromSelf: recipient.id === user?.id,
         createdAt: new Date().toISOString(),
       }).finish();
-
       return m;
     } catch (e) {
       noop(e);
@@ -38,22 +37,22 @@ const MessageInputBox = ({
   };
 
   const sendMessage = () => {
+    if (message === '' || message === undefined) return;
+
     if (ws && user && user.id) {
       const payload = encodedMessage(user.id);
 
-      if (payload.length > 0) {
+      if (payload) {
         ws.send(payload);
-        setMessage('');
       }
     }
   };
 
   const handleSendMessage = async (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.code === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
       sendMessage();
     }
-
-    if (e.code === 'Enter' && !e.shiftKey) e.preventDefault();
   };
 
   return (
@@ -69,7 +68,7 @@ const MessageInputBox = ({
             placeholder="Start a new message"
             style={{ resize: 'none' }}
             rows={1}
-            value={message || ''}
+            value={message ?? ''}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleSendMessage}
           />
@@ -79,7 +78,7 @@ const MessageInputBox = ({
             <button
               className={`inline-block h-10 w-10 rounded-full hover:rounded-full
                 hover:bg-once-200/75`}
-              onClick={() => sendMessage()}
+              onClick={sendMessage}
             >
               <span className="inline-block align-text-bottom">
                 <svg style={{ width: '24px', height: '24px' }} viewBox="0 0 24 24">

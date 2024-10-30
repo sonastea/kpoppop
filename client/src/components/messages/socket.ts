@@ -29,7 +29,7 @@ const MessagesSocket = create<MessagesSocketType>((set, get) => ({
 
   close: () =>
     set((state) => {
-      state.ws?.close();
+      state.ws?.close(1000);
       return { ws: null };
     }),
 

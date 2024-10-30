@@ -217,31 +217,32 @@ const Messages = () => {
         } else {
           const m = decodeMessage(Message, binaryData);
           const actionType = m.fromSelf ? MessageAction.FROM_SELF : MessageAction.FROM_USER;
+          setMessage('');
 
           setConversations({
             type: actionType,
             message: m as MessageProps,
-            ...(actionType === MessageAction.FROM_USER && { ws }),
           });
         }
+      };
 
-        ws.onclose = (event) => {
-          if (event.code !== 1000) {
-            setLoading(true);
-            reconnectToMessages();
-          }
-        };
-
-        ws.onerror = (event) => {
-          console.error('WebSocket error: ', event);
+      ws.onclose = (event) => {
+        console.error('WebSocket onclose: ', event);
+        if (event.code !== 1000) {
           setLoading(true);
           reconnectToMessages();
-        };
-
-        if (scrollBottomRef.current) {
-          scrollBottomRef.current.scrollIntoView({ behavior: 'smooth' });
         }
       };
+
+      ws.onerror = (event) => {
+        console.error('WebSocket error: ', event);
+        setLoading(true);
+        reconnectToMessages();
+      };
+
+      if (scrollBottomRef.current) {
+        scrollBottomRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   }, [ws, reconnectToMessages, resetReconnectAttempts]);
 
