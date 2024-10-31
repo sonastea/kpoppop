@@ -11,8 +11,8 @@ const MessageInputBox = ({
   setMessage,
 }: {
   recipient: UserCardProps;
-  message: string | undefined;
-  setMessage: React.Dispatch<React.SetStateAction<string | undefined>>;
+  message: string;
+  setMessage: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const chatInput = useRef<HTMLTextAreaElement | null>(null);
   const { user } = useAuth();
@@ -37,8 +37,7 @@ const MessageInputBox = ({
   };
 
   const sendMessage = () => {
-    if (message === '' || message === undefined) return;
-
+    if (message === '') return;
     if (ws && user && user.id) {
       const payload = encodedMessage(user.id);
 
@@ -68,7 +67,7 @@ const MessageInputBox = ({
             placeholder="Start a new message"
             style={{ resize: 'none' }}
             rows={1}
-            value={message ?? ''}
+            value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleSendMessage}
           />

@@ -107,7 +107,7 @@ const Messages = () => {
 
   const ws = MessagesSocket((socket) => socket.ws);
   const [draft, setDrafting] = useState<boolean>(false);
-  const [message, setMessage] = useState<string | undefined>('');
+  const [message, setMessage] = useState<string>('');
   const scrollBottomRef = useRef<HTMLDivElement | null>(null);
 
   const hasRecipient = draft || m.recipient;
@@ -177,6 +177,14 @@ const Messages = () => {
   };
 
   useEffect(() => {
+    connectToMessages();
+
+    return () => {
+      disconnectFromMessages();
+    };
+  }, [connectToMessages, disconnectFromMessages]);
+
+  useEffect(() => {
     if (ws) {
       ws.onopen = () => {
         resetReconnectAttempts();
@@ -186,43 +194,57 @@ const Messages = () => {
 
       ws.onmessage = (event) => {
         const binaryData = new Uint8Array(event.data);
-        const msg = decodeMessage(EventMessage, binaryData);
+        const msg: EventMessage = decodeMessage(EventMessage, binaryData);
 
-        if (msg) {
-          switch (msg?.event) {
+        if (!msg?.event || msg.event === EventType.UNRECOGNIZED) {
+          try {
+            const msg: MessageProps = decodeMessage(Message, binaryData);
+            const actionType = msg.fromSelf ? MessageAction.FROM_SELF : MessageAction.FROM_USER;
+
+            setMessage('');
+            setConversations({
+              type: actionType,
+              message: msg,
+            });
+
+            return;
+          } catch (e) {
+            noop(e);
+          }
+        }
+
+        if (msg.event) {
+          switch (msg.event) {
             case EventType.CONNECT:
               break;
 
             case EventType.CONVERSATIONS: {
-              if (msg.respConvos) {
-                sortConversations(msg.respConvos.conversations);
-                setConversations({
-                  type: MessageAction.SET_INITIAL_CONVERSATIONS,
-                  conversations: msg.respConvos.conversations as UserCardProps[],
-                });
-              }
+              if (!msg.respConvos?.conversations) return;
+              sortConversations(msg.respConvos.conversations);
+              setConversations({
+                type: MessageAction.SET_INITIAL_CONVERSATIONS,
+                conversations: msg.respConvos.conversations as UserCardProps[],
+              });
               break;
             }
 
             case EventType.MARK_AS_READ: {
-              if (msg.respRead) {
-                setConversations({
-                  type: MessageAction.MARK_READ_MESSAGES,
-                  message: msg.respRead as MessageProps,
-                });
-              }
+              if (!msg.respRead) return;
+              setConversations({
+                type: MessageAction.MARK_READ_MESSAGES,
+                message: msg.respRead as MessageProps,
+              });
               break;
             }
-          }
-        } else {
-          const m = decodeMessage(Message, binaryData);
-          const actionType = m.fromSelf ? MessageAction.FROM_SELF : MessageAction.FROM_USER;
-          setMessage('');
 
-          setConversations({
-            type: actionType,
-            message: m as MessageProps,
-          });
+            case EventType.UNRECOGNIZED:
+              console.warn('Unrecognized message', msg);
+              break;
+
+            default:
+              console.log('Unhandled message', msg);
+              break;
+          }
         }
       };
 
@@ -245,14 +267,6 @@ const Messages = () => {
       }
     }
   }, [ws, reconnectToMessages, resetReconnectAttempts]);
-
-  useEffect(() => {
-    connectToMessages();
-
-    return () => {
-      disconnectFromMessages();
-    };
-  }, [connectToMessages, disconnectFromMessages]);
 
   useEffect(() => {
     if (scrollBottomRef.current) {
