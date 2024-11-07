@@ -108,7 +108,13 @@ const Messages = () => {
   const ws = MessagesSocket((socket) => socket.ws);
   const [draft, setDrafting] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
-  const scrollBottomRef = useRef<HTMLDivElement | null>(null);
+  const scrollBottomRef = useRef<HTMLLIElement | null>(null);
+
+  const scrollToBottomSmooth = (yes: boolean) => {
+    if (scrollBottomRef.current) {
+      scrollBottomRef.current.scrollIntoView({ behavior: yes ? 'smooth' : 'instant' });
+    }
+  };
 
   const hasRecipient = draft || m.recipient;
 
@@ -206,6 +212,7 @@ const Messages = () => {
               type: actionType,
               message: msg,
             });
+            scrollToBottomSmooth(true);
 
             return;
           } catch (e) {
@@ -261,23 +268,15 @@ const Messages = () => {
         setLoading(true);
         reconnectToMessages();
       };
-
-      if (scrollBottomRef.current) {
-        scrollBottomRef.current.scrollIntoView({ behavior: 'smooth' });
-      }
     }
   }, [ws, reconnectToMessages, resetReconnectAttempts]);
 
   useEffect(() => {
-    if (scrollBottomRef.current) {
-      scrollBottomRef.current.scrollIntoView();
-    }
+    scrollToBottomSmooth(false);
   }, [m.recipient]);
 
   useEffect(() => {
-    if (scrollBottomRef.current) {
-      scrollBottomRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
+    scrollToBottomSmooth(true);
   }, [m.conversations]);
 
   if (loading) {
@@ -382,7 +381,7 @@ const Messages = () => {
                     break-all border-x-slate-300 py-1 md:border-x"
                 >
                   <MessagesList messages={sortMessages(m?.conversations as UserCardProps[])} />
-                  <div ref={scrollBottomRef} />
+                  <li className="invisible h-4" ref={scrollBottomRef} />
                 </ul>
                 <MessageInputBox
                   recipient={m.recipient}
