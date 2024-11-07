@@ -111,9 +111,11 @@ const Messages = () => {
   const scrollBottomRef = useRef<HTMLLIElement | null>(null);
 
   const scrollToBottomSmooth = (yes: boolean) => {
-    if (scrollBottomRef.current) {
-      scrollBottomRef.current.scrollIntoView({ behavior: yes ? 'smooth' : 'instant' });
-    }
+    requestAnimationFrame(() => {
+      if (scrollBottomRef.current) {
+        scrollBottomRef.current.scrollIntoView({ behavior: yes ? 'smooth' : 'instant' });
+      }
+    });
   };
 
   const hasRecipient = draft || m.recipient;
@@ -380,8 +382,10 @@ const Messages = () => {
                   className="message-window messages-scroll-bar h-screen w-full overflow-auto
                     break-all border-x-slate-300 py-1 md:border-x"
                 >
-                  <MessagesList messages={sortMessages(m?.conversations as UserCardProps[])} />
-                  <li className="invisible h-4" ref={scrollBottomRef} />
+                  <MessagesList
+                    messages={sortMessages(m?.conversations as UserCardProps[])}
+                    bottomRef={scrollBottomRef}
+                  />
                 </ul>
                 <MessageInputBox
                   recipient={m.recipient}
