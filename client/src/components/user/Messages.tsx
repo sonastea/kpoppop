@@ -488,8 +488,8 @@ function handleConversations(
           messages: action.message ? [action.message] : [],
           photo: action.message?.fromPhoto,
           status: 'ACTIVE',
-          username: action.message?.fromUser ?? '',
-          unread: 1,
+          username: action.message?.fromUser || m.recipient?.username || '',
+          unread: m.recipient?.id === action.message?.to ? 0 : 1,
         };
 
         return {
@@ -505,6 +505,7 @@ function handleConversations(
         const messagePayload: ContentMarkAsRead = {
           convid: conversation.convid,
           to: conversation.id,
+          from: conversation.id,
         };
         sendEventMessage(action.ws, EventType.MARK_AS_READ, messagePayload);
       }

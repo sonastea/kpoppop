@@ -62,7 +62,8 @@ const UserCard = ({
       event: EventType.MARK_AS_READ,
       reqRead: {
         convid: convid,
-        to: user.id,
+        to: parseInt(localStorage.getItem('userID')!),
+        from: user.id,
       },
     });
     const encoded = EventMessage.encode(message).finish();
