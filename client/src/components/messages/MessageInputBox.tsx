@@ -1,13 +1,9 @@
 import { KeyboardEvent, useRef } from 'react';
 import MessagesSocket from './socket';
 import { UserCardProps } from './UserCard';
-
-export type MessagePayload = {
-  convid: string | null;
-  to: number;
-  content: string | null;
-  read: boolean;
-};
+import { Message } from 'proto/ipc/ts/messages';
+import { useAuth } from 'contexts/AuthContext';
+import { noop } from 'lodash';
 
 const MessageInputBox = ({
   recipient,
@@ -15,37 +11,47 @@ const MessageInputBox = ({
   setMessage,
 }: {
   recipient: UserCardProps;
-  message: string | null;
-  setMessage: React.Dispatch<React.SetStateAction<string | null>>;
+  message: string;
+  setMessage: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const chatInput = useRef<HTMLTextAreaElement | null>(null);
+  const { user } = useAuth();
   const ws = MessagesSocket((socket) => socket.ws);
 
-  const handleSendMessage = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.code === 'Enter' && !e.shiftKey) {
-      const messagePayload: MessagePayload = {
+  const encodedMessage = (userId: number): Uint8Array => {
+    try {
+      const m = Message.encode({
         convid: recipient.convid,
         to: recipient.id,
+        from: userId,
         content: message,
         read: false,
-      };
-      ws?.emit('private message', messagePayload);
-      setMessage('');
+        fromSelf: recipient.id === user?.id,
+        createdAt: new Date().toISOString(),
+      }).finish();
+      return m;
+    } catch (e) {
+      noop(e);
+      return new Uint8Array(0);
     }
-
-    if (e.code === 'Enter' && !e.shiftKey) e.preventDefault();
   };
 
-  const handleClickSendMessage = () => {
-    const messagePayload: MessagePayload = {
-      convid: recipient.convid,
-      to: recipient.id,
-      content: message,
-      read: false,
-    };
+  const sendMessage = () => {
+    if (message === '') return;
+    if (ws && user && user.id) {
+      const payload = encodedMessage(user.id);
 
-    ws?.emit('private message', messagePayload);
-    setMessage('');
+      if (payload) {
+        ws.send(payload);
+      }
+    }
+  };
+
+  const handleSendMessage = async (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.code === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
   };
 
   return (
@@ -61,9 +67,9 @@ const MessageInputBox = ({
             placeholder="Start a new message"
             style={{ resize: 'none' }}
             rows={1}
-            value={message || ''}
+            value={message}
             onChange={(e) => setMessage(e.target.value)}
-            onKeyDown={(e) => handleSendMessage(e)}
+            onKeyDown={handleSendMessage}
           />
         </div>
         <div className="flex content-center items-center p-2">
@@ -71,7 +77,7 @@ const MessageInputBox = ({
             <button
               className={`inline-block h-10 w-10 rounded-full hover:rounded-full
                 hover:bg-once-200/75`}
-              onClick={handleClickSendMessage}
+              onClick={sendMessage}
             >
               <span className="inline-block align-text-bottom">
                 <svg style={{ width: '24px', height: '24px' }} viewBox="0 0 24 24">

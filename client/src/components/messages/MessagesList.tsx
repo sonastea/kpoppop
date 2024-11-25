@@ -1,4 +1,5 @@
 import { MessageProps } from 'components/user/Messages';
+import { MutableRefObject } from 'react';
 import Message from './Message';
 
 type MessageListProps = {
@@ -14,7 +15,13 @@ export type MessageModalProps = {
 
 const DAY = 86400000;
 
-const MessagesList = ({ messages }: { messages: MessageListProps }) => {
+const MessagesList = ({
+  messages,
+  bottomRef,
+}: {
+  messages: MessageListProps;
+  bottomRef: MutableRefObject<HTMLLIElement | null>;
+}) => {
   return (
     <>
       {Object.entries(messages).map(([date, msgs]) => {
@@ -32,6 +39,7 @@ const MessagesList = ({ messages }: { messages: MessageListProps }) => {
               mostRecent={mostRecent}
               key={date + index}
               showDate={showDate}
+              ref={bottomRef}
             />
           );
         });

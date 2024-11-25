@@ -19,9 +19,9 @@ import { BotModule } from './discord/bot.module';
 import { LoggerModule } from './logger/my-logger.module';
 import { MemeController } from './meme/meme.controller';
 import { MemeService } from './meme/meme.service';
-import { WebSocketModule } from './sockets/websocket.module';
 import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -73,9 +73,9 @@ import { UserService } from './user/user.service';
         },
       ],
     }),
-    WebSocketModule,
   ],
   controllers: [
+    AppController,
     AuthController,
     DiscordController,
     //MailController,

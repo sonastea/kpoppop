@@ -1,18 +1,11 @@
 import { MessageProps } from 'components/user/Messages';
 import { BaseSyntheticEvent, useEffect, useReducer } from 'react';
-import { MessagePayload } from './MessageInputBox';
 import MessagesSocket from './socket';
+import { Conversation, EventMessage, EventType } from 'proto/ipc/ts/messages';
 
-export type UserCardProps = {
-  convid: string | null;
-  displayname?: string | null;
-  id: number;
+export interface UserCardProps extends Conversation {
   messages: MessageProps[];
-  photo?: string;
-  status: string;
-  username?: string;
-  unread: number;
-};
+}
 
 type UserCardState = {
   user: UserCardProps;
@@ -62,16 +55,19 @@ const UserCard = ({
   }, [user]);
 
   const updateReadStatus = () => {
-    const messagePayload: MessagePayload = {
-      convid: convid,
-      to: user.id,
-      content: null,
-      read: true,
-    };
     if (user) {
       setRecipient(user);
     }
-    ws?.emit('read message', messagePayload);
+    const message = EventMessage.create({
+      event: EventType.MARK_AS_READ,
+      reqRead: {
+        convid: convid,
+        to: parseInt(localStorage.getItem('userID')!),
+        from: user.id,
+      },
+    });
+    const encoded = EventMessage.encode(message).finish();
+    ws?.send(encoded);
   };
 
   return (
@@ -121,7 +117,7 @@ const UserCard = ({
         </div>
         <div className="mx-2 flex w-full min-w-0">
           <div className="flex h-6 min-w-0 flex-auto">
-            <span className="h-6 truncate text-gray-500 whitespace-pre">
+            <span className="h-6 truncate whitespace-pre text-gray-500">
               {user?.messages?.slice(-1)[0]?.content || ''}
             </span>
           </div>

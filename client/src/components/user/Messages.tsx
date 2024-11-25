@@ -1,27 +1,27 @@
 import { faCirclePlus, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import MessageInputBox, { MessagePayload } from 'components/messages/MessageInputBox';
+import MessageInputBox from 'components/messages/MessageInputBox';
 import MessagesList from 'components/messages/MessagesList';
 import NewConversation from 'components/messages/NewConversation';
 import MessagesSocket from 'components/messages/socket';
 import UserCard, { UserCardProps } from 'components/messages/UserCard';
 import UserCardSkeletonLoader from 'components/messages/UserCardSkeletonLoader';
 import { useAuth } from 'contexts/AuthContext';
+import {
+  ContentMarkAsRead,
+  Conversation,
+  EventMessage,
+  EventType,
+  Message,
+} from 'proto/ipc/ts/messages';
 import { BaseSyntheticEvent, useEffect, useReducer, useRef, useState } from 'react';
-import { Socket } from 'socket.io-client';
 
-export type MessageProps = {
-  convid: string | null;
-  to: number;
-  createdAt: string;
-  content: string;
-  from: number;
-  fromSelf?: boolean;
+export interface MessageProps extends Message {
   fromPhoto: string;
   fromUser: string;
-  read?: boolean;
+  type: MessageType;
   unread?: number;
-};
+}
 
 enum MessageAction {
   SET_INITIAL_CONVERSATIONS = 'SET_INITIAL_CONVERSATIONS',
@@ -30,6 +30,23 @@ enum MessageAction {
   FROM_USER = 'FROM_USER',
   MARK_READ_MESSAGES = 'MARK_READ_MESSAGES',
 }
+
+export enum MessageType {
+  CONNECT = 'CONNECT',
+  CONVERSATIONS = 'CONVERSATIONS',
+  MARK_AS_READ = 'MARK_AS_READ',
+}
+
+// Try/catch needed to decode protobuf message, so this just swallows the error and does nothing.
+export const noop = (_e: unknown) => {};
+const decodeMessage = (decoder: any, data: Uint8Array) => {
+  try {
+    return decoder.decode(data);
+  } catch (e) {
+    noop(e);
+    return null;
+  }
+};
 
 const getMessageHeaderName = (recipient: UserCardProps) => {
   const displayName = recipient?.displayname;
@@ -42,6 +59,38 @@ const getMessageHeaderName = (recipient: UserCardProps) => {
   }
 };
 
+const sendEventMessage = (
+  ws: WebSocket,
+  event_type: EventType,
+  content: ContentMarkAsRead | undefined
+) => {
+  let message: EventMessage | undefined;
+
+  switch (event_type) {
+    case EventType.CONNECT:
+      message = EventMessage.create({ event: event_type });
+      break;
+    case EventType.CONVERSATIONS:
+      message = EventMessage.create({ event: event_type });
+      break;
+    case EventType.MARK_AS_READ:
+      message = EventMessage.create({ event: event_type, reqRead: content });
+      break;
+    case EventType.UNKNOWN_TYPE:
+    case EventType.UNRECOGNIZED:
+      console.warn('Unknown or unrecognized event type:', event_type);
+      return;
+    default:
+      console.error('Unsupported event type:', event_type);
+      return;
+  }
+
+  if (message) {
+    const encoded = EventMessage.encode(message).finish();
+    ws.send(encoded);
+  }
+};
+
 const Messages = () => {
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
@@ -49,6 +98,8 @@ const Messages = () => {
 
   const connectToMessages = MessagesSocket((socket) => socket.connect);
   const disconnectFromMessages = MessagesSocket((prev) => prev.close);
+  const reconnectToMessages = MessagesSocket((socket) => socket.reconnect);
+  const resetReconnectAttempts = MessagesSocket((socket) => socket.resetAttempts);
   const [m, setConversations] = useReducer(handleConversations, {
     recipient: null,
     conversations: [] as UserCardProps[],
@@ -56,8 +107,16 @@ const Messages = () => {
 
   const ws = MessagesSocket((socket) => socket.ws);
   const [draft, setDrafting] = useState<boolean>(false);
-  const [message, setMessage] = useState<string | null>('');
-  const scrollBottomRef = useRef<HTMLDivElement | null>(null);
+  const [message, setMessage] = useState<string>('');
+  const scrollBottomRef = useRef<HTMLLIElement | null>(null);
+
+  const scrollToBottomSmooth = (yes: boolean) => {
+    requestAnimationFrame(() => {
+      if (scrollBottomRef.current) {
+        scrollBottomRef.current.scrollIntoView({ behavior: yes ? 'smooth' : 'instant' });
+      }
+    });
+  };
 
   const hasRecipient = draft || m.recipient;
 
@@ -110,92 +169,116 @@ const Messages = () => {
     });
   };
 
-  const sortConversations = (conversations: UserCardProps[]) => {
+  const sortConversations = (conversations: UserCardProps[] | Conversation[]) => {
+    if (!conversations) {
+      setLoading(false);
+      return;
+    }
+
     conversations.sort((a, b) => {
-      if (
-        a.messages[a.messages.length - 1].createdAt > b.messages[b.messages.length - 1].createdAt
-      ) {
-        return -1;
-      }
-      if (
-        a.messages[a.messages.length - 1].createdAt < b.messages[b.messages.length - 1].createdAt
-      ) {
-        return 1;
-      }
-      return 0;
+      const lastMessageA = new Date(a.messages[a.messages.length - 1].createdAt!).getTime();
+      const lastMessageB = new Date(b.messages[b.messages.length - 1].createdAt!).getTime();
+
+      return lastMessageB - lastMessageA;
     });
     setLoading(false);
   };
 
   useEffect(() => {
-    if (ws) {
-      ws.on('connect', () => {
-        ws.emit('user connected', (response: string) =>
-          console.log('Connected to kpoppop messages websocket.', response)
-        );
-      });
+    connectToMessages();
 
-      ws.on('connect_error', (err) => {
-        console.warn(err.message);
-        setLoading(false);
-      });
-
-      ws.on('conversations', (conversations: UserCardProps[]) => {
-        sortConversations(conversations);
-        setConversations({
-          type: MessageAction.SET_INITIAL_CONVERSATIONS,
-          conversations: conversations,
-        });
-      });
-
-      ws.on('private message', (message: MessageProps) => {
-        if (message.fromSelf) {
-          setConversations({
-            type: MessageAction.FROM_SELF,
-            message: message,
-          });
-        } else {
-          setConversations({
-            type: MessageAction.FROM_USER,
-            message: message,
-            ws: ws,
-          });
-        }
-
-        if (scrollBottomRef.current) {
-          scrollBottomRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
-      });
-
-      ws.on('read message', (message: MessageProps) => {
-        setConversations({
-          type: MessageAction.MARK_READ_MESSAGES,
-          message: message,
-        });
-      });
-    }
-  }, [ws]);
-
-  useEffect(() => {
-    connectToMessages(user?.id);
-  }, [connectToMessages, user?.id]);
-
-  useEffect(() => {
     return () => {
       disconnectFromMessages();
     };
-  }, [disconnectFromMessages]);
+  }, [connectToMessages, disconnectFromMessages]);
 
   useEffect(() => {
-    if (scrollBottomRef.current) {
-      scrollBottomRef.current.scrollIntoView();
+    if (ws) {
+      ws.onopen = () => {
+        resetReconnectAttempts();
+        sendEventMessage(ws, EventType.CONNECT, undefined);
+        sendEventMessage(ws, EventType.CONVERSATIONS, undefined);
+      };
+
+      ws.onmessage = (event) => {
+        const binaryData = new Uint8Array(event.data);
+        const msg: EventMessage = decodeMessage(EventMessage, binaryData);
+
+        if (!msg?.event || msg.event === EventType.UNRECOGNIZED) {
+          try {
+            const msg: MessageProps = decodeMessage(Message, binaryData);
+            const actionType = msg.fromSelf ? MessageAction.FROM_SELF : MessageAction.FROM_USER;
+
+            setMessage('');
+            setConversations({
+              type: actionType,
+              message: msg,
+            });
+            scrollToBottomSmooth(true);
+
+            return;
+          } catch (e) {
+            noop(e);
+          }
+        }
+
+        if (msg.event) {
+          switch (msg.event) {
+            case EventType.CONNECT:
+              break;
+
+            case EventType.CONVERSATIONS: {
+              if (!msg.respConvos?.conversations) return;
+              sortConversations(msg.respConvos.conversations);
+              setConversations({
+                type: MessageAction.SET_INITIAL_CONVERSATIONS,
+                conversations: msg.respConvos.conversations as UserCardProps[],
+              });
+              break;
+            }
+
+            case EventType.MARK_AS_READ: {
+              if (!msg.respRead) return;
+              setConversations({
+                type: MessageAction.MARK_READ_MESSAGES,
+                message: msg.respRead as MessageProps,
+              });
+              break;
+            }
+
+            case EventType.UNRECOGNIZED:
+              console.warn('Unrecognized message', msg);
+              break;
+
+            default:
+              console.log('Unhandled message', msg);
+              break;
+          }
+        }
+      };
+
+      ws.onclose = (event) => {
+        console.error('WebSocket onclose: ', event);
+        if (event.code !== 1000) {
+          setLoading(true);
+          reconnectToMessages();
+        }
+      };
+
+      ws.onerror = (event) => {
+        console.error('WebSocket error: ', event);
+        setLoading(true);
+        reconnectToMessages();
+      };
     }
+  }, [ws, reconnectToMessages, resetReconnectAttempts]);
+
+  useEffect(() => {
+    scrollToBottomSmooth(false);
   }, [m.recipient]);
 
   useEffect(() => {
-    if (scrollBottomRef.current) {
-      scrollBottomRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
+    scrollToBottomSmooth(true);
   }, [m.conversations]);
 
   if (loading) {
@@ -299,8 +382,10 @@ const Messages = () => {
                   className="message-window messages-scroll-bar h-screen w-full overflow-auto
                     break-all border-x-slate-300 py-1 md:border-x"
                 >
-                  <MessagesList messages={sortMessages(m?.conversations)} />
-                  <div ref={scrollBottomRef} />
+                  <MessagesList
+                    messages={sortMessages(m?.conversations as UserCardProps[])}
+                    bottomRef={scrollBottomRef}
+                  />
                 </ul>
                 <MessageInputBox
                   recipient={m.recipient}
@@ -323,7 +408,7 @@ type ConversationsActionType = {
   conversations?: UserCardProps[];
   message?: MessageProps;
   recipient?: UserCardProps | null;
-  ws?: Socket;
+  ws?: WebSocket;
 };
 
 type MessagesProps = {
@@ -367,7 +452,9 @@ function handleConversations(
 
       const newConversation: UserCardProps = {
         ...m.recipient,
-        convid: action.message?.convid ?? null,
+        username: m.recipient?.username ?? '',
+        displayname: m.recipient?.displayname ?? '',
+        convid: action.message?.convid ?? '',
         id: action.message?.to ?? 0,
         messages: action.message ? [action.message] : [],
         status: 'ACTIVE',
@@ -395,14 +482,14 @@ function handleConversations(
         }
 
         const newConversation: UserCardProps = {
-          displayname: action.message?.fromUser,
-          convid: action.message?.convid ?? null,
+          displayname: action.message?.fromUser ?? '',
+          convid: action.message?.convid ?? '',
           id: action.message?.to ?? 0,
           messages: action.message ? [action.message] : [],
           photo: action.message?.fromPhoto,
           status: 'ACTIVE',
-          username: action.message?.fromUser,
-          unread: 1,
+          username: action.message?.fromUser || m.recipient?.username || '',
+          unread: m.recipient?.id === action.message?.to ? 0 : 1,
         };
 
         return {
@@ -414,14 +501,13 @@ function handleConversations(
       const conversation = m.conversations[existingConvIndex];
       const matchRecipient = conversation.id === (action.message?.from && m.recipient?.id);
 
-      if (conversation.id === (action.message?.from && m.recipient?.id)) {
-        const messagePayload: MessagePayload = {
+      if (conversation.id === (action.message?.from && m.recipient?.id) && action.ws) {
+        const messagePayload: ContentMarkAsRead = {
           convid: conversation.convid,
           to: conversation.id,
-          content: null,
-          read: true,
+          from: conversation.id,
         };
-        action.ws?.emit('read message', messagePayload);
+        sendEventMessage(action.ws, EventType.MARK_AS_READ, messagePayload);
       }
 
       conversation.messages.push({

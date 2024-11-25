@@ -4,6 +4,7 @@ export default {
     './src/**/*.{js,jsx,ts,tsx}',
     './public/**/*.html',
     './src/components/*.{js,jsx,ts,tsx}',
+    '!./src/proto',
   ],
   theme: {
     extend: {
