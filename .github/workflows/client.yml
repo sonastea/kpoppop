@@ -20,10 +20,13 @@ jobs:
           submodules: true
           fetch-depth: 0
 
-      - name: Update submodules
+      - name: Update submodules (dynamic branch or tag checkout)
         run: |
-          git submodule foreach --recursive git pull origin $(git rev-parse --abbrev-ref HEAD)
-          git submodule update --remote --merge
+          git submodule foreach --recursive '
+            branch=$(git rev-parse --abbrev-ref HEAD || echo "main") &&
+            git fetch origin $branch &&
+            git checkout $branch || git checkout $(git describe --tags $(git rev-list --tags --max-count=1))
+          '
 
       - name: Install node
         uses: actions/setup-node@v4.1.0
