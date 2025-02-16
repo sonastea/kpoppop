@@ -1,4 +1,4 @@
-import { Logger, UseInterceptors } from '@nestjs/common';
+/* import { Logger, UseInterceptors } from '@nestjs/common';
 import {
   ConnectedSocket,
   MessageBody,
@@ -9,7 +9,6 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { Server, Socket } from 'socket.io';
 import { MyLogger } from 'src/logger/my-logger.service';
 import { WebSocketSessionInterceptor } from './websocket.interceptor';
 import { WebSocketStoreService } from './websocket.service';
@@ -160,4 +159,4 @@ export class WebSocketServiceGateway
       .to(socket.handshake.auth.id.toString())
       .emit('read message', { convid: data.convid, unread: 0, to: data.to, read: true });
   }
-}
+} */
