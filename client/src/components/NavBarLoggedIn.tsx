@@ -52,16 +52,15 @@ const NavBarLoggedIn = () => {
               leaveTo="transform scale-95 opacity-0"
             >
               <MenuItems
-                className="absolute right-0 z-50 m-2 w-40 rounded-md border bg-white shadow-md
-                  ring-opacity-5 focus:outline-none"
+                className="focus:outline-hidden absolute right-0 z-50 m-2 w-40 rounded-md border
+                  bg-white shadow-md ring-opacity-5"
               >
                 <MenuItem>
                   {({ focus }) => (
                     <Link
-                      className={`flex items-center px-4 py-2 text-sm ${
-                        focus && 'rounded-t-md bg-once-200'
-                      } ${
-                        path === `/user/${user?.username}`
+                      className={`flex items-center px-4 py-2 text-sm ${ focus &&
+                      'rounded-t-md bg-once-200' } ${
+                      path === `/user/${user?.username}`
                           ? 'rounded-tr-md border-r-2 border-r-once'
                           : 'border-none'
                       }`}
@@ -76,8 +75,7 @@ const NavBarLoggedIn = () => {
                   {({ focus }) => (
                     <Link
                       className={`flex items-center px-4 py-2 text-sm ${focus && 'bg-once-200'} ${
-                        path === '/messages' ? 'border-r-2 border-r-once' : 'border-none'
-                      }`}
+                      path === '/messages' ? 'border-r-2 border-r-once' : 'border-none' }`}
                       to={`/messages`}
                     >
                       <FontAwesomeIcon viewBox="0 0 512 512" className="mr-3" icon={faMessage} />
@@ -89,8 +87,7 @@ const NavBarLoggedIn = () => {
                   {({ focus }) => (
                     <Link
                       className={`flex items-center px-4 py-2 text-sm ${focus && 'bg-once-200'} ${
-                        path === '/profile/settings' ? 'border-r-2 border-r-once' : 'border-none'
-                      }`}
+                      path === '/profile/settings' ? 'border-r-2 border-r-once' : 'border-none' }`}
                       to={`/profile/settings`}
                     >
                       <FontAwesomeIcon viewBox="0 0 512 512" className="mr-3" icon={faGears} />
@@ -101,9 +98,8 @@ const NavBarLoggedIn = () => {
                 <MenuItem>
                   {({ focus }) => (
                     <button
-                      className={`flex w-full items-center border-t px-4 py-2 text-sm ${
-                        focus && 'rounded-b-md bg-once-200'
-                      }`}
+                      className={`flex w-full items-center border-t px-4 py-2 text-sm ${ focus &&
+                      'rounded-b-md bg-once-200' }`}
                       onClick={logoutHandler}
                     >
                       <FontAwesomeIcon

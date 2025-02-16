@@ -65,8 +65,8 @@ const Login = () => {
             required
             autoComplete="username"
             placeholder=" "
-            className="block w-full appearance-none rounded-md bg-white p-3 text-lg
-              focus:outline-none"
+            className="focus:outline-hidden block w-full appearance-none rounded-md bg-white p-3
+              text-lg"
             type="text"
             id="username"
             {...register('username')}
@@ -88,8 +88,8 @@ const Login = () => {
             required
             autoComplete="current-password"
             placeholder=" "
-            className="block w-full appearance-none rounded-md bg-white p-3 text-lg
-              focus:outline-none"
+            className="focus:outline-hidden block w-full appearance-none rounded-md bg-white p-3
+              text-lg"
             type={showPassword ? 'text' : 'password'}
             id="password"
             {...register('password')}

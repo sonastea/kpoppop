@@ -199,7 +199,7 @@ const UploadMeme = () => {
       {showUploadMeme && (
         <div
           onClick={() => setShowUploadMeme()}
-          className="fixed inset-0 z-10 flex min-h-screen w-full justify-center backdrop-blur"
+          className="fixed inset-0 z-10 flex min-h-screen w-full justify-center backdrop-blur-sm"
         >
           <div
             onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
@@ -226,8 +226,8 @@ const UploadMeme = () => {
                 <input
                   id="title-input"
                   required
-                  className="label-outline w-full appearance-none border border-gray-300 px-1
-                    focus-within:border-once focus:outline-none"
+                  className="label-outline focus:outline-hidden w-full appearance-none border
+                    border-gray-300 px-1 focus-within:border-once"
                   type="text"
                   {...register('title', {
                     required: true,
@@ -250,8 +250,8 @@ const UploadMeme = () => {
                 </label>
                 <input
                   id="url-input"
-                  className="w-full border border-gray-300 px-1 focus-within:border-once
-                    focus:outline-none"
+                  className="focus:outline-hidden w-full border border-gray-300 px-1
+                    focus-within:border-once"
                   type="url"
                   {...register('url')}
                   onChange={handleChangeEvent}

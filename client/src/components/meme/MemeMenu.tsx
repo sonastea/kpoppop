@@ -65,7 +65,7 @@ const MemeMenu = ({ authorId, memeId }: { authorId: number; memeId: number }) =>
   return (
     <div>
       <button
-        className="group rounded-full outline-none"
+        className="outline-hidden group rounded-full"
         ref={refs.setReference}
         aria-label="Meme menu"
         role="button"

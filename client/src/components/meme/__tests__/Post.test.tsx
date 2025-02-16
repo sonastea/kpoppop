@@ -46,7 +46,9 @@ describe('`Post` component', () => {
       expect(await screen.findByRole('img')).toBeTruthy();
       expect(await screen.findByText('1')).toHaveTextContent('1');
       expect(await screen.findByText(memes.title)).toHaveTextContent(memes.title);
-      expect(await screen.findByText(memes.author.username)).toHaveTextContent(memes.author.username);
+      expect(await screen.findByText(memes.author.username)).toHaveTextContent(
+        memes.author.username
+      );
     });
 
     const spyLikeMeme = jest.spyOn(api, 'likeMeme').mockResolvedValue(true);

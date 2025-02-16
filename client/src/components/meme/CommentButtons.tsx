@@ -27,9 +27,9 @@ const CommentButtons = (props: { commentId: number; containerRef: RefObject<HTML
   };
 
   return (
-    <div className="p-1 flex flex-wrap justify-center overflow-auto">
+    <div className="flex flex-wrap justify-center overflow-auto p-1">
       <div
-        className="flex hover:text-red-500 space-x-1 mx-2"
+        className="mx-2 flex space-x-1 hover:text-red-500"
         role="button"
         aria-label="delete-comment"
         onClick={handleDeleteComment}
@@ -39,7 +39,7 @@ const CommentButtons = (props: { commentId: number; containerRef: RefObject<HTML
         <div className="my-auto whitespace-nowrap">Delete</div>
       </div>
       <div
-        className="flex hover:text-red-500 space-x-1 mx-2"
+        className="mx-2 flex space-x-1 hover:text-red-500"
         role="button"
         aria-label="edit-comment"
         onClick={(e: BaseSyntheticEvent) => toggleEditCommentState(e)}

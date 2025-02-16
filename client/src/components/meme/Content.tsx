@@ -24,13 +24,13 @@ const Content = () => {
     <>
       <div className="content-header">
         <div className="max-w-sm">
-          <img className="mt-2 rounded-2" src={meme.url} alt={meme.title}/>
+          <img className="rounded-2 mt-2" src={meme.url} alt={meme.title} />
         </div>
         <div className="d-flex flex-column">
           <div className="content-title">
             <div>{meme.title}</div>
           </div>
-          <div className="mt-auto author-bar">
+          <div className="author-bar mt-auto">
             <div>
               <a href={`/user/${meme.author.username}`}>{meme.author.username}</a>
             </div>

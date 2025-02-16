@@ -110,8 +110,8 @@ const Comment = (props: { props: CommentProps; memeOwnerId: number }) => {
       >
         <div className="flex h-full rounded-md text-center">
           <textarea
-            className="h-full w-full resize-none rounded-md border bg-gray-200/60 p-2
-              focus:border-once focus:outline-none"
+            className="focus:outline-hidden h-full w-full resize-none rounded-md border
+              bg-gray-200/60 p-2 focus:border-once"
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
           />

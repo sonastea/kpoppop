@@ -74,9 +74,9 @@ const ConfirmationDialog = ({ title, updateList }: ConfirmationDialogProps) => {
                   <div className="mt-4 flex flex-row-reverse gap-2">
                     <button
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent
-                        bg-green-600 p-2 px-4 text-sm text-white hover:bg-green-800
-                        focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500
+                      className="focus:outline-hidden inline-flex justify-center rounded-md border
+                        border-transparent bg-green-600 p-2 px-4 text-sm text-white
+                        hover:bg-green-800 focus-visible:ring-2 focus-visible:ring-green-500
                         focus-visible:ring-offset-2"
                       onClick={() => confirmingCloseYes()}
                     >
@@ -84,8 +84,8 @@ const ConfirmationDialog = ({ title, updateList }: ConfirmationDialogProps) => {
                     </button>
                     <button
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent
-                        bg-red-600 p-2 px-4 text-sm text-white hover:bg-red-800 focus:outline-none
+                      className="focus:outline-hidden inline-flex justify-center rounded-md border
+                        border-transparent bg-red-600 p-2 px-4 text-sm text-white hover:bg-red-800
                         focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
                       onClick={() => confirmingCloseNo()}
                     >

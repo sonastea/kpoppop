@@ -70,8 +70,8 @@ const LoginModal = () => {
   if (!notified) {
     return (
       <div
-        className={`fixed inset-0 z-50 flex min-h-screen w-full items-center justify-center
-        bg-black/10 backdrop-blur-sm ${hidden}`}
+        className={`backdrop-blur-xs fixed inset-0 z-50 flex min-h-screen w-full items-center
+          justify-center bg-black/10 ${hidden}`}
         onClick={toggleVisbility}
       >
         <div className="relative" onClick={(e) => e.stopPropagation()}>
@@ -98,8 +98,8 @@ const LoginModal = () => {
                 required
                 autoComplete="username"
                 placeholder=" "
-                className="z-10 block w-full appearance-none rounded-md bg-transparent p-3 text-lg
-                  focus:outline-none"
+                className="focus:outline-hidden z-10 block w-full appearance-none rounded-md
+                  bg-transparent p-3 text-lg"
                 type="text"
                 id="username"
                 {...register('username')}
@@ -121,8 +121,8 @@ const LoginModal = () => {
                 required
                 autoComplete="current-password"
                 placeholder=" "
-                className="block w-full appearance-none rounded-md bg-transparent p-3 text-lg
-                  focus:outline-none"
+                className="focus:outline-hidden block w-full appearance-none rounded-md
+                  bg-transparent p-3 text-lg"
                 type={showPassword ? 'text' : 'password'}
                 id="password"
                 {...register('password')}

@@ -53,7 +53,7 @@ const Profile = () => {
   if (!loading && data && !data?.errors?.User) {
     return (
       <div className="mt-nav-mobile md:mt-nav-larger">
-        <div className="mx-auto h-auto w-full max-w-screen-2xl">
+        <div className="max-w-(--breakpoint-2xl) mx-auto h-auto w-full">
           <div className="mx-auto flex h-auto max-h-[192px] min-h-[192px] justify-center">
             <div className="w-full bg-cover bg-center">
               <a
@@ -106,7 +106,8 @@ const Profile = () => {
                         }
                       />
                       <img
-                        className="mt-[-50%] aspect-square rounded-full border border-black bg-white"
+                        className="mt-[-50%] aspect-square rounded-full border border-black
+                          bg-white"
                         src={
                           data.photo
                             ? `${data.photo}?tr=w-144,h-144`

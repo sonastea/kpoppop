@@ -36,6 +36,8 @@ describe('Render profile page according to authentication status', () => {
       { Context: { user } }
     );
 
-    expect(screen.getByText(`Hello, ${user.username}`)).toHaveTextContent(`Hello, ${user.username}`);
+    expect(screen.getByText(`Hello, ${user.username}`)).toHaveTextContent(
+      `Hello, ${user.username}`
+    );
   });
 });

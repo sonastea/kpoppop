@@ -82,21 +82,18 @@ const InteractiveComments = ({ memeId, ownerId, comments: c }: InteractiveCommen
           />
         </picture>
         <textarea
-          className="m-2 h-6 w-full max-w-2xl overflow-hidden rounded-md border bg-gray-200/60 px-2
-            text-center focus:border-once focus:outline-none"
+          className="focus:outline-hidden m-2 h-6 w-full max-w-2xl overflow-hidden rounded-md border
+            bg-gray-200/60 px-2 text-center focus:border-once"
           name="comment"
           placeholder="Add comment"
           value={comment}
           ref={textAreaRef}
           onChange={(e) => addCommentEventHandler(e)}
         />
-        <div className="w-6 flex-shrink text-sm">
+        <div className="w-6 shrink text-sm">
           <span
-            className={`${
-              textAreaRef.current &&
-              textAreaRef.current.value.length > 640 &&
-              'font-bold text-error'
-            }`}
+            className={`${ textAreaRef.current && textAreaRef.current.value.length > 640 &&
+              'font-bold text-error' }`}
           >
             {textAreaRef.current?.value.length ?? 0}
           </span>
@@ -104,7 +101,7 @@ const InteractiveComments = ({ memeId, ownerId, comments: c }: InteractiveCommen
         <button
           type="button"
           className={`${isCommenting ? 'cursor-not-allowed bg-once-200' : 'bg-once'} self-center
-          rounded-md p-1 hover:bg-once-400`}
+            rounded-md p-1 hover:bg-once-400`}
           onClick={() => addComment(memeId)}
           disabled={isCommenting ? true : false}
         >

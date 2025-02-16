@@ -92,7 +92,7 @@ const RegisterRedirect = () => {
     if (linkExisting === undefined && !linked) {
       return (
         <div className="mt-20 flex items-center justify-center">
-          <div className="rounded border border-once-200 bg-opacity-95 p-8 shadow-md md:max-w-lg">
+          <div className="rounded-sm border border-once-200 bg-opacity-95 p-8 shadow-md md:max-w-lg">
             <form className="space-y-4" id="signupForm" onSubmit={handleSubmit(submitHandler)}>
               {data?.existing && (
                 <>
@@ -135,30 +135,30 @@ const RegisterRedirect = () => {
     if (linkExisting) {
       return (
         <div className="mt-20 flex items-center justify-center">
-          <div className="rounded border border-once-200 bg-opacity-95 p-8 shadow-md md:max-w-lg">
+          <div className="rounded-sm border border-once-200 bg-opacity-95 p-8 shadow-md md:max-w-lg">
             <form className="space-y-4" id="signupForm">
               <h3 className="whitespace-nowrap py-3 text-center font-bold">
                 {`Link account to ${data?.SocialType}?`}
               </h3>
               <div>
-                <label className="mb-2 block font-bold ">Username</label>
+                <label className="mb-2 block font-bold">Username</label>
                 <input
                   required
                   disabled
-                  className="w-full cursor-not-allowed rounded border border-gray-800 p-1
-                    focus:border-once focus:outline-none"
+                  className="focus:outline-hidden w-full cursor-not-allowed rounded border
+                    border-gray-800 p-1 focus:border-once"
                   type="text"
                   placeholder={data?.existing}
                 />
               </div>
 
               <div>
-                <label className="mb-2 block font-bold ">Email</label>
+                <label className="mb-2 block font-bold">Email</label>
                 <input
                   required
                   disabled
-                  className="w-full cursor-not-allowed rounded border border-gray-800 p-1
-                    focus:border-once focus:outline-none"
+                  className="focus:outline-hidden w-full cursor-not-allowed rounded border
+                    border-gray-800 p-1 focus:border-once"
                   type="email"
                   {...register('email', { required: true })}
                   placeholder={data?.email}
@@ -206,26 +206,26 @@ const RegisterRedirect = () => {
     if (!linkExisting && linkExisting !== undefined) {
       return (
         <div className="mt-20 flex items-center justify-center">
-          <div className="rounded border p-8 shadow-md md:max-w-lg">
+          <div className="rounded-sm border p-8 shadow-md md:max-w-lg">
             <form className="space-y-4" onSubmit={handleSubmit(submitHandler)}>
               <h3 className="py-3 text-center font-semibold">Create new kpoppop account</h3>
               <div>
-                <label className="mb-2 block font-bold ">Username</label>
+                <label className="mb-2 block font-bold">Username</label>
                 <input
                   required
-                  className="w-full rounded border border-gray-800 p-1 focus:border-once
-                    focus:outline-none"
+                  className="focus:outline-hidden w-full rounded border border-gray-800 p-1
+                    focus:border-once"
                   type="text"
                   {...register('username', { required: true })}
                 />
               </div>
 
               <div>
-                <label className="mb-2 block font-bold ">Email</label>
+                <label className="mb-2 block font-bold">Email</label>
                 <input
                   required
-                  className="w-full rounded border border-gray-800 p-1 focus:border-once
-                    focus:outline-none"
+                  className="focus:outline-hidden w-full rounded border border-gray-800 p-1
+                    focus:border-once"
                   type="email"
                   {...register('email', { required: true })}
                 />

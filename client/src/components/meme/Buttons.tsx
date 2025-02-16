@@ -1,4 +1,3 @@
-
 const Buttons = (props: any) => {
   const {
     id,
@@ -9,19 +8,19 @@ const Buttons = (props: any) => {
   return (
     <>
       <div className="content-title">
-          <a className="meme-buttons" href={`/meme/${id}/${title}`}>
-            {props.title}
-          </a>
+        <a className="meme-buttons" href={`/meme/${id}/${title}`}>
+          {props.title}
+        </a>
       </div>
       <div className="author-bar">
         <a className="author-bar meme-buttons" href={`/user/${username}`}>
-            {username}
-          </a>
+          {username}
+        </a>
       </div>
       <div className="mt-auto">
-          <a className="comments meme-buttons" href={`/meme/${id}/${title}`}>
-            Comments
-          </a>
+        <a className="comments meme-buttons" href={`/meme/${id}/${title}`}>
+          Comments
+        </a>
       </div>
     </>
   );

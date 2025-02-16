@@ -76,7 +76,8 @@ const ReportCommentModal = () => {
             <form className="grid gap-2" onSubmit={handleSubmit(handleReportComment)}>
               <textarea
                 placeholder="Description of the report"
-                className="rounded-md border border-once-300 p-1 outline-none focus:border-once-500"
+                className="outline-hidden rounded-md border border-once-300 p-1
+                  focus:border-once-500"
                 {...register('description', { required: true })}
               />
 
