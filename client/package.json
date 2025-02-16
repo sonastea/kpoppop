@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.4",
-    "@fontsource/montserrat": "^5.1.0",
+    "@fontsource/montserrat": "^5.1.1",
     "@formkit/auto-animate": "^0.8.2",
     "@fortawesome/fontawesome-common-types": "^6.7.2",
     "@fortawesome/fontawesome-free": "^6.7.2",
