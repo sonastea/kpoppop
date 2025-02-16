@@ -135,16 +135,16 @@ const EditProfile = () => {
 
   return (
     <div className="w-full">
-      <div className="mx-auto flex h-full w-full max-w-screen-md justify-center">
+      <div className="max-w-(--breakpoint-md) mx-auto flex h-full w-full justify-center">
         <form className="edit-profile mx-auto">
-          <div className="w-full flex-col space-y-3 text-2xl md:text-3xl ">
+          <div className="w-full flex-col space-y-3 text-2xl md:text-3xl">
             <h2 className="py-3 text-center font-bold">Edit profile</h2>
 
             <div className="mx-2 space-y-3">
               <div className="flex w-full flex-wrap py-3 text-center">
                 <img
                   className={`${banner?.length === 1 ? 'hidden' : 'block'} h-40 w-full rounded-md
-                  object-cover sm:h-60 lg:h-80`}
+                    object-cover sm:h-60 lg:h-80`}
                   src={data?.banner ? data?.banner : '/images/default_banner_white_1920x320.png'}
                   alt="banner"
                   onError={(e) => imageChange(e)}
@@ -182,7 +182,7 @@ const EditProfile = () => {
               <div className="flex w-full items-center justify-between">
                 <img
                   className={`${photo?.length === 1 || croppedUrl ? 'hidden' : 'flex'} h-24 w-24
-                  rounded-full border border-slate-900 bg-white md:h-48 md:w-48`}
+                    rounded-full border border-slate-900 bg-white md:h-48 md:w-48`}
                   src={data?.photo ? data?.photo : '/images/default_photo_white_200x200.png'}
                   alt="profile"
                   onError={(e) => imageChange(e)}
@@ -252,8 +252,8 @@ const EditProfile = () => {
                 <input
                   type="text"
                   placeholder={data?.displayname}
-                  className="w-1/2 rounded-md border border-slate-400 p-1 text-center
-                    focus-within:border-once focus:outline-none"
+                  className="focus:outline-hidden w-1/2 rounded-md border border-slate-400 p-1
+                    text-center focus-within:border-once"
                   onKeyDown={(e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
                     if (e.key === 'Enter') {
                       e.preventDefault();
@@ -291,7 +291,7 @@ const EditProfile = () => {
         </form>
       </div>
 
-      <div className="mx-auto mt-4 flex h-3/5 w-full max-w-screen-lg justify-center pb-40">
+      <div className="max-w-(--breakpoint-lg) mx-auto mt-4 flex h-3/5 w-full justify-center pb-40">
         <div className="w-full sm:w-3/4">
           <form className="edit-socials">
             <h2
@@ -307,8 +307,8 @@ const EditProfile = () => {
                 Link title
               </label>
               <input
-                className="w-auto rounded-md border border-slate-400 p-1 text-sm
-                  focus-within:border-once focus:outline-none sm:text-lg"
+                className="focus:outline-hidden w-auto rounded-md border border-slate-400 p-1
+                  text-sm focus-within:border-once sm:text-lg"
                 type="text"
                 id="social-title"
                 {...registerSocial('title')}
@@ -320,8 +320,8 @@ const EditProfile = () => {
                 Link URL
               </label>
               <input
-                className="w-auto rounded-md border border-slate-400 p-1 text-sm
-                  focus-within:border-once focus:outline-none sm:text-lg"
+                className="focus:outline-hidden w-auto rounded-md border border-slate-400 p-1
+                  text-sm focus-within:border-once sm:text-lg"
                 type="text"
                 id="social-url"
                 {...registerSocial('url', {

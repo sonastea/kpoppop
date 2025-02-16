@@ -6,7 +6,7 @@ const PostNonexistent = (props: PostNonexistentProps) => {
   const { message } = props;
 
   return (
-    <h2 className="flex items-center justify-center h-[30vh] text-lg md:text-2xl text-slate-500">
+    <h2 className="flex h-[30vh] items-center justify-center text-lg text-slate-500 md:text-2xl">
       {message}
     </h2>
   );

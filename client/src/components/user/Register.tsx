@@ -98,8 +98,8 @@ const Register = () => {
             <label className="mb-2 block font-bold">Username</label>
             <input
               required
-              className="w-full rounded border border-gray-300 p-1 focus:border-once
-                focus:outline-none"
+              className="focus:outline-hidden w-full rounded border border-gray-300 p-1
+                focus:border-once"
               type="text"
               autoComplete="username"
               {...register('username', { required: true })}
@@ -110,8 +110,8 @@ const Register = () => {
             <label className="mb-2 block font-bold">Email</label>
             <input
               required
-              className="w-full rounded border border-gray-300 p-1 focus:border-once
-                focus:outline-none"
+              className="focus:outline-hidden w-full rounded border border-gray-300 p-1
+                focus:border-once"
               type="email"
               autoComplete="email"
               {...register('email', { required: true })}
@@ -127,8 +127,8 @@ const Register = () => {
             <label className="mb-2 block font-bold">Password</label>
             <input
               required
-              className="w-full rounded border border-gray-300 p-1 focus:border-once
-                focus:outline-none"
+              className="focus:outline-hidden w-full rounded border border-gray-300 p-1
+                focus:border-once"
               type="password"
               autoComplete="new-password"
               {...register('password', {
@@ -147,13 +147,13 @@ const Register = () => {
           </div>
 
           <div>
-            <label className="mb-2 block font-bold focus:border-once focus:outline-none">
+            <label className="focus:outline-hidden mb-2 block font-bold focus:border-once">
               Confirm password
             </label>
             <input
               required
-              className="w-full rounded border border-gray-300 p-1 focus:border-once
-                focus:outline-none"
+              className="focus:outline-hidden w-full rounded border border-gray-300 p-1
+                focus:border-once"
               type="password"
               autoComplete="new-password2"
               {...register('password2', {

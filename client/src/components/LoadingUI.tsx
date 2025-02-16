@@ -7,9 +7,9 @@ const NavBar = () => {
 
   return (
     <nav className="relative w-full shadow-md">
-      <div className="mx-auto md:max-w-screen-2xl">
+      <div className="md:max-w-(--breakpoint-2xl) mx-auto">
         <div className="flex flex-wrap justify-between overflow-hidden md:overflow-visible">
-          <div className="flex flex-shrink-0 space-x-2">
+          <div className="flex shrink-0 space-x-2">
             <Link
               aria-label="Home"
               to="/"

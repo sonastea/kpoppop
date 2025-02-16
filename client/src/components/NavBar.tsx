@@ -148,9 +148,9 @@ const NavBar = () => {
 
   return (
     <nav className="fixed z-10 w-full bg-white shadow-md">
-      <div className="mx-auto md:max-w-screen-2xl">
+      <div className="md:max-w-(--breakpoint-2xl) mx-auto">
         <div className="flex flex-wrap justify-between overflow-hidden md:overflow-visible">
-          <div className="flex flex-shrink-0 space-x-2">
+          <div className="flex shrink-0 space-x-2">
             <Link
               aria-label="Home"
               className="aspect-w-2 aspect-h-1 m-2 flex h-10 grow-0 items-center sm:h-16"
@@ -172,10 +172,8 @@ const NavBar = () => {
                     <li key={item.id}>
                       <Link
                         role="button"
-                        className={`${
-                          location.pathname !== ('/' || '/memes') &&
-                          'cursor-not-allowed border-none text-slate-900/50'
-                        } ${item.className}
+                        className={`${ location.pathname !== ('/' || '/memes') &&
+                        'cursor-not-allowed border-none text-slate-900/50' } ${item.className}
                         border-transparent`}
                         onClick={(e) => {
                           e.preventDefault();
@@ -194,8 +192,7 @@ const NavBar = () => {
                     <Link
                       to={`${item.to}`}
                       className={`${item.className} ${
-                        active === item.id ? 'border-once' : 'border-transparent'
-                      }`}
+                      active === item.id ? 'border-once' : 'border-transparent' }`}
                       onClick={() => setNavItem(item.id)}
                     >
                       {item.name}
@@ -234,7 +231,7 @@ const NavBar = () => {
 
           <div
             className={`${isActiveMobileNav ? 'flex' : 'hidden'} fixed z-50 h-screen w-screen
-            bg-transparent backdrop-brightness-50 duration-150 md:hidden`}
+              bg-transparent backdrop-brightness-50 duration-150 md:hidden`}
             onClick={() => setMobileNav((prev) => !prev)}
             aria-label="Toggle mobile nav"
           />
@@ -242,8 +239,8 @@ const NavBar = () => {
           <div
             id="mobileNav"
             className={`${!isActiveMobileNav && 'translate-x-full duration-100'} fixed right-0 z-100
-            h-screen w-3/4 transform overflow-auto rounded-l bg-white py-6 pl-6 pr-10 shadow-md
-            duration-300 ease-in-out sm:w-64 md:hidden`}
+              h-screen w-3/4 transform overflow-auto rounded-l bg-white py-6 pl-6 pr-10 shadow-md
+              duration-300 ease-in-out sm:w-64 md:hidden`}
           >
             <Link
               className="aspect-w-2 aspect-h-1 inline-block w-32 sm:w-48"
@@ -277,7 +274,7 @@ const NavBar = () => {
                           active === item.id
                             ? 'rounded-md bg-slate-200/80 font-semibold text-thrice'
                             : 'bg-transparent'
-                        } ${item.className}`}
+                            } ${item.className}`}
                         onClick={() => setNavItem(item.id)}
                         key={item.id}
                         reloadDocument={item.to === '/'}

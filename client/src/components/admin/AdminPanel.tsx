@@ -82,15 +82,15 @@ const AdminPanel = () => {
 
   if (isAuthorized) {
     return (
-      <div className="flex flex-col p-2 space-y-2">
+      <div className="flex flex-col space-y-2 p-2">
         <div className="row">
           <span>Moderator username </span>{' '}
           <input
             onChange={(e) => setModUser(e.target.value)}
-            className="rounded-md border-black border px-1"
+            className="rounded-md border border-black px-1"
           ></input>{' '}
           <button
-            className="bg-once-500 px-1 rounded-md border-black/50 border-2"
+            className="rounded-md border-2 border-black/50 bg-once-500 px-1"
             onClick={(e) => {
               modUserHandler(e);
             }}
@@ -102,10 +102,10 @@ const AdminPanel = () => {
           <span>Unmod username </span>{' '}
           <input
             onChange={(e) => setUnmodUser(e.target.value)}
-            className="rounded-md border-black border px-1"
+            className="rounded-md border border-black px-1"
           ></input>{' '}
           <button
-            className="bg-once-500 px-1 rounded-md border-black/50 border-2"
+            className="rounded-md border-2 border-black/50 bg-once-500 px-1"
             onClick={(e) => {
               unmodUserHandler(e);
             }}
@@ -120,7 +120,7 @@ const AdminPanel = () => {
             className="rounded-md border border-black px-1"
           ></input>{' '}
           <button
-            className="bg-once-500 px-1 rounded-md border-black/50 border-2"
+            className="rounded-md border-2 border-black/50 bg-once-500 px-1"
             onClick={(e) => {
               banUserHandler(e);
             }}
@@ -135,7 +135,7 @@ const AdminPanel = () => {
             className="rounded-md border border-black px-1"
           ></input>{' '}
           <button
-            className="bg-once-500 px-1 rounded-md border-black/50 border-2"
+            className="rounded-md border-2 border-black/50 bg-once-500 px-1"
             onClick={(e) => {
               hideMemeHandler(e);
             }}
@@ -150,7 +150,7 @@ const AdminPanel = () => {
             className="rounded-md border border-black px-1"
           ></input>{' '}
           <button
-            className="bg-once-500 px-1 rounded-md border-black/50 border-2"
+            className="rounded-md border-2 border-black/50 bg-once-500 px-1"
             onClick={(e) => {
               showMemeHandler(e);
             }}

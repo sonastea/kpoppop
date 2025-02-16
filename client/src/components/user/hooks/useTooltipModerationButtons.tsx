@@ -57,14 +57,14 @@ const useTooltipModerationButtons = (props: { user: IUserProps }) => {
             <span>
               <FontAwesomeIcon className="text-green-600" icon={faBan} />
             </span>
-            <span className="hover:text-green-600 whitespace-nowrap">Unban</span>
+            <span className="whitespace-nowrap hover:text-green-600">Unban</span>
           </div>
         ) : (
           <div className={button_bg} role="button" aria-label="ban-user" onClick={handleBanUser}>
             <span>
               <FontAwesomeIcon className="text-red-500" icon={faBan} />
             </span>
-            <span className="hover:text-red-500 whitespace-nowrap">Ban</span>
+            <span className="whitespace-nowrap hover:text-red-500">Ban</span>
           </div>
         )}
         {isModded ? (
@@ -78,14 +78,14 @@ const useTooltipModerationButtons = (props: { user: IUserProps }) => {
               <FontAwesomeIcon className="text-red-500" icon={faBan} />
               <FontAwesomeIcon size="xs" icon={faGavel} />
             </span>
-            <span className="hover:text-red-500 whitespace-nowrap">Unmod</span>
+            <span className="whitespace-nowrap hover:text-red-500">Unmod</span>
           </div>
         ) : (
           <div className={button_bg} role="button" aria-label="mod-user" onClick={handleModUser}>
             <span>
               <FontAwesomeIcon className="text-once-500" icon={faGavel} />
             </span>
-            <span className="hover:text-once-500 whitespace-nowrap">Mod</span>
+            <span className="whitespace-nowrap hover:text-once-500">Mod</span>
           </div>
         )}
       </>

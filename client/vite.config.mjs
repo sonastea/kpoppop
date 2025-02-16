@@ -1,3 +1,4 @@
+import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import Unfonts from 'unplugin-fonts/vite';
 import { defineConfig } from 'vite';
@@ -18,9 +19,6 @@ export default defineConfig(() => {
                 return sub1.toString();
               }
               const name2 = basic.split('/')[1];
-              if (name2.includes('react-router-dom')) {
-                return 'react-router-dom';
-              }
               const chunkNames = {
                 '@tensorflow+tfjs-backend': 'tensorflow_tfjs_backend',
                 '@tensorflow+tfjs-core': 'tensorflow_tfjs_core',
@@ -44,6 +42,7 @@ export default defineConfig(() => {
     plugins: [
       mkcert(),
       react(),
+      tailwindcss(),
       tsconfigPaths(),
       Unfonts({
         fontsource: {

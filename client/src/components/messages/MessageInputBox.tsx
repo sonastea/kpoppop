@@ -56,13 +56,13 @@ const MessageInputBox = ({
 
   return (
     <div className="z-10 border border-slate-300 p-4">
-      <div className="flex rounded-lg bg-white shadow">
+      <div className="flex rounded-lg bg-white shadow-sm">
         <div className="flex-1">
           <textarea
             autoFocus={true}
             id="message-input"
-            className="block w-full overflow-hidden whitespace-nowrap bg-transparent px-4 py-4
-              outline-none"
+            className="outline-hidden block w-full overflow-hidden whitespace-nowrap bg-transparent
+              px-4 py-4"
             ref={chatInput}
             placeholder="Start a new message"
             style={{ resize: 'none' }}

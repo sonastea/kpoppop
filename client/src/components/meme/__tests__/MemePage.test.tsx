@@ -46,9 +46,13 @@ describe('MemePage `Memes` component', () => {
       {}
     );
     expect(await screen.findByText(memes[0].title)).toHaveTextContent(memes[0].title);
-    expect(await screen.findByText(memes[0].author.username)).toHaveTextContent(memes[0].author.username);
+    expect(await screen.findByText(memes[0].author.username)).toHaveTextContent(
+      memes[0].author.username
+    );
     expect(await screen.findByText(memes[1].title)).toHaveTextContent(memes[1].title);
-    expect(await screen.findByText(memes[1].author.username)).toHaveTextContent(memes[1].author.username);
+    expect(await screen.findByText(memes[1].author.username)).toHaveTextContent(
+      memes[1].author.username
+    );
   });
 });
 

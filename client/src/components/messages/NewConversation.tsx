@@ -40,8 +40,8 @@ const NewConversation = ({
         <div className="flex w-full">
           <div className="relative w-full">
             <input
-              className="block w-full border border-slate-400 py-1 text-center text-xl font-bold
-                focus-visible:border-once-400 focus-visible:outline-none"
+              className="focus-visible:outline-hidden block w-full border border-slate-400 py-1
+                text-center text-xl font-bold focus-visible:border-once-400"
               placeholder="Send to username"
               value={username}
               onChange={(e) => {

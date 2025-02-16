@@ -14,14 +14,14 @@ const NavBarLoggedOut = () => {
       <Link
         to="/login"
         className={`${path === '/login' ? 'border-once' : 'border-transparent'} border-b-2 p-2
-        font-semibold hover:border-once`}
+          font-semibold hover:border-once`}
       >
         Login
       </Link>
       <Link
         to="/register"
         className={`${path === '/register' ? 'border-once' : 'border-transparent'} border-b-2 p-2
-        font-semibold hover:border-once`}
+          font-semibold hover:border-once`}
       >
         Register
       </Link>

@@ -88,8 +88,8 @@ const VerifyEmail = () => {
               <input
                 required
                 placeholder=" "
-                className="block w-full appearance-none place-self-center bg-transparent p-3 text-lg
-                  focus:outline-none"
+                className="focus:outline-hidden block w-full appearance-none place-self-center
+                  bg-transparent p-3 text-lg"
                 type="email"
                 {...register('email', {
                   pattern: {
@@ -113,8 +113,8 @@ const VerifyEmail = () => {
             <div className="grid py-3">
               <button
                 className={`${isResend && 'cursor-not-allowed'} duration-400 place-self-center
-                overflow-hidden rounded-md border-once-400 bg-once-400 p-2 font-bold text-gray-900
-                transition hover:bg-once disabled:hover:bg-once-400`}
+                  overflow-hidden rounded-md border-once-400 bg-once-400 p-2 font-bold text-gray-900
+                  transition hover:bg-once disabled:hover:bg-once-400`}
                 disabled={isResend && true}
               >
                 Resend verification link

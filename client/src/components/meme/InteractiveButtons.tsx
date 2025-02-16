@@ -81,9 +81,7 @@ const InteractiveButtons = (props: InteractiveButtonProps) => {
           </span>
         </div>
       </div>
-      <div
-        className="comments flex w-20 items-center justify-center"
-      >
+      <div className="comments flex w-20 items-center justify-center">
         <a
           role="button"
           aria-label="comments"

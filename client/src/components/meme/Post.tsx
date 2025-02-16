@@ -60,7 +60,7 @@ const Post = () => {
     <>
       <ReportCommentModal />
       <ReportUserModal user={{ id: meme.author.id, username: meme.author.username }} />
-      <div className="mb-2 shadow-sm md:mx-auto md:w-3/5">
+      <div className="shadow-xs mb-2 md:mx-auto md:w-3/5">
         <div className="flex flex-col overflow-auto border-x md:flex-row md:flex-wrap">
           <div className="m-2 w-64 max-w-3xl self-center md:w-80 2xl:w-96">
             <MemeLazyImage

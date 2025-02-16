@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 
 const ScrollToTopButton = lazy(() => import('components/button/ScrollToTopButton'));
-const Memes= lazy(() => import('./Memes'));
+const Memes = lazy(() => import('./Memes'));
 
 const MemePage = () => {
   return (

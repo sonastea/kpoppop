@@ -101,7 +101,10 @@ const UserTooltip = ({ comment }: UserTooltipProps) => {
     <div>
       <button
         className={`px-1 hover:cursor-pointer hover:underline hover:decoration-black
-        hover:decoration-solid${isBanned ? 'line-through decoration-ponce-500' : ''}`}
+          hover:decoration-solid${
+          isBanned
+              ? 'line-through decoration-ponce-500'
+              : '' }`}
         onClick={() => navigate(`/user/${comment.user.username}`)}
         ref={refs.setReference}
         role="button"
