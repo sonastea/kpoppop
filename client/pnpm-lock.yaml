@@ -54,8 +54,8 @@ importers:
         specifier: ^4.2.1
         version: 4.2.1(@tensorflow/tfjs@4.20.0(seedrandom@3.0.5))(buffer@6.0.3)
       profane-words:
-        specifier: ^1.5.11
-        version: 1.5.11
+        specifier: ^1.6.0
+        version: 1.6.0
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -2328,8 +2328,8 @@ packages:
     resolution: {integrity: sha512-66hKPCr+72mlfiSjlEB1+45IjXSqvVAIy6mocupoww4tBFE9R9IhwwUGoI4G++Tc9Aq+2rxOt0RFU6gPcrte0A==}
     engines: {node: '>= 0.8'}
 
-  profane-words@1.5.11:
-    resolution: {integrity: sha512-LWe0nG62ZCV2WMds+TwoDsTCGdRnlwEQY1f3rRbzENQixC1eJ3+NR3GWJRn0AWHZQnxgPR1l3CgyrQqIiUGxFA==}
+  profane-words@1.6.0:
+    resolution: {integrity: sha512-BJa9m5yfTCjV+m7KxqGlK49lugCnpbEQ9MJkp/SCpVwKWq4Wiw5G0EaWcQgzY5xPtheRmM1MjF95/uqGV3oQlQ==}
 
   prompts@2.4.2:
     resolution: {integrity: sha512-NxNv/kLguCA7p3jE8oL2aEBsrJWgAakBpgmgK6lpPWV+WuOmY6r2/zbAVnP+T8bQlA0nzHXSJSJW0Hq7ylaD2Q==}
@@ -5306,7 +5306,7 @@ snapshots:
 
   pretty-hrtime@1.0.3: {}
 
-  profane-words@1.5.11: {}
+  profane-words@1.6.0: {}
 
   prompts@2.4.2:
     dependencies:
