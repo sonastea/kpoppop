@@ -3,7 +3,7 @@ import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAuth } from 'contexts/AuthContext';
 import { useState } from 'react';
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify/unstyled';
 import { likeMeme, unlikeMeme } from './MemeAPI';
 
 type InteractiveButtonProps = {

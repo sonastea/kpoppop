@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAuth } from 'contexts/AuthContext';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify/unstyled';
 import NavBarLoggedIn from './NavBarLoggedIn';
 import NavBarLoggedOut from './NavBarLoggedOut';
 import useUploadMeme from './meme/hooks/useUploadMeme';
@@ -172,7 +172,7 @@ const NavBar = () => {
                     <li key={item.id}>
                       <Link
                         role="button"
-                        className={`${ location.pathname !== ('/' || '/memes') &&
+                        className={`${ !['/', '/memes'].includes(location.pathname) &&
                         'cursor-not-allowed border-none text-slate-900/50' } ${item.className}
                         border-transparent`}
                         onClick={(e) => {

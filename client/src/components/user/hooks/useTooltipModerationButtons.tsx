@@ -2,7 +2,7 @@ import { faBan, faGavel } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IUserProps } from 'components/meme/InteractiveComments';
 import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify/unstyled';
 import { banUser, modUser, unbanUser, unmodUser } from '../UserAPI';
 
 const useTooltipModerationButtons = (props: { user: IUserProps }) => {

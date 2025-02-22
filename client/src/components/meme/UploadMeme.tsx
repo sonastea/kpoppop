@@ -2,7 +2,7 @@ import { faCheck, faHourglass, faSpinner, faXmark } from '@fortawesome/free-soli
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify/unstyled';
 import { profanityFilter } from 'utils/profanity-filter';
 import { compressImage } from './CompressImage';
 import { submitMeme } from './MemeAPI';

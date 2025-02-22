@@ -3,7 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { BaseSyntheticEvent, RefObject } from 'react';
 import { deleteComment } from './MemeAPI';
 
-const CommentButtons = (props: { commentId: number; containerRef: RefObject<HTMLDivElement> }) => {
+const CommentButtons = (props: {
+  commentId: number;
+  containerRef: RefObject<HTMLDivElement | null>;
+}) => {
   const { containerRef } = props;
 
   const handleDeleteComment = async () => {

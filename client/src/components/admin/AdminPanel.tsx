@@ -1,7 +1,7 @@
 import { useAuth } from 'contexts/AuthContext';
 import { API_URL } from 'Global.d';
 import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify/unstyled';
 
 const AdminPanel = () => {
   const [modUser, setModUser] = useState<string>();

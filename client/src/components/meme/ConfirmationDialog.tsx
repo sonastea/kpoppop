@@ -1,7 +1,7 @@
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import useRemoveMemeStore from 'hooks/useRemoveMeme';
 import { Fragment, useCallback, useEffect } from 'react';
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify/unstyled';
 import { removeMeme } from './MemeAPI';
 
 type RemoveMemeType = {

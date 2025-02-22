@@ -1,7 +1,7 @@
 import { useAuth } from 'contexts/AuthContext';
 import { API_URL } from 'Global.d';
 import { ChangeEvent, useRef, useState } from 'react';
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify/unstyled';
 import Comment from './Comment';
 
 type InteractiveCommentsProps = {
