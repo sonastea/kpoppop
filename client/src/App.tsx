@@ -52,6 +52,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
+    hydrateFallbackElement: <LoadingUI />,
     ErrorBoundary: ErrorPage,
     children: [
       { index: true, Component: MemePage },
@@ -75,8 +76,6 @@ const App = () => {
   return (
     <RouterProvider
       router={router}
-      fallbackElement={<LoadingUI />}
-      future={{ v7_startTransition: true }}
     />
   );
 };
