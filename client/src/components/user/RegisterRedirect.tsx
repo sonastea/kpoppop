@@ -4,7 +4,7 @@ import { createLocalLinkedUser, linkDiscord, linkedDiscord } from 'components/au
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify/unstyled';
 
 type FormData = {
   username: string;
@@ -92,6 +92,7 @@ const RegisterRedirect = () => {
     if (linkExisting === undefined && !linked) {
       return (
         <div className="mt-20 flex items-center justify-center">
+          {/* eslint-disable-next-line max-len */}
           <div className="rounded-sm border border-once-200 bg-opacity-95 p-8 shadow-md md:max-w-lg">
             <form className="space-y-4" id="signupForm" onSubmit={handleSubmit(submitHandler)}>
               {data?.existing && (
@@ -135,6 +136,7 @@ const RegisterRedirect = () => {
     if (linkExisting) {
       return (
         <div className="mt-20 flex items-center justify-center">
+          {/* eslint-disable-next-line max-len*/}
           <div className="rounded-sm border border-once-200 bg-opacity-95 p-8 shadow-md md:max-w-lg">
             <form className="space-y-4" id="signupForm">
               <h3 className="whitespace-nowrap py-3 text-center font-bold">

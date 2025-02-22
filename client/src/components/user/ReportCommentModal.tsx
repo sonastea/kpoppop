@@ -4,7 +4,7 @@ import { Description, Dialog, DialogPanel, DialogTitle } from '@headlessui/react
 import useReportCommentStore from 'hooks/useReportComment';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify/unstyled';
 import { reportComment } from './UserAPI';
 
 type ReportCommentData = {

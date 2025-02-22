@@ -1,5 +1,5 @@
 import imageCompression from 'browser-image-compression';
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify/unstyled';
 
 const options = {
   maxSizeMB: 2,
@@ -16,6 +16,7 @@ export const compressImage = async (image: File): Promise<File> => {
 
     return file;
   } catch (error) {
+    console.error(error);
     toast.error('There was a problem while compressing your image.');
     return image;
   }

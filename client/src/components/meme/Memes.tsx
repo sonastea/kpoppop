@@ -7,7 +7,7 @@ import useRemoveMemeStore from 'hooks/useRemoveMeme';
 import { debounce } from 'lodash';
 import { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import 'react-lazy-load-image-component/src/effects/blur.css';
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify/unstyled';
 import { fetchMemes } from './MemeAPI';
 import MemeLazyImage from './MemeLazyImage';
 import MemesSkeletonLoader from './MemesSkeletonLoader';

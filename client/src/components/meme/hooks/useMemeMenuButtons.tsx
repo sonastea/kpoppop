@@ -2,7 +2,7 @@ import { faFlag } from '@fortawesome/free-regular-svg-icons';
 import { faBan, faGavel, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useRemoveMeme from 'hooks/useRemoveMeme';
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify/unstyled';
 import { toggleMeme } from '../MemeAPI';
 import useReportMemeStore from './useReportMeme';
 

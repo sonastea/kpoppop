@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useReportCommentStore from 'hooks/useReportComment';
 import useReportUserStore from 'hooks/useReportUser';
 import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify/unstyled';
 import { banUser, modUser, unbanUser, unmodUser } from '../UserAPI';
 import { UserTooltipProps as UserMenuProps } from '../UserTooltip';
 

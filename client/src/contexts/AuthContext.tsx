@@ -1,6 +1,7 @@
 import { API_URL } from 'Global.d';
 import {
   createContext,
+  ReactElement,
   ReactNode,
   useCallback,
   useContext,
@@ -8,7 +9,7 @@ import {
   useMemo,
   useReducer,
 } from 'react';
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify/unstyled';
 
 export type User = {
   id?: number;
@@ -74,7 +75,7 @@ const AuthProviderComponent = ({
 }: {
   children: ReactNode;
   initialUser: User | undefined;
-}): JSX.Element => {
+}): ReactElement => {
   const [user, dispatch] = useReducer(authReducer, initialUser);
 
   const login = useCallback(async (data: LoginFormData) => {

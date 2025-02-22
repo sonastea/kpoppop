@@ -3,8 +3,7 @@ import LoadingUI from 'components/LoadingUI';
 import { AuthProvider } from 'contexts/AuthContext';
 import { Suspense, lazy } from 'react';
 import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify/unstyled';
 import NavBar from './components/NavBar';
 
 const MemePage = lazy(() => import('components/meme/MemePage'));
@@ -31,7 +30,6 @@ const Layout = () => {
       <link rel="preconnect" href={preconnectApi} />
       <ToastContainer
         autoClose={1000}
-        bodyClassName="toastifyBody"
         closeOnClick
         draggable
         hideProgressBar={true}
@@ -52,6 +50,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
+    hydrateFallbackElement: <LoadingUI />,
     ErrorBoundary: ErrorPage,
     children: [
       { index: true, Component: MemePage },
@@ -75,8 +74,6 @@ const App = () => {
   return (
     <RouterProvider
       router={router}
-      fallbackElement={<LoadingUI />}
-      future={{ v7_startTransition: true }}
     />
   );
 };

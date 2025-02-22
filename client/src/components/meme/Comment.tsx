@@ -2,7 +2,7 @@ import UserMenu from 'components/user/UserMenu';
 import UserTooltip from 'components/user/UserTooltip';
 import { useAuth } from 'contexts/AuthContext';
 import { BaseSyntheticEvent, useRef, useState } from 'react';
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify/unstyled';
 import CommentButtons from './CommentButtons';
 import CommentModerationButtons from './CommentModerationButtons';
 import { CommentProps } from './InteractiveComments';
