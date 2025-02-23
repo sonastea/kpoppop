@@ -2,12 +2,12 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DAY } from 'Global.d';
 import { lazy, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import InteractiveButtons from './InteractiveButtons';
 import InteractiveComments, { type CommentProps } from './InteractiveComments';
 import { fetchMeme } from './MemeAPI';
-import PostNonexistent from './PostNonexistent';
 import MemeLazyImage from './MemeLazyImage';
+import PostNonexistent from './PostNonexistent';
 
 const ReportCommentModal = lazy(() => import('components/user/ReportCommentModal'));
 const ReportUserModal = lazy(() => import('components/user/ReportUserModal'));

@@ -18,7 +18,7 @@ import { CommentProps, IUserProps } from 'components/meme/InteractiveComments';
 import { useAuth } from 'contexts/AuthContext';
 import useReportCommentStore from 'hooks/useReportComment';
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import Badges from './Badges';
 import useTooltipModerationButtons from './hooks/useTooltipModerationButtons';
 

@@ -2,7 +2,7 @@ import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAuth } from 'contexts/AuthContext';
 import { BaseSyntheticEvent, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import NoProfile from './NoProfile';
 import SocialMedias, { SocialMediaLink } from './SocialMedias';
 import { fetchUser } from './UserAPI';
@@ -58,7 +58,9 @@ const Profile = () => {
             <div className="w-full bg-cover bg-center">
               <a
                 className="banner-anchor"
-                href={`${data?.banner ? data?.banner : '/images/default_banner_white_1920x320.png'}`}
+                href={`${
+                  data?.banner ? data?.banner : '/images/default_banner_white_1920x320.png'
+                }`}
               >
                 <picture>
                   <source

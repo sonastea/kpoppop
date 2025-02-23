@@ -1,7 +1,7 @@
-import { act, render, screen, waitFor } from 'utils/test-utils';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
+import userEvent from '@testing-library/user-event';
+import { MemoryRouter, Route, Routes } from 'react-router';
+import { act, render, screen, waitFor } from 'utils/test-utils';
 import * as api from '../MemeAPI';
 import Post from '../Post';
 

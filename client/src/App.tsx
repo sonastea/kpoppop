@@ -2,7 +2,8 @@ import ErrorPage from 'components/ErrorPage';
 import LoadingUI from 'components/LoadingUI';
 import { AuthProvider } from 'contexts/AuthContext';
 import { Suspense, lazy } from 'react';
-import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Outlet, createBrowserRouter } from 'react-router';
+import { RouterProvider } from 'react-router/dom';
 import { ToastContainer } from 'react-toastify/unstyled';
 import NavBar from './components/NavBar';
 
@@ -71,11 +72,7 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  return (
-    <RouterProvider
-      router={router}
-    />
-  );
+  return <RouterProvider router={router} />;
 };
 
 export default App;
