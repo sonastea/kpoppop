@@ -2,7 +2,7 @@ const MemesSkeletonLoader = () => {
   const MemesItemSkeleton = () => {
     return (
       <li
-        className="my-2 w-full max-w-5xl animate-pulse bg-white shadow-sm sm:max-w-2xl
+        className="my-2 w-full max-w-5xl animate-pulse bg-white shadow-xs sm:max-w-2xl
           sm:rounded-md"
       >
         <div className="mx-4 mb-2 mt-4 flex flex-wrap overflow-auto leading-normal md:text-xl">

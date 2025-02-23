@@ -73,7 +73,7 @@ const EditProfilePhoto = ({
         </div>
         <button
           className="text-md absolute -top-1/4 right-0 z-40 rounded-md bg-once-200 p-1 text-once-800
-            shadow-sm shadow-once-400 hover:bg-once-300 md:text-xl"
+            shadow-xs shadow-once-400 hover:bg-once-300 md:text-xl"
           onClick={() => showCroppedImage()}
           type="button"
         >

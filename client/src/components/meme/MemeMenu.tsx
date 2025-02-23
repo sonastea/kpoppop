@@ -88,7 +88,7 @@ const MemeMenu = ({ authorId, memeId }: { authorId: number; memeId: number }) =>
           >
             <div
               className="overflow-hidden rounded-md border border-gray-200 bg-white text-sm
-                shadow-sm"
+                shadow-xs"
             >
               {isAuthor && LoggedInMenuButtons}
               {isAuthorized && !isAuthor && ModerationMenuButtons}

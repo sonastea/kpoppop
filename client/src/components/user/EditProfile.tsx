@@ -267,7 +267,7 @@ const EditProfile = () => {
               <div className="flex w-full justify-end space-x-2 py-2">
                 <button
                   className="w-auto rounded-md bg-slate-200 p-1 text-sm font-semibold text-slate-600
-                    shadow-sm shadow-slate-400 hover:bg-slate-300 hover:text-slate-800 md:text-xl"
+                    shadow-xs shadow-slate-400 hover:bg-slate-300 hover:text-slate-800 md:text-xl"
                   type="reset"
                   onClick={() => {
                     setValue('displayname', `${data?.displayname}`, { shouldValidate: false });
@@ -279,7 +279,7 @@ const EditProfile = () => {
                 </button>
                 <button
                   className="w-auto rounded-md bg-once-200 p-1 text-sm font-semibold text-once-800
-                    shadow-sm shadow-once-400 hover:bg-once-300 md:text-xl"
+                    shadow-xs shadow-once-400 hover:bg-once-300 md:text-xl"
                   type="button"
                   onClick={handleSubmit(editProfileHandler)}
                 >
@@ -342,7 +342,7 @@ const EditProfile = () => {
               <button
                 type="button"
                 className="w-auto cursor-pointer rounded-md bg-once-200 p-1 text-sm font-semibold
-                  text-once-800 shadow-sm shadow-once-400 hover:bg-once-300
+                  text-once-800 shadow-xs shadow-once-400 hover:bg-once-300
                   disabled:cursor-not-allowed disabled:opacity-50 md:text-xl"
                 onClick={handleSubmitSocial(addSocial)}
                 disabled={socials && socials?.length >= 6 ? true : false}
