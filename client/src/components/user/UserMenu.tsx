@@ -76,7 +76,7 @@ const UserMenu = ({ comment }: UserMenuProps) => {
           <div ref={refs.setFloating} style={floatingStyles} {...getFloatingProps()}>
             <div
               className="overflow-hidden rounded-md border border-gray-200 bg-white text-sm
-                shadow-sm"
+                shadow-xs"
             >
               {DefaultMenuButtons}
               {isAuthorized && user?.id !== comment.user.id && ModerationMenuButtons}

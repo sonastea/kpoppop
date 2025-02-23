@@ -33,7 +33,7 @@ const RoleTooltip = ({ children, tooltipText }: IRoleTooltipProps) => {
       {showTooltip && (
         <span
           className="absolute left-0 top-6 z-100 rounded bg-zinc-800 p-1 text-sm text-gray-100
-            shadow"
+            shadow-sm"
         >
           {tooltipText}
         </span>
