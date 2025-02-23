@@ -1,7 +1,7 @@
 import ErrorPage from 'components/ErrorPage';
 import LoadingUI from 'components/LoadingUI';
 import { AuthProvider } from 'contexts/AuthContext';
-import { Suspense, lazy } from 'react';
+import { lazy, useMemo } from 'react';
 import { Outlet, createBrowserRouter } from 'react-router';
 import { RouterProvider } from 'react-router/dom';
 import { ToastContainer } from 'react-toastify/unstyled';
@@ -23,10 +23,8 @@ const preconnectApi =
   process.env.NODE_ENV === 'production' ? 'https://api.kpoppop.com' : 'https://localhost:5000';
 
 const Layout = () => {
-  const initialUser = JSON.parse(sessionStorage.getItem('current-user')!) ?? undefined;
-
   return (
-    <AuthProvider initialUser={initialUser}>
+    <>
       <link rel="preconnect" href="https://ik.imagekit.io" />
       <link rel="preconnect" href={preconnectApi} />
       <ToastContainer
@@ -37,13 +35,11 @@ const Layout = () => {
         position="top-right"
         limit={3}
       />
-      <Suspense fallback={<LoadingUI />}>
-        <NavBar />
-        <div className="mt-nav-mobile sm:mt-nav-larger">
-          <Outlet />
-        </div>
-      </Suspense>
-    </AuthProvider>
+      <NavBar />
+      <div className="mt-nav-mobile sm:mt-nav-larger">
+        <Outlet />
+      </div>
+    </>
   );
 };
 
@@ -72,7 +68,16 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  return <RouterProvider router={router} />;
+  const initialUser = useMemo(() => {
+    const storedUser = sessionStorage.getItem('current-user');
+    return storedUser ? JSON.parse(storedUser) : undefined;
+  }, []);
+
+  return (
+    <AuthProvider initialUser={initialUser}>
+      <RouterProvider router={router} />;
+    </AuthProvider>
+  );
 };
 
 export default App;
