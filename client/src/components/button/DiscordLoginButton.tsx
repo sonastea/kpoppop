@@ -1,7 +1,7 @@
 import { faDiscord } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { API_URL } from 'Global.d';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 const DiscordLoginButton = () => {
   return (

@@ -2,7 +2,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAuth } from 'contexts/AuthContext';
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router';
 import { toast } from 'react-toastify/unstyled';
 import NavBarLoggedIn from './NavBarLoggedIn';
 import NavBarLoggedOut from './NavBarLoggedOut';

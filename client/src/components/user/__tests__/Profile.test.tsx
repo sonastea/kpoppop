@@ -1,8 +1,8 @@
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { screen } from '@testing-library/react';
-import { render } from 'utils/test-utils';
 import '@testing-library/jest-dom';
+import { screen } from '@testing-library/react';
 import { User } from 'contexts/AuthContext';
+import { MemoryRouter, Route, Routes } from 'react-router';
+import { render } from 'utils/test-utils';
 import Profile from '../Profile';
 
 describe('Render profile page according to authentication status', () => {
