@@ -75,7 +75,7 @@ const App = () => {
 
   return (
     <AuthProvider initialUser={initialUser}>
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
     </AuthProvider>
   );
 };
