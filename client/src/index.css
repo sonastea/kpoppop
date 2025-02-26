@@ -111,7 +111,7 @@ input:not(:focus-within):valid~label {
   background-color: #bec3cb;
 }
 
-.toastifyBody {
+.Toastify__toast {
   color: #1f2937;
   font-family: 'Montserrat', system-ui, sans-serif;
   font-weight: bold;

@@ -6,6 +6,7 @@ import { Outlet, createBrowserRouter } from 'react-router';
 import { RouterProvider } from 'react-router/dom';
 import { ToastContainer } from 'react-toastify/unstyled';
 import NavBar from './components/NavBar';
+import 'react-toastify/ReactToastify.css';
 
 const MemePage = lazy(() => import('components/meme/MemePage'));
 const Post = lazy(() => import('components/meme/Post'));
