@@ -1,32 +1,31 @@
-import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router';
+import { memo } from 'react';
+import { Link } from 'react-router';
 
-const NavBarLoggedOut = () => {
-  const location = useLocation();
-  const [path, setPath] = useState<string>(location.pathname);
+interface NavBarLoggedOutProps {
+  currentPath: string;
+}
 
-  useEffect(() => {
-    setPath(location.pathname);
-  }, [location.pathname]);
+const NavBarLoggedOut = memo(({ currentPath }: NavBarLoggedOutProps) => {
+  const isActive = (path: string) => currentPath === path;
 
   return (
     <div className="hidden items-center space-x-2 md:flex">
       <Link
         to="/login"
-        className={`${path === '/login' ? 'border-once' : 'border-transparent'} border-b-2 p-2
+        className={`${isActive('/login') ? 'border-once' : 'border-transparent'} border-b-2 p-2
           font-semibold hover:border-once`}
       >
         Login
       </Link>
       <Link
         to="/register"
-        className={`${path === '/register' ? 'border-once' : 'border-transparent'} border-b-2 p-2
+        className={`${isActive('/register') ? 'border-once' : 'border-transparent'} border-b-2 p-2
           font-semibold hover:border-once`}
       >
         Register
       </Link>
     </div>
   );
-};
+});
 
 export default NavBarLoggedOut;
