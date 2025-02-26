@@ -15,6 +15,8 @@ const NavBar = () => {
   const [isActiveMobileNav, setMobileNav] = useState<boolean>(false);
   const [active, setActive] = useState<number>();
 
+  const username = useMemo(() => user?.username, [user?.username]);
+
   const setNavItem = (id: number) => {
     setActive(id);
     setMobileNav(false);
@@ -124,6 +126,14 @@ const NavBar = () => {
     [user?.username]
   );
 
+  const navigationComponent = useMemo(() => {
+    if (username) {
+      return <NavBarLoggedIn username={username} logout={logout} />;
+    }
+
+    return <NavBarLoggedOut currentPath={location.pathname} />;
+  }, [username, logout, location.pathname]);
+
   useEffect(() => {
     mobileNavItemsLoggedIn.forEach((item) => {
       if (user && location.pathname === item.to) {
@@ -203,7 +213,7 @@ const NavBar = () => {
             </ul>
           </div>
 
-          {user?.username ? <NavBarLoggedIn /> : <NavBarLoggedOut />}
+          {navigationComponent}
 
           <div className="m-2 flex flex-wrap items-center md:hidden">
             {user?.username && <span className="font-semibold text-once-900">{user.username}</span>}

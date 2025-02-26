@@ -8,12 +8,15 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react';
-import { useAuth } from 'contexts/AuthContext';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router';
 
-const NavBarLoggedIn = () => {
-  const { user, logout } = useAuth();
+interface NavBarLoggedInProps {
+  username: string;
+  logout: () => void;
+}
+
+const NavBarLoggedIn = memo(({ username, logout }: NavBarLoggedInProps) => {
   const location = useLocation();
   const [path, setPath] = useState<string>(location.pathname);
 
@@ -34,7 +37,7 @@ const NavBarLoggedIn = () => {
             className="inline-flex h-full items-center p-2 font-semibold text-once-900
               hover:bg-once-200"
           >
-            {user?.username}
+            {username}
             {open ? (
               <FontAwesomeIcon className="ml-2 text-slate-900" icon={faAnglesDown} />
             ) : (
@@ -60,11 +63,11 @@ const NavBarLoggedIn = () => {
                     <Link
                       className={`flex items-center px-4 py-2 text-sm ${ focus &&
                       'rounded-t-md bg-once-200' } ${
-                      path === `/user/${user?.username}`
+                      path === `/user/${username}`
                           ? 'rounded-tr-md border-r-2 border-r-once'
                           : 'border-none'
                       }`}
-                      to={`/user/${user?.username}`}
+                      to={`/user/${username}`}
                     >
                       <FontAwesomeIcon viewBox="0 0 512 512" className="mr-3" icon={faUser} />
                       Profile
@@ -118,6 +121,6 @@ const NavBarLoggedIn = () => {
       )}
     </Menu>
   );
-};
+});
 
 export default NavBarLoggedIn;
