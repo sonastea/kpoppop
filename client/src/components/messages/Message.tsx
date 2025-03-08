@@ -55,7 +55,10 @@ const Message = forwardRef<HTMLLIElement, MessageModalProps>(
         <div className={`flex max-w-[85%] flex-col text-right ${isAuthor ? 'pr-2' : 'pl-2'}`}>
           <div
             className={`inline-block self-start rounded-xl p-2 px-3 text-left text-xs sm:text-xl ${
-              isAuthor ? 'self-end rounded-br-sm bg-once-400' : 'rounded-bl-sm bg-gray-300/80' }`}
+              isAuthor
+                ? 'ml-auto self-end rounded-br-sm bg-once-400'
+                : 'rounded-bl-sm bg-gray-300/80'
+              }`}
           >
             <p>{message.content}</p>
           </div>
