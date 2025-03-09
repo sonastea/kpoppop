@@ -37,7 +37,7 @@ const Layout = () => {
         limit={3}
       />
       <NavBar />
-      <div className="mt-nav-mobile sm:mt-nav-larger">
+      <div className="mt-nav-mobile w-screen sm:mt-nav-larger">
         <Outlet />
       </div>
     </>
