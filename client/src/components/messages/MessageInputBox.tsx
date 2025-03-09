@@ -55,8 +55,8 @@ const MessageInputBox = ({
   };
 
   return (
-    <div className="z-10 border border-slate-300 p-4">
-      <div className="flex rounded-lg bg-white shadow-xs">
+    <div className="border border-slate-300 p-4">
+      <div className="shadow-xs flex rounded-lg bg-white">
         <div className="flex-1">
           <textarea
             autoFocus={true}

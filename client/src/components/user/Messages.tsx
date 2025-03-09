@@ -340,8 +340,8 @@ const Messages = () => {
             {m.recipient && (
               <div className="message-container flex w-full flex-1 flex-col md:relative md:mx-2">
                 <div
-                  className="message-header backdrop-blur-xs z-10 flex flex-col items-center
-                    border-b border-b-slate-300"
+                  className="message-header backdrop-blur-xs flex flex-col items-center border-b
+                    border-b-slate-300"
                 >
                   <div className="align-center mr-2 flex h-12 w-12">
                     <a href={`/user/${m.recipient.username}`}>
