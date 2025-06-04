@@ -1,16 +1,16 @@
 {
   "devDependencies": {
-    "@eslint/js": "^9.21.0",
-    "@typescript-eslint/eslint-plugin": "^8.25.0",
-    "@typescript-eslint/parser": "^8.25.0",
-    "eslint": "^9.21.0",
-    "eslint-config-prettier": "^10.0.1",
-    "eslint-plugin-prettier": "^5.2.3",
-    "prettier": "^3.5.2",
-    "prettier-plugin-classnames": "^0.7.6",
-    "prettier-plugin-merge": "^0.7.2",
-    "prettier-plugin-tailwindcss": "^0.6.11",
-    "typescript": "^5.7.3",
-    "typescript-eslint": "^8.25.0"
+    "@eslint/js": "^9.28.0",
+    "@typescript-eslint/eslint-plugin": "^8.33.1",
+    "@typescript-eslint/parser": "^8.33.1",
+    "eslint": "^9.28.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.4.1",
+    "prettier": "^3.5.3",
+    "prettier-plugin-classnames": "^0.7.8",
+    "prettier-plugin-merge": "^0.7.4",
+    "prettier-plugin-tailwindcss": "^0.6.12",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.33.1"
   }
 }
