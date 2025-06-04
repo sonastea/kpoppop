@@ -5,6 +5,10 @@ on:
     paths: ['.github/workflows/client.yml', 'client/**']
   workflow_dispatch:
 
+concurrency:
+  group: client-deployment-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-client:
     runs-on: ubuntu-latest
