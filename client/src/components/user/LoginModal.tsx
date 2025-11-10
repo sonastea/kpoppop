@@ -88,7 +88,9 @@ const LoginModal = () => {
           >
             <h3 className="py-3 text-center font-bold text-gray-900">Login to kpoppop</h3>
 
-            <DiscordLoginButton />
+            <div>
+              <DiscordLoginButton />
+            </div>
 
             <div
               className="label-outline relative z-10 rounded-md border-2 bg-white
