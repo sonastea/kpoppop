@@ -5,25 +5,42 @@ import globals from 'globals';
 import prettier from 'eslint-plugin-prettier/recommended';
 import tseslint from 'typescript-eslint';
 
-export default tseslint.config(eslint.configs.recommended, tseslint.configs.recommended, prettier, {
-  files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.jsx', '**/*.mjs'],
-  ignores: ['**/backup/*', '**/old/*'],
-  languageOptions: {
-    globals: {
-      ...globals.node,
-      ...globals.jest,
+export default [
+  eslint.configs.recommended,
+  ...tseslint.configs.recommended,
+  prettier,
+  {
+    files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
+    ignores: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/build/**',
+      '**/backup/**',
+      '**/old/**',
+      '**/.next/**',
+      '**/coverage/**',
+    ],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.browser,
+        ...globals.jest,
+        ...globals.es2021,
+      },
+    },
+    rules: {
+      'max-len': ['warn', { code: 100 }],
+
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        {
+          argsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+        },
+      ],
     },
   },
-  rules: {
-    'max-len': [1, { code: 100 }],
-    '@typescript-eslint/interface-name-prefix': 'off',
-    '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/no-var-requires': 'off',
-    '@typescript-eslint/no-unused-vars': [
-      'warn',
-      { ignoreRestSiblings: true, argsIgnorePattern: '^_' },
-    ],
-  },
-});
+];
