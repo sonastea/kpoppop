@@ -19,13 +19,13 @@
 /bazel-out
 
 # dependencies
-**/node_modules/*
+**/node_modules
 
 # env files
 *.env
 *.env.development
 *.env.production
-**/secrets/*
+**/secrets
 
 docker-compose*.override.yml*
 
