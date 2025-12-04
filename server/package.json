@@ -41,6 +41,7 @@
     "compression": "^1.8.1",
     "cookie-parser": "^1.4.7",
     "discord.js": "^14.25.1",
+    "dotenv": "^17.2.3",
     "express-session": "^1.18.2",
     "firebase-admin": "^13.6.0",
     "formidable": "^3.5.4",
