@@ -27,7 +27,7 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { UserProfileData } from 'src/user/user.service';
 import { FileNsfwDetector, MulterFileExt } from './pipes/file-nsfw-detector';
 import { FileSizeExtValidator } from './pipes/file-size-ext';
-import { DefaultArgs } from '@prisma/client/runtime/client';
+import { DefaultArgs } from '@prisma/client/runtime/library';
 
 const photoBaseUrl = 'https://ik.imagekit.io/qxhlbjhesx/';
 
