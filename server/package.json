@@ -35,7 +35,7 @@
     "@nestjs/throttler": "^6.5.0",
     "@nestjs/websockets": "^11.1.12",
     "@prisma/client": "^6.19.2",
-    "@quixo3/prisma-session-store": "github:kleydon/prisma-session-store#5688463",
+    "@quixo3/prisma-session-store": "^3.1.19",
     "@types/compression": "^1.8.1",
     "bcrypt": "^6.0.0",
     "compression": "^1.8.1",
