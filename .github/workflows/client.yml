@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           submodules: true
           fetch-depth: 0
@@ -33,14 +33,14 @@ jobs:
           '
 
       - name: Install node
-        uses: actions/setup-node@v4.1.0
+        uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         name: Install pnpm
         with:
-          version: 9
+          version: 11
           run_install: false
 
       - name: Get pnpm store directory
@@ -48,7 +48,7 @@ jobs:
         run: |
           echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         name: Setup pnpm cache
         with:
           path: ${{ env.STORE_PATH }}
@@ -65,7 +65,7 @@ jobs:
         run: pnpm build
 
       - name: Upload production client
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: kpoppop-client-${{ github.sha }}
           path: client/build
@@ -75,13 +75,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download production client artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: kpoppop-client-${{ github.sha }}
           path: ${{ github.workspace }}/tmp/kpoppop-client/
 
       - name: Deploy production client to server
-        uses: burnett01/rsync-deployments@7.0.1
+        uses: burnett01/rsync-deployments@v8
         with:
           switches: -azvrP --delete --exclude models
           path: tmp/kpoppop-client/
