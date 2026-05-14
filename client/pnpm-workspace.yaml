@@ -1,0 +1,17 @@
+packages:
+  - 'src/proto'
+
+overrides:
+  braces@<3.0.3: '>=3.0.3'
+  micromatch@<4.0.8: '>=4.0.8'
+  cross-spawn@>=7.0.0 <7.0.5: '>=7.0.5'
+  esbuild@<=0.24.2: '>=0.25.0'
+
+onlyBuiltDependencies:
+  - core-js
+  - esbuild
+
+allowBuilds:
+  core-js: true
+  esbuild: true
+  unrs-resolver: true
