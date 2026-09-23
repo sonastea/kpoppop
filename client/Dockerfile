@@ -8,9 +8,9 @@ ENV BROWSER=none
 ENV NODE_ENV=${NODE_ENV:-development}
 ENV PORT=${PORT:-5000}
 
-RUN npm install -g pnpm@9.9
+RUN npm install -g pnpm@11
 
-COPY package.json pnpm-lock.yaml .env .env.${NODE_ENV} ./
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml .env .env.${NODE_ENV} ./
 
 RUN pnpm install
 

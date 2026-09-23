@@ -3,7 +3,6 @@ import react from '@vitejs/plugin-react';
 import Unfonts from 'unplugin-fonts/vite';
 import { defineConfig } from 'vite';
 import mkcert from 'vite-plugin-mkcert';
-import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig(() => {
   return {
@@ -39,11 +38,13 @@ export default defineConfig(() => {
     define: {
       'process.env': {},
     },
+    resolve: {
+      tsconfigPaths: true,
+    },
     plugins: [
       mkcert(),
       react(),
       tailwindcss(),
-      tsconfigPaths(),
       Unfonts({
         fontsource: {
           families: ['montserrat'],
