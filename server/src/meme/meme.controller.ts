@@ -14,7 +14,7 @@ import {
 } from '@nestjs/common';
 import * as path from 'path';
 import { randomUUID } from 'crypto';
-import * as firebase from 'firebase-admin';
+import { getStorage } from 'firebase-admin/storage';
 import { Response } from 'express';
 import { MemeService } from './meme.service';
 import { Comment, Meme, MemeResource, Prisma } from '@prisma/client';
@@ -87,8 +87,7 @@ export class MemeController {
       const fileName = uuid + path.extname(file.originalname);
       const url = photoBaseUrl + fileName;
 
-      firebase
-        .storage()
+      getStorage()
         .bucket()
         .file(fileName)
         .save(file.buffer, {

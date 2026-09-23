@@ -22,7 +22,7 @@ import { SkipThrottle, ThrottlerGuard } from '@nestjs/throttler';
 import { Prisma, Role, User } from '@prisma/client';
 import { randomUUID } from 'crypto';
 import { Request, Response } from 'express';
-import * as firebase from 'firebase-admin';
+import { getStorage } from 'firebase-admin/storage';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { LoginSessionGuard } from 'src/auth/guards/login-session.guard';
 import { RecaptchaGuard } from 'src/auth/guards/recaptcha.guard';
@@ -155,8 +155,7 @@ export class UserController {
       const url = baseUrl + fileName;
       data[key] = url;
 
-      firebase
-        .storage()
+      getStorage()
         .bucket()
         .file(fileName)
         .save(files[key][0].buffer, {

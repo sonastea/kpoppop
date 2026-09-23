@@ -1,11 +1,11 @@
-import { DiscordClientProvider, On, Once } from '@discord-nestjs/core';
+import { Context, ContextOf, On, Once } from 'necord';
 import { Injectable, Logger } from '@nestjs/common';
 import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
+  Client,
   EmbedBuilder,
-  Interaction,
   TextChannel,
 } from 'discord.js';
 import { MemeService } from 'src/meme/meme.service';
@@ -16,7 +16,7 @@ export class BotGateway {
   private readonly logger = new Logger(BotGateway.name);
 
   constructor(
-    private readonly discordProvider: DiscordClientProvider,
+    private readonly client: Client,
     private readonly listener: pgListenerProvider,
     private readonly memeService: MemeService
   ) {
@@ -41,30 +41,26 @@ export class BotGateway {
           { name: 'memeId: ', value: payload.id.toString(), inline: true }
         );
 
-      (
-        this.discordProvider
-          ?.getClient()
-          .channels.cache.get(process.env.DISCORD_CHANNEL_ID) as TextChannel
-      ).send({
+      (this.client.channels.cache.get(process.env.DISCORD_CHANNEL_ID!) as unknown as TextChannel).send({
         embeds: [embed],
         components: [row],
       });
     });
   }
 
-  @Once('ready')
-  async onReady(): Promise<void> {
-    this.logger.log(`KpoppopBot is now online as ${this.discordProvider.getClient().user.tag}!`);
+  @Once('clientReady')
+  async onReady(@Context() [client]: ContextOf<'clientReady'>): Promise<void> {
+    this.logger.log(`KpoppopBot is now online as ${client.user.tag}!`);
   }
 
   @On('interactionCreate')
-  async onButtonInteract(interaction: Interaction) {
+  async onButtonInteract(@Context() [interaction]: ContextOf<'interactionCreate'>) {
     // Only listen to button interactions
     if (!interaction.isButton()) return;
 
     // Retrieve member that interacted with the button and
     // make sure they have the appropiate permissions
-    const user = (interaction.channel as TextChannel).members.get(interaction.user.id);
+    const user = (interaction.channel as unknown as TextChannel).members.get(interaction.user.id);
     // Get meme id of current interaction
     const memeId = interaction.message.embeds[0].fields[1].value;
 

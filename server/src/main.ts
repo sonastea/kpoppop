@@ -1,11 +1,11 @@
 import { NestFactory } from '@nestjs/core';
-import * as compression from 'compression';
-import * as cookieParser from 'cookie-parser';
+import compression from 'compression';
+import cookieParser from 'cookie-parser';
 import type { CookieOptions, SessionOptions } from 'express-session';
-import * as expressSession from 'express-session';
+import expressSession from 'express-session';
 import * as firebase from 'firebase-admin';
 import * as fs from 'fs';
-import * as passport from 'passport';
+import passport from 'passport';
 import * as path from 'path';
 import { AppModule } from './app.module';
 import { MyLogger } from './logger/my-logger.service';
@@ -71,7 +71,7 @@ async function bootstrap() {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const serviceAccount = require('../firebaseCredentials.json');
   firebase.initializeApp({
-    credential: firebase.credential.cert(serviceAccount),
+    credential: firebase.cert(serviceAccount),
     storageBucket: `gs://${process.env.STORAGE_BUCKET}/`,
   });
 
